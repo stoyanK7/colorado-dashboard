@@ -4,7 +4,7 @@ import com.example.canondashboardapi.Enum.MediaType;
 
 import java.util.Date;
 
-public class PrintSquareMeterPerMediaDTO {
+public class PrintSquareMeterPerMediaTypeDTO {
 
     private Date dateTime;
     private double printedSquareMeter;
