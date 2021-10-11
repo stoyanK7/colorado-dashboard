@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface IPrintSquareMeterPerMediaTypeService {
     List<PrintSquareMeterPerMediaType> getAll();
+
+    void saveTest(PrintSquareMeterPerMediaType testType);
 }
