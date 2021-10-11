@@ -1,11 +1,11 @@
 package com.example.canondashboardapi.Service.services;
 
-import com.example.canondashboardapi.Service.interfaces.IPrintSquareMeterPerMediaService;
+import com.example.canondashboardapi.Service.interfaces.IPrintSquareMeterPerMediaTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PrintSquareMeterPerMediaService implements IPrintSquareMeterPerMediaService {
+public class PrintSquareMeterPerMediaTypeTypeService implements IPrintSquareMeterPerMediaTypeService {
 
     @Autowired
     IGenericRepository<PrintSquareMeterPerMedia> printSquareMeterPerMediaRepository;

@@ -1,7 +1,7 @@
 package com.example.canondashboardapi.Controller;
 
 import com.example.canondashboardapi.DTO.PrintSquareMeterPerMediaTypeDTO;
-import com.example.canondashboardapi.Service.interfaces.IPrintSquareMeterPerMediaService;
+import com.example.canondashboardapi.Service.interfaces.IPrintSquareMeterPerMediaTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class PrintSquareMeterPerMediaTypeController {
     IGraphConverter graphConverter;
 
     @Autowired
-    IPrintSquareMeterPerMediaService printSquareMeterPerMediaService;
+    IPrintSquareMeterPerMediaTypeService printSquareMeterPerMediaService;
 
     @GetMapping()
     public ResponseEntity<List<PrintSquareMeterPerMediaTypeDTO>> getAll(){
