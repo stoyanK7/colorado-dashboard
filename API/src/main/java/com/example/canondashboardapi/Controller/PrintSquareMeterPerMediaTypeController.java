@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class PrintSquareMeterPerMediaTypeController {
 
     @Autowired
+    IGraphConverter graphConverter;
+
+    @Autowired
     IPrintSquareMeterPerMediaService printSquareMeterPerMediaService;
 
     @GetMapping()
