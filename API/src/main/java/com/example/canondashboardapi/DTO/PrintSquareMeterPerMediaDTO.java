@@ -1,5 +1,7 @@
 package com.example.canondashboardapi.DTO;
 
+import com.example.canondashboardapi.Enum.MediaType;
+
 import java.util.Date;
 
 public class PrintSquareMeterPerMediaDTO {
