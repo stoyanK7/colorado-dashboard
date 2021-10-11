@@ -1,6 +1,7 @@
 package com.example.canondashboardapi.Service.services;
 
 import com.example.canondashboardapi.Model.models.PrintSquareMeterPerMediaType;
+import com.example.canondashboardapi.Repository.interfaces.IGenericRepository;
 import com.example.canondashboardapi.Service.interfaces.IPrintSquareMeterPerMediaTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
