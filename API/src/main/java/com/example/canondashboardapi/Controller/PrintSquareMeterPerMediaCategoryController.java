@@ -1,10 +1,8 @@
 package com.example.canondashboardapi.Controller;
 
-import com.example.canondashboardapi.DTO.PrintSquareMeterPerMediaTypeDTO;
-import com.example.canondashboardapi.Model.models.PrintSquareMeterPerMediaType;
+import com.example.canondashboardapi.Model.models.PrintSquareMeterPerMediaCategory;
 import com.example.canondashboardapi.Service.interfaces.IPrintSquareMeterPerMediaTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +13,7 @@ import java.util.List;
 @RequestMapping("PrintSquareMeterPerMediaType")
 // TODO: Need to change later
 @CrossOrigin("http://localhost:3000")
-public class PrintSquareMeterPerMediaTypeController {
+public class PrintSquareMeterPerMediaCategoryController {
 
 //    @Autowired
 //    IGraphConverter graphConverter;
@@ -24,7 +22,7 @@ public class PrintSquareMeterPerMediaTypeController {
     IPrintSquareMeterPerMediaTypeService printSquareMeterPerMediaService;
 
     @GetMapping()
-    public ResponseEntity<List<PrintSquareMeterPerMediaType>> getAll(){
+    public ResponseEntity<List<PrintSquareMeterPerMediaCategory>> getAll(){
 //        List<PrintSquareMeterPerMediaTypeDTO> printSquareMeterPerMediaTypeDTOList = graphConverter.entityToDto(printSquareMeterPerMediaService.getAll());
 //        if (printSquareMeterPerMediaTypeDTOList != null){
 //            return ResponseEntity.ok().body(printSquareMeterPerMediaTypeDTOList);
@@ -35,7 +33,7 @@ public class PrintSquareMeterPerMediaTypeController {
     }
 
     @PostMapping("/saveTest")
-    public void saveTest(@RequestBody PrintSquareMeterPerMediaType testType){
+    public void saveTest(@RequestBody PrintSquareMeterPerMediaCategory testType){
 //        List<PrintSquareMeterPerMediaTypeDTO> printSquareMeterPerMediaTypeDTOList = graphConverter.entityToDto(printSquareMeterPerMediaService.getAll());
 //        if (printSquareMeterPerMediaTypeDTOList != null){
 //            return ResponseEntity.ok().body(printSquareMeterPerMediaTypeDTOList);

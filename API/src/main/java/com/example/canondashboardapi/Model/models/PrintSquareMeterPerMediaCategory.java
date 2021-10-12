@@ -1,7 +1,6 @@
 package com.example.canondashboardapi.Model.models;
 
-import com.example.canondashboardapi.Enum.MediaType;
-import com.example.canondashboardapi.Model.interfaces.IPrintSquareMeterPerMediaType;
+import com.example.canondashboardapi.Model.interfaces.IPrintSquareMeterPerMediaCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +12,7 @@ import javax.persistence.Id;
 import java.util.Date;
 
 @Entity @Data @AllArgsConstructor @NoArgsConstructor
-public class PrintSquareMeterPerMediaType implements IPrintSquareMeterPerMediaType {
+public class PrintSquareMeterPerMediaCategory implements IPrintSquareMeterPerMediaCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

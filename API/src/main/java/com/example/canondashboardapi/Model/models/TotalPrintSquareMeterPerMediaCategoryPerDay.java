@@ -1,6 +1,6 @@
 package com.example.canondashboardapi.Model.models;
 
-import com.example.canondashboardapi.Enum.MediaType;
+import com.example.canondashboardapi.Enum.MediaCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +22,7 @@ public class TotalPrintSquareMeterPerMediaCategoryPerDay {
     private long id;
     private Date dateTime;
     private double totalPrintedSquareMeter;
-    private MediaType mediaType;
+    private MediaCategory mediaCategory;
 
     public long getId() {
         return id;
@@ -36,7 +36,7 @@ public class TotalPrintSquareMeterPerMediaCategoryPerDay {
         return totalPrintedSquareMeter;
     }
 
-    public MediaType getMediaType() {
-        return mediaType;
+    public MediaCategory getMediaCategory() {
+        return mediaCategory;
     }
 }

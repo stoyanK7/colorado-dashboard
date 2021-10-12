@@ -2,7 +2,7 @@ package com.example.canondashboardapi.Enum;
 
 
 // TODO remove the underscore
-public enum MediaType {
+public enum MediaCategory {
     Film,
     Light_paper,
     Heavy_paper,

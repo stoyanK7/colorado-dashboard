@@ -1,8 +1,8 @@
 package com.example.canondashboardapi.Repository.interfaces;
 
-import com.example.canondashboardapi.Model.models.PrintSquareMeterPerMediaType;
+import com.example.canondashboardapi.Model.models.PrintSquareMeterPerMediaCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface JpaRepo extends JpaRepository<PrintSquareMeterPerMediaType,Long> {
-    PrintSquareMeterPerMediaType findPrintSquareMeterPerMediaTypeById(long id);
+public interface JpaRepo extends JpaRepository<PrintSquareMeterPerMediaCategory,Long> {
+    PrintSquareMeterPerMediaCategory findPrintSquareMeterPerMediaTypeById(long id);
 }
