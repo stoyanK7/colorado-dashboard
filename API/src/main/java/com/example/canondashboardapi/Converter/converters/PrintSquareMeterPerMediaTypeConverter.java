@@ -17,7 +17,7 @@ public class PrintSquareMeterPerMediaTypeConverter implements IGraphConverter<IP
     }
 
     @Override
-    public List<PrintSquareMeterPerMediaTypeDTO> modelToDTO(List<IPrintSquareMeterPerMediaType> iPrintSquareMeterPerMediaTypes) {
+    public List<PrintSquareMeterPerMediaTypeDTO> ListModelToDTO(List<IPrintSquareMeterPerMediaType> iPrintSquareMeterPerMediaTypes) {
         List<PrintSquareMeterPerMediaTypeDTO> result = new ArrayList<>();
         for (IPrintSquareMeterPerMediaType iPrintSquareMeterPerMediaType : iPrintSquareMeterPerMediaTypes) {
             result.add(this.modelToDTO(iPrintSquareMeterPerMediaType));
