@@ -19,8 +19,15 @@ public class PrintSquareMeterPerMediaType implements IPrintSquareMeterPerMediaTy
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private Date dateTime;
-    private double printedSquareMeter;
-    private MediaType mediaType;
-
-
+    private double film;
+    private double lightPaper;
+    private double heavyPaper;
+    private double lightBanner;
+    private double textile;
+    private double monomericVinyl;
+    private double canvas;
+    private double polymeric;
+    private double heavyBanner;
+    private double paper;
+    private double thickFilm;
 }

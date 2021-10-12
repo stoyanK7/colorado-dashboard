@@ -3,6 +3,7 @@ package com.example.canondashboardapi.Converter.converters;
 import com.example.canondashboardapi.Converter.interfaces.IGraphConverter;
 import com.example.canondashboardapi.Enum.MediaType;
 import com.example.canondashboardapi.Model.models.PrintSquareMeterPerMediaType;
+import com.example.canondashboardapi.Model.models.TotalPrintSquareMeterPerMediaCategoryPerDay;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,19 +21,19 @@ import java.util.Map;
  *
  * Every map in the returned list represents another day
  */
-public class PrintSquareMeterPerMediaTypeHashMapConverter implements IGraphConverter<List<PrintSquareMeterPerMediaType>, List<Map<String, String>>> {
+public class PrintSquareMeterPerMediaTypeHashMapConverter implements IGraphConverter<List<TotalPrintSquareMeterPerMediaCategoryPerDay>, List<Map<String, String>>> {
 
     @Override
-    public List<Map<String, String>> modelToDTO(List<PrintSquareMeterPerMediaType> printSquareMeterPerMediaTypes) {
+    public List<Map<String, String>> modelToDTO(List<TotalPrintSquareMeterPerMediaCategoryPerDay> objects) {
         List<Map<String, String>> result = new ArrayList<>();
         Map<String, Map<MediaType, Double>> intermediate = new HashMap<>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        for (PrintSquareMeterPerMediaType printSquareMeterPerMediaType : printSquareMeterPerMediaTypes) {
-            String date = dateFormat.format(printSquareMeterPerMediaType.getDateTime());
+        for (TotalPrintSquareMeterPerMediaCategoryPerDay TotalPrintSquareMeterPerMediaCategoryPerDay : objects) {
+            String date = dateFormat.format(TotalPrintSquareMeterPerMediaCategoryPerDay.getDateTime());
             if (!intermediate.containsKey(date)) {
                 intermediate.put(date, new HashMap<>());
             }
-            intermediate.get(date).put(printSquareMeterPerMediaType.getMediaType(), printSquareMeterPerMediaType.getPrintedSquareMeter());
+            intermediate.get(date).put(TotalPrintSquareMeterPerMediaCategoryPerDay.getMediaType(), TotalPrintSquareMeterPerMediaCategoryPerDay.getTotalPrintedSquareMeter());
         }
 
         // Change intermediate to final list of hashmaps
@@ -49,8 +50,9 @@ public class PrintSquareMeterPerMediaTypeHashMapConverter implements IGraphConve
         return result;
     }
 
+    // TODO does this method even make sense? Maybe change interface
     @Override
-    public List<List<Map<String, String>>> ListModelToDTO(List<List<PrintSquareMeterPerMediaType>> lists) {
-        return new ArrayList<>();
+    public List<List<Map<String, String>>> ListModelToDTO(List<List<TotalPrintSquareMeterPerMediaCategoryPerDay>> lists) {
+        return null;
     }
 }
