@@ -12,7 +12,7 @@ import java.util.List;
 // TODO: Need to change later
 @RequestMapping("PrintSquareMeterPerMediaType")
 // TODO: Need to change later
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin("http://localhost:4000")
 public class PrintSquareMeterPerMediaCategoryController {
 
 //    @Autowired
