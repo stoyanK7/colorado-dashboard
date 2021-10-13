@@ -6,5 +6,4 @@ public interface IGraphConverter <TModel, TDto>{
 
     TDto modelToDTO(TModel model);
 
-    List<TDto> ListModelToDTO(List<TModel> models);
 }

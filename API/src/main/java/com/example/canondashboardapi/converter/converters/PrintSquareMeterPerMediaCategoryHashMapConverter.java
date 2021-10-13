@@ -3,6 +3,7 @@ package com.example.canondashboardapi.converter.converters;
 import com.example.canondashboardapi.converter.interfaces.IGraphConverter;
 import com.example.canondashboardapi.enumeration.MediaCategory;
 import com.example.canondashboardapi.model.models.TotalPrintSquareMeterPerMediaCategoryPerDay;
+import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.Map;
  *
  * Every map in the returned list represents another day
  */
+@Component
 public class PrintSquareMeterPerMediaCategoryHashMapConverter implements IGraphConverter<List<TotalPrintSquareMeterPerMediaCategoryPerDay>, List<Map<String, String>>> {
 
     @Override
@@ -49,9 +51,4 @@ public class PrintSquareMeterPerMediaCategoryHashMapConverter implements IGraphC
         return result;
     }
 
-    // TODO does this method even make sense? Maybe change interface
-    @Override
-    public List<List<Map<String, String>>> ListModelToDTO(List<List<TotalPrintSquareMeterPerMediaCategoryPerDay>> lists) {
-        return null;
-    }
 }
