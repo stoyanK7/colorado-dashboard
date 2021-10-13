@@ -23,20 +23,4 @@ public class TotalPrintSquareMeterPerMediaCategoryPerDay {
     private Date dateTime;
     private double totalPrintedSquareMeter;
     private MediaCategory mediaCategory;
-
-    public long getId() {
-        return id;
-    }
-
-    public Date getDateTime() {
-        return dateTime;
-    }
-
-    public double getTotalPrintedSquareMeter() {
-        return totalPrintedSquareMeter;
-    }
-
-    public MediaCategory getMediaCategory() {
-        return mediaCategory;
-    }
 }
