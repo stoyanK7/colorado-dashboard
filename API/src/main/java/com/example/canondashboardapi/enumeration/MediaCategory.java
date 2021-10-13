@@ -1,4 +1,4 @@
-package com.example.canondashboardapi.Enum;
+package com.example.canondashboardapi.enumeration;
 
 
 // TODO remove the underscore

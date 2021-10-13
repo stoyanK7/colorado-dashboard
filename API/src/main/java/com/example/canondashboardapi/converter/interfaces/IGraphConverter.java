@@ -1,4 +1,4 @@
-package com.example.canondashboardapi.Converter.interfaces;
+package com.example.canondashboardapi.converter.interfaces;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
-package com.example.canondashboardapi.Model.models;
+package com.example.canondashboardapi.model.models;
 
-import com.example.canondashboardapi.Enum.MediaCategory;
+import com.example.canondashboardapi.enumeration.MediaCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

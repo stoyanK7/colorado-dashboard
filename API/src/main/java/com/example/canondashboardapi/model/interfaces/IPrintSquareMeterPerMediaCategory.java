@@ -1,4 +1,4 @@
-package com.example.canondashboardapi.Model.interfaces;
+package com.example.canondashboardapi.model.interfaces;
 
 public interface IPrintSquareMeterPerMediaCategory {
 }

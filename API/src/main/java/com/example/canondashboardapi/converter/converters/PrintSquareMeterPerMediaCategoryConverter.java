@@ -1,8 +1,8 @@
-package com.example.canondashboardapi.Converter.converters;
+package com.example.canondashboardapi.converter.converters;
 
-import com.example.canondashboardapi.Converter.interfaces.IGraphConverter;
-import com.example.canondashboardapi.DTO.PrintSquareMeterPerMediaCategoryDTO;
-import com.example.canondashboardapi.Model.interfaces.IPrintSquareMeterPerMediaCategory;
+import com.example.canondashboardapi.converter.interfaces.IGraphConverter;
+import com.example.canondashboardapi.dto.PrintSquareMeterPerMediaCategoryDTO;
+import com.example.canondashboardapi.model.interfaces.IPrintSquareMeterPerMediaCategory;
 import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
-package com.example.canondashboardapi.Controller;
+package com.example.canondashboardapi.controller;
 
-import com.example.canondashboardapi.Model.models.PrintSquareMeterPerMediaCategory;
-import com.example.canondashboardapi.Service.interfaces.IPrintSquareMeterPerMediaCategoryService;
+import com.example.canondashboardapi.model.models.PrintSquareMeterPerMediaCategory;
+import com.example.canondashboardapi.service.interfaces.IPrintSquareMeterPerMediaCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,8 +1,8 @@
-package com.example.canondashboardapi.Repository.repositories;
+package com.example.canondashboardapi.repository.repositories;
 
-import com.example.canondashboardapi.Model.models.PrintSquareMeterPerMediaCategory;
-import com.example.canondashboardapi.Repository.interfaces.IGenericRepository;
-import com.example.canondashboardapi.Repository.interfaces.JpaRepo;
+import com.example.canondashboardapi.model.models.PrintSquareMeterPerMediaCategory;
+import com.example.canondashboardapi.repository.interfaces.IGenericRepository;
+import com.example.canondashboardapi.repository.interfaces.JpaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

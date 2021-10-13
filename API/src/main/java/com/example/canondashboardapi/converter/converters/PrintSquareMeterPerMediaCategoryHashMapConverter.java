@@ -1,8 +1,8 @@
-package com.example.canondashboardapi.Converter.converters;
+package com.example.canondashboardapi.converter.converters;
 
-import com.example.canondashboardapi.Converter.interfaces.IGraphConverter;
-import com.example.canondashboardapi.Enum.MediaCategory;
-import com.example.canondashboardapi.Model.models.TotalPrintSquareMeterPerMediaCategoryPerDay;
+import com.example.canondashboardapi.converter.interfaces.IGraphConverter;
+import com.example.canondashboardapi.enumeration.MediaCategory;
+import com.example.canondashboardapi.model.models.TotalPrintSquareMeterPerMediaCategoryPerDay;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

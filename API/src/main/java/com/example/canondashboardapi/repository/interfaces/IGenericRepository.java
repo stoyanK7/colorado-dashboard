@@ -1,4 +1,4 @@
-package com.example.canondashboardapi.Repository.interfaces;
+package com.example.canondashboardapi.repository.interfaces;
 
 import java.util.List;
 

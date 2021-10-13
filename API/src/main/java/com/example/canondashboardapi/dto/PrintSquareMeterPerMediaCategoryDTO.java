@@ -1,4 +1,4 @@
-package com.example.canondashboardapi.DTO;
+package com.example.canondashboardapi.dto;
 
 import java.util.Date;
 

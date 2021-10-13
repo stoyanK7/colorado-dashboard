@@ -1,6 +1,6 @@
-package com.example.canondashboardapi.Service.interfaces;
+package com.example.canondashboardapi.service.interfaces;
 
-import com.example.canondashboardapi.Model.models.PrintSquareMeterPerMediaCategory;
+import com.example.canondashboardapi.model.models.PrintSquareMeterPerMediaCategory;
 
 import java.util.List;
 
