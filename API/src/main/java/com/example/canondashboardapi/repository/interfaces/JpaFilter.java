@@ -1,7 +1,12 @@
 package com.example.canondashboardapi.repository.interfaces;
 
+import com.example.canondashboardapi.model.models.TotalPrintSquareMeterPerMediaCategoryPerDay;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface JpaFilter implements JpaRepository<smt, Long> {
+import java.util.Date;
+import java.util.List;
+
+public interface JpaFilter extends JpaRepository<TotalPrintSquareMeterPerMediaCategoryPerDay, Long> {
+    List<TotalPrintSquareMeterPerMediaCategoryPerDay> findAllByDateTimeBetween(Date startingDate, Date endingDate);
 
 }

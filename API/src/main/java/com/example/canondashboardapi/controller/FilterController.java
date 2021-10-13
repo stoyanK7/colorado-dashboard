@@ -1,8 +1,12 @@
 package com.example.canondashboardapi.controller;
 
+import com.example.canondashboardapi.model.models.DatesModel;
+import com.example.canondashboardapi.model.models.TotalPrintSquareMeterPerMediaCategoryPerDay;
 import com.example.canondashboardapi.service.interfaces.IFiltrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("filtration")
@@ -12,8 +16,8 @@ public class FilterController {
     IFiltrationService service;
     
     @GetMapping("byDates")
-    public void getDataByDates(@RequestBody demoClass){
+    public List<TotalPrintSquareMeterPerMediaCategoryPerDay> getDataByDates(@RequestBody DatesModel model){
         
-        service.getDataByDates(demoClass.getStartingDate(), demoClass.getEndingDate());
+        return service.getDataByDates(model.getStartingDate(), model.getEndingDate());
     }
 }
