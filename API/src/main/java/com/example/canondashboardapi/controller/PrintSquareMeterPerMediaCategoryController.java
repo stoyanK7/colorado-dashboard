@@ -21,7 +21,9 @@ public class PrintSquareMeterPerMediaCategoryController {
     @Autowired
     IPrintSquareMeterPerMediaCategoryService printSquareMeterPerMediaService;
 
+
     @GetMapping()
+    // change to TotalPrintSquareMeterPerMediaCategoryPerDay
     public ResponseEntity<List<PrintSquareMeterPerMediaCategory>> getAll(){
 //        List<PrintSquareMeterPerMediaTypeDTO> printSquareMeterPerMediaTypeDTOList = graphConverter.entityToDto(printSquareMeterPerMediaService.getAll());
 //        if (printSquareMeterPerMediaTypeDTOList != null){
