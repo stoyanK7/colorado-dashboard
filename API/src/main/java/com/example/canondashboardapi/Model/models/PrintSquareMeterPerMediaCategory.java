@@ -29,4 +29,5 @@ public class PrintSquareMeterPerMediaCategory implements IPrintSquareMeterPerMed
     private double heavyBanner;
     private double paper;
     private double thickFilm;
+    
 }
