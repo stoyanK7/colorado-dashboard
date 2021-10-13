@@ -4,7 +4,7 @@ import com.example.canondashboardapi.Model.models.PrintSquareMeterPerMediaCatego
 
 import java.util.List;
 
-public interface IPrintSquareMeterPerMediaTypeService {
+public interface IPrintSquareMeterPerMediaCategoryService {
     List<PrintSquareMeterPerMediaCategory> getAll();
 
     void saveTest(PrintSquareMeterPerMediaCategory testType);
