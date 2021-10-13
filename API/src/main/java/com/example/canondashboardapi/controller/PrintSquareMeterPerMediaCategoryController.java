@@ -27,7 +27,6 @@ public class PrintSquareMeterPerMediaCategoryController {
 
 
     @GetMapping()
-    // change to TotalPrintSquareMeterPerMediaCategoryPerDay
     public ResponseEntity<List<Map<String, String>>> getAll(){
         List<Map<String, String>> graphDayBars = graphConverter.modelToDTO(printSquareMeterPerMediaCategoryPerDayService.getAll());
         if (graphDayBars != null){
@@ -37,7 +36,7 @@ public class PrintSquareMeterPerMediaCategoryController {
         }
     }
 
-    @PostMapping("/saveTest")
+/*    @PostMapping("/saveTest")
     public void saveTest(@RequestBody TotalPrintSquareMeterPerMediaCategoryPerDay testType){
 //        List<PrintSquareMeterPerMediaTypeDTO> printSquareMeterPerMediaTypeDTOList = graphConverter.entityToDto(printSquareMeterPerMediaService.getAll());
 //        if (printSquareMeterPerMediaTypeDTOList != null){
@@ -46,5 +45,5 @@ public class PrintSquareMeterPerMediaCategoryController {
 //            return new ResponseEntity("No data found.", HttpStatus.NOT_FOUND);
 //        }
         printSquareMeterPerMediaCategoryPerDayService.saveTest(testType);
-    }
+    }*/
 }

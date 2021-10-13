@@ -4,5 +4,5 @@ import com.example.canondashboardapi.model.models.TotalPrintSquareMeterPerMediaC
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface JpaRepo extends JpaRepository<TotalPrintSquareMeterPerMediaCategoryPerDay,Long> {
-    TotalPrintSquareMeterPerMediaCategoryPerDay findTotalPrintSquareMeterPerMediaCategoryPerDayByIdById(long id);
+    TotalPrintSquareMeterPerMediaCategoryPerDay findTotalPrintSquareMeterPerMediaCategoryPerDaysById(long id);
 }

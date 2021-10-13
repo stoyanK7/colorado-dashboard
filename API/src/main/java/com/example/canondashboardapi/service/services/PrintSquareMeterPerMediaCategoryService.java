@@ -16,7 +16,7 @@ public class PrintSquareMeterPerMediaCategoryService implements ITotalPrintSquar
     IGenericRepository<TotalPrintSquareMeterPerMediaCategoryPerDay> printSquareMeterPerMediaRepository;
 
     @Autowired
-    public PrintSquareMeterPerMediaCategoryService(@Qualifier("WorkRepo") IGenericRepository<TotalPrintSquareMeterPerMediaCategoryPerDay> printSquareMeterPerMediaRepository) {
+    public PrintSquareMeterPerMediaCategoryService(@Qualifier("TestRepo") IGenericRepository<TotalPrintSquareMeterPerMediaCategoryPerDay> printSquareMeterPerMediaRepository) {
         this.printSquareMeterPerMediaRepository = printSquareMeterPerMediaRepository;
     }
 
