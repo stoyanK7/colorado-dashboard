@@ -1,6 +1,8 @@
 package com.example.canondashboardapi.enumeration;
 
-
+/**
+ * Enumeration of all possible Media Categories
+ */
 // TODO remove the underscore
 public enum MediaCategory {
     Film,
