@@ -3,7 +3,7 @@ package com.example.canondashboardapi.controller;
 
 import com.example.canondashboardapi.converter.interfaces.GenericGraphConverter;
 import com.example.canondashboardapi.model.TotalPrintSquareMeterPerMediaCategoryPerDay;
-import com.example.canondashboardapi.service.interfaces.TotalPrintSquareMeterPerMediaCategoryPerDayService;
+import com.example.canondashboardapi.service.interfaces.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * REST api controller for PrintSquareMeterPerMediaCategory. Outgoing graph
+ * REST api controller for TotalPrintSquareMeterPerMediaCategoryPerDay. Outgoing graph
  * information is output as a List of Maps, where very Map represents a bar
  * in the graph.
  */
@@ -29,8 +29,8 @@ public class TotalPrintSquareMeterPerMediaCategoryPerDayController {
             graphConverter;
 
     @Autowired
-    TotalPrintSquareMeterPerMediaCategoryPerDayService
-            printSquareMeterPerMediaCategoryPerDayService;
+    GenericService<TotalPrintSquareMeterPerMediaCategoryPerDay>
+            totalPrintSquareMeterPerMediaCategoryPerDayService;
 
     /**
      * GET request that returns all the data stored in the repository
@@ -40,7 +40,7 @@ public class TotalPrintSquareMeterPerMediaCategoryPerDayController {
     @GetMapping()
     public ResponseEntity<List<Map<String, String>>> getAll() {
         List<Map<String, String>> graphDayBars = graphConverter.modelToDTO(
-                printSquareMeterPerMediaCategoryPerDayService.getAll());
+                totalPrintSquareMeterPerMediaCategoryPerDayService.getAll());
         if (graphDayBars != null) {
             return ResponseEntity.ok().body(graphDayBars);
         } else {

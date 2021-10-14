@@ -19,11 +19,11 @@ import java.util.Map;
  * mediaCategoryName1   | amount of printed square meters in String
  * mediaCategoryName2   | amount of printed square meters in String
  * idem for every MediaCategory
- *
+ * <p>
  * Every map in the returned list represents another day
  */
 @Component
-public class PrintSquareMeterPerMediaCategoryHashMapConverter implements
+public class TotalPrintSquareMeterPerMediaCategoryPerDayConverter implements
         GenericGraphConverter<List<TotalPrintSquareMeterPerMediaCategoryPerDay>, List<Map<String, String>>> {
 
     /**
@@ -40,15 +40,15 @@ public class PrintSquareMeterPerMediaCategoryHashMapConverter implements
         List<Map<String, String>> result = new ArrayList<>();
         Map<String, Map<MediaCategory, Double>> intermediate = new HashMap<>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        for (TotalPrintSquareMeterPerMediaCategoryPerDay TotalPrintSquareMeterPerMediaCategoryPerDay : objects) {
+        for (TotalPrintSquareMeterPerMediaCategoryPerDay totalPrintSquareMeterPerMediaCategoryPerDay : objects) {
             String date = dateFormat.format(
-                    TotalPrintSquareMeterPerMediaCategoryPerDay.getDateTime());
+                    totalPrintSquareMeterPerMediaCategoryPerDay.getDateTime());
             if (!intermediate.containsKey(date)) {
                 intermediate.put(date, new HashMap<>());
             }
             intermediate.get(date)
-                    .put(TotalPrintSquareMeterPerMediaCategoryPerDay.getMediaCategory(),
-                            TotalPrintSquareMeterPerMediaCategoryPerDay.getTotalPrintedSquareMeter());
+                    .put(totalPrintSquareMeterPerMediaCategoryPerDay.getMediaCategory(),
+                            totalPrintSquareMeterPerMediaCategoryPerDay.getTotalPrintedSquareMeter());
         }
 
         // Change intermediate to final list of hashmaps

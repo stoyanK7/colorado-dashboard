@@ -3,6 +3,7 @@ package com.example.canondashboardapi.service.services;
 
 import com.example.canondashboardapi.model.TotalPrintSquareMeterPerMediaCategoryPerDay;
 import com.example.canondashboardapi.repository.interfaces.GenericRepository;
+import com.example.canondashboardapi.service.interfaces.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -14,17 +15,17 @@ import java.util.List;
  */
 @Service
 public class TotalPrintSquareMeterPerMediaCategoryPerDayService implements
-        com.example.canondashboardapi.service.interfaces.TotalPrintSquareMeterPerMediaCategoryPerDayService {
+        GenericService<TotalPrintSquareMeterPerMediaCategoryPerDay> {
 
     private GenericRepository<TotalPrintSquareMeterPerMediaCategoryPerDay>
-            printSquareMeterPerMediaRepository;
+            totalPrintSquareMeterPerMediaCategoryPerDayRepository;
 
     @Autowired
     public TotalPrintSquareMeterPerMediaCategoryPerDayService(
             @Qualifier("TestRepo")
-                    GenericRepository<TotalPrintSquareMeterPerMediaCategoryPerDay> printSquareMeterPerMediaRepository) {
-        this.printSquareMeterPerMediaRepository =
-                printSquareMeterPerMediaRepository;
+                    GenericRepository<TotalPrintSquareMeterPerMediaCategoryPerDay> totalPrintSquareMeterPerMediaCategoryPerDayRepository) {
+        this.totalPrintSquareMeterPerMediaCategoryPerDayRepository =
+                totalPrintSquareMeterPerMediaCategoryPerDayRepository;
     }
 
     /**
@@ -34,12 +35,12 @@ public class TotalPrintSquareMeterPerMediaCategoryPerDayService implements
      * @return
      */
     public List<TotalPrintSquareMeterPerMediaCategoryPerDay> getAll() {
-        return printSquareMeterPerMediaRepository.getAll();
+        return totalPrintSquareMeterPerMediaCategoryPerDayRepository.getAll();
     }
 
     // TODO: Remove this?
     @Override
     public void saveTest(TotalPrintSquareMeterPerMediaCategoryPerDay testType) {
-        printSquareMeterPerMediaRepository.saveTest(testType);
+        totalPrintSquareMeterPerMediaCategoryPerDayRepository.saveTest(testType);
     }
 }
