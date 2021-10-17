@@ -1,4 +1,5 @@
 import { ResponsiveBar } from "@nivo/bar";
+import ChartTheme from "./ChartTheme";
 const MediaCategoryBarChart = (props) => {
     let data = [
         {
@@ -36,29 +37,7 @@ const MediaCategoryBarChart = (props) => {
     keys.sort()
 
     function colorTheme(props) {
-        let keys = Object.keys(props.data)
-        // Remove index from keys
-        keys.splice(keys.indexOf(keys.find(key => props.data[key] === props.indexValue)), 1)
-        keys.sort();
-        function colors(id, maxId) {
-            return `hsl(${id / maxId * 360}, 100%, 70%)`;
-            let colorList = [
-                "#564138",
-                "#2E86AB",
-                "#F6F5AE",
-                "#F5F749",
-                "#F24236",
-                "#B098A4 ",
-                "#DD7373",
-                "#CA895F",
-                "#EE4266",
-                "#0EAD69",
-                "#D98324"
-            ]
-            return colorList[id];
-        }
         
-        return colors(keys.indexOf(props.id), keys.length-1);
     }
 
     return (
@@ -72,8 +51,7 @@ const MediaCategoryBarChart = (props) => {
         padding={0.05}
         valueScale={{ type: 'linear' }}
         indexScale={{ type: 'band', round: true }}
-        // colors={{ scheme: 'nivo' }}
-        colors={colorTheme}
+        colors={ChartTheme}
         borderWidth="0.5px"
         borderColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
         axisBottom={{
