@@ -2,14 +2,13 @@ import { ResponsiveBar } from "@nivo/bar";
 import ChartTheme from "./ChartTheme";
 const MediaCategoryBarChart = ({data, index, keys}) => {
     keys.sort()
-
     return (
         <>
         <ResponsiveBar
         data={data}
         keys={keys}
         indexBy={index}
-        margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+        margin={{ top: 50, right: 130, bottom: 70, left: 60 }}
         padding={0.05}
         valueScale={{ type: 'linear' }}
         indexScale={{ type: 'band', round: true }}
@@ -19,10 +18,10 @@ const MediaCategoryBarChart = ({data, index, keys}) => {
         axisBottom={{
             tickSize: 5,
             tickPadding: 5,
-            tickRotation: 0,
+            tickRotation: 40,
             legend: 'days',
             legendPosition: 'middle',
-            legendOffset: 32
+            legendOffset: 55
         }}
         axisLeft={{
             tickSize: 5,
