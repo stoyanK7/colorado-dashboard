@@ -61,6 +61,13 @@ const MediaCategoryBarChart = ({data, index, keys}) => {
             }
         ]}
         role="application"
+        tooltip={({id, value, indexValue}) => {
+            return <div style={{background: "#111111", padding: "5px", color: "#ffffff"}}>
+                <span>{id} - {indexValue}</span>
+                <br/>
+                <span>Usages: {value}</span>
+            </div>
+        }}
     />
         </>
     )
