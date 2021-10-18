@@ -14,7 +14,12 @@ import java.util.List;
 public class FilterController {
     @Autowired
     IFiltrationService service;
-    
+
+    /**
+     * Retrieves data for the timeframe
+     * @param model
+     * @return
+     */
     @GetMapping("byDates")
     public List<TotalPrintSquareMeterPerMediaCategoryPerDay> getDataByDates(@RequestBody DatesModel model){
         

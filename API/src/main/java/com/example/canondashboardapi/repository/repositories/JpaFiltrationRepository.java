@@ -13,6 +13,12 @@ public class JpaFiltrationRepository implements IFilterRepository {
     @Autowired
     JpaFilter jpa;
 
+    /**
+     * Retrieves data for the timeframe
+     * @param startingDate
+     * @param endingDate
+     * @return
+     */
     @Override
     public List<TotalPrintSquareMeterPerMediaCategoryPerDay> getDataByDates(Date startingDate, Date endingDate) {
         return jpa.findAllByDateTimeBetween(startingDate, endingDate);
