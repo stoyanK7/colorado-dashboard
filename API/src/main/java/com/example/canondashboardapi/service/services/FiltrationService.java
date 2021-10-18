@@ -13,7 +13,7 @@ import java.util.List;
 public class FiltrationService implements IFiltrationService {
 
     @Autowired
-    IFilterRepository repo;
+    private IFilterRepository repo;
 
     /**
      * Retrieves data for the timeframe

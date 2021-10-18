@@ -13,7 +13,7 @@ import java.util.List;
 @CrossOrigin("http://localhost:4000")
 public class FilterController {
     @Autowired
-    IFiltrationService service;
+    private IFiltrationService service;
 
     /**
      * Retrieves data for the timeframe
