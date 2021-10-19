@@ -22,7 +22,7 @@ public class TotalPrintSquareMeterPerMediaCategoryPerDayService implements
 
     @Autowired
     public TotalPrintSquareMeterPerMediaCategoryPerDayService(
-            @Qualifier("TestRepo")
+            @Qualifier("WorkRepo")
                     GenericRepository<TotalPrintSquareMeterPerMediaCategoryPerDay> totalPrintSquareMeterPerMediaCategoryPerDayRepository) {
         this.totalPrintSquareMeterPerMediaCategoryPerDayRepository =
                 totalPrintSquareMeterPerMediaCategoryPerDayRepository;

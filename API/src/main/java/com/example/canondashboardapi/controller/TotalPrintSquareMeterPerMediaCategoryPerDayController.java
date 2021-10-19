@@ -48,14 +48,13 @@ public class TotalPrintSquareMeterPerMediaCategoryPerDayController {
         }
     }
 
-/*    @PostMapping("/saveTest")
+    @GetMapping("/getTest")
+    public List<TotalPrintSquareMeterPerMediaCategoryPerDay> getTest(){
+        return totalPrintSquareMeterPerMediaCategoryPerDayService.getAll();
+    }
+
+    @PostMapping("/saveTest")
     public void saveTest(@RequestBody TotalPrintSquareMeterPerMediaCategoryPerDay testType){
-//        List<PrintSquareMeterPerMediaTypeDTO> printSquareMeterPerMediaTypeDTOList = graphConverter.entityToDto(printSquareMeterPerMediaService.getAll());
-//        if (printSquareMeterPerMediaTypeDTOList != null){
-//            return ResponseEntity.ok().body(printSquareMeterPerMediaTypeDTOList);
-//        }else{
-//            return new ResponseEntity("No data found.", HttpStatus.NOT_FOUND);
-//        }
-        printSquareMeterPerMediaCategoryPerDayService.saveTest(testType);
-    }*/
+        totalPrintSquareMeterPerMediaCategoryPerDayService.saveTest(testType);
+    }
 }
