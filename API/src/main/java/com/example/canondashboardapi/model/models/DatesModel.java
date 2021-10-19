@@ -8,6 +8,6 @@ import java.util.Date;
 
 @Data @AllArgsConstructor
 public class DatesModel {
-    Date startingDate;
-    Date endingDate;
+    private Date startingDate;
+    private Date endingDate;
 }

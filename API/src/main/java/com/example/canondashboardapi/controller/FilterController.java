@@ -1,7 +1,7 @@
 package com.example.canondashboardapi.controller;
 
+import com.example.canondashboardapi.model.TotalPrintSquareMeterPerMediaCategoryPerDay;
 import com.example.canondashboardapi.model.models.DatesModel;
-import com.example.canondashboardapi.model.models.TotalPrintSquareMeterPerMediaCategoryPerDay;
 import com.example.canondashboardapi.service.interfaces.IFiltrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -1,13 +1,15 @@
 package com.example.canondashboardapi.repository.repositories;
 
-import com.example.canondashboardapi.model.models.TotalPrintSquareMeterPerMediaCategoryPerDay;
+import com.example.canondashboardapi.model.TotalPrintSquareMeterPerMediaCategoryPerDay;
 import com.example.canondashboardapi.repository.interfaces.IFilterRepository;
 import com.example.canondashboardapi.repository.interfaces.JpaFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
 
+@Repository
 public class JpaFiltrationRepository implements IFilterRepository {
 
     @Autowired

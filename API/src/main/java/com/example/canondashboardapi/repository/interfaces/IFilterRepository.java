@@ -1,6 +1,6 @@
 package com.example.canondashboardapi.repository.interfaces;
 
-import com.example.canondashboardapi.model.models.TotalPrintSquareMeterPerMediaCategoryPerDay;
+import com.example.canondashboardapi.model.TotalPrintSquareMeterPerMediaCategoryPerDay;
 
 import java.util.Date;
 import java.util.List;
