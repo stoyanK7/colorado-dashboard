@@ -4,7 +4,7 @@ const ChartTheme = ( {data, id, indexValue} ) => {
     keys.splice(keys.indexOf(keys.find(key => data[key] === indexValue)), 1)
     keys.sort();
     function colors(id, maxId) {
-        return `hsl(${id / maxId * 360}, 100%, 70%)`;
+        return `hsl(${id / maxId * 350}, 100%, 70%)`;
         let colorList = [
             "#564138",
             "#2E86AB",
