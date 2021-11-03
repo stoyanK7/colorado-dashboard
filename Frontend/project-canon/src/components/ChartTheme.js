@@ -1,4 +1,4 @@
-const ChartTheme = ( {data, id, indexValue} ) => {
+function ChartTheme( {data, id, indexValue} ) {
     let keys = Object.keys(data)
     // Remove index from keys
     keys.splice(keys.indexOf(keys.find(key => data[key] === indexValue)), 1)
