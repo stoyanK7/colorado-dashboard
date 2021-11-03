@@ -1,7 +1,10 @@
-import { ResponsiveBar } from "@nivo/bar";
 import ChartTheme from "./ChartTheme";
-const MediaCategoryBarChart = ({data, index, keys}) => {
-    keys.sort()
+import { ResponsiveBar } from "@nivo/bar";
+
+const MediaCategoryBarChart = ({data, index}) => {
+    let keys = Object.keys(data[0]);
+    keys.splice(keys.indexOf("date"), 1);
+    keys.sort();
     return (
         <>
         <ResponsiveBar
