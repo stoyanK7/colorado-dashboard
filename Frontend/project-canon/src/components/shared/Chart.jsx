@@ -16,7 +16,7 @@ const Chart = () => {
   }
 
   return (
-    <div className='chart' style={{ height: '100vh' }}>
+    <div className='chart' style={{ height: 'auto' }}>
       {isPending && <Loading />}
       {error && <h1>An error occured: {error}</h1>}
       {data && component}

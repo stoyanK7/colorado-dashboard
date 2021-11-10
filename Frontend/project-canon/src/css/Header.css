@@ -1,0 +1,11 @@
+header {
+  background-color: var(--white);
+  color: var(--carnelian);
+  font-size: 3rem;
+  font-family: 'Canon', sans-serif;
+  text-align: center;
+  line-height: var(--header-height);
+  width: 100%;
+  height: var(--header-height);
+  border-bottom: 1px solid var(--platinum);
+}
