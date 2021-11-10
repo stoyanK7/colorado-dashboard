@@ -1,7 +1,7 @@
-function ChartTheme( {data, id, indexValue} ) {
-    let keys = Object.keys(data)
+export default function ChartTheme({ data, id, indexValue }) {
+    let keys = Object.keys(data);
     // Remove index from keys
-    keys.splice(keys.indexOf(keys.find(key => data[key] === indexValue)), 1)
+    keys.splice(keys.indexOf(keys.find(key => data[key] === indexValue)), 1);
     keys.sort();
     function colors(id, maxId) {
         return `hsl(${id / maxId * 350}, 100%, 70%)`;
@@ -19,8 +19,7 @@ function ChartTheme( {data, id, indexValue} ) {
             "#D98324"
         ]
         return colorList[id];
-    }
-    
-    return colors(keys.indexOf(id), keys.length-1);
-}
-export default ChartTheme;
+    };
+
+    return colors(keys.indexOf(id), keys.length - 1);
+};
