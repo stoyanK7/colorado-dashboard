@@ -3,8 +3,10 @@
   --charcoal: #454851;
   --platinum: #DCDCDC;
   --white: #FCFCFF;
+  --light-grey: #CCCCCC;
   --header-height: 140px;
   --hover-transition: .3s;
+  --border-radius: 3px;
 }
 
 *, *:before, *:after {
