@@ -8,7 +8,7 @@
 
 .filters {
   font-size: 2rem;
-  padding: 20px 1vw;
+  padding: 20px 0;
   display: grid;
   grid-template-columns: auto auto 1fr auto;
 }
@@ -24,16 +24,24 @@
 
 .filters input {
   color: inherit;
-  box-shadow: 0 0 7px 3px var(--light-grey);
+  box-shadow: var(--box-shadow);
   border: none;
   border-radius: var(--border-radius);
-  padding: 3px 7px;
-  height: 90%;
+  padding: 6px 7px;
+  height: 100%;
   font-size: 1.4rem;
+}
+
+.filters input:focus {
+  outline: 2px solid var(--carnelian);
 }
 
 .bins, .timespan, .specific-printers {
   border-right: 3px solid var(--charcoal);
+}
+
+.bins>span {
+  transition: transform var(--hover-transition);
 }
 
 .timespan>div {
@@ -49,18 +57,35 @@
 .timespan>div .fa-calendar-alt {
   position: absolute;
   left: 7px;
-  top: 3px;
+  top: 6px;
 }
 
 .timespan>span {
   margin: 0 10px;
 }
 
+.bins>span, .full-screen {
+  transition: transform var(--hover-transition);
+}
+
 .bins>span:hover, .full-screen:hover {
+  zoom: 1.25;
+  -ms-zoom: 1.25;
+  -webkit-zoom: 1.25;
+  transform: scale(1.25, 1.25);
+  -moz-transform: scale(1.25, 1.25);
+  transform-origin: 50% 50%;
+  -moz-transform-origin: 50% 50%;
   cursor: pointer;
   color: var(--carnelian);
 }
 
 .full-screen .fa-expand, .bins .one-day {
   margin-right: 10px;
+}
+
+.view main {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  padding: 2vh 2vw;
 }

@@ -2,6 +2,6 @@ import '../../css/Header.css';
 
 import { Link } from 'react-router-dom';
 
-const Header = () => <Link to='/'><header>Colorado</header></Link>;
+const Header = () => <header><Link to='/'>Colorado</Link></header>;
 
 export default Header;

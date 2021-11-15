@@ -23,7 +23,7 @@ const View = () => {
             </div>
             <span>to</span>
             <div className='to'>
-             <input type='date' />
+              <input type='date' />
               <FontAwesomeIcon icon={faCalendarAlt} className='fa-calendar-alt' />
             </div>
           </div>

@@ -1,9 +1,9 @@
-import ChartTheme from "../../util/ChartTheme";
-import { ResponsiveBar } from "@nivo/bar";
+import ChartTheme from '../../util/ChartTheme';
+import { ResponsiveBar } from '@nivo/bar';
 
 const MediaCategoryBarChart = ({ data, index }) => {
     let keys = Object.keys(data[0]);
-    keys.splice(keys.indexOf("date"), 1);
+    keys.splice(keys.indexOf('date'), 1);
     keys.sort();
     return (
         <>
@@ -16,7 +16,7 @@ const MediaCategoryBarChart = ({ data, index }) => {
                 valueScale={{ type: 'linear' }}
                 indexScale={{ type: 'band', round: true }}
                 colors={ChartTheme}
-                borderWidth="0.5px"
+                borderWidth='0.5px'
                 borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
                 axisBottom={{
                     tickSize: 5,
@@ -62,11 +62,11 @@ const MediaCategoryBarChart = ({ data, index }) => {
                         toggleSerie: true
                     }
                 ]}
-                role="application"
+                role='application'
                 tooltip={({ id, value, indexValue, color }) => {
-                    return <div style={{ background: "#111111", padding: "5px", color: "#ffffff" }}>
-                        <div style={{ display: "flex" }}>
-                            <svg width="20px" height="20px" style={{ marginRight: "5px" }}><rect width="20px" height="20px" fill={color}></rect></svg>
+                    return <div style={{ background: '#111111', padding: '5px', color: '#ffffff' }}>
+                        <div style={{ display: 'flex' }}>
+                            <svg width='20px' height='20px' style={{ marginRight: '5px' }}><rect width='20px' height='20px' fill={color}></rect></svg>
                             <span >{id} - {indexValue}</span>
                         </div>
                         Usages: {value}

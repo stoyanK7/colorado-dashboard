@@ -1,3 +1,5 @@
+import '../../css/Chart.css';
+
 import Loading from '../static/Loading';
 import MediaCategoryBarChart from '../charts/MediaCategoryBarChart';
 import useFetch from '../../hooks/useFetch';
@@ -16,10 +18,12 @@ const Chart = () => {
   }
 
   return (
-    <div className='chart' style={{ height: 'auto' }}>
+    <div className='chart-wrapper-1'>
       {isPending && <Loading />}
       {error && <h1>An error occured: {error}</h1>}
-      {data && component}
+      <div className='chart-wrapper-2'>
+        {data && <div className='chart'>{component}</div>}
+      </div>
     </div>
   );
 };
