@@ -8,6 +8,7 @@ const MediaCategoryBarChart = ({ data, index }) => {
     return (
         <>
             <ResponsiveBar
+                // animate={false}
                 data={data}
                 keys={keys}
                 indexBy={index}

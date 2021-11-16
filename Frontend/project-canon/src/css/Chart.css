@@ -1,9 +1,35 @@
+:root {
+  --chart-transition: 0.5s;
+}
+
 .chart-wrapper-1 {
   position: relative;
   display: grid;
   place-items: center;
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
+  -webkit-transition: var(--chart-transition);
+  -moz-transition: var(--chart-transition);
+  -ms-transition: var(--chart-transition);
+  transition: var(--chart-transition);
+  overflow: hidden;
+}
+
+.chart-wrapper-1 h1 {
+  font-size: 2rem;
+  font-weight: 300;
+}
+
+.chart-wrapper-1 .fa-circle {
+  position: absolute;
+  top: 1%;
+  right: 1%;
+  font-size: 3rem;
+  color: var(--carnelian);
+  z-index: 1;
+}
+
+.chart-wrapper-1 .fa-circle:hover {
+  cursor: pointer;
+  opacity: 0.8;
 }
 
 .chart-wrapper-2 {
