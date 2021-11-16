@@ -13,39 +13,34 @@ const View = () => {
 
   const chart = useRef(null);
 
-  const [isFullScreen, toggle] = useToggle();
+  const [fullScreen, toggleFullScreen] = useToggle();
   // TODO: needs reworking. complete spaghetti but works 
-  const toggleFullScreen = () => {
+  const disableFullScreen = () => {
+    toggleFullScreen();
 
-    if (!isFullScreen) {
-      // before transition
-      const scrollWidth = chart.current.scrollWidth;
-      const scrollHeight = chart.current.scrollHeight;
+    // after transition
+    setTimeout(() => {
+      chart.current.style.removeProperty('width');
+      chart.current.style.removeProperty('height');
+      chart.current.style.removeProperty('left');
+      chart.current.style.removeProperty('top');
+      chart.current.style.removeProperty('position');
+    }, 500)
+  };
 
-      chart.current.style.setProperty('left', chart.current.offsetLeft + 'px');
-      chart.current.style.setProperty('top', chart.current.offsetTop + 'px');
-      chart.current.style.setProperty('position', 'fixed');
-      chart.current.style.setProperty('width', scrollWidth + 'px');
-      chart.current.style.setProperty('height', scrollHeight + 'px');
+  const enableFullScreen = () => {
+    // before transition
+    const scrollWidth = chart.current.scrollWidth;
+    const scrollHeight = chart.current.scrollHeight;
 
-      // wait for code to run
-      setTimeout(() => {
-        toggle();
-      }, 100)
-    }
+    chart.current.style.setProperty('left', chart.current.offsetLeft + 'px');
+    chart.current.style.setProperty('top', chart.current.offsetTop + 'px');
+    chart.current.style.setProperty('position', 'fixed');
+    chart.current.style.setProperty('width', scrollWidth + 'px');
+    chart.current.style.setProperty('height', scrollHeight + 'px');
 
-    if (isFullScreen) {
-      toggle();
-
-      // after transition
-      setTimeout(() => {
-        chart.current.style.removeProperty('width');
-        chart.current.style.removeProperty('height');
-        chart.current.style.removeProperty('left');
-        chart.current.style.removeProperty('top');
-        chart.current.style.removeProperty('position');
-      }, 500)
-    }
+    // wait for code to run
+    setTimeout(() => toggleFullScreen(), 100);
   };
 
   return (
@@ -71,11 +66,11 @@ const View = () => {
         <div className='specific-printers'>
           <input type='text' placeholder='Specific printers..' />
         </div>
-        <div className='full-screen' onClick={toggleFullScreen}>
+        <div className='full-screen' onClick={enableFullScreen}>
           <FontAwesomeIcon icon={faExpand} className='fa-expand' />
           <span>Full screen</span>
         </div>
-        <Chart ref={chart} setChartTitle={setChartTitle} isFullScreen={isFullScreen} toggleFullScreen={toggleFullScreen} />
+        <Chart ref={chart} setChartTitle={setChartTitle} fullScreen={fullScreen} disableFullScreen={disableFullScreen} />
       </main>
     </div>
   );

@@ -8,7 +8,7 @@ import { forwardRef } from 'react';
 import useFetch from '../../hooks/useFetch';
 import { useParams } from 'react-router-dom';
 
-const Chart = forwardRef(({ setChartTitle, isFullScreen, toggleFullScreen }, ref) => {
+const Chart = forwardRef(({ setChartTitle, fullScreen, disableFullScreen }, ref) => {
   // Gets path from URL: i.e. https://xxxxx.com/InkInfo -> InkInfo
   const { chart } = useParams();
 
@@ -26,11 +26,11 @@ const Chart = forwardRef(({ setChartTitle, isFullScreen, toggleFullScreen }, ref
 
   return (
     <div ref={ref}
-      className={`${isFullScreen ? 'chart-full-screen' : ''} chart-wrapper-1`}>
+      className={`${fullScreen ? 'chart-full-screen' : ''} chart-wrapper-1`}>
       {isPending && <Loading />}
       {error && <h1>An error occured: {error}</h1>}
       <div className='chart-wrapper-2' >
-        {isFullScreen && <FontAwesomeIcon icon={faTimesCircle} className='fa-circle' onClick={toggleFullScreen} />}
+        {fullScreen && <FontAwesomeIcon icon={faTimesCircle} className='fa-circle' onClick={disableFullScreen} />}
         {data && <div className='chart'>{component}</div>}
       </div>
     </div>
