@@ -9,14 +9,18 @@ import useFetch from '../../hooks/useFetch';
 import { useParams } from 'react-router-dom';
 
 const Chart = forwardRef(({ setChartTitle, isFullScreen, toggleFullScreen }, ref) => {
+  // Gets path from URL: i.e. https://xxxxx.com/InkInfo -> InkInfo
   const { chart } = useParams();
 
+  // Retrieve chart data
+  // Assumes that URL path is same to API endpoint
   const { data, isPending, error } = useFetch(`/${chart}`);
 
+  // TODO: extract into another function? i.e ChartSwitch
   let component;
   switch (chart) {
     case 'PrintSquareMeterPerMediaType': component = <MediaCategoryBarChart data={data} index='date' />; setChartTitle('Square meter per media type'); break;
-    // TODO: add the rest of the paths when the API has them
+    // TODO: add the rest of the paths when the API supports them
     default: break;
   };
 
@@ -26,7 +30,7 @@ const Chart = forwardRef(({ setChartTitle, isFullScreen, toggleFullScreen }, ref
       {isPending && <Loading />}
       {error && <h1>An error occured: {error}</h1>}
       <div className='chart-wrapper-2' >
-        {isFullScreen && <FontAwesomeIcon icon={faTimesCircle} className='fa-circle' onClick={toggleFullScreen}/>}
+        {isFullScreen && <FontAwesomeIcon icon={faTimesCircle} className='fa-circle' onClick={toggleFullScreen} />}
         {data && <div className='chart'>{component}</div>}
       </div>
     </div>
