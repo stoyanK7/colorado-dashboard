@@ -16,9 +16,9 @@ stages:
 build:
   stage: build
   script:
-    - ./gradlew assemble
+    - ./API/gradlew assemble
 
 test:
   stage: test
   script:
-    - ./gradlew test
+    - ./API/gradlew test
