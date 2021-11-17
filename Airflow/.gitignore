@@ -120,3 +120,6 @@ venv.bak/
 
 # Makefile
 .Makefile
+
+# intellij/pycharm
+.idea/
