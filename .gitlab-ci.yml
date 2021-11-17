@@ -2,13 +2,14 @@
 # https://docs.gitlab.com/runner/register/
 
 before_script:
-  - export GRADLE_USER_HOME=`pwd`/API/.gradle
-  - chmod +x ./API/gradlew
+  - cd API/
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+  - chmod +x ./gradlew
 
 cache:
   paths:
-     - API/.gradle/wrapper
-     - API/.gradle/caches
+     - .gradle/wrapper
+     - .gradle/caches
 
 stages:
   - build
@@ -17,11 +18,9 @@ stages:
 build:
   stage: build
   script:
-    - cd API/
     - ./gradlew assemble
 
 test:
   stage: test
   script:
-    - cd API/
     - ./gradlew test
