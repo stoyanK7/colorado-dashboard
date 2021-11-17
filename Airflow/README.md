@@ -26,11 +26,11 @@ This is to install make, which is needed to launch airflow.
 
 To start airflow type:
 ```
-	make start-airflow
+make start-airflow
 ```
 To stop airflow type:
 ```
-	make stop-airflow
+make stop-airflow
 ```	
 ## Using Airflow
 
@@ -38,7 +38,7 @@ To stop airflow type:
 
 2. To start airflow type:
 ```
-	make start-airflow
+make start-airflow
 ```	
 3. Go to Localhost:8080
 
@@ -50,7 +50,7 @@ To stop airflow type:
     
 To stop airflow type:
 ```
-	make stop-airflow
+make stop-airflow
 ```	
 ## Accessing the database
 1. Open the CLI for ```airflow-postgres-1``` by pressing the CLI button in Docker Desktop
