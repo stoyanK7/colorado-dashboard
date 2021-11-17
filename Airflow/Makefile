@@ -1,4 +1,4 @@
-PYTHON_VERSION := 3.8
+PYTHON_VERSION := 3.9
 AIRFLOW_VERSION := 2.0.0
 # Must be comma-separated, no spaces
 AIRFLOW_EXTRAS := postgres
@@ -10,11 +10,11 @@ venv:
 ifneq ($(wildcard ./venv/.*),)
 	@echo "venv already exists"
 else
-	python3 -m virtualenv venv
-	venv/bin/python3 -m pip install --upgrade pip
-	venv/bin/python3 -m pip install --trusted-host pypi.python.org "apache-airflow[${AIRFLOW_EXTRAS}]==${AIRFLOW_VERSION}" --constraint ${CONSTRAINT}  --use-deprecated legacy-resolver
-	venv/bin/python3 -m pip install -r airflow.requirements.txt --use-deprecated legacy-resolver
-	venv/bin/python3 -m pip install -r local.requirements.txt --use-deprecated legacy-resolver
+	python -m virtualenv venv
+	venv/Scripts/python -m pip install --upgrade pip
+	venv/Scripts/python -m pip install --trusted-host pypi.python.org "apache-airflow[${AIRFLOW_EXTRAS}]==${AIRFLOW_VERSION}" --constraint ${CONSTRAINT}  --use-deprecated legacy-resolver
+	venv/Scripts/python -m pip install -r airflow.requirements.txt --use-deprecated legacy-resolver
+	venv/Scripts/python -m pip install -r local.requirements.txt --use-deprecated legacy-resolver
 endif
 
 # Lints all python files
