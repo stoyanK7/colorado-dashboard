@@ -4,6 +4,6 @@
 }
 
 @font-face {
-  font-family: 'Canon';
-  src: local('Canon'), url(../fonts/Canon.ttf) format('truetype');
+  font-family: 'Canon Display';
+  src: local('Canon'), url(../fonts/Canon.otf) format('opentype');
 }

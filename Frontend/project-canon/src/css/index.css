@@ -3,7 +3,11 @@
   --charcoal: #454851;
   --platinum: #DCDCDC;
   --white: #FCFCFF;
+  --light-grey: #CCCCCC;
+  --header-height: 90px;
   --hover-transition: .3s;
+  --border-radius: 3px;
+  --box-shadow: 0 0 7px 3px var(--light-grey);
 }
 
 *, *:before, *:after {
@@ -17,6 +21,21 @@ html, body, #root {
 
 body {
   font-family: 'OpenSans', sans-serif;
-  font-size: 18px;
+  font-size: 16px;
   margin: 0;
+  background-color: var(--white);
+  color: var(--charcoal);
+}
+
+main {
+  width: 100%;
+  height: calc(100% - var(--header-height));
+}
+
+a {
+  text-decoration: none;
+}
+
+a, a:visited {
+  color: inherit;
 }
