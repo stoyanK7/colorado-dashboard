@@ -1,4 +1,4 @@
-import '../../css/View.css';
+import '../../css/site/View.css';
 
 import { faCalendarAlt, faExpand } from '@fortawesome/free-solid-svg-icons';
 import { useRef, useState } from 'react';

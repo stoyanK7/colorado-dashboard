@@ -1,4 +1,4 @@
-import '../../css/Chart.css';
+import '../../css/shared/Chart.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Loading from '../static/Loading';

@@ -1,34 +1,37 @@
-import { Link } from "react-router-dom";
-import classes from "./../../css/home_page.module.css";
-import Chart from "../shared/Chart";
+import '../../css/site/Home.css';
+
+import Header from '../static/Header';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   return (
-    <div className={classes.home}>
-      <div className={classes.container}>
-        <div className={classes.headerHome}>Colorado</div>
-        <div className={`${classes.mainGraph} ${classes.graph}`}>
-        <div className={classes.headerGraph}>Printed square metres per media type</div>
-          <div className={classes.image}></div>
+    <div className='home'>
+      <Header />
+      <main>
+        <div className='chart main-chart'>
+          <Link to='PrintSquareMeterPerMediaType'>
+            <div className='chart-header'>Printed square metres per media type</div>
+            <div className='img'></div>
+          </Link>
         </div>
-        <div className={`${classes.sideGraphtop} ${classes.graph}`}>
-        <div className={classes.headerGraph}>Amount of printed square metres per print mode</div>
-          <div className={classes.image}></div>
+        <div className='chart side-chart-top'>
+          <div className='chart-header'>Amount of printed square metres per print mode</div>
+          <div className='img'></div>
         </div>
-        <div className={`${classes.sideGrapthMiddle} ${classes.graph}`}>
-        <div className={classes.headerGraph}>Ink usage</div>
-          <div className={classes.image}></div>
+        <div className='chart side-chart-middle'>
+          <div className='chart-header'>Ink usage</div>
+          <div className='img'></div>
         </div>
-        <div className={`${classes.secondLineLeftGraph} ${classes.graph}`}>
-        <div className={classes.headerGraph}> Best printing machines on the market</div>
-          <div className={classes.image}></div>
+        <div className='chart second-line-left-chart'>
+          <div className='chart-header'> Best printing machines on the market</div>
+          <div className='img'></div>
         </div>
-        <div className={`${classes.secondLineRightGraph} ${classes.graph}`}>
-        <div className={classes.headerGraph}>All used media types for a selected machine</div>
-          <div className={classes.image}></div>
+        <div className='chart second-line-right-chart'>
+          <div className='chart-header'>All used media types for a selected machine</div>
+          <div className='img'></div>
         </div>
-      </div>
-    </div>
+      </main >
+    </div >
   );
 };
 

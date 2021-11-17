@@ -9,3 +9,27 @@ header {
   height: var(--header-height);
   border-bottom: 1px solid var(--platinum);
 }
+
+/* Tablet */
+
+@media only screen and (max-width: 1170px) {
+  :root {
+    --header-height: 70px;
+  }
+
+  header {
+    font-size: 2rem;
+  }
+}
+
+/* Mobile */
+
+@media only screen and (max-width: 630px) {
+  :root {
+    --header-height: 60px;
+  }
+
+  header {
+    font-size: 1.5rem;
+  }
+}
