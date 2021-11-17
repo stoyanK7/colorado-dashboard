@@ -2,14 +2,20 @@ import Loading from '../static/Loading';
 import MediaCategoryBarChart from '../charts/MediaCategoryBarChart';
 import useFetch from '../../hooks/useFetch';
 import { useParams } from 'react-router-dom';
-
-const Chart = () => {
-  const { chart } = useParams();
-
-  const { data, isPending, error } = useFetch(`/${chart}`);
+//sasdasdasasdasdasdasdfsgrwe
+const Chart = (props) => {
+  var { chart } = useParams();
+  var chartToUse;
+  if(props.manualChart != undefined){
+    chartToUse = props.manualChart;
+  }
+  else{
+    chartToUse = chart;
+  }
+  const { data, isPending, error } = useFetch(`/${chartToUse}`);
 
   let component;
-  switch (chart) {
+  switch (chartToUse) {
     case 'PrintSquareMeterPerMediaType': component = <MediaCategoryBarChart data={data} index='date' />; break;
     // TODO: add the rest of the paths when the API has them
     default: break;
