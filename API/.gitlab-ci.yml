@@ -1,3 +1,6 @@
+# You can register your runner following the tutorial below
+# https://docs.gitlab.com/runner/register/
+
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
   - chmod +x ./gradlew
