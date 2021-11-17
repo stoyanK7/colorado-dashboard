@@ -1,0 +1,9 @@
+@font-face {
+  font-family: 'OpenSans';
+  src: local('OpenSans'), url(../fonts/OpenSans.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Canon';
+  src: local('Canon'), url(../fonts/Canon.ttf) format('truetype');
+}
