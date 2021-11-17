@@ -8,8 +8,8 @@ before_script:
 
 cache:
   paths:
-     - ./.gradle/wrapper
-     - ./.gradle/caches
+     - ./API/.gradle/wrapper
+     - ./API/.gradle/caches
 
 stages:
   - build
