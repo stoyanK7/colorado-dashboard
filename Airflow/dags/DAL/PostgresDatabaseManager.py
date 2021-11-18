@@ -1,5 +1,6 @@
 from airflow.providers.postgres.operators.postgres import PostgresHook
 import pandas as pd
+from sqlalchemy import text
 
 
 class PostgresDatabaseManager:
@@ -8,3 +9,13 @@ class PostgresDatabaseManager:
 
     def createTable(self, dataFrame: pd.DataFrame, tableName: str):
         dataFrame.to_sql(tableName, con=self.hook.get_sqlalchemy_engine(), if_exists="replace")
+
+    def deleteTable(self, tableName: str):
+        statement = text("drop table :table;")
+        self.hook.get_sqlalchemy_engine().execute(statement, {'table': tableName})
+
+def execute():
+    obj = PostgresDatabaseManager()
+    dataFrame = pd.DataFrame(data={"a": [1, 2], "b": [3, 4]})
+    obj.createTable(dataFrame,"Test")
+    # obj.deleteTable('"Test"')
