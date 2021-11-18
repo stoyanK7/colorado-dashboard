@@ -4,6 +4,7 @@ from textwrap import dedent
 from pipelineParts import logTest
 from pipelineParts import dataReader
 from pipelineParts import dataAggregator
+from DAL import PostgresDatabaseManager
 
 
 # The DAG object; we'll need this to instantiate a DAG
@@ -48,6 +49,11 @@ with DAG(
     t4 = PythonOperator(
         task_id="aggregateData",
         python_callable=dataAggregator.dataAggregator
+    )
+
+    t5 = PythonOperator(
+        task_id="testExecute",
+        python_callable=PostgresDatabaseManager.execute
     )
 
     t3 >> t4
