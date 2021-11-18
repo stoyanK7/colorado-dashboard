@@ -1,4 +1,5 @@
 #!/bin/bash
+# Batch script to open API in IntelliJ, Frontend in VS Code & run React
 
 title1="IntelliJ Idea"
 title2="React"
