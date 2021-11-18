@@ -123,3 +123,7 @@ venv.bak/
 
 # intellij/pycharm
 .idea/
+
+# unittests
+airflow.db-journal
+unittests.db
