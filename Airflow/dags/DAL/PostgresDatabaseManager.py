@@ -18,3 +18,6 @@ class PostgresDatabaseManager:
         tableName = tableName.lower();
         statement = """drop table if exists {table};""".format(table=tableName)
         self.hook.run(statement)
+
+    def readTable(self, tableName: str):
+        return pd.read_sql_table(tableName, con=self.hook.get_sqlalchemy_engine())
