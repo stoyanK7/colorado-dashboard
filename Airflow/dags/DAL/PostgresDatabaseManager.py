@@ -16,5 +16,5 @@ class PostgresDatabaseManager:
 
     def deleteTable(self, tableName: str):
         tableName = tableName.lower();
-        statement = """drop table {table};""".format(table=tableName)
+        statement = """drop table if exists {table};""".format(table=tableName)
         self.hook.run(statement)
