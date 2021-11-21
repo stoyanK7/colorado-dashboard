@@ -2,7 +2,7 @@ package com.example.canondashboardapi.repository.repositories;
 
 import com.example.canondashboardapi.model.TotalPrintSquareMeterPerMediaCategoryPerDay;
 import com.example.canondashboardapi.repository.interfaces.GenericRepository;
-import com.example.canondashboardapi.repository.interfaces.JpaRepo;
+import com.example.canondashboardapi.repository.interfaces.JpaTotalPrintSquareMeterPerMediaCategoryPerDay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public class JpaTotalPrintSquareMeterPerMediaCategoryPerDayRepository implements
         GenericRepository<TotalPrintSquareMeterPerMediaCategoryPerDay> {
     @Autowired
-    private JpaRepo jpa;
+    private JpaTotalPrintSquareMeterPerMediaCategoryPerDay jpa;
 
     /**
      * Gets all TotalPrintSquareMeterPerMediaCategoryPerDay models from the
@@ -26,11 +26,5 @@ public class JpaTotalPrintSquareMeterPerMediaCategoryPerDayRepository implements
     @Override
     public List<TotalPrintSquareMeterPerMediaCategoryPerDay> getAll() {
         return jpa.findAll();
-    }
-
-    // TODO: Remove this?
-    @Override
-    public void saveTest(TotalPrintSquareMeterPerMediaCategoryPerDay testType) {
-        jpa.save(testType);
     }
 }

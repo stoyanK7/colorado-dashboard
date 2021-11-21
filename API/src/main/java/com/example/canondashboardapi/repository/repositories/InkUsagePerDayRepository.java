@@ -2,7 +2,7 @@ package com.example.canondashboardapi.repository.repositories;
 
 import com.example.canondashboardapi.model.InkUsagePerDay;
 import com.example.canondashboardapi.repository.interfaces.GenericRepository;
-import com.example.canondashboardapi.repository.interfaces.JpaRepository;
+import com.example.canondashboardapi.repository.interfaces.JpaInkUsagePerDayRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 @AllArgsConstructor
 public class InkUsagePerDayRepository implements GenericRepository<InkUsagePerDay> {
-    private JpaRepository<InkUsagePerDay> jpa;
+    private JpaInkUsagePerDayRepository jpa;
 
     /**
      * Retrieves all InkUsagePerDay models from the database.
