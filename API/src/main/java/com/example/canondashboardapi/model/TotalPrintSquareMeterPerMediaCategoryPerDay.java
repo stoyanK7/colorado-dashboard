@@ -2,7 +2,7 @@ package com.example.canondashboardapi.model;
 
 import com.example.canondashboardapi.enumeration.MediaCategory;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
@@ -16,11 +16,10 @@ import java.util.Date;
  * category that was printed on a single day.
  */
 @Entity
-@Data
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class TotalPrintSquareMeterPerMediaCategoryPerDay {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
