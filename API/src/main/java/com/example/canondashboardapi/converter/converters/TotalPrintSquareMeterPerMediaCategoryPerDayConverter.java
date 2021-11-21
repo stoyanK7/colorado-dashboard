@@ -18,14 +18,13 @@ import java.util.Map;
  * date                 | date in String (dd-mm-yyyy)
  * mediaCategoryName1   | amount of printed square meters in String
  * mediaCategoryName2   | amount of printed square meters in String
- * idem for every MediaCategory
+ * item for every MediaCategory
  * <p>
  * Every map in the returned list represents another day
  */
 @Component
 public class TotalPrintSquareMeterPerMediaCategoryPerDayConverter implements
         GenericGraphConverter<List<TotalPrintSquareMeterPerMediaCategoryPerDay>, List<Map<String, String>>> {
-
     /**
      * Converts a list of TotalPrintSquareMeterPerMediaCategoryPerDay objects
      * to a list of maps in the above specified format.
@@ -64,5 +63,4 @@ public class TotalPrintSquareMeterPerMediaCategoryPerDayConverter implements
         }
         return result;
     }
-
 }
