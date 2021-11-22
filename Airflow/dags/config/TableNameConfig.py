@@ -1,1 +1,0 @@
-READIMAGE = "readimage"

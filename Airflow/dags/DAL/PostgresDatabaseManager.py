@@ -21,3 +21,4 @@ class PostgresDatabaseManager:
 
     def readTable(self, tableName: str):
         return pd.read_sql_table(tableName, con=self.hook.get_sqlalchemy_engine())
+
