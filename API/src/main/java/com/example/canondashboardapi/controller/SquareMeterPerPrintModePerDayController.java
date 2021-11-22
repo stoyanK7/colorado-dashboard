@@ -1,5 +1,8 @@
 package com.example.canondashboardapi.controller;
 
+import com.example.canondashboardapi.converter.interfaces.GenericGraphConverter;
+import com.example.canondashboardapi.model.SquareMeterPerPrintModePerDay;
+import com.example.canondashboardapi.service.interfaces.GenericService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * REST api controller for SquareMeterPerPrintMode. Outgoing graph
+ * REST api controller for SquareMeterPerPrintModePerDay. Outgoing graph
  * information is output as a List of Maps, where very Map represents a bar
  * in the graph.
  */
@@ -22,11 +25,11 @@ import java.util.Map;
 // TODO: Need to change later
 @CrossOrigin("http://localhost:4000")
 @AllArgsConstructor
-public class SquareMeterPerPrintModeController {
-    GenericGraphConverter<List<SquareMeterPerPrintMode>, List<Map<String, String>>>
+public class SquareMeterPerPrintModePerDayController {
+    GenericGraphConverter<List<SquareMeterPerPrintModePerDay>, List<Map<String, String>>>
             graphConverter;
 
-    GenericService<SquareMeterPerPrintMode> service;
+    GenericService<SquareMeterPerPrintModePerDay> service;
 
     /**
      * GET request that returns all the data stored in the repository
