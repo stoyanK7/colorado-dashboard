@@ -33,14 +33,14 @@ public class InkUsagePerDayConverter implements
      * @return List of Maps representing days.
      */
     @Override
-    public List<Map<String, String>> modelToDTO(
-            List<InkUsagePerDay> objects) {
+    public List<Map<String, String>> modelToDTO(List<InkUsagePerDay> objects) {
         List<Map<String, String>> result = new ArrayList<>();
         Map<String, Map<InkType, Double>> intermediate = new HashMap<>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         for (InkUsagePerDay inkUsagePerDay : objects) {
             String date = dateFormat.format(inkUsagePerDay.getDate());
-            if (!intermediate.containsKey(date)) intermediate.put(date, new HashMap<>());
+            if (!intermediate.containsKey(date))
+                intermediate.put(date, new HashMap<>());
             intermediate.get(date)
                     .put(inkUsagePerDay.getInkType(),
                             inkUsagePerDay.getTotalInkUsed());

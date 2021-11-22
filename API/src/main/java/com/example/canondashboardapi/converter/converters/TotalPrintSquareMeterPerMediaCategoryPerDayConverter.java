@@ -34,8 +34,7 @@ public class TotalPrintSquareMeterPerMediaCategoryPerDayConverter implements
      * @return List of Maps representing days
      */
     @Override
-    public List<Map<String, String>> modelToDTO(
-            List<TotalPrintSquareMeterPerMediaCategoryPerDay> objects) {
+    public List<Map<String, String>> modelToDTO(List<TotalPrintSquareMeterPerMediaCategoryPerDay> objects) {
         List<Map<String, String>> result = new ArrayList<>();
         Map<String, Map<MediaCategory, Double>> intermediate = new HashMap<>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
