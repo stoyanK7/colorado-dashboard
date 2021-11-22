@@ -11,10 +11,10 @@ import java.util.List;
  * to JPA database
  */
 @Repository("WorkRepo")
-public class JpaTotalPrintSquareMeterPerMediaCategoryPerDayRepository implements
-        GenericRepository<TotalPrintSquareMeterPerMediaCategoryPerDay> {
+public class MediaCategoryUsagePerDayRepository implements
+        GenericRepository<MediaCategoryUsagePerDay> {
     @Autowired
-    private JpaTotalPrintSquareMeterPerMediaCategoryPerDay jpa;
+    private JpaMediaCategoryUsagePerDayRepository jpa;
 
     /**
      * Gets all TotalPrintSquareMeterPerMediaCategoryPerDay models from the
@@ -22,7 +22,7 @@ public class JpaTotalPrintSquareMeterPerMediaCategoryPerDayRepository implements
      * @return
      */
     @Override
-    public List<TotalPrintSquareMeterPerMediaCategoryPerDay> getAll() {
+    public List<MediaCategoryUsagePerDay> getAll() {
         return jpa.findAll();
     }
 }

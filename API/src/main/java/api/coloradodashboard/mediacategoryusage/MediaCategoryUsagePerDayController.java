@@ -25,12 +25,12 @@ import java.util.Map;
 // TODO: Need to change later
 @CrossOrigin("http://localhost:4000")
 @AllArgsConstructor
-public class TotalPrintSquareMeterPerMediaCategoryPerDayController {
+public class MediaCategoryUsagePerDayController {
 
-    GenericGraphConverter<List<TotalPrintSquareMeterPerMediaCategoryPerDay>, List<Map<String, String>>>
+    GenericGraphConverter<List<MediaCategoryUsagePerDay>, List<Map<String, String>>>
             graphConverter;
 
-    GenericService<TotalPrintSquareMeterPerMediaCategoryPerDay> service;
+    GenericService<MediaCategoryUsagePerDay> service;
 
     /**
      * GET request that returns all the data stored in the repository.
@@ -46,7 +46,7 @@ public class TotalPrintSquareMeterPerMediaCategoryPerDayController {
     }
 
     @GetMapping("/getTest")
-    public List<TotalPrintSquareMeterPerMediaCategoryPerDay> getTest() {
+    public List<MediaCategoryUsagePerDay> getTest() {
         return service.getAll();
     }
 }

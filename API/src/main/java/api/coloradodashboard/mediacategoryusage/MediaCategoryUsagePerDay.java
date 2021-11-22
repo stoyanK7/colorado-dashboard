@@ -18,7 +18,7 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TotalPrintSquareMeterPerMediaCategoryPerDay {
+public class MediaCategoryUsagePerDay {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;

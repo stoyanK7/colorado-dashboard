@@ -1,6 +1,6 @@
 package api.coloradodashboard.filter;
 
-import api.coloradodashboard.mediacategoryusage.TotalPrintSquareMeterPerMediaCategoryPerDay;
+import api.coloradodashboard.mediacategoryusage.MediaCategoryUsagePerDay;
 
 import java.util.Date;
 import java.util.List;
@@ -13,5 +13,5 @@ public interface IFilterRepository {
      * @param endingDate
      * @return
      */
-    List<TotalPrintSquareMeterPerMediaCategoryPerDay> getDataByDates(Date startingDate, Date endingDate);
+    List<MediaCategoryUsagePerDay> getDataByDates(Date startingDate, Date endingDate);
 }

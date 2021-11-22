@@ -13,10 +13,10 @@ import java.util.List;
  */
 @Service
 @AllArgsConstructor
-public class TotalPrintSquareMeterPerMediaCategoryPerDayService implements
-        GenericService<TotalPrintSquareMeterPerMediaCategoryPerDay> {
+public class MediaCategoryUsagePerDayService implements
+        GenericService<MediaCategoryUsagePerDay> {
 
-    private GenericRepository<TotalPrintSquareMeterPerMediaCategoryPerDay> repository;
+    private GenericRepository<MediaCategoryUsagePerDay> repository;
 
     /**
      * Gets all TotalPrintSquareMeterPerMediaCategoryPerDay model objects
@@ -24,7 +24,7 @@ public class TotalPrintSquareMeterPerMediaCategoryPerDayService implements
      *
      * @return
      */
-    public List<TotalPrintSquareMeterPerMediaCategoryPerDay> getAll() {
+    public List<MediaCategoryUsagePerDay> getAll() {
         return repository.getAll();
     }
 }

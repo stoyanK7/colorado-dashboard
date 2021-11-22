@@ -21,7 +21,7 @@ import java.util.Map;
  * Every map in the returned list represents a day.
  */
 @Component
-public class SquareMeterPerPrintModeConverter implements
+public class SquareMeterPerPrintModePerDayConverter implements
         GenericGraphConverter<List<SquareMeterPerPrintModePerDay>, List<Map<String, String>>> {
     /**
      * Converts a list of SquareMeterPerPrintModePerDay objects to a list of maps in the above specified format.

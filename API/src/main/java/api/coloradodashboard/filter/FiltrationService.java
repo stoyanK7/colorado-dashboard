@@ -1,6 +1,6 @@
 package api.coloradodashboard.filter;
 
-import api.coloradodashboard.mediacategoryusage.TotalPrintSquareMeterPerMediaCategoryPerDay;
+import api.coloradodashboard.mediacategoryusage.MediaCategoryUsagePerDay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class FiltrationService implements api.coloradodashboard.interfaces.Filtr
      * @return
      */
     @Override
-    public List<TotalPrintSquareMeterPerMediaCategoryPerDay> getDataByDates(Date startingDate, Date endingDate) {
+    public List<MediaCategoryUsagePerDay> getDataByDates(Date startingDate, Date endingDate) {
         return repo.getDataByDates(startingDate, endingDate);
     }
 }

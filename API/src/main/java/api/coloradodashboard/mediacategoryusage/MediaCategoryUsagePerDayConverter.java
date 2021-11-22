@@ -21,8 +21,8 @@ import java.util.Map;
  * Every map in the returned list represents another day
  */
 @Component
-public class TotalPrintSquareMeterPerMediaCategoryPerDayConverter implements
-        GenericGraphConverter<List<TotalPrintSquareMeterPerMediaCategoryPerDay>, List<Map<String, String>>> {
+public class MediaCategoryUsagePerDayConverter implements
+        GenericGraphConverter<List<MediaCategoryUsagePerDay>, List<Map<String, String>>> {
     /**
      * Converts a list of TotalPrintSquareMeterPerMediaCategoryPerDay objects
      * to a list of maps in the above specified format.
@@ -32,19 +32,19 @@ public class TotalPrintSquareMeterPerMediaCategoryPerDayConverter implements
      * @return List of Maps representing days
      */
     @Override
-    public List<Map<String, String>> modelToDTO(List<TotalPrintSquareMeterPerMediaCategoryPerDay> objects) {
+    public List<Map<String, String>> modelToDTO(List<MediaCategoryUsagePerDay> objects) {
         List<Map<String, String>> result = new ArrayList<>();
         Map<String, Map<MediaCategory, Double>> intermediate = new HashMap<>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        for (TotalPrintSquareMeterPerMediaCategoryPerDay totalPrintSquareMeterPerMediaCategoryPerDay : objects) {
+        for (MediaCategoryUsagePerDay mediaCategoryUsagePerDay : objects) {
             String date = dateFormat.format(
-                    totalPrintSquareMeterPerMediaCategoryPerDay.getDateTime());
+                    mediaCategoryUsagePerDay.getDateTime());
             if (!intermediate.containsKey(date)) {
                 intermediate.put(date, new HashMap<>());
             }
             intermediate.get(date)
-                    .put(totalPrintSquareMeterPerMediaCategoryPerDay.getMediaCategory(),
-                            totalPrintSquareMeterPerMediaCategoryPerDay.getTotalPrintedSquareMeter());
+                    .put(mediaCategoryUsagePerDay.getMediaCategory(),
+                            mediaCategoryUsagePerDay.getTotalPrintedSquareMeter());
         }
 
         // Change intermediate to final list of hashmaps
