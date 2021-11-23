@@ -10,44 +10,43 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Converts a list of TotalPrintSquareMeterPerMediaCategoryPerDay to
- * a list of maps with the following format:
- * KEY                      | VALUE
+ * Converts a list of InkUsage to a list of maps with the following format:
+ * KEY              | VALUE
  * ----------------------------------------------------
- * date                     | date in String (dd-mm-yyyy)
- * accountedInkCyanMl       | amount of used ink in Double
- * accountedInkMagentaMl    |
- * accountedInkYellowMl     |
- * accountedInkBlackMl      |
+ * date             | date in String (dd-mm-yyyy)
+ * cyan             | amount of used ink in Double
+ * magenta          |
+ * yellow           |
+ * black            |
  * <p>
  * Every map in the returned list represents a day.
  */
 @Component
-public class InkUsagePerDayConverter implements
-        GenericGraphConverter<List<InkUsagePerDay>, List<Map<String, String>>> {
+public class InkUsageConverter implements
+        GenericGraphConverter<List<InkUsage>, List<Map<String, String>>> {
     /**
-     * Converts a list of InkUsagePerDay objects to a list of maps in the
+     * Converts a list of InkUsage objects to a list of maps in the
      * above specified format.
      *
-     * @param objects List of InkUsagePerDay objects spanning any amount
+     * @param objects List of InkUsage objects spanning any amount
      *                of days and categories.
      * @return List of Maps representing days.
      */
     @Override
-    public List<Map<String, String>> modelToDTO(List<InkUsagePerDay> objects) {
+    public List<Map<String, String>> modelToDTO(List<InkUsage> objects) {
         List<Map<String, String>> result = new ArrayList<>();
         Map<String, Map<InkType, Double>> intermediate = new HashMap<>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-        for (InkUsagePerDay inkUsagePerDay : objects) {
-            String date = dateFormat.format(inkUsagePerDay.getDate());
+        for (InkUsage inkUsage : objects) {
+            String date = dateFormat.format(inkUsage.getDate());
 
             if (!intermediate.containsKey(date))
                 intermediate.put(date, new HashMap<>());
 
             intermediate.get(date)
-                    .put(inkUsagePerDay.getInkType(),
-                            inkUsagePerDay.getTotalInkUsed());
+                    .put(inkUsage.getInkType(),
+                            inkUsage.getInkUsed());
         }
 
         // Change intermediate to final list of hashmaps

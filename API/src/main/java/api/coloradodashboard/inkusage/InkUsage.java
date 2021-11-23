@@ -14,11 +14,10 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class InkUsagePerDay {
+public class InkUsage {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private long machineId;
     private Date date;
-    private double totalInkUsed;
+    private double inkUsed;
     private InkType inkType;
 }

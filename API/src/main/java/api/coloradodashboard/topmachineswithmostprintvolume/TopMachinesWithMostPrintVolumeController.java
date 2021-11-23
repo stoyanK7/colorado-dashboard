@@ -1,8 +1,8 @@
-package api.coloradodashboard.mediacategoryusage;
-
+package api.coloradodashboard.topmachineswithmostprintvolume;
 
 import api.coloradodashboard.interfaces.GenericGraphConverter;
 import api.coloradodashboard.interfaces.GenericService;
+import api.coloradodashboard.squaremeterperprintmode.SquareMeterPerPrintMode;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,37 +15,31 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * REST api controller for TotalPrintSquareMeterPerMediaCategoryPerDay. Outgoing graph
- * information is output as a List of Maps, where very Map represents a bar
- * in the graph.
+ * REST api controller for Ink Usage. Outgoing graph information is output
+ * as a List of Maps, where very Map represents a bar in the graph.
  */
 @RestController
 // TODO: Need to change later
-@RequestMapping("MediaCategoryUsage")
+@RequestMapping("TopMachinesWithMostPrintVolume")
 // TODO: Need to change later
 @CrossOrigin("http://localhost:4000")
 @AllArgsConstructor
-public class MediaCategoryUsagePerDayController {
-    GenericGraphConverter<List<MediaCategoryUsagePerDay>, List<Map<String, String>>>
+public class TopMachinesWithMostPrintVolumeController {
+    GenericGraphConverter<List<SquareMeterPerPrintMode>, List<Map<String, String>>>
             graphConverter;
 
-    GenericService<MediaCategoryUsagePerDay> service;
+    GenericService<SquareMeterPerPrintMode> service;
 
     /**
-     * GET request that returns all the data stored in the repository.
+     * GET request that returns all the data stored in the repository
      *
-     * @return A List of Maps, representing all the days stored in the repository.
+     * @return A List of Maps, representing all the days stored in the repository
      */
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<Map<String, String>>> getAll() {
-        List<Map<String, String>> graphDayBars = graphConverter.modelToDTO(service.getAll());
+        List<Map<String, String>> graphDayBars =
+                graphConverter.modelToDTO(service.getAll());
         if (graphDayBars != null) return ResponseEntity.ok().body(graphDayBars);
-
         return new ResponseEntity("No data found.", HttpStatus.NOT_FOUND);
-    }
-
-    @GetMapping("/getTest")
-    public List<MediaCategoryUsagePerDay> getTest() {
-        return service.getAll();
     }
 }

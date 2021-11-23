@@ -8,19 +8,19 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Service for InkUsagePerDay model.
+ * Service for InkUsage model.
  */
 @Service
 @AllArgsConstructor
-public class InkUsagePerDayService implements GenericService<InkUsagePerDay> {
-    private GenericRepository<InkUsagePerDay> repository;
+public class InkUsageService implements GenericService<InkUsage> {
+    private GenericRepository<InkUsage> repository;
 
     /**
-     * Retrieves all InkUsagePerDay model objects.
+     * Retrieves all InkUsage model objects.
      *
      * @return
      */
-    public List<InkUsagePerDay> getAll() {
+    public List<InkUsage> getAll() {
         return repository.getAll();
     }
 }

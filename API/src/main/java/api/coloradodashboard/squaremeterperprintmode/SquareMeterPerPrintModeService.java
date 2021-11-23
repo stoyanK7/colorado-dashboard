@@ -12,15 +12,16 @@ import java.util.List;
  */
 @Service
 @AllArgsConstructor
-public class SquareMeterPerPrintModePerDayService implements GenericService<SquareMeterPerPrintModePerDay> {
-    private GenericRepository<SquareMeterPerPrintModePerDay> repository;
+public class SquareMeterPerPrintModeService
+        implements GenericService<SquareMeterPerPrintMode> {
+    private GenericRepository<SquareMeterPerPrintMode> repository;
 
     /**
      * Retrieves all SquareMeterPerPrintModePerDay model objects.
      *
      * @return
      */
-    public List<SquareMeterPerPrintModePerDay> getAll() {
+    public List<SquareMeterPerPrintMode> getAll() {
         return repository.getAll();
     }
 }

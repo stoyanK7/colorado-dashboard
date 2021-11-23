@@ -1,12 +1,5 @@
 package api.coloradodashboard.filter;
 
-import api.coloradodashboard.interfaces.IFiltrationService;
-import api.coloradodashboard.mediacategoryusage.MediaCategoryUsagePerDay;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
 //@RestController
 //@RequestMapping("filtration")
 //@CrossOrigin("http://localhost:4000")
