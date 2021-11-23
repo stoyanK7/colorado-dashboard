@@ -31,7 +31,7 @@ class CleanTasks():
         df = self.CheckType(df)
 
         # Create table and store
-        obj.createTable(CleanTableNameConfig.READIMAGE)
+        obj.insertIntoTable(CleanTableNameConfig.READIMAGE)
         pass
 
 
