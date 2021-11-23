@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Converts a list of TotalPrintSquareMeterPerMediaCategoryPerDay to a list of maps with the following format:
+ * Converts a list of TotalPrintSquareMeterPerMediaCategoryPerDay to
+ * a list of maps with the following format:
  * KEY                      | VALUE
  * ----------------------------------------------------
  * date                     | date in String (dd-mm-yyyy)
@@ -25,9 +26,11 @@ import java.util.Map;
 public class InkUsagePerDayConverter implements
         GenericGraphConverter<List<InkUsagePerDay>, List<Map<String, String>>> {
     /**
-     * Converts a list of InkUsagePerDay objects to a list of maps in the above specified format.
+     * Converts a list of InkUsagePerDay objects to a list of maps in the
+     * above specified format.
      *
-     * @param objects List of InkUsagePerDay objects spanning any amount of days and categories.
+     * @param objects List of InkUsagePerDay objects spanning any amount
+     *                of days and categories.
      * @return List of Maps representing days.
      */
     @Override
@@ -35,10 +38,13 @@ public class InkUsagePerDayConverter implements
         List<Map<String, String>> result = new ArrayList<>();
         Map<String, Map<InkType, Double>> intermediate = new HashMap<>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
         for (InkUsagePerDay inkUsagePerDay : objects) {
             String date = dateFormat.format(inkUsagePerDay.getDate());
+
             if (!intermediate.containsKey(date))
                 intermediate.put(date, new HashMap<>());
+
             intermediate.get(date)
                     .put(inkUsagePerDay.getInkType(),
                             inkUsagePerDay.getTotalInkUsed());
@@ -48,8 +54,8 @@ public class InkUsagePerDayConverter implements
         for (String date : intermediate.keySet()) {
             Map<String, String> newMap = new HashMap<>();
             newMap.put("date", date);
-            for (InkType inkType : intermediate.get(date)
-                    .keySet()) {
+
+            for (InkType inkType : intermediate.get(date).keySet()) {
                 newMap.put(inkType.toString(),
                         intermediate.get(date).get(inkType).toString());
             }

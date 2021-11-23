@@ -36,12 +36,13 @@ public class MediaCategoryUsagePerDayConverter implements
         List<Map<String, String>> result = new ArrayList<>();
         Map<String, Map<MediaCategory, Double>> intermediate = new HashMap<>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
         for (MediaCategoryUsagePerDay mediaCategoryUsagePerDay : objects) {
-            String date = dateFormat.format(
-                    mediaCategoryUsagePerDay.getDate());
-            if (!intermediate.containsKey(date)) {
+            String date = dateFormat.format(mediaCategoryUsagePerDay.getDate());
+
+            if (!intermediate.containsKey(date))
                 intermediate.put(date, new HashMap<>());
-            }
+
             intermediate.get(date)
                     .put(mediaCategoryUsagePerDay.getMediaCategory(),
                             mediaCategoryUsagePerDay.getTotalPrintedSquareMeter());
@@ -51,8 +52,8 @@ public class MediaCategoryUsagePerDayConverter implements
         for (String date : intermediate.keySet()) {
             Map<String, String> newMap = new HashMap<>();
             newMap.put("date", date);
-            for (MediaCategory mediaCategory : intermediate.get(date)
-                    .keySet()) {
+
+            for (MediaCategory mediaCategory : intermediate.get(date).keySet()) {
                 newMap.put(mediaCategory.toString(),
                         intermediate.get(date).get(mediaCategory).toString());
             }

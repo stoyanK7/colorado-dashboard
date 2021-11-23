@@ -31,9 +31,9 @@ public class SquareMeterPerPrintModePerDayController {
     GenericService<SquareMeterPerPrintModePerDay> service;
 
     /**
-     * GET request that returns all the data stored in the repository
+     * GET request that returns all the data stored in the repository.
      *
-     * @return A List of Maps, representing all the days stored in the repository
+     * @return A List of Maps, representing all the days stored in the repository.
      */
     @GetMapping
     public ResponseEntity<List<Map<String, String>>> getAll() {

@@ -1,6 +1,5 @@
 package api.coloradodashboard.squaremeterperprintmode;
 
-import api.coloradodashboard.mediacategoryusage.MediaCategory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,5 +20,5 @@ public class SquareMeterPerPrintModePerDay {
     private long id;
     private Date date;
     private double squareDecimeterArea;
-    private MediaCategory mediaCategory;
+    private PrintMode printMode;
 }

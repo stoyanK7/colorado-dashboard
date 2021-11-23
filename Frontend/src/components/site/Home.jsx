@@ -17,7 +17,7 @@ const Home = () => {
         <Link to='/' className='chart side-chart-middle'>
           <div className='chart-header'>Used media types per machine</div>
         </Link>
-        <Link to='/' className='chart second-line-left-chart'>
+        <Link to='/SquareMeterPerPrintMode' className='chart second-line-left-chart'>
           <div className='chart-header'>Square meters per print mode</div>
         </Link>
         <Link to='/MediaCategoryUsage' className='chart second-line-right-chart'>
