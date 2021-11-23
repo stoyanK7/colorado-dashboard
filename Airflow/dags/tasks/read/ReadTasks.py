@@ -17,25 +17,25 @@ class ReadTasks():
     @staticmethod
     def ReadImage(ti):
 
-        lastSeenFile, lastSeenRow = ReadTasks.__getLastFileAndRow(LastSeenTableConfig.LAST_SEEN_IMAGE_TABLE,
+        lastSeenFile, lastSeenRow = ReadTasks._getLastFileAndRow(LastSeenTableConfig.LAST_SEEN_IMAGE_TABLE,
                                       LastSeenColumnNameConfig.LAST_SEEN_IMAGE_FILE_PATH,
                                       LastSeenColumnNameConfig.LAST_SEEN_IMAGE_ROW_ID)
 
-        filesToRead = ReadTasks.__getFileNames("image_file_directory", lastSeenFile)
+        filesToRead = ReadTasks._getFileNames("image_file_directory", lastSeenFile)
 
         if len(filesToRead) <= 0:
             logging.info("No files were found, terminating reading step successfully.")
             return
 
-        data = ReadTasks.__getFilesToDataFrames("image_file_directory", filesToRead, lastSeenFile, lastSeenRow)
+        data = ReadTasks._getFilesToDataFrames("image_file_directory", filesToRead, lastSeenFile, lastSeenRow)
 
         if data.empty:
             logging.info("No new data was found, terminating reading step successfully.")
             return
 
-        ReadTasks.__insertIntoDb(data, ReadTableNameConfig.READIMAGE)
+        ReadTasks._insertIntoDb(data, ReadTableNameConfig.READIMAGE)
 
-        ReadTasks.__makeXcom(ti, filesToRead[len(filesToRead) - 1], data["ullid"].iloc[-1])
+        ReadTasks._makeXcom(ti, filesToRead[len(filesToRead) - 1], data["ullid"].iloc[-1])
 
         # lastReadData = {LastSeenColumnNameConfig.LAST_SEEN_IMAGE_FILE_PATH:[filesToRead[len(filesToRead) - 1]], LastSeenColumnNameConfig.LAST_SEEN_IMAGE_ROW_ID:[data["ullid"].iloc[-1]]}
         # lastSeenDf = pd.DataFrame(data=lastReadData)
@@ -49,7 +49,7 @@ class ReadTasks():
         pass
 
     @staticmethod
-    def __getLastFileAndRow(tableName, filePathColName, rowColName):
+    def _getLastFileAndRow(tableName, filePathColName, rowColName):
         # Read last seen table & row
         logging.info("Getting last seen file and row.")
         pdm = PostgresDatabaseManager()
@@ -69,7 +69,7 @@ class ReadTasks():
         return lastSeenFile, lastSeenRow
 
     @staticmethod
-    def __getFileNames(directoryVariableKey, lastSeenFile):
+    def _getFileNames(directoryVariableKey, lastSeenFile):
         # Get filenames
         logging.info("Getting filenames from directory.")
         fileReader = FileReader()
@@ -81,7 +81,7 @@ class ReadTasks():
         return filesToRead
 
     @staticmethod
-    def __getFilesToDataFrames(directoryVariableKey, filesToRead, lastSeenFile, lastSeenRow) -> pd.DataFrame:
+    def _getFilesToDataFrames(directoryVariableKey, filesToRead, lastSeenFile, lastSeenRow) -> pd.DataFrame:
         # get files
         logging.info("Getting data from files.")
         dataFrames = []
@@ -102,14 +102,14 @@ class ReadTasks():
         return resultDataFrames
 
     @staticmethod
-    def __insertIntoDb(data, tableName):
+    def _insertIntoDb(data, tableName):
         # put in db
         logging.info("Inserting read data to database.")
         pdm = PostgresDatabaseManager()
         pdm.insertIntoTable(data, tableName)
 
     @staticmethod
-    def __makeXcom(ti, lastSeenFile, lastSeenRow):
+    def _makeXcom(ti, lastSeenFile, lastSeenRow):
         # send xcom about last read file and row
         logging.info("Sending xcom about last read information.")
         ti.xcom_push("lastSeenFile", str(lastSeenFile))
