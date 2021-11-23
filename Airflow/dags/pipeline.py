@@ -1,11 +1,9 @@
 from datetime import timedelta, datetime
 
 from airflow import DAG
-from airflow.operators.bash import BashOperator
 from airflow.operators.python_operator import PythonOperator
-from airflow.operators.postgres_operator import PostgresOperator
 
-from tasks.read import ReadTasks
+from tasks.read.ReadTasks import ReadTasks
 
 default_args = {
     'owner': 'airflow',
@@ -18,17 +16,17 @@ default_args = {
 }
 
 with DAG(
-    'testDag',
+    'pipeline',
     default_args=default_args,
-    description='A test dag',
+    description='pipeline',
     schedule_interval=timedelta(days=1),
     start_date=datetime(2021, 1, 1),
     catchup=False,
-    tags=['test'],
+    tags=['pipeline'],
 ) as dag:
     readImage = PythonOperator(
         task_id='readImage',
-        python_callable=ReadTasks.ReadTasks.ReadImage
+        python_callable=ReadTasks.ReadImage
     )
     # readMediaPrepare = PythonOperator(
     #     task_id='readMediaPrepare',
@@ -40,4 +38,4 @@ with DAG(
     # )
 
 
-    readImage >> cleanImage
+    # readImage
