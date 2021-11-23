@@ -51,10 +51,5 @@ with DAG(
         python_callable=dataAggregator.dataAggregator
     )
 
-    t5 = PythonOperator(
-        task_id="testExecute",
-        python_callable=PostgresDatabaseManager.execute
-    )
-
     t3 >> t4
 
