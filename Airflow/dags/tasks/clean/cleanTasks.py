@@ -1,3 +1,5 @@
+import numpy as np
+
 from DAL import PostgresDatabaseManager
 from config import ReadTableNameConfig, CleaningColumnNameConfig, CleanTableNameConfig
 import pandas as pd
@@ -19,6 +21,11 @@ class CleanTasks():
         # check integer or string.
         df = self.CheckTypeImage(df)
 
+        # check if some row values are empty
+        df = self.RemoveRowNull(df)
+
+
+
         # Check absurd value?
 
         # Check negative value.
@@ -37,56 +44,51 @@ class CleanTasks():
                  CleaningColumnNameConfig.IMAGELENGTH,
                  CleaningColumnNameConfig.IMAGEWIDTH,
                  CleaningColumnNameConfig.MEDIATYPE]]
-        df = df.set_index(CleaningColumnNameConfig.ULLID)
         return df
 
-    def RemoveDuplicatesImage(self, df):
-        df = df[~df.index.duplicated(keep='first')]
-        return df
-
-
-    def CheckNegativeImage(self, df):
-        df = df[df.ullid > 0]
-        df = df[CleaningColumnNameConfig.ACCOUNTEDINKBLACK > 0]
-        df = df[CleaningColumnNameConfig.ACCOUNTEDINKCYAN > 0]
-        df = df[CleaningColumnNameConfig.ACCOUNTEDINKMAGENTA > 0]
-        df = df[CleaningColumnNameConfig.ACCOUNTEDINKYELLOW > 0]
-        df = df[CleaningColumnNameConfig.IMAGEWIDTH > 0]
-        df = df[CleaningColumnNameConfig.IMAGELENGTH > 0]
+    def RemoveDuplicates(self, df):
+        df = df.drop_duplicates(subset=[CleaningColumnNameConfig.ULLID])
         return df
 
     def CheckTypeImage(self, df):
-
-        # remove all rows with value null
-        df = df.dropna()
-
         # remove row with invalid ullid type
-        df = df[CleaningColumnNameConfig.ULLID].map(type) != str
+        df[CleaningColumnNameConfig.ULLID] = df[CleaningColumnNameConfig.ULLID].apply(pd.to_numeric)
+        df[CleaningColumnNameConfig.ACCOUNTEDINKBLACK] = df[CleaningColumnNameConfig.ACCOUNTEDINKBLACK].apply(pd.to_numeric)
+        df[CleaningColumnNameConfig.ACCOUNTEDINKCYAN] = df[CleaningColumnNameConfig.ACCOUNTEDINKCYAN].apply(pd.to_numeric)
+        df[CleaningColumnNameConfig.ACCOUNTEDINKYELLOW] = df[CleaningColumnNameConfig.ACCOUNTEDINKYELLOW].apply(pd.to_numeric)
+        df[CleaningColumnNameConfig.ACCOUNTEDINKMAGENTA] = df[CleaningColumnNameConfig.ACCOUNTEDINKMAGENTA].apply(pd.to_numeric)
+        df[CleaningColumnNameConfig.IMAGELENGTH] = df[CleaningColumnNameConfig.IMAGELENGTH].apply(pd.to_numeric)
+        df[CleaningColumnNameConfig.IMAGEWIDTH] = df[CleaningColumnNameConfig.IMAGEWIDTH].apply(pd.to_numeric)
+        df[CleaningColumnNameConfig.DATE] = pd.to_datetime(df[CleaningColumnNameConfig.DATE], errors='coerce').dt.strftime('%d/%m/%Y')
+        df[CleaningColumnNameConfig.MEDIATYPE] = df[CleaningColumnNameConfig.MEDIATYPE].mask(pd.to_numeric(df[CleaningColumnNameConfig.MEDIATYPE], errors='coerce').notna())
+        return df
 
-        # remove row with invalid Accountedink*
-        df = df[CleaningColumnNameConfig.ACCOUNTEDINKCYAN].map(type) != str
-        df = df[CleaningColumnNameConfig.ACCOUNTEDINKBLACK].map(type) != str
-        df = df[CleaningColumnNameConfig.ACCOUNTEDINKYELLOW].map(type) != str
-        df = df[CleaningColumnNameConfig.ACCOUNTEDINKMAGENTA].map(type) != str
+    def RemoveRowNull(self, df):
+        nan_value = float("NaN")
+        df.replace('', nan_value, inplace=True)
+        # df = df.convert_dtypes()
+        df.dropna(inplace=True)
+        return df
 
-        # remove row with invalid date
-        df = pd.to_datetime(df[CleaningColumnNameConfig.DATE], format='%d-%b-%Y', errors='coerce').notna()
+    def CheckNegativeImage(self, df):
+        df = df[(df[CleaningColumnNameConfig.ULLID] > 0)]
+        df = df[(df[CleaningColumnNameConfig.ACCOUNTEDINKBLACK] > 0)]
+        df = df[(df[CleaningColumnNameConfig.ACCOUNTEDINKCYAN] > 0)]
+        df = df[(df[CleaningColumnNameConfig.ACCOUNTEDINKMAGENTA] > 0)]
+        df = df[(df[CleaningColumnNameConfig.ACCOUNTEDINKYELLOW] > 0)]
+        df = df[(df[CleaningColumnNameConfig.IMAGEWIDTH] > 0)]
+        df = df[(df[CleaningColumnNameConfig.IMAGELENGTH] > 0)]
+        return df
 
-        # remove row with invalid image length and width.
-        df = df[CleaningColumnNameConfig.IMAGELENGTH].map(type) != str
-        df = df[CleaningColumnNameConfig.IMAGEWIDTH].map(type) != str
 
-
+    def RemoveInvalidMediaType(self,df):
         # remove row with invalid mediaType
         array = ['Canvas', 'Film', 'Monomeric vinyl',
                  'Textile', 'Unknown papertype', 'Polymeric & cast vinyl',
                  'Light paper < 120gsm', 'Heavy paper > 200gsm',
                  'Heavy banner > 400gsm', 'Thick film > 200 um']
         df = df.loc[df[CleaningColumnNameConfig.MEDIATYPE].isin(array)]
-
-
         return df
-
 
 
     def CleanMediaPrepare(self):
