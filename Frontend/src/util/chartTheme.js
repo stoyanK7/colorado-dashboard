@@ -3,7 +3,7 @@ function colors(id, maxId, type) {
     switch (type) {
         case 'ink-usage':
             colorList = [
-                "#000000", // Black
+                "#333333", // Black
                 "#00FFFF", // Cyan
                 "#FF00FF", // Magenta
                 "#f7f700" // Yellow

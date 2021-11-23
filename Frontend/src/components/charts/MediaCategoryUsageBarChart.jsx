@@ -1,5 +1,5 @@
-import chartTheme from '../../util/chartTheme';
 import { ResponsiveBarCanvas } from '@nivo/bar';
+import chartTheme from '../../util/chartTheme';
 
 const MediaCategoryUsageBarChart = ({ data, index }) => {
     if (typeof data === 'undefined' || data.length === 0) return null;
@@ -11,6 +11,7 @@ const MediaCategoryUsageBarChart = ({ data, index }) => {
         <>
             <ResponsiveBarCanvas
                 animate={true}
+                borderWidth={1}
                 data={data}
                 keys={keys}
                 indexBy={index}
@@ -19,7 +20,6 @@ const MediaCategoryUsageBarChart = ({ data, index }) => {
                 valueScale={{ type: 'linear' }}
                 indexScale={{ type: 'band', round: true }}
                 colors={({ data, id, indexValue }) => chartTheme(data, id, indexValue, 'media-category-usage')}
-                borderWidth='0.5px'
                 borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
                 axisBottom={{
                     tickSize: 5,
@@ -45,7 +45,7 @@ const MediaCategoryUsageBarChart = ({ data, index }) => {
                         direction: 'column',
                         justify: false,
                         translateX: 120,
-                        translateY: 0,
+                        translateY: -10,
                         itemsSpacing: 2,
                         itemWidth: 100,
                         itemHeight: 20,
@@ -63,19 +63,22 @@ const MediaCategoryUsageBarChart = ({ data, index }) => {
                         toggleSerie: true
                     }
                 ]}
+                pixelRatio={2}
                 role='application'
                 tooltip={({ id, value, indexValue, color }) => {
-                    return <div style={{ background: '#111111', padding: '5px', color: '#ffffff' }}>
+                    return <div style={{ backgroundColor: 'rgba(68,68,68, 0.9)', padding: '5px', color: '#ffffff', fontSize: '1rem', borderRadius: '4px' }}>
                         <div style={{ display: 'flex' }}>
                             <svg width='20px' height='20px' style={{ marginRight: '5px' }}><rect width='20px' height='20px' fill={color}></rect></svg>
-                            <span >{id} - {indexValue}</span>
+                            <span style={{ fontSize: '1.1rem' }}>{id}</span>
                         </div>
-                        Printed square meters: {value}
+                        Printed square meters: <b>{value}</b>
+                        <br />
+                        Date: <b>{indexValue}</b>
                     </div>
                 }}
             />
         </>
-    )
-}
+    );
+};
 
 export default MediaCategoryUsageBarChart;
