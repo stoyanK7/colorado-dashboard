@@ -1,3 +1,4 @@
+import logging
 import os
 import pandas as pd
 import numpy as np
@@ -15,6 +16,7 @@ class FileReader():
         for fileIndex in range(len(fileNames)):
             if (fileNames[fileIndex]==startingFileName):
                 return fileNames[fileIndex:len(fileNames)]
+        return fileNames
 
-    def readPandasCsvFile(self, path):
-        return pd.read_csv(path);
+    def readPandasCsvFile(self, path, delimiter):
+        return pd.read_csv(path, delimiter=delimiter)
