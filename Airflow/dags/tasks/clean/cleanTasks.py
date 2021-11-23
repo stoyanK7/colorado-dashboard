@@ -24,12 +24,12 @@ class CleanTasks():
         # check if some row values are empty
         df = self.RemoveRowNull(df)
 
-
-
         # Check absurd value?
 
         # Check negative value.
         df = self.CheckNegativeImage(df)
+
+        #df = self.RemoveInvalidMediaType(df)
 
         # Create table and store
         obj.insertIntoTable(df, CleanTableNameConfig.READIMAGE)
@@ -66,7 +66,6 @@ class CleanTasks():
     def RemoveRowNull(self, df):
         nan_value = float("NaN")
         df.replace('', nan_value, inplace=True)
-        # df = df.convert_dtypes()
         df.dropna(inplace=True)
         return df
 
