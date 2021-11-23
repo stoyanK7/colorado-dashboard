@@ -1,4 +1,4 @@
-import numpy as np
+import logging
 
 from DAL import PostgresDatabaseManager
 from config import ReadTableNameConfig, CleaningColumnNameConfig, CleanTableNameConfig
@@ -29,12 +29,14 @@ class CleanTasks():
         # Check negative value.
         df = self.CheckNegativeImage(df)
 
+        # Check if mediatype is valid
         #df = self.RemoveInvalidMediaType(df)
 
         # Create table and store
         obj.insertIntoTable(df, CleanTableNameConfig.READIMAGE)
 
     def MakeDataFrameImage(self, df):
+        logging.info("Making the dataframe with the right columns.")
         df = df[[CleaningColumnNameConfig.ULLID,
                  CleaningColumnNameConfig.ACCOUNTEDINKBLACK,
                  CleaningColumnNameConfig.ACCOUNTEDINKCYAN,
@@ -47,11 +49,12 @@ class CleanTasks():
         return df
 
     def RemoveDuplicates(self, df):
+        logging.info("Removing all the rows with duplicate ullids.")
         df = df.drop_duplicates(subset=[CleaningColumnNameConfig.ULLID])
         return df
 
     def CheckTypeImage(self, df):
-        # remove row with invalid ullid type
+        logging.info("Making value NaN for all the columns with invalid datatype.")
         df[CleaningColumnNameConfig.ULLID] = df[CleaningColumnNameConfig.ULLID].apply(pd.to_numeric)
         df[CleaningColumnNameConfig.ACCOUNTEDINKBLACK] = df[CleaningColumnNameConfig.ACCOUNTEDINKBLACK].apply(pd.to_numeric)
         df[CleaningColumnNameConfig.ACCOUNTEDINKCYAN] = df[CleaningColumnNameConfig.ACCOUNTEDINKCYAN].apply(pd.to_numeric)
@@ -64,12 +67,14 @@ class CleanTasks():
         return df
 
     def RemoveRowNull(self, df):
+        logging.info("Removing all rows with empty or NaN value.")
         nan_value = float("NaN")
         df.replace('', nan_value, inplace=True)
         df.dropna(inplace=True)
         return df
 
     def CheckNegativeImage(self, df):
+        logging.info("Removing all rows with negative values.")
         df = df[(df[CleaningColumnNameConfig.ULLID] > 0)]
         df = df[(df[CleaningColumnNameConfig.ACCOUNTEDINKBLACK] > 0)]
         df = df[(df[CleaningColumnNameConfig.ACCOUNTEDINKCYAN] > 0)]
@@ -81,7 +86,7 @@ class CleanTasks():
 
 
     def RemoveInvalidMediaType(self,df):
-        # remove row with invalid mediaType
+        logging.info("Removing all rows with invalid mediatype.")
         array = ['Canvas', 'Film', 'Monomeric vinyl',
                  'Textile', 'Unknown papertype', 'Polymeric & cast vinyl',
                  'Light paper < 120gsm', 'Heavy paper > 200gsm',
