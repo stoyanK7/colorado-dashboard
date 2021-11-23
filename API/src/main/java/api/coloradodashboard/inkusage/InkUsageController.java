@@ -1,4 +1,4 @@
-package api.coloradodashboard.squaremeterperprintmode;
+package api.coloradodashboard.inkusage;
 
 import api.coloradodashboard.interfaces.GenericGraphConverter;
 import api.coloradodashboard.interfaces.GenericService;
@@ -14,26 +14,23 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * REST api controller for SquareMeterPerPrintModePerDay. Outgoing graph
- * information is output as a List of Maps, where very Map represents a bar
- * in the graph.
+ * REST api controller for Ink Usage. Outgoing graph information is output as
+ * a List of Maps, where very Map represents a bar in the graph.
  */
 @RestController
-// TODO: Need to change later
-@RequestMapping("SquareMeterPerPrintMode")
-// TODO: Need to change later
+@RequestMapping("InkUsage")
 @CrossOrigin("http://localhost:4000")
 @AllArgsConstructor
-public class SquareMeterPerPrintModePerDayController {
-    GenericGraphConverter<List<SquareMeterPerPrintModePerDay>, List<Map<String, String>>>
+public class InkUsageController {
+    GenericGraphConverter<List<InkUsage>, List<Map<String, String>>>
             graphConverter;
 
-    GenericService<SquareMeterPerPrintModePerDay> service;
+    GenericService<InkUsage> service;
 
     /**
-     * GET request that returns all the data stored in the repository.
+     * GET request that returns all the data stored in the repository
      *
-     * @return A List of Maps, representing all the days stored in the repository.
+     * @return A List of Maps, representing all the days stored in the repository
      */
     @GetMapping
     public ResponseEntity<List<Map<String, String>>> getAll() {

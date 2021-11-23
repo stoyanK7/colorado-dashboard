@@ -10,42 +10,42 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Converts a list of TotalPrintSquareMeterPerMediaCategoryPerDay to a list of maps with the following format:
+ * Converts a list of MediaCategoryUsage to a list of maps with the following format:
  * KEY                  | VALUE
  * ----------------------------------------------------
  * date                 | date in String (dd-mm-yyyy)
- * mediaCategoryName1   | amount of printed square meters in String
- * mediaCategoryName2   | amount of printed square meters in String
- * item for every MediaCategory
+ * mediaCategoryName1   | amount of printed square meters in Double
+ * mediaCategoryName2   | amount of printed square meters in Double
+ * ...item for every MediaCategory
  * <p>
- * Every map in the returned list represents another day
+ * Every map in the returned list represents another day.
  */
 @Component
-public class MediaCategoryUsagePerDayConverter implements
-        GenericGraphConverter<List<MediaCategoryUsagePerDay>, List<Map<String, String>>> {
+public class MediaCategoryUsageConverter implements
+        GenericGraphConverter<List<MediaCategoryUsage>, List<Map<String, String>>> {
     /**
-     * Converts a list of TotalPrintSquareMeterPerMediaCategoryPerDay objects
+     * Converts a list of MediaCategoryUsage objects
      * to a list of maps in the above specified format.
      *
-     * @param objects List of TotalPrintSquareMeterPerMediaCategoryPerDay
+     * @param objects List of MediaCategoryUsage
      *                objects spanning any amount of days and categories
      * @return List of Maps representing days
      */
     @Override
-    public List<Map<String, String>> modelToDTO(List<MediaCategoryUsagePerDay> objects) {
+    public List<Map<String, String>> modelToDTO(List<MediaCategoryUsage> objects) {
         List<Map<String, String>> result = new ArrayList<>();
         Map<String, Map<MediaCategory, Double>> intermediate = new HashMap<>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-        for (MediaCategoryUsagePerDay mediaCategoryUsagePerDay : objects) {
-            String date = dateFormat.format(mediaCategoryUsagePerDay.getDate());
+        for (MediaCategoryUsage mediaCategoryUsage : objects) {
+            String date = dateFormat.format(mediaCategoryUsage.getDate());
 
             if (!intermediate.containsKey(date))
                 intermediate.put(date, new HashMap<>());
 
             intermediate.get(date)
-                    .put(mediaCategoryUsagePerDay.getMediaCategory(),
-                            mediaCategoryUsagePerDay.getTotalPrintedSquareMeter());
+                    .put(mediaCategoryUsage.getMediaCategory(),
+                            mediaCategoryUsage.getPrintedSquareMeters());
         }
 
         // Change intermediate to final list of hashmaps

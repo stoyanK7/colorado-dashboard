@@ -18,11 +18,10 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MediaCategoryUsagePerDay {
+public class MediaCategoryUsage {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private long machineId;
     private Date date;
-    private double totalPrintedSquareMeter;
+    private double printedSquareMeters;
     private MediaCategory mediaCategory;
 }

@@ -7,20 +7,20 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * Repository for InkUsagePerDay model.
+ * Repository for InkUsage model.
  */
 @Repository
 @AllArgsConstructor
-public class InkUsagePerDayRepository implements GenericRepository<InkUsagePerDay> {
-    private JpaInkUsagePerDayRepository jpa;
+public class InkUsageRepository implements GenericRepository<InkUsage> {
+    private JpaInkUsageRepository jpa;
 
     /**
-     * Retrieves all InkUsagePerDay models from the database.
+     * Retrieves all InkUsage models from the database.
      *
      * @return
      */
     @Override
-    public List<InkUsagePerDay> getAll() {
+    public List<InkUsage> getAll() {
         return jpa.findAll();
     }
 }
