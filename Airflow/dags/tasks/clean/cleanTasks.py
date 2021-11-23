@@ -1,6 +1,5 @@
 from ...DAL import PostgresDatabaseManager
 from ...config import ReadTableNameConfig, CleaningColumnNameConfig, CleanTableNameConfig
-from airflow.models import Variable
 import pandas as pd
 
 class CleanTasks():
@@ -12,6 +11,23 @@ class CleanTasks():
         df = obj.readTable(ReadTableNameConfig.READIMAGE)
 
         # Make dataframe using pandas
+        df = self.MakeDataFrameImage(df)
+
+        # check if ullid is same then drop
+        df = self.RemoveDuplicatesImage(df)
+
+        # check integer or string.
+        df = self.CheckTypeImage(df)
+
+        # Check absurd value?
+
+        # Check negative value.
+        df = self.CheckNegativeImage(df)
+
+        # Create table and store
+        obj.createTable(df, CleanTableNameConfig.READIMAGE)
+
+    def MakeDataFrameImage(self, df):
         df = df[[CleaningColumnNameConfig.ULLID,
                  CleaningColumnNameConfig.ACCOUNTEDINKBLACK,
                  CleaningColumnNameConfig.ACCOUNTEDINKCYAN,
@@ -20,27 +36,26 @@ class CleanTasks():
                  CleaningColumnNameConfig.DATE,
                  CleaningColumnNameConfig.IMAGELENGTH,
                  CleaningColumnNameConfig.IMAGEWIDTH,
-                 CleaningColumnNameConfig.MEDIATYPE,
-                 CleaningColumnNameConfig.TIME]]
-
-        # check if ullid is same then drop
-        df = self.RemoveDuplicates(df)
-
-
-        # check integer or string. Check absurd value. Check negative value.
-        df = self.CheckType(df)
-
-        # Create table and store
-        obj.createTable(CleanTableNameConfig.READIMAGE)
-        pass
-
-
-    def RemoveDuplicates(self,df):
-        df.drop_duplicates()
-        df.drop_duplicates(subset=[CleaningColumnNameConfig.ULLID])
+                 CleaningColumnNameConfig.MEDIATYPE]]
+        df = df.set_index(CleaningColumnNameConfig.ULLID)
         return df
 
-    def CheckType(self, df):
+    def RemoveDuplicatesImage(self, df):
+        df = df[~df.index.duplicated(keep='first')]
+        return df
+
+
+    def CheckNegativeImage(self, df):
+        df = df[df.ullid > 0]
+        df = df[CleaningColumnNameConfig.ACCOUNTEDINKBLACK > 0]
+        df = df[CleaningColumnNameConfig.ACCOUNTEDINKCYAN > 0]
+        df = df[CleaningColumnNameConfig.ACCOUNTEDINKMAGENTA > 0]
+        df = df[CleaningColumnNameConfig.ACCOUNTEDINKYELLOW > 0]
+        df = df[CleaningColumnNameConfig.IMAGEWIDTH > 0]
+        df = df[CleaningColumnNameConfig.IMAGELENGTH > 0]
+        return df
+
+    def CheckTypeImage(self, df):
 
         # remove all rows with value null
         df = df.dropna()
@@ -61,25 +76,41 @@ class CleanTasks():
         df = df[CleaningColumnNameConfig.IMAGELENGTH].map(type) != str
         df = df[CleaningColumnNameConfig.IMAGEWIDTH].map(type) != str
 
-        # remove row with length and width 0
-        df = df[CleaningColumnNameConfig.IMAGELENGTH != 0.000000]
-        df = df[CleaningColumnNameConfig.IMAGEWIDTH != 0.000000]
 
         # remove row with invalid mediaType
-        array = ['canvas', 'film', 'monomeric vinyl',
-                 'textile', 'unknown papertype', 'polymeric & cast vinyl',
-                 'light paper < 120gsm', 'heavy paper > 200gsm',
-                 'heavy banner > 400gsm', 'thick film > 200 um']
-        df = df.loc[df[CleaningColumnNameConfig.MEDIATYPE].tolower().isin(array)]
+        array = ['Canvas', 'Film', 'Monomeric vinyl',
+                 'Textile', 'Unknown papertype', 'Polymeric & cast vinyl',
+                 'Light paper < 120gsm', 'Heavy paper > 200gsm',
+                 'Heavy banner > 400gsm', 'Thick film > 200 um']
+        df = df.loc[df[CleaningColumnNameConfig.MEDIATYPE].isin(array)]
 
-        # remove row with invalid time
 
         return df
 
 
 
     def CleanMediaPrepare(self):
-        return PostgresDatabaseManager.readTable(ReadTableNameConfig.READMEDIAPREPARE)
+        obj = PostgresDatabaseManager()
+
+        # Read Image table from Db
+        df = obj.readTable(ReadTableNameConfig.READMEDIAPREPARE)
+
+        # Make dataframe using pandas
+        df = self.MakeDataFrameMediaPrepare(df)
+
+        # check if ullid is same then drop
+        df = self.RemoveDuplicatesMediaPrepare(df)
+
+        # check integer or string.
+        df = self.CheckTypeMediaPrepare(df)
+
+        # Check absurd value?
+
+        # Check negative value.
+        df = self.CheckNegativeMediaPrepare(df)
+
+        # Create table and store
+        obj.createTable(df, CleanTableNameConfig.READMEDIAPREPARE)
 
     def CleanPrintCycle(self):
         return PostgresDatabaseManager.readTable(ReadTableNameConfig.READPRINTCYCLE)
