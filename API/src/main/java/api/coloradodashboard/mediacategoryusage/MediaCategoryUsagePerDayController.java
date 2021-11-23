@@ -21,12 +21,11 @@ import java.util.Map;
  */
 @RestController
 // TODO: Need to change later
-@RequestMapping("PrintSquareMeterPerMediaType")
+@RequestMapping("MediaCategoryUsage")
 // TODO: Need to change later
 @CrossOrigin("http://localhost:4000")
 @AllArgsConstructor
 public class MediaCategoryUsagePerDayController {
-
     GenericGraphConverter<List<MediaCategoryUsagePerDay>, List<Map<String, String>>>
             graphConverter;
 

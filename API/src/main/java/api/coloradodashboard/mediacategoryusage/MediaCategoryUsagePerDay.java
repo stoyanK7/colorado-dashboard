@@ -22,7 +22,7 @@ public class MediaCategoryUsagePerDay {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private Date dateTime;
+    private Date date;
     private double totalPrintedSquareMeter;
     private MediaCategory mediaCategory;
 }

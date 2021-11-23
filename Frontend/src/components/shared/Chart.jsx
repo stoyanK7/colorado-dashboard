@@ -2,11 +2,12 @@ import '../../css/shared/Chart.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Loading from '../static/Loading';
-import MediaCategoryBarChart from '../charts/MediaCategoryBarChart';
+import MediaCategoryUsageBarChart from '../charts/MediaCategoryUsageBarChart';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { forwardRef } from 'react';
 import useFetch from '../../hooks/useFetch';
 import { useParams } from 'react-router-dom';
+import InkUsageBarChart from '../charts/InkUsageBarChart';
 
 const Chart = forwardRef(({ setChartTitle, fullScreen, disableFullScreen }, ref) => {
   // Gets path from URL: i.e. https://xxxxx.com/InkInfo -> InkInfo
@@ -19,7 +20,8 @@ const Chart = forwardRef(({ setChartTitle, fullScreen, disableFullScreen }, ref)
   // TODO: extract into another function? i.e ChartSwitch
   let component;
   switch (chart) {
-    case 'PrintSquareMeterPerMediaType': component = <MediaCategoryBarChart data={data} index='date' />; setChartTitle('Square meter per media type'); break;
+    case 'MediaCategoryUsage': component = <MediaCategoryUsageBarChart data={data} index='date' />; setChartTitle('Media Categories Usage'); break;
+    case 'InkUsage': component = <InkUsageBarChart data={data} index='date' />; setChartTitle('Ink Usage'); break;
     // TODO: add the rest of the paths when the API supports them
     default: break;
   };

@@ -38,7 +38,7 @@ public class MediaCategoryUsagePerDayConverter implements
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         for (MediaCategoryUsagePerDay mediaCategoryUsagePerDay : objects) {
             String date = dateFormat.format(
-                    mediaCategoryUsagePerDay.getDateTime());
+                    mediaCategoryUsagePerDay.getDate());
             if (!intermediate.containsKey(date)) {
                 intermediate.put(date, new HashMap<>());
             }
