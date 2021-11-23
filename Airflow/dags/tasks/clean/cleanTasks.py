@@ -1,5 +1,5 @@
-from ...DAL import PostgresDatabaseManager
-from ...config import ReadTableNameConfig, CleaningColumnNameConfig, CleanTableNameConfig
+from DAL import PostgresDatabaseManager
+from config import ReadTableNameConfig, CleaningColumnNameConfig, CleanTableNameConfig
 import pandas as pd
 
 class CleanTasks():

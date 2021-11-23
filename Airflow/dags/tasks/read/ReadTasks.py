@@ -4,6 +4,9 @@ import pandas as pd
 import os
 from airflow.models.variable import Variable
 
+# from tasks.read.FileReader import FileReader
+# from DAL.PostgresDatabaseManager import PostgresDatabaseManager
+# from config import ReadTableNameConfig, LastSeenTableConfig, LastSeenColumnNameConfig
 from tasks.read.FileReader import FileReader
 from DAL.PostgresDatabaseManager import PostgresDatabaseManager
 from config import ReadTableNameConfig, LastSeenTableConfig, LastSeenColumnNameConfig
