@@ -18,7 +18,7 @@ class PostgresDatabaseManagerTests(unittest.TestCase):
         dbm = PostgresDatabaseManager()
         engine = create_engine("sqlite:////repo/unittests.db")
 
-        dbm.createTable(tableName=name, dataFrame=dataFrame, conn=engine)
+        dbm.insertIntoTable(tableName=name, dataFrame=dataFrame, conn=engine)
 
         with engine.connect() as connection:
             result = connection.execute(text("select * from testdataframe;"))
