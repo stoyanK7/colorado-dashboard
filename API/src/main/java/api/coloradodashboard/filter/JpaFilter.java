@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Date;
 import java.util.List;
 
-public interface JpaFilter extends JpaRepository<MediaCategoryUsagePerDay, Long> {
-    List<MediaCategoryUsagePerDay> findAllByDateTimeBetween(Date startingDate, Date endingDate);
+public interface JpaFilter
+//        extends JpaRepository<MediaCategoryUsagePerDay, Long>
+{
+//    List<MediaCategoryUsagePerDay> findAllByDateTimeBetween(Date startingDate, Date endingDate);
 
 }

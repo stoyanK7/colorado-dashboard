@@ -1,11 +1,19 @@
 package api.coloradodashboard.inkusage;
 
 /**
- * Enumeration of the 4 possible ink types.
+ * Enumeration of all ink types.
  */
 public enum InkType {
-    Cyan,
-    Magenta,
-    Yellow,
-    Black
+    CYAN("Cyan"),
+    MAGENTA("Magenta"),
+    YELLOW("Yellow"),
+    BLACK("Black");
+
+    private String displayName;
+
+    InkType(String displayName) { this.displayName = displayName; }
+
+    public String displayName() { return displayName; }
+
+    @Override public String toString() { return displayName; }
 }

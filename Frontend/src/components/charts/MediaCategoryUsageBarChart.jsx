@@ -1,16 +1,16 @@
-import ChartTheme from '../../util/ChartTheme';
-import { ResponsiveBar } from '@nivo/bar';
+import chartTheme from '../../util/chartTheme';
+import { ResponsiveBarCanvas } from '@nivo/bar';
 
-const MediaCategoryBarChart = ({ data, index }) => {
-    if(typeof data === 'undefined' || data.length === 0) return null;
-    // Seperate into own function
+const MediaCategoryUsageBarChart = ({ data, index }) => {
+    if (typeof data === 'undefined' || data.length === 0) return null;
+    // TODO: Seperate into own function
     let keys = Object.keys(data[0]);
     keys.splice(keys.indexOf('date'), 1);
     keys.sort();
     return (
         <>
-            <ResponsiveBar
-                // animate={false}
+            <ResponsiveBarCanvas
+                animate={true}
                 data={data}
                 keys={keys}
                 indexBy={index}
@@ -18,7 +18,7 @@ const MediaCategoryBarChart = ({ data, index }) => {
                 padding={0.05}
                 valueScale={{ type: 'linear' }}
                 indexScale={{ type: 'band', round: true }}
-                colors={ChartTheme}
+                colors={({ data, id, indexValue }) => chartTheme(data, id, indexValue, 'media-category-usage')}
                 borderWidth='0.5px'
                 borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
                 axisBottom={{
@@ -33,13 +33,11 @@ const MediaCategoryBarChart = ({ data, index }) => {
                     tickSize: 5,
                     tickPadding: 5,
                     tickRotation: 0,
-                    legend: 'usages',
+                    legend: 'Printed square meters',
                     legendPosition: 'middle',
                     legendOffset: -40
                 }}
-                labelSkipWidth={12}
-                labelSkipHeight={12}
-                labelTextColor={{ from: 'color', modifiers: [['darker', 10]] }}
+                enableLabel={false}
                 legends={[
                     {
                         dataFrom: 'keys',
@@ -72,7 +70,7 @@ const MediaCategoryBarChart = ({ data, index }) => {
                             <svg width='20px' height='20px' style={{ marginRight: '5px' }}><rect width='20px' height='20px' fill={color}></rect></svg>
                             <span >{id} - {indexValue}</span>
                         </div>
-                        Usages: {value}
+                        Printed square meters: {value}
                     </div>
                 }}
             />
@@ -80,4 +78,4 @@ const MediaCategoryBarChart = ({ data, index }) => {
     )
 }
 
-export default MediaCategoryBarChart;
+export default MediaCategoryUsageBarChart;

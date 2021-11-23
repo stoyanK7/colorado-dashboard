@@ -19,10 +19,19 @@
   border-color: var(--carnelian);
   transition: transform 250ms;
   background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .home .chart:hover {
   transform: translateY(-10px);
+}
+
+.home .chart .chart-header {
+  font-size: 3rem;
+  text-align: center;
+  font-weight: 300;
 }
 
 .home .main-chart {
@@ -70,6 +79,10 @@
     grid-gap: 10px;
   }
 
+  .home .chart .chart-header {
+    font-size: 2rem;
+  }
+
   .home main>.chart {
     grid-row: auto;
     grid-column: auto;
@@ -84,9 +97,7 @@
 
 @media only screen and (max-width: 630px) {
   .home .chart-header {
-    font-size: 5vw;
-    line-height: 32px;
-    z-index: 4;
+    font-size: 1rem;
   }
 
   .home .chart {
