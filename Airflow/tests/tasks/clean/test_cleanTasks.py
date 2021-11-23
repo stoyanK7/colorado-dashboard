@@ -8,8 +8,8 @@ from airflow.settings import Session
 from cryptography.fernet import Fernet
 from sqlalchemy import create_engine, text
 
-from dags.tasks.clean.cleanTasks import CleanTasks
-from dags.config import CleaningColumnNameConfig
+from tasks.clean.cleanTasks import CleanTasks
+from config import CleaningColumnNameConfig
 
 
 class PostgresDatabaseManagerTests(unittest.TestCase):
