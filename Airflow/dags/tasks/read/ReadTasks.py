@@ -9,7 +9,7 @@ from airflow.models.variable import Variable
 # from config import ReadTableNameConfig, LastSeenTableConfig, LastSeenColumnNameConfig
 from tasks.read.FileReader import FileReader
 from DAL.PostgresDatabaseManager import PostgresDatabaseManager
-from config import ReadTableNameConfig, LastSeenTableConfig, LastSeenColumnNameConfig
+from config import ReadTableNameConfig, LastSeenTableConfig, LastSeenColumnNameConfig, ReadImageColNameConstants
 
 
 class ReadTasks():
@@ -32,6 +32,8 @@ class ReadTasks():
         if data.empty:
             logging.info("No new data was found, terminating reading step successfully.")
             return
+
+        ReadTasks._changeColNames(data, ReadImageColNameConstants)
 
         ReadTasks._insertIntoDb(data, ReadTableNameConfig.READIMAGE)
 
@@ -102,6 +104,25 @@ class ReadTasks():
         return resultDataFrames
 
     @staticmethod
+    def _changeColNames(data, constantsFile):
+        # change the column names
+        logging.info("Renaming columns for internal use.")
+        renameScheme = {}
+        for pair in constantsFile.__dict__:
+            if not pair.startswith('_'):
+                if (pair.startswith("p")):
+                    pair = getattr(constantsFile, pair)
+                    renameScheme[Variable.get(pair[0])] = pair[1]
+        logging.info("Old column names:")
+        logging.info(data.columns)
+        data.rename(columns=renameScheme,inplace=True)
+        logging.info("New column names:")
+        logging.info(data.columns)
+        return data
+
+
+
+    @staticmethod
     def _insertIntoDb(data, tableName):
         # put in db
         logging.info("Inserting read data to database.")
@@ -114,3 +135,5 @@ class ReadTasks():
         logging.info("Sending xcom about last read information.")
         ti.xcom_push("lastSeenFile", str(lastSeenFile))
         ti.xcom_push("lastSeenRow", str(lastSeenRow))
+if __name__ == '__main__':
+    ReadTasks._changeColNames("", ReadImageColNameConstants)
