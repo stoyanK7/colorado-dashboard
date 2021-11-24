@@ -14,6 +14,7 @@ class CleanTasks():
         # Read Image table from Db
         df = pdm.readTable(ReadTableNameConfig.READIMAGE)
         if (df.empty):
+            logging.info("No new data was found, skipping step.")
             return
 
         logging.info(tabulate(df, headers='keys', tablefmt='psql'))
@@ -123,9 +124,10 @@ class CleanTasks():
                  'Heavy banner > 400gsm', 'Thick film > 200 um']
         df = df.loc[df[CleaningColumnNameConfig.MEDIATYPE].isin(array)]
         return df
+    @staticmethod
+    def CleanMediaPrepare():
+        pass
 
-    # def CleanMediaPrepare():
-    #     pass
-    #
-    # def CleanPrintCycle():
-    #     pass
+    @staticmethod
+    def CleanPrintCycle():
+        pass

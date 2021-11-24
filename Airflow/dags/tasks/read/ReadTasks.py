@@ -35,9 +35,6 @@ class ReadTasks():
 
         ReadTasks._changeColNames(data, ReadImageColNameConstants)
 
-        if data.empty:
-            logging.error("There are no new files to read")
-
         ReadTasks._insertIntoDb(data, ReadTableNameConfig.READIMAGE)
 
         ReadTasks._makeXcom(ti, filesToRead[len(filesToRead) - 1], data[Variable.get("image_col_name_ullid")].iloc[-1])

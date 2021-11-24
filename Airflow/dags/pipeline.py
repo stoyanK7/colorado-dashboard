@@ -37,7 +37,7 @@ with DAG(
     )
     aggregateImage = PythonOperator(
         task_id='aggregateImage',
-        python_callable=AggregateTasks.aggregate_image
+        python_callable=AggregateTasks.AggregateMediaCategoryUsage
     )
     cleanUp = PythonOperator(
         task_id='cleanUp',

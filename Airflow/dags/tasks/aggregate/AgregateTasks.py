@@ -9,10 +9,11 @@ from DAL.PostgresDatabaseManager import PostgresDatabaseManager
 class AggregateTasks:
 
     @staticmethod
-    def aggregate_image():
+    def AggregateMediaCategoryUsage():
         # Take the dataframe from the previous step
         df = AggregateTasks.__read_from_db(CleanTableNameConfig.READIMAGE)
         if df.empty:
+            logging.info("No new data was found, skipping step.")
             return
         # Multiply ImageLength and ImageWidth into Area column
         df = AggregateTasks.__aggregate_two_columns(df,
@@ -28,6 +29,7 @@ class AggregateTasks:
                                                                  AggregateColumnNameConfig.IMAGEAREA)
         # Save into a database
         AggregateTasks.__insert_into_db(df, AggregateTableNameConfig.AGGREGATEIMAGE)
+
 
     @staticmethod
     def __read_from_db(table_name) -> pd.DataFrame:
