@@ -37,7 +37,7 @@ class ReadTasks():
 
         ReadTasks._insertIntoDb(data, ReadTableNameConfig.READIMAGE)
 
-        ReadTasks._makeXcom(ti, filesToRead[len(filesToRead) - 1], data["ullid"].iloc[-1])
+        ReadTasks._makeXcom(ti, filesToRead[len(filesToRead) - 1], data[Variable.get("image_col_name_ullid")].iloc[-1])
 
         # lastReadData = {LastSeenColumnNameConfig.LAST_SEEN_IMAGE_FILE_PATH:[filesToRead[len(filesToRead) - 1]], LastSeenColumnNameConfig.LAST_SEEN_IMAGE_ROW_ID:[data["ullid"].iloc[-1]]}
         # lastSeenDf = pd.DataFrame(data=lastReadData)
@@ -93,10 +93,10 @@ class ReadTasks():
         for file in filesToRead:
             logging.info(f"Getting data from file {file}.")
             df = fileReader.readPandasCsvFile(directory + file, ";")
-            df = df.set_index(df["ullid"])
+            df = df.set_index(df[Variable.get("image_col_name_ullid")])
             df = df.sort_index('index')
             if file == lastSeenFile:
-                df = df[df['ullid'] > int(lastSeenRow)]
+                df = df[df[Variable.get("image_col_name_ullid")] > int(lastSeenRow)]
                 logging.info(
                     "Removed rows " + lastSeenRow + " and before from file " + file + " because they were seen before.")
             dataFrames.append(df)
@@ -135,5 +135,3 @@ class ReadTasks():
         logging.info("Sending xcom about last read information.")
         ti.xcom_push("lastSeenFile", str(lastSeenFile))
         ti.xcom_push("lastSeenRow", str(lastSeenRow))
-if __name__ == '__main__':
-    ReadTasks._changeColNames("", ReadImageColNameConstants)
