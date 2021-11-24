@@ -8,7 +8,7 @@ import tasks.read.FileReader
 from DAL.PostgresDatabaseManager import PostgresDatabaseManager
 from tasks.read.ReadTasks import ReadTasks
 import pandas as pd
-from config import LastSeenColumnNameConfig, LastSeenTableConfig, ReadTableNameConfig
+from config import LastSeenColumnNameConfig, LastSeenTableConfig, ReadTableNameConfig, ReadImageColNameConstants
 
 
 class TestReadTasks(unittest.TestCase):
@@ -78,7 +78,14 @@ class TestReadTasks(unittest.TestCase):
         df2 = pd.DataFrame(data={"ullid": [4, 5, 6, 7], "values": ["value5", "value6", "value7", "value8"]})
         mockFileReader.side_effect = [df1, df2]
         mockOs.return_value = "Some/Os/Path/"
-        mockVar.return_value = "To/The/Files/"
+
+        def varSideEffect(value):
+            if (value == directoryVariableKey):
+                return "To/The/Files/"
+            elif (value == "image_col_name_ullid"):
+                return "ullid"
+
+        mockVar.side_effect = varSideEffect
 
         directoryVariableKey = "someKey"
         filesToRead = ["file1", "file2"]
@@ -92,7 +99,7 @@ class TestReadTasks(unittest.TestCase):
         mockFileReader.assert_has_calls([unittest.mock.call("Some/Os/Path/To/The/Files/file1", ";"),
                                          unittest.mock.call("Some/Os/Path/To/The/Files/file2", ";")])
         mockOs.assert_called_once_with("AIRFLOW_HOME")
-        mockVar.assert_called_once_with(directoryVariableKey)
+        mockVar.assert_has_calls([unittest.mock.call(directoryVariableKey), unittest.mock.call("image_col_name_ullid")])
 
     @patch("airflow.models.variable.Variable.get")
     @patch("os.getenv")
@@ -102,7 +109,12 @@ class TestReadTasks(unittest.TestCase):
         df2 = pd.DataFrame(data={"ullid": [4, 5, 6, 7], "values": ["value5", "value6", "value7", "value8"]})
         mockFileReader.side_effect = [df1, df2]
         mockOs.return_value = "Some/Os/Path/"
-        mockVar.return_value = "To/The/Files/"
+        def varSideEffect(value):
+            if (value == directoryVariableKey):
+                return "To/The/Files/"
+            elif (value == "image_col_name_ullid"):
+                return "ullid"
+        mockVar.side_effect = varSideEffect
 
         directoryVariableKey = "someKey"
         filesToRead=["file1", "file2"]
@@ -115,7 +127,7 @@ class TestReadTasks(unittest.TestCase):
         pd.testing.assert_frame_equal(resultDataFrames, expected)
         mockFileReader.assert_has_calls([unittest.mock.call("Some/Os/Path/To/The/Files/file1", ";"), unittest.mock.call("Some/Os/Path/To/The/Files/file2", ";")])
         mockOs.assert_called_once_with("AIRFLOW_HOME")
-        mockVar.assert_called_once_with(directoryVariableKey)
+        mockVar.assert_has_calls([unittest.mock.call(directoryVariableKey), unittest.mock.call("image_col_name_ullid")])
 
     @patch("DAL.PostgresDatabaseManager.PostgresDatabaseManager.insertIntoTable")
     def test_insertIntoDb(self, mockPdm: MagicMock):
@@ -133,12 +145,15 @@ class TestReadTasks(unittest.TestCase):
         # Assert
         ti.xcom_push.assert_has_calls([unittest.mock.call("lastSeenFile", "someFile"), unittest.mock.call("lastSeenRow", "someRow")])
 
+
+    @patch("airflow.models.variable.Variable.get")
     @patch("tasks.read.ReadTasks.ReadTasks._makeXcom")
     @patch("tasks.read.ReadTasks.ReadTasks._insertIntoDb")
+    @patch("tasks.read.ReadTasks.ReadTasks._changeColNames")
     @patch("tasks.read.ReadTasks.ReadTasks._getFilesToDataFrames")
     @patch("tasks.read.ReadTasks.ReadTasks._getFileNames")
     @patch("tasks.read.ReadTasks.ReadTasks._getLastFileAndRow")
-    def test_readImageFull(self, mockGetLastSeen: MagicMock, mockFileNames: MagicMock, mockFilesToDf: MagicMock, mockInsert: MagicMock, mockXcom: MagicMock):
+    def test_readImageFull(self, mockGetLastSeen: MagicMock, mockFileNames: MagicMock, mockFilesToDf: MagicMock, mockChangeColNames: MagicMock, mockInsert: MagicMock, mockXcom: MagicMock, mockVar: MagicMock):
         lastSeenFile, lastSeenRow = "someFile", 4
         filesToRead = ["file1", "file2"]
         variableKey = "image_file_directory"
@@ -146,6 +161,7 @@ class TestReadTasks(unittest.TestCase):
         mockGetLastSeen.return_value = lastSeenFile, lastSeenRow
         mockFileNames.return_value = filesToRead
         mockFilesToDf.return_value = data
+        mockVar.return_value = "ullid"
         ti = Mock()
 
         # Act
@@ -157,6 +173,7 @@ class TestReadTasks(unittest.TestCase):
                                       LastSeenColumnNameConfig.LAST_SEEN_IMAGE_ROW_ID)
         mockFileNames.assert_called_once_with(variableKey, lastSeenFile)
         mockFilesToDf.assert_called_once_with(variableKey, filesToRead, lastSeenFile, lastSeenRow)
+        mockChangeColNames.assert_called_once_with(data, ReadImageColNameConstants)
         mockInsert.assert_called_once_with(data, ReadTableNameConfig.READIMAGE)
         mockXcom.assert_called_once_with(ti, "file2", 3)
 
