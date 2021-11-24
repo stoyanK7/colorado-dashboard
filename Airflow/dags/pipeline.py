@@ -3,6 +3,7 @@ from datetime import timedelta, datetime
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 
+from tasks.load.LoadTasks import LoadTasks
 from tasks.preprocess.PreprocessTasks import PreprocessTasks
 from tasks.read.ReadTasks import ReadTasks
 from tasks.clean.cleanTasks import CleanTasks
@@ -28,6 +29,7 @@ with DAG(
     catchup=False,
     tags=['pipeline'],
 ) as dag:
+    # READ
     readImage = PythonOperator(
         task_id='readImage',
         python_callable=ReadTasks.ReadImage
@@ -41,6 +43,7 @@ with DAG(
         python_callable=ReadTasks.ReadPrintCycle
     )
 
+    # CLEAN
     cleanImage = PythonOperator(
         task_id='cleanImage',
         python_callable=CleanTasks.CleanImage
@@ -54,6 +57,7 @@ with DAG(
         python_callable=CleanTasks.CleanPrintCycle
     )
 
+    # PREPROCESS
     preprocessMediaCategoryUsage = PythonOperator(
         task_id='preprocessMediaCategoryUsage_TODO',
         python_callable=PreprocessTasks.PreprocessMediaCategoryUsage
@@ -75,6 +79,7 @@ with DAG(
         python_callable=PreprocessTasks.PreprocessMediaTypesPerMachine
     )
 
+    # AGGREGATE
     aggregateMediaCategoryUsage = PythonOperator(
         task_id='aggregateMediaCategoryUsage',
         python_callable=AggregateTasks.AggregateMediaCategoryUsage
@@ -96,24 +101,63 @@ with DAG(
         python_callable=AggregateTasks.AggregateMediaTypesPerMachine
     )
 
+    #LOAD
+    loadMediaCategoryUsage = PythonOperator(
+        task_id='loadMediaCategoryUsage_TODO',
+        python_callable=LoadTasks.LoadMediaCategoryUsage
+    )
+    loadSqmPerPrintMode = PythonOperator(
+        task_id='loadSqmPerPrintMode_TODO',
+        python_callable=LoadTasks.LoadSqmPerPrintMode
+    )
+    loadInkUsage = PythonOperator(
+        task_id='loadInkUsage_TODO',
+        python_callable=LoadTasks.LoadInkUsage
+    )
+    loadTopTenPrintVolume = PythonOperator(
+        task_id='loadTopTenPrintVolume_TODO',
+        python_callable=LoadTasks.LoadTopTenPrintVolume
+    )
+    loadMediaTypesPerMachine = PythonOperator(
+        task_id='loadMediaTypesPerMachine_TODO',
+        python_callable=LoadTasks.LoadMediaTypesPerMachine
+    )
+
+    #CLEANUP
     cleanUp = PythonOperator(
         task_id='cleanUp',
         python_callable=CleanupTasks.cleanup
     )
 
-    readImage >> cleanImage >> preprocessMediaCategoryUsage >> aggregateMediaCategoryUsage
+    # cleaning
+    readImage >> cleanImage
     readMediaPrepare >> cleanMediaPrepare
     readPrintCycle >> cleanPrintCycle
-    cleanPrintCycle >> preprocessSqmPerPrintMode >> aggregateSqmPerPrintMode
-    cleanImage >> preprocessInkUsage >> aggregateInkUsage
-    cleanPrintCycle >> preprocessTopTenPrintVolume >> aggregateTopTenPrintVolume
-    cleanMediaPrepare >> preprocessMediaTypesPerMachine >> aggregateMediaTypesPerMachine
+    # preprocess
+    cleanImage >> preprocessMediaCategoryUsage
+    cleanPrintCycle >> preprocessSqmPerPrintMode
+    cleanImage >> preprocessInkUsage
+    cleanPrintCycle >> preprocessTopTenPrintVolume
+    cleanMediaPrepare >> preprocessMediaTypesPerMachine
     cleanPrintCycle >> preprocessMediaTypesPerMachine
+    # aggregate
+    preprocessMediaCategoryUsage >> aggregateMediaCategoryUsage
+    preprocessSqmPerPrintMode >> aggregateSqmPerPrintMode
+    preprocessInkUsage >> aggregateInkUsage
+    preprocessTopTenPrintVolume >> aggregateTopTenPrintVolume
+    preprocessMediaTypesPerMachine >> aggregateMediaTypesPerMachine
+    # load
+    aggregateMediaCategoryUsage >> loadMediaCategoryUsage
+    aggregateSqmPerPrintMode >> loadSqmPerPrintMode
+    aggregateInkUsage >> loadInkUsage
+    aggregateTopTenPrintVolume >> loadTopTenPrintVolume
+    aggregateMediaTypesPerMachine >> loadMediaTypesPerMachine
 
-    aggregateMediaCategoryUsage >> cleanUp
-    aggregateSqmPerPrintMode >> cleanUp
-    aggregateInkUsage >> cleanUp
-    aggregateTopTenPrintVolume >> cleanUp
-    aggregateMediaTypesPerMachine >> cleanUp
+    # cleanup
+    loadMediaCategoryUsage >> cleanUp
+    loadSqmPerPrintMode >> cleanUp
+    loadInkUsage >> cleanUp
+    loadTopTenPrintVolume >> cleanUp
+    loadMediaTypesPerMachine >> cleanUp
 
     # readImage
