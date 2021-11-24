@@ -20,4 +20,7 @@ class PostgresDatabaseManager:
         self.hook.run(statement)
 
     def readTable(self, tableName: str) -> pd.DataFrame:
-        return pd.read_sql_table(tableName, con=self.hook.get_sqlalchemy_engine())
+        try:
+            return pd.read_sql_table(tableName, con=self.hook.get_sqlalchemy_engine())
+        except:
+            return pd.DataFrame({})

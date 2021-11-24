@@ -12,7 +12,8 @@ class AggregateTasks:
     def aggregate_image():
         # Take the dataframe from the previous step
         df = AggregateTasks.__read_from_db(CleanTableNameConfig.READIMAGE)
-
+        if df.empty:
+            return
         # Multiply ImageLength and ImageWidth into Area column
         df = AggregateTasks.__aggregate_two_columns(df,
                                                     CleaningColumnNameConfig.IMAGEWIDTH,
@@ -34,6 +35,8 @@ class AggregateTasks:
         logging.info("Reading the cleaned data from database.")
         pdm = PostgresDatabaseManager()
         df = pdm.readTable(table_name)
+        if df.empty:
+            return df
         df = df.set_index(AggregateColumnNameConfig.ULLID)
         return df
 
@@ -51,7 +54,7 @@ class AggregateTasks:
     def __group_by_two_columns_and_sum_third(df, c1, c2, col_to_sum):
         # group two columns and sum the third
         logging.info(f"Grouping {c1} and {c2} and summing {col_to_sum}.")
-        df = pd.to_numeric(df.groupby([c1, c2])[col_to_sum].sum(),errors='coerce')
+        df = pd.to_numeric(df.groupby([c1, c2])[col_to_sum].sum(), errors='coerce')
         return df
 
     @staticmethod

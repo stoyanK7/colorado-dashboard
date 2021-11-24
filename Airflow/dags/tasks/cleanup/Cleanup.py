@@ -8,7 +8,7 @@ from config import AggregateTableNameConfig, \
     ReadTableNameConfig, \
     LastSeenColumnNameConfig
 
-from DAL import PostgresDatabaseManager
+from DAL.PostgresDatabaseManager import PostgresDatabaseManager
 
 
 class CleanupTasks:
@@ -18,7 +18,7 @@ class CleanupTasks:
         # Clean the data from the databases
         CleanupTasks._cleanup_tables(AggregateTableNameConfig)
         CleanupTasks._cleanup_tables(CleanTableNameConfig)
-        CleanupTasks._cleanup_tables(LastSeenTableConfig)
+        # CleanupTasks._cleanup_tables(LastSeenTableConfig)
         CleanupTasks._cleanup_tables(ReadTableNameConfig)
 
         # save from X com into the database
@@ -44,9 +44,18 @@ class CleanupTasks:
     @staticmethod
     def _xcom_to_db(ti, c1_name, c2_name, table_name):
         logging.info(f"Saving last seen file and last seen row in table {table_name}.")
+        try:
+            last_seen_file = ti.xcom_pull(task_ids='readImage', key='lastSeenFile')  # to change task_id
+            last_seen_row = ti.xcom_pull(task_ids='readImage', key='lastSeenRow')  # to change task_id
+        except:
+            logging.error("Cleanup - There was a problem with reading the xcom.")
+            return
 
-        last_seen_file = ti.xcom_pull(task_ids='readImage', key='lastSeenFile')  # to change task_id
-        last_seen_row = ti.xcom_pull(task_ids='readImage', key='lastSeenRow')  # to change task_id
+        if not last_seen_file or not last_seen_row:
+            logging.error("Cleanup - There was a problem with reading the xcom.")
+            return
+
+        CleanupTasks._cleanup_tables(LastSeenTableConfig)
 
         pdm = PostgresDatabaseManager()
 

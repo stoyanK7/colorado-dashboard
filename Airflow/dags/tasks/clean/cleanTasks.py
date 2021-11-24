@@ -13,6 +13,9 @@ class CleanTasks():
 
         # Read Image table from Db
         df = pdm.readTable(ReadTableNameConfig.READIMAGE)
+        if (df.empty):
+            return
+
         logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # Make dataframe using pandas
