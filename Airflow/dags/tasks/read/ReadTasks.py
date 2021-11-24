@@ -9,7 +9,7 @@ from airflow.models.variable import Variable
 # from config import ReadTableNameConfig, LastSeenTableConfig, LastSeenColumnNameConfig
 from tasks.read.FileReader import FileReader
 from DAL.PostgresDatabaseManager import PostgresDatabaseManager
-from config import ReadTableNameConfig, LastSeenTableConfig, LastSeenColumnNameConfig
+from config import ReadTableNameConfig, LastSeenTableConfig, LastSeenColumnNameConfig, ReadImageColNameConstants
 
 
 class ReadTasks():
@@ -33,9 +33,11 @@ class ReadTasks():
             logging.info("No new data was found, terminating reading step successfully.")
             return
 
+        ReadTasks._changeColNames(data, ReadImageColNameConstants)
+
         ReadTasks._insertIntoDb(data, ReadTableNameConfig.READIMAGE)
 
-        ReadTasks._makeXcom(ti, filesToRead[len(filesToRead) - 1], data["ullid"].iloc[-1])
+        ReadTasks._makeXcom(ti, filesToRead[len(filesToRead) - 1], data[Variable.get("image_col_name_ullid")].iloc[-1])
 
         # lastReadData = {LastSeenColumnNameConfig.LAST_SEEN_IMAGE_FILE_PATH:[filesToRead[len(filesToRead) - 1]], LastSeenColumnNameConfig.LAST_SEEN_IMAGE_ROW_ID:[data["ullid"].iloc[-1]]}
         # lastSeenDf = pd.DataFrame(data=lastReadData)
@@ -91,15 +93,34 @@ class ReadTasks():
         for file in filesToRead:
             logging.info(f"Getting data from file {file}.")
             df = fileReader.readPandasCsvFile(directory + file, ";")
-            df = df.set_index(df["ullid"])
+            df = df.set_index(df[Variable.get("image_col_name_ullid")])
             df = df.sort_index('index')
             if file == lastSeenFile:
-                df = df[df['ullid'] > int(lastSeenRow)]
+                df = df[df[Variable.get("image_col_name_ullid")] > int(lastSeenRow)]
                 logging.info(
                     "Removed rows " + lastSeenRow + " and before from file " + file + " because they were seen before.")
             dataFrames.append(df)
         resultDataFrames = pd.concat(dataFrames, ignore_index=True)
         return resultDataFrames
+
+    @staticmethod
+    def _changeColNames(data, constantsFile):
+        # change the column names
+        logging.info("Renaming columns for internal use.")
+        renameScheme = {}
+        for pair in constantsFile.__dict__:
+            if not pair.startswith('_'):
+                if (pair.startswith("p")):
+                    pair = getattr(constantsFile, pair)
+                    renameScheme[Variable.get(pair[0])] = pair[1]
+        logging.info("Old column names:")
+        logging.info(data.columns)
+        data.rename(columns=renameScheme,inplace=True)
+        logging.info("New column names:")
+        logging.info(data.columns)
+        return data
+
+
 
     @staticmethod
     def _insertIntoDb(data, tableName):
