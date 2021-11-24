@@ -3,7 +3,7 @@ import logging
 import pandas as pd
 
 from config import AggregateTableNameConfig, AggregateColumnNameConfig, CleanTableNameConfig, CleaningColumnNameConfig
-from DAL import PostgresDatabaseManager
+from DAL.PostgresDatabaseManager import PostgresDatabaseManager
 
 
 class AggregateTasks:
@@ -51,7 +51,7 @@ class AggregateTasks:
     def __group_by_two_columns_and_sum_third(df, c1, c2, col_to_sum):
         # group two columns and sum the third
         logging.info(f"Grouping {c1} and {c2} and summing {col_to_sum}.")
-        df = df.groupby([c1, c2])[col_to_sum].sum()
+        df = pd.to_numeric(df.groupby([c1, c2])[col_to_sum].sum(),errors='coerce')
         return df
 
     @staticmethod
