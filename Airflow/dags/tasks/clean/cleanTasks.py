@@ -7,22 +7,22 @@ import pandas as pd
 class CleanTasks():
 
     def CleanImage(self):
-        obj = PostgresDatabaseManager()
+        pdm = PostgresDatabaseManager()
 
         # Read Image table from Db
-        df = obj.readTable(ReadTableNameConfig.READIMAGE)
+        df = pdm.readTable(ReadTableNameConfig.READIMAGE)
 
         # Make dataframe using pandas
         df = self.MakeDataFrameImage(df)
 
         # check if ullid is same then drop
-        df = self.RemoveDuplicatesImage(df)
+        df = CleanTasks.RemoveDuplicatesImage(df)
 
         # check integer or string.
         df = self.CheckTypeImage(df)
 
         # check if some row values are empty
-        df = self.RemoveRowNull(df)
+        df = CleanTasks.RemoveRowNull(df)
 
         # Check absurd value?
 
@@ -33,7 +33,7 @@ class CleanTasks():
         #df = self.RemoveInvalidMediaType(df)
 
         # Create table and store
-        obj.insertIntoTable(df, CleanTableNameConfig.READIMAGE)
+        pdm.insertIntoTable(df, CleanTableNameConfig.READIMAGE)
 
     def MakeDataFrameImage(self, df):
         logging.info("Making the dataframe with the right columns.")
@@ -48,10 +48,13 @@ class CleanTasks():
                  CleaningColumnNameConfig.MEDIATYPE]]
         return df
 
-    def RemoveDuplicates(self, df):
+    @staticmethod
+    def RemoveDuplicates(df):
         logging.info("Removing all the rows with duplicate ullids.")
         df = df.drop_duplicates(subset=[CleaningColumnNameConfig.ULLID])
         return df
+
+
 
     def CheckTypeImage(self, df):
         logging.info("Making value NaN for all the columns with invalid datatype.")
@@ -66,7 +69,8 @@ class CleanTasks():
         df[CleaningColumnNameConfig.MEDIATYPE] = df[CleaningColumnNameConfig.MEDIATYPE].mask(pd.to_numeric(df[CleaningColumnNameConfig.MEDIATYPE], errors='coerce').notna())
         return df
 
-    def RemoveRowNull(self, df):
+    @staticmethod
+    def RemoveRowNull(df):
         logging.info("Removing all rows with empty or NaN value.")
         nan_value = float("NaN")
         df.replace('', nan_value, inplace=True)

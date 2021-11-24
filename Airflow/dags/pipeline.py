@@ -28,6 +28,10 @@ with DAG(
         task_id='readImage',
         python_callable=ReadTasks.ReadImage
     )
+    readImage = PythonOperator(
+        task_id='readImage',
+        python_callable=ReadTasks.ReadImage
+    )
     # readMediaPrepare = PythonOperator(
     #     task_id='readMediaPrepare',
     #     python_callable=ReadTasks.ReadTasks.ReadMediaPrepare
