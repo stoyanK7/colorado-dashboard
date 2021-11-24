@@ -8,28 +8,21 @@ const Home = () => {
     <div className='home'>
       <Header />
       <main>
-        <div className='chart main-chart'>
-          <Link to='PrintSquareMeterPerMediaType'>
-            <div className='chart-header'>Printed square metres per media type</div>
-            <div className='img'></div>
-          </Link>
-        </div>
-        <div className='chart side-chart-top'>
-          <div className='chart-header'>Amount of printed square metres per print mode</div>
-          <div className='img'></div>
-        </div>
-        <div className='chart side-chart-middle'>
+        <Link to='/InkUsage' className='chart main-chart'>
           <div className='chart-header'>Ink usage</div>
-          <div className='img'></div>
-        </div>
-        <div className='chart second-line-left-chart'>
-          <div className='chart-header'> Best printing machines on the market</div>
-          <div className='img'></div>
-        </div>
-        <div className='chart second-line-right-chart'>
-          <div className='chart-header'>All used media types for a selected machine</div>
-          <div className='img'></div>
-        </div>
+        </Link>
+        <Link to='/' className='chart side-chart-top'>
+          <div className='chart-header'>Top machines with most print volume</div>
+        </Link>
+        <Link to='/' className='chart side-chart-middle'>
+          <div className='chart-header'>Used media types per machine</div>
+        </Link>
+        <Link to='/SquareMeterPerPrintMode' className='chart second-line-left-chart'>
+          <div className='chart-header'>Square meters per print mode</div>
+        </Link>
+        <Link to='/MediaCategoryUsage' className='chart second-line-right-chart'>
+          <div className='chart-header'>Media categories usage</div>
+        </Link>
       </main >
     </div >
   );

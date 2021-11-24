@@ -1,0 +1,26 @@
+# You can register your runner following the tutorial below
+# https://docs.gitlab.com/runner/register/
+
+before_script:
+  - cd API/
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+  - chmod +x ./gradlew
+
+cache:
+  paths:
+     - ./API/.gradle/wrapper
+     - ./API/.gradle/caches
+
+stages:
+  - build
+  - test
+
+build:
+  stage: build
+  script:
+    - ./gradlew assemble
+
+test:
+  stage: test
+  script:
+    - ./gradlew test
