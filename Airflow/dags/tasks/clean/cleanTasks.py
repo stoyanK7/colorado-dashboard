@@ -1,41 +1,64 @@
 import logging
 
-from DAL import PostgresDatabaseManager
+from DAL.PostgresDatabaseManager import PostgresDatabaseManager
 from config import ReadTableNameConfig, CleaningColumnNameConfig, CleanTableNameConfig
 import pandas as pd
+from tabulate import tabulate
 
 class CleanTasks():
 
-    def CleanImage(self):
+    @staticmethod
+    def CleanImage():
         pdm = PostgresDatabaseManager()
 
         # Read Image table from Db
         df = pdm.readTable(ReadTableNameConfig.READIMAGE)
+        logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # Make dataframe using pandas
-        df = self.MakeDataFrameImage(df)
+        df = CleanTasks.MakeDataFrameImage(df)
+        logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # check if ullid is same then drop
-        df = CleanTasks.RemoveDuplicatesImage(df)
+        df = CleanTasks.RemoveDuplicates(df)
+        logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # check integer or string.
-        df = self.CheckTypeImage(df)
+        df = CleanTasks.CheckTypeImage(df)
+        logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # check if some row values are empty
         df = CleanTasks.RemoveRowNull(df)
+        logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # Check absurd value?
 
         # Check negative value.
-        df = self.CheckNegativeImage(df)
+        df = CleanTasks.CheckNegativeImage(df)
+        logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # Check if mediatype is valid
         #df = self.RemoveInvalidMediaType(df)
 
         # Create table and store
-        pdm.insertIntoTable(df, CleanTableNameConfig.READIMAGE)
+        CleanTasks._insertIntoDb(df, CleanTableNameConfig.READIMAGE)
 
-    def MakeDataFrameImage(self, df):
+    @staticmethod
+    def _readFromDb(tableName):
+        # put in db
+        logging.info("Reading data from the database.")
+        pdm = PostgresDatabaseManager()
+        pdm.readTable(tableName)
+
+    @staticmethod
+    def _insertIntoDb(data, tableName):
+        # put in db
+        logging.info("Inserting read data to database.")
+        pdm = PostgresDatabaseManager()
+        pdm.insertIntoTable(data, tableName)
+
+    @staticmethod
+    def MakeDataFrameImage(df):
         logging.info("Making the dataframe with the right columns.")
         df = df[[CleaningColumnNameConfig.ULLID,
                  CleaningColumnNameConfig.ACCOUNTEDINKBLACK,
@@ -54,17 +77,16 @@ class CleanTasks():
         df = df.drop_duplicates(subset=[CleaningColumnNameConfig.ULLID])
         return df
 
-
-
-    def CheckTypeImage(self, df):
+    @staticmethod
+    def CheckTypeImage(df):
         logging.info("Making value NaN for all the columns with invalid datatype.")
-        df[CleaningColumnNameConfig.ULLID] = df[CleaningColumnNameConfig.ULLID].apply(pd.to_numeric)
-        df[CleaningColumnNameConfig.ACCOUNTEDINKBLACK] = df[CleaningColumnNameConfig.ACCOUNTEDINKBLACK].apply(pd.to_numeric)
-        df[CleaningColumnNameConfig.ACCOUNTEDINKCYAN] = df[CleaningColumnNameConfig.ACCOUNTEDINKCYAN].apply(pd.to_numeric)
-        df[CleaningColumnNameConfig.ACCOUNTEDINKYELLOW] = df[CleaningColumnNameConfig.ACCOUNTEDINKYELLOW].apply(pd.to_numeric)
-        df[CleaningColumnNameConfig.ACCOUNTEDINKMAGENTA] = df[CleaningColumnNameConfig.ACCOUNTEDINKMAGENTA].apply(pd.to_numeric)
-        df[CleaningColumnNameConfig.IMAGELENGTH] = df[CleaningColumnNameConfig.IMAGELENGTH].apply(pd.to_numeric)
-        df[CleaningColumnNameConfig.IMAGEWIDTH] = df[CleaningColumnNameConfig.IMAGEWIDTH].apply(pd.to_numeric)
+        df[CleaningColumnNameConfig.ULLID] = pd.to_numeric(df[CleaningColumnNameConfig.ULLID], errors='coerce')
+        df[CleaningColumnNameConfig.ACCOUNTEDINKBLACK] = pd.to_numeric(df[CleaningColumnNameConfig.ACCOUNTEDINKBLACK], errors='coerce')
+        df[CleaningColumnNameConfig.ACCOUNTEDINKCYAN] = pd.to_numeric(df[CleaningColumnNameConfig.ACCOUNTEDINKCYAN], errors='coerce')
+        df[CleaningColumnNameConfig.ACCOUNTEDINKYELLOW] = pd.to_numeric(df[CleaningColumnNameConfig.ACCOUNTEDINKYELLOW], errors='coerce')
+        df[CleaningColumnNameConfig.ACCOUNTEDINKMAGENTA] = pd.to_numeric(df[CleaningColumnNameConfig.ACCOUNTEDINKMAGENTA], errors='coerce')
+        df[CleaningColumnNameConfig.IMAGELENGTH] = pd.to_numeric(df[CleaningColumnNameConfig.IMAGELENGTH], errors='coerce')
+        df[CleaningColumnNameConfig.IMAGEWIDTH] = pd.to_numeric(df[CleaningColumnNameConfig.IMAGEWIDTH], errors='coerce')
         df[CleaningColumnNameConfig.DATE] = pd.to_datetime(df[CleaningColumnNameConfig.DATE], errors='coerce').dt.strftime('%d/%m/%Y')
         df[CleaningColumnNameConfig.MEDIATYPE] = df[CleaningColumnNameConfig.MEDIATYPE].mask(pd.to_numeric(df[CleaningColumnNameConfig.MEDIATYPE], errors='coerce').notna())
         return df
@@ -77,7 +99,8 @@ class CleanTasks():
         df.dropna(inplace=True)
         return df
 
-    def CheckNegativeImage(self, df):
+    @staticmethod
+    def CheckNegativeImage(df):
         logging.info("Removing all rows with negative values.")
         df = df[(df[CleaningColumnNameConfig.ULLID] > 0)]
         df = df[(df[CleaningColumnNameConfig.ACCOUNTEDINKBLACK] > 0)]
@@ -88,8 +111,8 @@ class CleanTasks():
         df = df[(df[CleaningColumnNameConfig.IMAGELENGTH] > 0)]
         return df
 
-
-    def RemoveInvalidMediaType(self,df):
+    @staticmethod
+    def RemoveInvalidMediaType(df):
         logging.info("Removing all rows with invalid mediatype.")
         array = ['Canvas', 'Film', 'Monomeric vinyl',
                  'Textile', 'Unknown papertype', 'Polymeric & cast vinyl',
@@ -98,29 +121,8 @@ class CleanTasks():
         df = df.loc[df[CleaningColumnNameConfig.MEDIATYPE].isin(array)]
         return df
 
-
-    def CleanMediaPrepare(self):
-        obj = PostgresDatabaseManager()
-
-        # Read Image table from Db
-        df = obj.readTable(ReadTableNameConfig.READMEDIAPREPARE)
-
-        # Make dataframe using pandas
-        df = self.MakeDataFrameMediaPrepare(df)
-
-        # check if ullid is same then drop
-        df = self.RemoveDuplicatesMediaPrepare(df)
-
-        # check integer or string.
-        df = self.CheckTypeMediaPrepare(df)
-
-        # Check absurd value?
-
-        # Check negative value.
-        df = self.CheckNegativeMediaPrepare(df)
-
-        # Create table and store
-        obj.insertIntoTable(df, CleanTableNameConfig.READMEDIAPREPARE)
-
-    def CleanPrintCycle(self):
-        return PostgresDatabaseManager.readTable(ReadTableNameConfig.READPRINTCYCLE)
+    # def CleanMediaPrepare():
+    #     pass
+    #
+    # def CleanPrintCycle():
+    #     pass
