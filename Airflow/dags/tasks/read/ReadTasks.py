@@ -115,7 +115,7 @@ class ReadTasks():
                     renameScheme[Variable.get(pair[0])] = pair[1]
         logging.info("Old column names:")
         logging.info(data.columns)
-        data.rename(columns=renameScheme,inplace=True)
+        data.rename(columns=renameScheme, inplace=True)
         logging.info("New column names:")
         logging.info(data.columns)
         return data
