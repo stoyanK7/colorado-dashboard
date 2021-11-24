@@ -4,6 +4,7 @@ from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 
 from tasks.read.ReadTasks import ReadTasks
+from tasks.clean.cleanTasks import CleanTasks
 
 default_args = {
     'owner': 'airflow',
@@ -28,9 +29,9 @@ with DAG(
         task_id='readImage',
         python_callable=ReadTasks.ReadImage
     )
-    readImage = PythonOperator(
-        task_id='readImage',
-        python_callable=ReadTasks.ReadImage
+    cleanImage = PythonOperator(
+        task_id='cleanImage',
+        python_callable=CleanTasks.CleanImage
     )
     # readMediaPrepare = PythonOperator(
     #     task_id='readMediaPrepare',
@@ -41,5 +42,6 @@ with DAG(
     #     python_callable=ReadTasks.ReadTasks.ReadPrintCycle
     # )
 
+    readImage >> cleanImage
 
     # readImage
