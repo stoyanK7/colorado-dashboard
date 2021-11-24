@@ -30,6 +30,22 @@ class AggregateTasks:
         # Save into a database
         AggregateTasks.__insert_into_db(df, AggregateTableNameConfig.AGGREGATEIMAGE)
 
+    @staticmethod
+    def AggregateSqmPerPrintMode():
+        pass
+
+    @staticmethod
+    def AggregateInkUsage():
+        pass
+
+    @staticmethod
+    def AggregateTopTenPrintVolume():
+        pass
+
+    @staticmethod
+    def AggregateMediaTypesPerMachine():
+        pass
+
 
     @staticmethod
     def __read_from_db(table_name) -> pd.DataFrame:

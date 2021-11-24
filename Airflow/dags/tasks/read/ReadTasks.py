@@ -43,10 +43,12 @@ class ReadTasks():
         # lastSeenDf = pd.DataFrame(data=lastReadData)
         # pdm=PostgresDatabaseManager()
         # pdm.insertIntoTable(lastSeenDf, LastSeenTableConfig.LAST_SEEN_IMAGE_TABLE)
-    def ReadMediaPrepare(self):
+    @staticmethod
+    def ReadMediaPrepare():
         # do stuff, remove pass
         pass
-    def ReadPrintCycle(self):
+    @staticmethod
+    def ReadPrintCycle():
         # do stuff, remove pass
         pass
 
