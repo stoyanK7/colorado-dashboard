@@ -25,7 +25,7 @@ const MediaCategoryUsageBarChart = ({ data, index }) => {
                     tickSize: 5,
                     tickPadding: 5,
                     tickRotation: 40,
-                    legend: 'days',
+                    legend: 'Date',
                     legendPosition: 'middle',
                     legendOffset: 55
                 }}

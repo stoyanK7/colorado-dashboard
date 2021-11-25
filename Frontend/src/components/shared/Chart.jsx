@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import InkUsageBarChart from '../charts/InkUsageBarChart';
 import Loading from '../static/Loading';
 import MediaCategoryUsageBarChart from '../charts/MediaCategoryUsageBarChart';
-import SquareMeterPerPrintMode from '../charts/SquareMeterPerPrintMode';
+import SquareMeterPerPrintModeBarChart from '../charts/SquareMeterPerPrintModeBarChart';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { forwardRef } from 'react';
 import useFetch from '../../hooks/useFetch';
@@ -23,7 +23,7 @@ const Chart = forwardRef(({ setChartTitle, fullScreen, disableFullScreen }, ref)
   switch (chart) {
     case 'MediaCategoryUsage': component = <MediaCategoryUsageBarChart data={data} index='date' />; setChartTitle('Media Categories Usage'); break;
     case 'InkUsage': component = <InkUsageBarChart data={data} index='date' />; setChartTitle('Ink Usage'); break;
-    case 'SquareMeterPerPrintMode': component = <SquareMeterPerPrintMode data={data} index='date' />; setChartTitle('Printed Square Meters Per Print Mode'); break;
+    case 'SquareMeterPerPrintMode': component = <SquareMeterPerPrintModeBarChart data={data} index='date' />; setChartTitle('Printed Square Meters Per Print Mode'); break;
     // TODO: add the rest of the paths when the API supports them
     default: break;
   };
