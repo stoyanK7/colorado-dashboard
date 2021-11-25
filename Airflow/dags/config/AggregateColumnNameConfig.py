@@ -2,4 +2,4 @@
 ULLID = "ullid"
 DATE = "date"
 IMAGEAREA = "imagearea"
-MEDIATYPE = "mediatype"
+MEDIATYPE = "mediacategory"

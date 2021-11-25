@@ -28,3 +28,4 @@ COPY airflow.requirements.txt /root/airflow.requirements.txt
 
 RUN make internal-install-airflow
 RUN make internal-install-deps
+RUN pip install pymysql
