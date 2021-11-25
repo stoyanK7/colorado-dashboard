@@ -22,6 +22,6 @@ public class SquareMeterPerPrintModeRepository
      */
     @Override
     public List<SquareMeterPerPrintMode> getAll() {
-        return jpa.findAll();
+        return jpa.getAllByOrderByDateAsc();
     }
 }
