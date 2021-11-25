@@ -91,7 +91,7 @@ class CleanTasks():
         df[CleaningColumnNameConfig.ACCOUNTEDINKMAGENTA] = pd.to_numeric(df[CleaningColumnNameConfig.ACCOUNTEDINKMAGENTA], errors='coerce')
         df[CleaningColumnNameConfig.IMAGELENGTH] = pd.to_numeric(df[CleaningColumnNameConfig.IMAGELENGTH], errors='coerce')
         df[CleaningColumnNameConfig.IMAGEWIDTH] = pd.to_numeric(df[CleaningColumnNameConfig.IMAGEWIDTH], errors='coerce')
-        df[CleaningColumnNameConfig.DATE] = pd.to_datetime(df[CleaningColumnNameConfig.DATE], errors='coerce').dt.strftime('%d/%m/%Y')
+        df[CleaningColumnNameConfig.DATE] = pd.to_datetime(df[CleaningColumnNameConfig.DATE], errors='coerce').dt.strftime('%Y-%m-%d')
         df[CleaningColumnNameConfig.MEDIATYPE] = df[CleaningColumnNameConfig.MEDIATYPE].mask(pd.to_numeric(df[CleaningColumnNameConfig.MEDIATYPE], errors='coerce').notna())
         return df
 
