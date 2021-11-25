@@ -33,7 +33,7 @@ const InkUsageBarChart = ({ data, index }) => {
                     tickSize: 5,
                     tickPadding: 5,
                     tickRotation: 0,
-                    legend: 'ml',
+                    legend: 'Litres',
                     legendPosition: 'middle',
                     legendOffset: -40
                 }}
@@ -71,7 +71,7 @@ const InkUsageBarChart = ({ data, index }) => {
                             <svg width='20px' height='20px' style={{ marginRight: '5px' }}><rect width='20px' height='20px' fill={color}></rect></svg>
                             <span style={{ fontSize: '1.1rem' }}>{id}</span>
                         </div>
-                        Printed square meters: <b>{value}</b>
+                        Litres used: <b>{value}</b>
                         <br />
                         Date: <b>{indexValue}</b>
                     </div>

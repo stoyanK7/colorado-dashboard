@@ -1,7 +1,7 @@
 import { ResponsiveBarCanvas } from '@nivo/bar';
 import chartTheme from '../../util/chartTheme';
 
-const SquareMeterPerPrintMode = ({ data, index }) => {
+const SquareMeterPerPrintModeBarChart = ({ data, index }) => {
   if (typeof data === 'undefined' || data.length === 0) return null;
   // TODO: Seperate into own function
   let keys = Object.keys(data[0]);
@@ -26,7 +26,7 @@ const SquareMeterPerPrintMode = ({ data, index }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 40,
-          legend: 'days',
+          legend: 'Date',
           legendPosition: 'middle',
           legendOffset: 55
         }}
@@ -82,4 +82,4 @@ const SquareMeterPerPrintMode = ({ data, index }) => {
   );
 };
 
-export default SquareMeterPerPrintMode;
+export default SquareMeterPerPrintModeBarChart;

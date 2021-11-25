@@ -23,6 +23,6 @@ public class MediaCategoryUsageRepository
      */
     @Override
     public List<MediaCategoryUsage> getAll() {
-        return jpa.findAll();
+        return jpa.getAllByOrderByDateAsc();
     }
 }

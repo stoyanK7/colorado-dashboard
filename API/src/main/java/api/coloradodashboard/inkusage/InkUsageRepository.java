@@ -21,6 +21,6 @@ public class InkUsageRepository implements GenericRepository<InkUsage> {
      */
     @Override
     public List<InkUsage> getAll() {
-        return jpa.findAll();
+        return jpa.getAllByOrderByDateAsc();
     }
 }

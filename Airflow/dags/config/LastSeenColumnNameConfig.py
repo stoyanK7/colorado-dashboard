@@ -1,0 +1,2 @@
+LAST_SEEN_IMAGE_FILE_PATH = "filepath"
+LAST_SEEN_IMAGE_ROW_ID = "rowid"

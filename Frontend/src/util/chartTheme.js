@@ -4,9 +4,9 @@ function colors(id, maxId, type) {
         case 'ink-usage':
             colorList = [
                 "#333333", // Black
-                "#00FFFF", // Cyan
-                "#FF00FF", // Magenta
-                "#f7f700" // Yellow
+                "#00E6E6", // Cyan
+                "#E800E8", // Magenta
+                "#F7F700" // Yellow
             ];
             break;
         default: return `hsl(${id / maxId * 350}, 100%, 70%)`;

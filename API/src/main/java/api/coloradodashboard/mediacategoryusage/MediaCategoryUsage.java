@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -21,7 +18,9 @@ import java.util.Date;
 public class MediaCategoryUsage {
     @Id
     private long machineId;
+    @Temporal(TemporalType.DATE)
     private Date date;
     private double printedSquareMeters;
+    @Enumerated(EnumType.STRING)
     private MediaCategory mediaCategory;
 }
