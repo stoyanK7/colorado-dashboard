@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +36,7 @@ public class SquareMeterPerPrintModeConverter implements
     public List<Map<String, String>> modelToDTO(
             List<SquareMeterPerPrintMode> objects) {
         List<Map<String, String>> result = new ArrayList<>();
-        Map<String, Map<PrintMode, Double>> intermediate = new HashMap<>();
+        Map<String, Map<PrintMode, Double>> intermediate = new LinkedHashMap<>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
         for (SquareMeterPerPrintMode squareMeterPerPrintMode : objects) {
