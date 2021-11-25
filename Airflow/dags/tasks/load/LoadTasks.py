@@ -13,7 +13,7 @@ class LoadTasks:
     @staticmethod
     def LoadMediaCategoryUsage():
         df = LoadTasks.__read_from_db_postgresql(AggregateTableNameConfig.AGGREGATEIMAGE)
-        # LoadTasks.__add_data_to_api(df)
+        LoadTasks.__add_data_to_api(df)
 
         first_date_df = LoadTasks.__get_first_value_from_df(df, AggregateColumnNameConfig.DATE)
         first_area_df = LoadTasks.__get_first_value_from_df(df, AggregateColumnNameConfig.IMAGEAREA)
@@ -90,29 +90,29 @@ class LoadTasks:
 
 
 
-    # @staticmethod
-    # def __update_area(table_name, id_column , new_area):
-    #     try:
-    #         logging.info("Making connection with MySql database")
-    #         connection = mysql.connector.connect(host='localhost',
-    #                                              user='canon',
-    #                                              password='canon',
-    #                                              db='canon')
-    #         sql_read_query = """WITH imagetable AS
-    #                             ( SELECT TOP 1 * FROM {table} BY {id_column} DESC)
-    #                             UPDATE {table} SET printed_square_meters={area};"""\
-    #                             .format(table=table_name, id_column=id_column, area=new_area)
-    #         cursor = connection.cursor(prepared=True)
-    #         cursor.execute(sql_read_query)
-    #         return cursor.fetchall()
-    #     except mysql.connector.Error as error:
-    #         logging.info(error)
-    #         return
-    #     finally:
-    #         if connection.is_connected():
-    #             cursor.close()
-    #             connection.close()
-    #             logging.info("MySql connection is closed")
+    @staticmethod
+    def __update_area(table_name, new_area):
+        try:
+            logging.info("Making connection with MySql database")
+            logging.info("Adding data to the  MySql database")
+            connection = pymysql.connect(host='host.docker.internal', user='canon', password='canon', db='canon')
+            cursor = connection.cursor()
+
+            sql_read_query = """WITH imagetable AS
+                                ( SELECT TOP 1 * FROM {table} BY date DESC)
+                                UPDATE {table} SET printed_square_meters={area};"""\
+                                .format(table=table_name, area=new_area)
+            cursor = connection.cursor(prepared=True)
+            cursor.execute(sql_read_query)
+            return cursor.fetchall()
+        except pymysql.Error as e:
+            logging.info(e)
+            return
+        finally:
+            if connection.is_connected():
+                cursor.close()
+                connection.close()
+                logging.info("MySql connection is closed")
 
 
 
@@ -124,15 +124,15 @@ class LoadTasks:
             logging.info("Adding data to the  MySql database")
             connection = pymysql.connect(host='host.docker.internal', user='canon', password='canon', db='canon')
             cursor = connection.cursor()
-            # cols = "`,`".join([str(i) for i in df.columns.tolist()])
+            cols = "`,`".join([str(i) for i in df.columns.tolist()])
 
             for i, row in df.iterrows():
-                # sql = "INSERT INTO `media_category_usage` " \
-                #       "(`" +cols + "`)" \
-                #       " VALUES (" + "%s," * (len(row) - 1) + "%s)"
                 sql = "INSERT INTO `media_category_usage` " \
-                        "(date, media_category, printed_square_meters)" \
-                        " VALUES (" + "%s,"*(len(row)-1) + "%s)"
+                      "(machine_id, `" +cols + "`)" \
+                      " VALUES (0, " + "%s," * (len(row) - 1) + "%s)"
+                # sql = "INSERT INTO `media_category_usage` " \
+                #         "(machine_id, date, media_category, printed_square_meters)" \
+                #         " VALUES (0," + "%s,"*(len(row)-1) + "%s)"
                 cursor.execute(sql, tuple(row))
                 connection.commit()
         except pymysql.Error as e:

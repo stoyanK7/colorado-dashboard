@@ -1,6 +1,7 @@
 import logging
 
 import pandas as pd
+from tabulate import tabulate
 
 from config import AggregateTableNameConfig, AggregateColumnNameConfig, CleanTableNameConfig, CleaningColumnNameConfig
 from DAL.PostgresDatabaseManager import PostgresDatabaseManager
