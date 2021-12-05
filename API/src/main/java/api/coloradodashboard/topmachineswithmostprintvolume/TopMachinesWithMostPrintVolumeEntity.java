@@ -8,9 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
+@Table(name = "top_machines_with_most_print_volume")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor

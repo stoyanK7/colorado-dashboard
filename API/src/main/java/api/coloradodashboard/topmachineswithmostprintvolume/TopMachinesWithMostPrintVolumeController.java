@@ -1,8 +1,8 @@
 package api.coloradodashboard.topmachineswithmostprintvolume;
 
-import api.coloradodashboard.PeriodAndPrinterRequest;
-import api.coloradodashboard.PeriodRequest;
-import api.coloradodashboard.PrinterRequest;
+import api.coloradodashboard.request.PeriodAndPrinterRequest;
+import api.coloradodashboard.request.PeriodRequest;
+import api.coloradodashboard.request.PrinterRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;

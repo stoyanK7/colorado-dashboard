@@ -1,10 +1,12 @@
-package api.coloradodashboard;
+package api.coloradodashboard.request;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.util.Calendar;
 import java.util.Date;
 
+@NoArgsConstructor
 @AllArgsConstructor
 public class PeriodRequest {
     private Date from;
