@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * <b>REST API</b> controller for <b><i>Top machines with most print volume</i></b> chart.
- * Returns a list of TopMachinesWithMostPrintVolumeDto objects.
+ * Returns a list of TopMachinesWithMostPrintVolumeDto objects or 404 if no data is present.
  */
 @RestController
 @RequestMapping("TopMachinesWithMostPrintVolume")
@@ -86,6 +86,22 @@ public class TopMachinesWithMostPrintVolumeController {
         return ResponseEntity.ok().body(data);
     }
 
+    /**
+     * <b>POST</b> request returning all data from the database for the provided
+     * time period and list of printers.
+     *
+     * @param request A <b>JSON object</b>, with one field. Expected format:
+     *                {
+     *                  "from": "2021-12-20",
+     *                  "to": "2021-12-30",
+     *                  "printerIds": [
+     *                      "702",
+     *                      "703
+     *                  ]
+     *                }
+     * @return A <b>list of TopMachinesWithMostPrintVolumeDto objects</b>, each
+     * one representing a different printer, or <b>404</b> if no data is present.
+     */
     @PostMapping("/PeriodAndPrinter")
     public ResponseEntity<List<TopMachinesWithMostPrintVolumeDto>> getPrintersForPeriod(@RequestBody PeriodAndPrinterRequest request) {
         List<TopMachinesWithMostPrintVolumeDto> data

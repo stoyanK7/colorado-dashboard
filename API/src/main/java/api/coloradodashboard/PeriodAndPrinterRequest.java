@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 
 @Getter
-@Setter
 @AllArgsConstructor
 public class PeriodAndPrinterRequest {
     private Date from;
