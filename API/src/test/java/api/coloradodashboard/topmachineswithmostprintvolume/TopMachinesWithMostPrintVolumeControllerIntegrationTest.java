@@ -10,6 +10,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -26,6 +28,8 @@ class TopMachinesWithMostPrintVolumeControllerTest {
     private TopMachinesWithMostPrintVolumeController componentUnderTest;
     @Mock
     private TopMachinesWithMostPrintVolumeService service;
+    @Autowired
+    private MockMvc mockMvc;
 
     @Test
     @DisplayName("INTEGRATION: getAll() invokes service method.")
@@ -93,5 +97,12 @@ class TopMachinesWithMostPrintVolumeControllerTest {
         assertThat(fromArgumentCaptor.getValue()).isEqualTo(from);
         assertThat(toArgumentCaptor.getValue()).isEqualTo(to);
         assertThat(printerIdsArgumentCaptor.getValue()).isEqualTo(printerIds);
+    }
+
+    @Test
+    @DisplayName("UNIT: getAll() returns (404)NOT FOUND when no data present.")
+    void unitTestGetAllNotFound() {
+        componentUnderTest.getAll();
+        verify(service).getAll();
     }
 }
