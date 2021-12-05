@@ -1,6 +1,5 @@
 package api.coloradodashboard.topmachineswithmostprintvolume;
 
-import api.coloradodashboard.squaremeterperprintmode.SquareMeterPerPrintModeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,28 +8,27 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Service for SquareMeterPerPrintModePerDay model.
+ * Service for
  */
 @Service
 @AllArgsConstructor
 public class TopMachinesWithMostPrintVolumeService {
-    private SquareMeterPerPrintModeRepository repository;
+    private TopMachinesWithMostPrintVolumeRepository repository;
 
     public List<TopMachinesWithMostPrintVolumeDto> getAll() {
-        return new ArrayList<TopMachinesWithMostPrintVolumeDto>();
+        return repository.getAll();
     }
 
     public List<TopMachinesWithMostPrintVolumeDto> getAllForPeriod(Date from, Date to) {
-        return new ArrayList<TopMachinesWithMostPrintVolumeDto>();
-
+        return repository.getAllForPeriod(from, to);
     }
 
     public List<TopMachinesWithMostPrintVolumeDto> getPrinters(List<String> printerIds) {
-        return new ArrayList<TopMachinesWithMostPrintVolumeDto>();
-
+        return repository.getPrinters(printerIds);
     }
 
-    public List<TopMachinesWithMostPrintVolumeDto> getPrintersForPeriod(Date from, Date to, List<String> printerIds) {
+    public List<TopMachinesWithMostPrintVolumeDto> getPrintersForPeriod
+            (Date from, Date to, List<String> printerIds) {
         return new ArrayList<TopMachinesWithMostPrintVolumeDto>();
 
     }

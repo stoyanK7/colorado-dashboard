@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * REST API controller for Ink Usage. Outgoing graph information is output
- * as a List of Maps, where very Map represents a bar in the graph.
+ * <b>REST API</b> controller for <b><i>Top machines with most print volume</i></b> chart.
+ * Returns a list of TopMachinesWithMostPrintVolumeDto objects.
  */
 @RestController
 @RequestMapping("TopMachinesWithMostPrintVolume")
@@ -26,9 +26,10 @@ public class TopMachinesWithMostPrintVolumeController {
     TopMachinesWithMostPrintVolumeService service;
 
     /**
-     * GET request that returns all the data stored in the repository
+     * <b>GET</b> request returning all data from the database.
      *
-     * @return A List of Maps, representing all the days stored in the repository
+     * @return A <b>list of TopMachinesWithMostPrintVolumeDto objects</b>, each
+     * one representing a different printer, or <b>404</b> if no data is present.
      */
     @GetMapping
     public ResponseEntity<List<TopMachinesWithMostPrintVolumeDto>> getAll() {
@@ -39,6 +40,18 @@ public class TopMachinesWithMostPrintVolumeController {
         return ResponseEntity.ok().body(data);
     }
 
+    /**
+     * <b>POST</b> request returning all data from the database for the provided
+     * time period.
+     *
+     * @param request A <b>JSON object</b>, with two fields. Expected format:
+     *                {
+     *                "from": "2021-12-20",
+     *                "to": "2021-12-30
+     *                }
+     * @return A <b>list of TopMachinesWithMostPrintVolumeDto objects</b>, each
+     * one representing a different printer, or <b>404</b> if no data is present.
+     */
     @PostMapping("/Period")
     public ResponseEntity<List<TopMachinesWithMostPrintVolumeDto>> getAllForPeriod(@RequestBody PeriodRequest request) {
         List<TopMachinesWithMostPrintVolumeDto> data
@@ -49,6 +62,20 @@ public class TopMachinesWithMostPrintVolumeController {
         return ResponseEntity.ok().body(data);
     }
 
+    /**
+     * <b>POST</b> request returning all data from the database for the provided
+     * list of printers.
+     *
+     * @param request A <b>JSON object</b>, with one field. Expected format:
+     *                {
+     *                  "printerIds": [
+     *                      "702",
+     *                      "703
+     *                  ]
+     *                }
+     * @return A <b>list of TopMachinesWithMostPrintVolumeDto objects</b>, each
+     * one representing a different printer, or <b>404</b> if no data is present.
+     */
     @PostMapping("/Printer")
     public ResponseEntity<List<TopMachinesWithMostPrintVolumeDto>> getPrinters(@RequestBody PrinterRequest request) {
         List<TopMachinesWithMostPrintVolumeDto> data
@@ -60,8 +87,7 @@ public class TopMachinesWithMostPrintVolumeController {
     }
 
     @PostMapping("/PeriodAndPrinter")
-    public ResponseEntity<List<TopMachinesWithMostPrintVolumeDto>>
-    getPrintersForPeriod(@RequestBody PeriodAndPrinterRequest request) {
+    public ResponseEntity<List<TopMachinesWithMostPrintVolumeDto>> getPrintersForPeriod(@RequestBody PeriodAndPrinterRequest request) {
         List<TopMachinesWithMostPrintVolumeDto> data
                 = service.getPrintersForPeriod(request.getFrom(), request.getTo(), request.getPrinterIds());
         if (data.isEmpty())
