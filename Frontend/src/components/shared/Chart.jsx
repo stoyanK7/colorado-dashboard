@@ -8,24 +8,10 @@ import chartSwitch from '../../util/chartSwitch';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import useFetch from '../../hooks/useFetch';
 
-const Chart = forwardRef(({ chartPath, fullScreen, disableFullScreen }, ref) => {
-  const [link, setLink] = useState();
-  const [requestBody, setRequestBody] = useState();
+const Chart = forwardRef(({ link, requestBody, chartPath, fullScreen, disableFullScreen }, ref) => {
   // Retrieve chart data
   // Assumes that URL path is same as API endpoint
   const { data, isPending, error } = useFetch(link || `/${chartPath}`, requestBody);
-
-  // Rerender whole component when the link or request body change
-  useEffect(() => { }, [link, requestBody]);
-
-  // Functions to be called from the parent View component
-  useImperativeHandle(ref, () => ({
-    makeRequest(providedLink, providedRequestBody) {
-      console.log("make request invoked");
-      setRequestBody(providedRequestBody);
-      setLink(providedLink);
-    }
-  }));
 
   return (
     <div ref={ref}

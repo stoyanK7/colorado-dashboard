@@ -7,6 +7,7 @@ import Chart from '../shared/Chart';
 import Filters from '../shared/Filters';
 import Header from '../static/Header';
 import chartTitleSwitch from '../../util/chartTitleSwitch';
+import formatDate from '../../util/formatDate';
 import { useParams } from 'react-router-dom';
 import useToggle from '../../hooks/useToggle';
 
@@ -16,16 +17,17 @@ const View = () => {
   const [chartTitle, setChartTitle] = useState('');
   const chart = useRef(null);
   const [fullScreen, toggleFullScreen] = useToggle();
-
   const [from, setFrom] = useState();
   const [to, setTo] = useState();
+  const [link, setLink] = useState();
+  const [requestBody, setRequestBody] = useState();
 
   useEffect(() => {
-    let link = chartPath;
+    let requestLink = chartPath;
     if (from && to) {
-      setChartTitle(`${chartTitleSwitch(chartPath)} from ${from} until ${to}`)
-      link += '/Period'
-      chart.current.makeRequest(link, { from, to });
+      setChartTitle(`${chartTitleSwitch(chartPath)} from ${formatDate(from)} until ${formatDate(to)}`)
+      setLink(requestLink + '/Period')
+      setRequestBody({ from, to })
     }
     // TODO: add rest of dependecies when available
   }, [from, to]);
@@ -46,6 +48,8 @@ const View = () => {
           ref={chart}
           chartPath={chartPath}
           fullScreen={fullScreen}
+          link={link}
+          requestBody={requestBody}
           disableFullScreen={() => { disableFullScreen(chart, toggleFullScreen) }} />
       </main>
     </div>

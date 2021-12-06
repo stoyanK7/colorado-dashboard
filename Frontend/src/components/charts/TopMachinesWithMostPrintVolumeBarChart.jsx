@@ -1,5 +1,4 @@
-
-import { ResponsiveBarCanvas } from '@nivo/bar';
+import { ResponsiveBar } from '@nivo/bar';
 
 const TopMachinesWithMostPrintVolumeBarChart = ({ data, index }) => {
   if (typeof data === 'undefined' || data.length === 0) return null;
@@ -9,7 +8,7 @@ const TopMachinesWithMostPrintVolumeBarChart = ({ data, index }) => {
   keys.sort();
   return (
     <>
-      <ResponsiveBarCanvas
+      <ResponsiveBar
         animate={true}
         borderWidth={1}
         data={data}
