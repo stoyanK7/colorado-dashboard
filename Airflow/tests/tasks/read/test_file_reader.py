@@ -1,7 +1,7 @@
 import os
 import shutil
 import unittest
-from tasks.read.FileReader import FileReader
+from tasks.read.file_reader import FileReader
 
 
 class TestFileReader(unittest.TestCase):

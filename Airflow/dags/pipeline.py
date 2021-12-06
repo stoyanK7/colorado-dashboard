@@ -3,12 +3,12 @@ from datetime import timedelta, datetime
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 
-from tasks.load.LoadTasks import LoadTasks
-from tasks.preprocess.PreprocessTasks import PreprocessTasks
-from tasks.read.ReadTasks import ReadTasks
-from tasks.clean.cleanTasks import CleanTasks
-from tasks.aggregate.AgregateTasks import AggregateTasks
-from tasks.cleanup.Cleanup import CleanupTasks
+from tasks.load.load_tasks import LoadTasks
+from tasks.preprocess.preprocess_tasks import PreprocessTasks
+from tasks.read.read_tasks import ReadTasks
+from tasks.clean.clean_tasks import CleanTasks
+from tasks.aggregate.aggregate_tasks import AggregateTasks
+from tasks.cleanup.cleanup import CleanupTasks
 
 default_args = {
     'owner': 'airflow',

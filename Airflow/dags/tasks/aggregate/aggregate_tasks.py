@@ -3,8 +3,8 @@ import logging
 import pandas as pd
 from tabulate import tabulate
 
-from config import AggregateTableNameConfig, AggregateColumnNameConfig, CleanTableNameConfig, CleaningColumnNameConfig
-from DAL.PostgresDatabaseManager import PostgresDatabaseManager
+from config import aggregate_table_name_config, aggregate_column_name_config, clean_table_name_config, cleaning_column_name_config
+from DAL.postgres_database_manager import PostgresDatabaseManager
 
 
 class AggregateTasks:
@@ -12,24 +12,24 @@ class AggregateTasks:
     @staticmethod
     def aggregate_media_category_usage():
         # Take the dataframe from the previous step
-        df = AggregateTasks.__read_from_db(CleanTableNameConfig.READ_IMAGE)
+        df = AggregateTasks.__read_from_db(clean_table_name_config.READ_IMAGE)
         if df.empty:
             logging.info("No new data was found, skipping step.")
             return
         # Multiply ImageLength and ImageWidth into Area column
         df = AggregateTasks._aggregate_two_columns(df,
-                                                   CleaningColumnNameConfig.IMAGE_WIDTH,
-                                                   CleaningColumnNameConfig.IMAGE_LENGTH,
-                                                   AggregateColumnNameConfig.IMAGE_AREA,
+                                                   cleaning_column_name_config.IMAGE_WIDTH,
+                                                   cleaning_column_name_config.IMAGE_LENGTH,
+                                                   aggregate_column_name_config.IMAGE_AREA,
                                                    True)
 
         # Group
         df = AggregateTasks._group_by_two_columns_and_sum_third(df,
-                                                                CleaningColumnNameConfig.DATE,
-                                                                CleaningColumnNameConfig.MEDIA_TYPE,
-                                                                AggregateColumnNameConfig.IMAGE_AREA)
+                                                                cleaning_column_name_config.DATE,
+                                                                cleaning_column_name_config.MEDIA_TYPE,
+                                                                aggregate_column_name_config.IMAGE_AREA)
         # Save into a database
-        AggregateTasks._insert_into_db(df, AggregateTableNameConfig.AGGREGATE_IMAGE)
+        AggregateTasks._insert_into_db(df, aggregate_table_name_config.AGGREGATE_IMAGE)
 
     @staticmethod
     def aggregate_sqm_per_print_mode():
@@ -56,7 +56,7 @@ class AggregateTasks:
         df = pdm.read_table(table_name)
         if df.empty:
             return df
-        df = df.set_index(AggregateColumnNameConfig.ULLID)
+        df = df.set_index(aggregate_column_name_config.ULLID)
         return df
 
     @staticmethod

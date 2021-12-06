@@ -8,7 +8,7 @@ from airflow.settings import Session
 from cryptography.fernet import Fernet
 from sqlalchemy import create_engine, text
 
-from dags.DAL.PostgresDatabaseManager import PostgresDatabaseManager
+from dags.DAL.postgres_database_manager import PostgresDatabaseManager
 
 class PostgresDatabaseManagerTests(unittest.TestCase):
 

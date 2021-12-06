@@ -3,8 +3,8 @@ import logging
 import pymysql
 import pandas as pd
 
-from config import AggregateTableNameConfig, AggregateColumnNameConfig
-from DAL.PostgresDatabaseManager import PostgresDatabaseManager
+from config import aggregate_table_name_config, aggregate_column_name_config
+from DAL.postgres_database_manager import PostgresDatabaseManager
 from tabulate import tabulate
 
 class LoadTasks:
@@ -12,16 +12,16 @@ class LoadTasks:
 
     @staticmethod
     def load_media_category_usage():
-        df = LoadTasks._read_from_db_postgresql(AggregateTableNameConfig.AGGREGATE_IMAGE)
+        df = LoadTasks._read_from_db_postgresql(aggregate_table_name_config.AGGREGATE_IMAGE)
         if df.empty:
             logging.info("No new data was found, skipping step.")
             return
 
 
-        first_date_df = LoadTasks._get_first_value_from_df(df, AggregateColumnNameConfig.DATE)
-        first_area_df = LoadTasks._get_first_value_from_df(df, AggregateColumnNameConfig.IMAGE_AREA)
+        first_date_df = LoadTasks._get_first_value_from_df(df, aggregate_column_name_config.DATE)
+        first_area_df = LoadTasks._get_first_value_from_df(df, aggregate_column_name_config.IMAGE_AREA)
 
-        last_date_api = LoadTasks._get_last_value_from_api("media_category_usage", AggregateColumnNameConfig.DATE)
+        last_date_api = LoadTasks._get_last_value_from_api("media_category_usage", aggregate_column_name_config.DATE)
         last_area_api = LoadTasks._get_last_value_from_api("media_category_usage", "printed_square_meters")
 
 
@@ -31,7 +31,7 @@ class LoadTasks:
             if LoadTasks._check_adding_area(last_date_api, first_date_df):
                 new_area = LoadTasks._adding_area(last_area_api, first_area_df)
                 LoadTasks._update_area('media_category_usage', new_area, last_date_api)
-                df = df[df[AggregateColumnNameConfig.DATE] != pd.to_datetime(last_date_api.strftime('%Y-%m-%d'), format='%Y-%m-%d')]
+                df = df[df[aggregate_column_name_config.DATE] != pd.to_datetime(last_date_api.strftime('%Y-%m-%d'), format='%Y-%m-%d')]
                 logging.info(tabulate(df, headers='keys', tablefmt='psql'))
                 logging.info(new_area)
         logging.info(df)

@@ -6,10 +6,10 @@ from airflow.models.variable import Variable
 
 # from tasks.read.FileReader import FileReader
 # from DAL.PostgresDatabaseManager import PostgresDatabaseManager
-# from config import ReadTableNameConfig, LastSeenTableConfig, LastSeenColumnNameConfig
-from tasks.read.FileReader import FileReader
-from DAL.PostgresDatabaseManager import PostgresDatabaseManager
-from config import ReadTableNameConfig, LastSeenTableConfig, LastSeenColumnNameConfig, ReadImageColNameConstants
+# from config import read_table_name_config, last_seen_table_config, last_seen_column_name_config
+from tasks.read.file_reader import FileReader
+from DAL.postgres_database_manager import PostgresDatabaseManager
+from config import read_table_name_config, last_seen_table_config, last_seen_column_name_config, read_image_col_name_constants
 
 
 class ReadTasks():
@@ -17,9 +17,9 @@ class ReadTasks():
     @staticmethod
     def read_image(ti):
 
-        lastSeenFile, lastSeenRow = ReadTasks._get_last_file_and_row(LastSeenTableConfig.LAST_SEEN_IMAGE_TABLE,
-                                                                     LastSeenColumnNameConfig.LAST_SEEN_IMAGE_FILE_PATH,
-                                                                     LastSeenColumnNameConfig.LAST_SEEN_IMAGE_ROW_ID)
+        lastSeenFile, lastSeenRow = ReadTasks._get_last_file_and_row(last_seen_table_config.LAST_SEEN_IMAGE_TABLE,
+                                                                     last_seen_column_name_config.LAST_SEEN_IMAGE_FILE_PATH,
+                                                                     last_seen_column_name_config.LAST_SEEN_IMAGE_ROW_ID)
 
         filesToRead = ReadTasks._get_file_names("image_file_directory", lastSeenFile)
 
@@ -33,16 +33,16 @@ class ReadTasks():
             logging.info("No new data was found, terminating reading step successfully.")
             return
 
-        ReadTasks._change_col_names(data, ReadImageColNameConstants)
+        ReadTasks._change_col_names(data, read_image_col_name_constants)
 
-        ReadTasks._insert_into_db(data, ReadTableNameConfig.READ_IMAGE)
+        ReadTasks._insert_into_db(data, read_table_name_config.READ_IMAGE)
 
         ReadTasks._make_xcom(ti, filesToRead[len(filesToRead) - 1], data[Variable.get("image_col_name_ullid")].iloc[-1])
 
-        # lastReadData = {LastSeenColumnNameConfig.LAST_SEEN_IMAGE_FILE_PATH:[filesToRead[len(filesToRead) - 1]], LastSeenColumnNameConfig.LAST_SEEN_IMAGE_ROW_ID:[data["ullid"].iloc[-1]]}
+        # lastReadData = {last_seen_column_name_config.LAST_SEEN_IMAGE_FILE_PATH:[filesToRead[len(filesToRead) - 1]], last_seen_column_name_config.LAST_SEEN_IMAGE_ROW_ID:[data["ullid"].iloc[-1]]}
         # lastSeenDf = pd.DataFrame(data=lastReadData)
         # pdm=PostgresDatabaseManager()
-        # pdm.insertIntoTable(lastSeenDf, LastSeenTableConfig.LAST_SEEN_IMAGE_TABLE)
+        # pdm.insertIntoTable(lastSeenDf, last_seen_table_config.LAST_SEEN_IMAGE_TABLE)
     @staticmethod
     def read_media_prepare():
         # do stuff, remove pass
