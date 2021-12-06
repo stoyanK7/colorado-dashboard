@@ -22,7 +22,7 @@
   font-size: 2rem;
 }
 
-.view, .specific-printers input {
+.view, .specific-printers > input {
   width: 100%;
 }
 
@@ -90,7 +90,7 @@
 
 /* Align input fields */
 
-.timespan>div, .specific-printers input {
+.timespan>div, .specific-printers > input {
   position: relative;
   height: 100%;
   display: flex;

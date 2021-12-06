@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import PrintersFilter from './PrintersFilter';
 import TimespanFilter from './TimespanFilter';
 import { faExpand } from '@fortawesome/free-solid-svg-icons';
 
@@ -15,9 +16,8 @@ const Filters = ({ chartPath, enableFullScreen, from, setFrom, to, setTo }) => {
         to={to}
         setTo={setTo}
         chartPath={chartPath} />
-      <div className='specific-printers'>
-        <input type='text' placeholder='Specific printers..' />
-      </div>
+      <PrintersFilter
+        chartPath={chartPath} />
       <div className='full-screen' onClick={enableFullScreen}>
         <FontAwesomeIcon icon={faExpand} className='fa-expand' />
         <span>Full screen</span>
