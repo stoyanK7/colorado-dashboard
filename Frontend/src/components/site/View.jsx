@@ -23,6 +23,7 @@ const View = () => {
       <main>
         <h1>{chartTitle}</h1>
         <Filter
+          chartPath={chartPath}
           enableFullScreen={() => { enableFullScreen(chart, toggleFullScreen) }} />
         <Chart
           ref={chart}

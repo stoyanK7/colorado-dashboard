@@ -1,5 +1,6 @@
 package api.coloradodashboard.topmachineswithmostprintvolume;
 
+import api.coloradodashboard.PeriodRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -64,5 +65,9 @@ public class TopMachinesWithMostPrintVolumeService {
      */
     public List<TopMachinesWithMostPrintVolumeDto> getPrintersForPeriod(Date from, Date to, List<String> printerIds) {
         return repository.getPrintersForPeriod(from, to, printerIds);
+    }
+
+    public PeriodRequest getAvailableTimePeriod() {
+        return repository.getAvailableTimePeriod();
     }
 }

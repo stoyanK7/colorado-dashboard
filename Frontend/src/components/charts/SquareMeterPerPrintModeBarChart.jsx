@@ -1,5 +1,4 @@
 import { ResponsiveBarCanvas } from '@nivo/bar';
-import chartTheme from '../../util/chartTheme';
 
 const SquareMeterPerPrintModeBarChart = ({ data, index }) => {
   if (typeof data === 'undefined' || data.length === 0) return null;

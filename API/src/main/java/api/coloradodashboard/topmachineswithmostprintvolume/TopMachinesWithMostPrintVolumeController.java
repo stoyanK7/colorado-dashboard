@@ -1,8 +1,8 @@
 package api.coloradodashboard.topmachineswithmostprintvolume;
 
-import api.coloradodashboard.request.PeriodAndPrinterRequest;
-import api.coloradodashboard.request.PeriodRequest;
-import api.coloradodashboard.request.PrinterRequest;
+import api.coloradodashboard.PeriodAndPrinterRequest;
+import api.coloradodashboard.PeriodRequest;
+import api.coloradodashboard.PrinterRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -68,10 +68,10 @@ public class TopMachinesWithMostPrintVolumeController {
      *
      * @param request A <b>JSON object</b>, with one field. Expected format:
      *                {
-     *                  "printerIds": [
-     *                      "702",
-     *                      "703
-     *                  ]
+     *                "printerIds": [
+     *                "702",
+     *                "703
+     *                ]
      *                }
      * @return A <b>list of TopMachinesWithMostPrintVolumeDto objects</b>, each
      * one representing a different printer, or <b>404</b> if no data is present.
@@ -92,12 +92,12 @@ public class TopMachinesWithMostPrintVolumeController {
      *
      * @param request A <b>JSON object</b>, with one field. Expected format:
      *                {
-     *                  "from": "2021-12-20",
-     *                  "to": "2021-12-30",
-     *                  "printerIds": [
-     *                      "702",
-     *                      "703
-     *                  ]
+     *                "from": "2021-12-20",
+     *                "to": "2021-12-30",
+     *                "printerIds": [
+     *                "702",
+     *                "703
+     *                ]
      *                }
      * @return A <b>list of TopMachinesWithMostPrintVolumeDto objects</b>, each
      * one representing a different printer, or <b>404</b> if no data is present.
@@ -107,6 +107,16 @@ public class TopMachinesWithMostPrintVolumeController {
         List<TopMachinesWithMostPrintVolumeDto> data
                 = service.getPrintersForPeriod(request.getFrom(), request.getTo(), request.getPrinterIds());
         if (data.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok().body(data);
+    }
+
+    // TODO: make seperate controller and stuff only for available time period
+        @GetMapping("/AvailableTimePeriod")
+    public ResponseEntity<PeriodRequest> getAvailableTimePeriod() {
+        PeriodRequest data = service.getAvailableTimePeriod();
+        if (data == null)
             return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok().body(data);

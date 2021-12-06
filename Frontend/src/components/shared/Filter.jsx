@@ -1,8 +1,16 @@
 import { faCalendarAlt, faExpand } from '@fortawesome/free-solid-svg-icons';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useEffect, useState } from 'react';
 
-const Filter = ({ enableFullScreen }) => {
+const Filter = ({ chartPath, enableFullScreen }) => {
+  const [from, setFrom] = useState();
+  const [to, setTo] = useState();
+
+  useEffect(() => {
+      
+  }, []);
+
   return (
     <>
       <div className='bins'>

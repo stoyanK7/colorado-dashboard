@@ -1,8 +1,8 @@
 package api.coloradodashboard.topmachineswithmostprintvolume;
 
-import api.coloradodashboard.request.PeriodAndPrinterRequest;
-import api.coloradodashboard.request.PeriodRequest;
-import api.coloradodashboard.request.PrinterRequest;
+import api.coloradodashboard.PeriodAndPrinterRequest;
+import api.coloradodashboard.PeriodRequest;
+import api.coloradodashboard.PrinterRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
