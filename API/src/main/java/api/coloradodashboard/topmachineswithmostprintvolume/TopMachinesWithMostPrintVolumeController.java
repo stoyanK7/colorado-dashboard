@@ -16,14 +16,14 @@ import java.util.List;
 
 /**
  * <b>REST API</b> controller for <b><i>Top machines with most print volume</i></b> chart.
- * Returns a list of TopMachinesWithMostPrintVolumeDto objects or 404 if no data is present.
+ * Returns a list of TopMachinesWithMostPrintVolumeDto objects or <b>404</b> if no data is present.
  */
 @RestController
 @RequestMapping("TopMachinesWithMostPrintVolume")
 @CrossOrigin("http://localhost:4000")
 @AllArgsConstructor
 public class TopMachinesWithMostPrintVolumeController {
-    TopMachinesWithMostPrintVolumeService service;
+    private TopMachinesWithMostPrintVolumeService service;
 
     /**
      * <b>GET</b> request returning all data from the database.
