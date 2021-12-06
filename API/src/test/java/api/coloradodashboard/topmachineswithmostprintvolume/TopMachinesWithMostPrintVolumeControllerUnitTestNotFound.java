@@ -25,7 +25,6 @@ import java.util.Date;
 import static api.coloradodashboard.TestUtil.asJsonString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -46,11 +45,11 @@ public class TopMachinesWithMostPrintVolumeControllerUnitTestNotFound {
     }
 
     @Test
-    @DisplayName("UNIT: GET /TopMachinesWithMostPrintVolume returns (404) NOT FOUND when no data is present.")
+    @DisplayName("UNIT: POST /TopMachinesWithMostPrintVolume returns (404) NOT FOUND when no data is present.")
     void unitTestGetAllNotFound() throws Exception {
         given(service.getAll()).willReturn(new ArrayList<>());
 
-        mockMvc.perform(get("/TopMachinesWithMostPrintVolume"))
+        mockMvc.perform(post("/TopMachinesWithMostPrintVolume"))
                 .andExpect(status().isNotFound())
                 .andReturn();
     }

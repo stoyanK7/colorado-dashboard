@@ -18,13 +18,13 @@ const useFetch = (url, requestBody) => {
         return res.data;
       })
       .then(data => {
-        console.log(data)
+        console.log(`Request succeeded: ${JSON.stringify(data)}`);
         setData(data);
         setError(null);
         setIsPending(false);
       })
       .catch(err => {
-        console.log(err);
+        console.log(`Request failed: ${JSON.stringify(err)}`);
         if (err.name === 'AbortError') console.log('fetch aborted')
         else {
           setIsPending(false);

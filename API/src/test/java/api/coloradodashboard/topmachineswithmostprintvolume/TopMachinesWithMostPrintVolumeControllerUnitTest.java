@@ -24,7 +24,6 @@ import java.util.Arrays;
 import java.util.Locale;
 
 import static api.coloradodashboard.TestUtil.asJsonString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -45,9 +44,9 @@ public class TopMachinesWithMostPrintVolumeControllerUnitTest {
     }
 
     @Test
-    @DisplayName("UNIT: GET /TopMachinesWithMostPrintVolume returns (200) OK when data is present.")
+    @DisplayName("UNIT: POST /TopMachinesWithMostPrintVolume returns (200) OK when data is present.")
     void unitTestGetAll() throws Exception {
-        mockMvc.perform(get("/TopMachinesWithMostPrintVolume"))
+        mockMvc.perform(post("/TopMachinesWithMostPrintVolume"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[{'Printer id':'701','Printed square meters':243.0},{'Printer id':'702','Printed square meters':238.0},{'Printer id':'700','Printed square meters':196.0}]"))
                 .andReturn();

@@ -8,6 +8,7 @@ const TimespanFilter = ({ chartPath, to, setTo, from, setFrom }) => {
   const [min, setMin] = useState();
   const [max, setMax] = useState();
 
+  // When the component is first rendered, retrieve the min and max date that can be provided to the API
   useEffect(() => {
     axios.get(`${chartPath}/AvailableTimePeriod`)
       .then(res => {
@@ -16,13 +17,12 @@ const TimespanFilter = ({ chartPath, to, setTo, from, setFrom }) => {
       .then(data => {
         setFrom(data.from);
         setTo(data.to);
-
         setMin(data.from);
         setMax(data.to);
       })
       .catch(err => {
         // TODO: introduce error handling logic
-      }) 
+      })
   }, []);
 
   return (
@@ -35,7 +35,11 @@ const TimespanFilter = ({ chartPath, to, setTo, from, setFrom }) => {
               defaultValue={from}
               min={min}
               max={max}
-              onChange={(e) => setFrom(e.target.value)} />
+              onChange={(e) => {
+                if (e.target.value > to)
+                  return alert('Starting date cannot be later than ending date. Chart will not be rendered.');
+                setFrom(e.target.value);
+              }} />
             <FontAwesomeIcon icon={faCalendarAlt} className='fa-calendar-alt' />
           </div>
           <span>to</span>
@@ -45,7 +49,11 @@ const TimespanFilter = ({ chartPath, to, setTo, from, setFrom }) => {
               defaultValue={to}
               min={min}
               max={max}
-              onChange={(e) => setTo(e.target.value)} />
+              onChange={(e) => {
+                if (e.target.value < from)
+                  return alert('Ending date cannot be earlier than starting date. Chart will not be rendered.');
+                setTo(e.target.value);
+              }} />
             <FontAwesomeIcon icon={faCalendarAlt} className='fa-calendar-alt' />
           </div>
         </div>

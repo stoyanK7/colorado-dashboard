@@ -31,7 +31,7 @@ public class TopMachinesWithMostPrintVolumeController {
      * @return A <b>list of TopMachinesWithMostPrintVolumeDto objects</b>, each
      * one representing a different printer, or <b>404</b> if no data is present.
      */
-    @GetMapping
+    @PostMapping
     public ResponseEntity<List<TopMachinesWithMostPrintVolumeDto>> getAll() {
         List<TopMachinesWithMostPrintVolumeDto> data = service.getAll();
         if (data.isEmpty())
