@@ -49,7 +49,7 @@ public class TopMachinesWithMostPrintVolumeControllerUnitTest {
     void unitTestGetAll() throws Exception {
         mockMvc.perform(get("/TopMachinesWithMostPrintVolume"))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'printerId':'701','printedSquareMeters':243.0},{'printerId':'702','printedSquareMeters':238.0},{'printerId':'700','printedSquareMeters':196.0}]"))
+                .andExpect(content().json("[{'Printer id':'701','Printed square meters':243.0},{'Printer id':'702','Printed square meters':238.0},{'Printer id':'700','Printed square meters':196.0}]"))
                 .andReturn();
     }
 
@@ -66,7 +66,7 @@ public class TopMachinesWithMostPrintVolumeControllerUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'printerId':'701','printedSquareMeters':138.0},{'printerId':'702','printedSquareMeters':136.0},{'printerId':'700','printedSquareMeters':96.0}]"))
+                .andExpect(content().json("[{'Printer id':'701','Printed square meters':138.0},{'Printer id':'702','Printed square meters':136.0},{'Printer id':'700','Printed square meters':96.0}]"))
                 .andReturn();
     }
 
@@ -81,7 +81,7 @@ public class TopMachinesWithMostPrintVolumeControllerUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'printerId':'702','printedSquareMeters':238.0},{'printerId':'700','printedSquareMeters':196.0}]"))
+                .andExpect(content().json("[{'Printer id':'702','Printed square meters':238.0},{'Printer id':'700','Printed square meters':196.0}]"))
                 .andReturn();
     }
 
@@ -99,7 +99,7 @@ public class TopMachinesWithMostPrintVolumeControllerUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'printerId':'702','printedSquareMeters':136.0},{'printerId':'700','printedSquareMeters':96.0}]"))
+                .andExpect(content().json("[{'Printer id':'702','Printed square meters':136.0},{'Printer id':'700','Printed square meters':96.0}]"))
                 .andReturn();
     }
 }
