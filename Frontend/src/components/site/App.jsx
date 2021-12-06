@@ -9,7 +9,10 @@ const App = () => {
       <Route exact path='/'>
         <Home />
       </Route>
-      <Route exact path='/:chart'>
+      <Route exact path='/:chartPath'>
+        <View />
+      </Route>
+      <Route exact path='/:chartPath/*'>
         <View />
       </Route>
     </Switch>
