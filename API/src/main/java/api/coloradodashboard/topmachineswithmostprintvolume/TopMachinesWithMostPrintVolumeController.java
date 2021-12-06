@@ -112,10 +112,18 @@ public class TopMachinesWithMostPrintVolumeController {
         return ResponseEntity.ok().body(data);
     }
 
-    // TODO: make seperate controller and stuff only for available time period
     @GetMapping("/AvailableTimePeriod")
     public ResponseEntity<PeriodDto> getAvailableTimePeriod() {
         PeriodDto data = service.getAvailableTimePeriod();
+        if (data == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok().body(data);
+    }
+
+    @GetMapping("/AvailablePrinters")
+    public ResponseEntity<PrinterIdsDto> getAvailablePrinters() {
+        PrinterIdsDto data = service.getAvailablePrinters();
         if (data == null)
             return ResponseEntity.notFound().build();
 
