@@ -174,7 +174,7 @@ class TestReadTasks(unittest.TestCase):
         mockFileNames.assert_called_once_with(variableKey, lastSeenFile)
         mockFilesToDf.assert_called_once_with(variableKey, filesToRead, lastSeenFile, lastSeenRow)
         mockChangeColNames.assert_called_once_with(data, ReadImageColNameConstants)
-        mockInsert.assert_called_once_with(data, ReadTableNameConfig.READIMAGE)
+        mockInsert.assert_called_once_with(data, ReadTableNameConfig.READ_IMAGE)
         mockXcom.assert_called_once_with(ti, "file2", 3)
 
     @patch("tasks.read.ReadTasks.ReadTasks._makeXcom")

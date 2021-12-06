@@ -12,14 +12,14 @@ class LoadTasks:
 
     @staticmethod
     def LoadMediaCategoryUsage():
-        df = LoadTasks.__read_from_db_postgresql(AggregateTableNameConfig.AGGREGATEIMAGE)
+        df = LoadTasks.__read_from_db_postgresql(AggregateTableNameConfig.AGGREGATE_IMAGE)
         if df.empty:
             logging.info("No new data was found, skipping step.")
             return
 
 
         first_date_df = LoadTasks.__get_first_value_from_df(df, AggregateColumnNameConfig.DATE)
-        first_area_df = LoadTasks.__get_first_value_from_df(df, AggregateColumnNameConfig.IMAGEAREA)
+        first_area_df = LoadTasks.__get_first_value_from_df(df, AggregateColumnNameConfig.IMAGE_AREA)
 
         last_date_api = LoadTasks.__get_last_value_from_api("media_category_usage", AggregateColumnNameConfig.DATE)
         last_area_api = LoadTasks.__get_last_value_from_api("media_category_usage", "printed_square_meters")

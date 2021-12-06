@@ -35,7 +35,7 @@ class ReadTasks():
 
         ReadTasks._changeColNames(data, ReadImageColNameConstants)
 
-        ReadTasks._insertIntoDb(data, ReadTableNameConfig.READIMAGE)
+        ReadTasks._insertIntoDb(data, ReadTableNameConfig.READ_IMAGE)
 
         ReadTasks._makeXcom(ti, filesToRead[len(filesToRead) - 1], data[Variable.get("image_col_name_ullid")].iloc[-1])
 

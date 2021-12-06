@@ -12,24 +12,24 @@ class AggregateTasks:
     @staticmethod
     def AggregateMediaCategoryUsage():
         # Take the dataframe from the previous step
-        df = AggregateTasks.__read_from_db(CleanTableNameConfig.READIMAGE)
+        df = AggregateTasks.__read_from_db(CleanTableNameConfig.READ_IMAGE)
         if df.empty:
             logging.info("No new data was found, skipping step.")
             return
         # Multiply ImageLength and ImageWidth into Area column
         df = AggregateTasks.__aggregate_two_columns(df,
-                                                    CleaningColumnNameConfig.IMAGEWIDTH,
-                                                    CleaningColumnNameConfig.IMAGELENGTH,
-                                                    AggregateColumnNameConfig.IMAGEAREA,
+                                                    CleaningColumnNameConfig.IMAGE_WIDTH,
+                                                    CleaningColumnNameConfig.IMAGE_LENGTH,
+                                                    AggregateColumnNameConfig.IMAGE_AREA,
                                                     True)
 
         # Group
         df = AggregateTasks.__group_by_two_columns_and_sum_third(df,
                                                                  CleaningColumnNameConfig.DATE,
-                                                                 CleaningColumnNameConfig.MEDIATYPE,
-                                                                 AggregateColumnNameConfig.IMAGEAREA)
+                                                                 CleaningColumnNameConfig.MEDIA_TYPE,
+                                                                 AggregateColumnNameConfig.IMAGE_AREA)
         # Save into a database
-        AggregateTasks.__insert_into_db(df, AggregateTableNameConfig.AGGREGATEIMAGE)
+        AggregateTasks.__insert_into_db(df, AggregateTableNameConfig.AGGREGATE_IMAGE)
 
     @staticmethod
     def AggregateSqmPerPrintMode():

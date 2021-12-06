@@ -16,8 +16,8 @@ from config import CleaningColumnNameConfig
 class PostgresDatabaseManagerTests(unittest.TestCase):
 
     def testRemoveDuplicatesImage(self):
-        actual = pd.DataFrame({CleaningColumnNameConfig.ULLID: [1, 2, 2, 3, 4, 5], CleaningColumnNameConfig.MEDIATYPE: ['a', 'b', 'b', 'c', 'd', 'e']})
-        expected = pd.DataFrame({CleaningColumnNameConfig.ULLID: [1, 2, 3, 4, 5], CleaningColumnNameConfig.MEDIATYPE: ['a', 'b', 'c', 'd', 'e']})
+        actual = pd.DataFrame({CleaningColumnNameConfig.ULLID: [1, 2, 2, 3, 4, 5], CleaningColumnNameConfig.MEDIA_TYPE: ['a', 'b', 'b', 'c', 'd', 'e']})
+        expected = pd.DataFrame({CleaningColumnNameConfig.ULLID: [1, 2, 3, 4, 5], CleaningColumnNameConfig.MEDIA_TYPE: ['a', 'b', 'c', 'd', 'e']})
         obj = CleanTasks()
 
         actual = obj.RemoveDuplicates(actual)
@@ -30,24 +30,24 @@ class PostgresDatabaseManagerTests(unittest.TestCase):
 
     def testCheckNegativeImage(self):
         actual = pd.DataFrame({CleaningColumnNameConfig.ULLID: [1, -2, 3, 4, 5, 6, 7, 8],
-                               CleaningColumnNameConfig.ACCOUNTEDINKBLACK: [1, 2, -3, 4, 5, 6, 7, 8],
-                               CleaningColumnNameConfig.ACCOUNTEDINKCYAN: [1, 2, 3, -4, 5, 6, 7, 8],
-                               CleaningColumnNameConfig.ACCOUNTEDINKMAGENTA: [1, 2, 3, 4, -5, 6, 7, 8],
-                               CleaningColumnNameConfig.ACCOUNTEDINKYELLOW: [1, 2, 3, 4, 5, -6, 7, 8],
+                               CleaningColumnNameConfig.ACCOUNTED_INK_BLACK: [1, 2, -3, 4, 5, 6, 7, 8],
+                               CleaningColumnNameConfig.ACCOUNTED_INK_CYAN: [1, 2, 3, -4, 5, 6, 7, 8],
+                               CleaningColumnNameConfig.ACCOUNTED_INK_MAGENTA: [1, 2, 3, 4, -5, 6, 7, 8],
+                               CleaningColumnNameConfig.ACCOUNTED_INK_YELLOW: [1, 2, 3, 4, 5, -6, 7, 8],
                                CleaningColumnNameConfig.DATE: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
-                               CleaningColumnNameConfig.IMAGELENGTH: [1, 2, 3, 4, 5, 6, -7, 8],
-                               CleaningColumnNameConfig.IMAGEWIDTH: [1, 2, 3, 4, 5, 6, 7, -8],
-                               CleaningColumnNameConfig.MEDIATYPE: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']})
+                               CleaningColumnNameConfig.IMAGE_LENGTH: [1, 2, 3, 4, 5, 6, -7, 8],
+                               CleaningColumnNameConfig.IMAGE_WIDTH: [1, 2, 3, 4, 5, 6, 7, -8],
+                               CleaningColumnNameConfig.MEDIA_TYPE: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']})
 
         expected = pd.DataFrame({CleaningColumnNameConfig.ULLID: [1],
-                               CleaningColumnNameConfig.ACCOUNTEDINKBLACK: [1],
-                               CleaningColumnNameConfig.ACCOUNTEDINKCYAN: [1],
-                               CleaningColumnNameConfig.ACCOUNTEDINKMAGENTA: [1],
-                               CleaningColumnNameConfig.ACCOUNTEDINKYELLOW: [1],
-                               CleaningColumnNameConfig.DATE: ['a'],
-                               CleaningColumnNameConfig.IMAGELENGTH: [1],
-                               CleaningColumnNameConfig.IMAGEWIDTH: [1],
-                               CleaningColumnNameConfig.MEDIATYPE: ['a']})
+                                 CleaningColumnNameConfig.ACCOUNTED_INK_BLACK: [1],
+                                 CleaningColumnNameConfig.ACCOUNTED_INK_CYAN: [1],
+                                 CleaningColumnNameConfig.ACCOUNTED_INK_MAGENTA: [1],
+                                 CleaningColumnNameConfig.ACCOUNTED_INK_YELLOW: [1],
+                                 CleaningColumnNameConfig.DATE: ['a'],
+                                 CleaningColumnNameConfig.IMAGE_LENGTH: [1],
+                                 CleaningColumnNameConfig.IMAGE_WIDTH: [1],
+                                 CleaningColumnNameConfig.MEDIA_TYPE: ['a']})
         obj = CleanTasks()
 
         actual = obj.CheckNegativeImage(actual)
@@ -58,23 +58,23 @@ class PostgresDatabaseManagerTests(unittest.TestCase):
 
     def testRemoveNull(self):
         actual = pd.DataFrame({CleaningColumnNameConfig.ULLID: [1, -2],
-                               CleaningColumnNameConfig.ACCOUNTEDINKBLACK: [1, 2],
-                               CleaningColumnNameConfig.ACCOUNTEDINKCYAN: [1, 2],
-                               CleaningColumnNameConfig.ACCOUNTEDINKMAGENTA: [1, 2],
-                               CleaningColumnNameConfig.ACCOUNTEDINKYELLOW: [1, 2],
+                               CleaningColumnNameConfig.ACCOUNTED_INK_BLACK: [1, 2],
+                               CleaningColumnNameConfig.ACCOUNTED_INK_CYAN: [1, 2],
+                               CleaningColumnNameConfig.ACCOUNTED_INK_MAGENTA: [1, 2],
+                               CleaningColumnNameConfig.ACCOUNTED_INK_YELLOW: [1, 2],
                                CleaningColumnNameConfig.DATE: ['a', 'b'],
-                               CleaningColumnNameConfig.IMAGELENGTH: [1, 2],
-                               CleaningColumnNameConfig.IMAGEWIDTH: [1, 2],
-                               CleaningColumnNameConfig.MEDIATYPE: ['a', '']})
+                               CleaningColumnNameConfig.IMAGE_LENGTH: [1, 2],
+                               CleaningColumnNameConfig.IMAGE_WIDTH: [1, 2],
+                               CleaningColumnNameConfig.MEDIA_TYPE: ['a', '']})
         expected = pd.DataFrame({CleaningColumnNameConfig.ULLID: [1],
-                                 CleaningColumnNameConfig.ACCOUNTEDINKBLACK: [1],
-                                 CleaningColumnNameConfig.ACCOUNTEDINKCYAN: [1],
-                                 CleaningColumnNameConfig.ACCOUNTEDINKMAGENTA: [1],
-                                 CleaningColumnNameConfig.ACCOUNTEDINKYELLOW: [1],
+                                 CleaningColumnNameConfig.ACCOUNTED_INK_BLACK: [1],
+                                 CleaningColumnNameConfig.ACCOUNTED_INK_CYAN: [1],
+                                 CleaningColumnNameConfig.ACCOUNTED_INK_MAGENTA: [1],
+                                 CleaningColumnNameConfig.ACCOUNTED_INK_YELLOW: [1],
                                  CleaningColumnNameConfig.DATE: ['a'],
-                                 CleaningColumnNameConfig.IMAGELENGTH: [1],
-                                 CleaningColumnNameConfig.IMAGEWIDTH: [1],
-                                 CleaningColumnNameConfig.MEDIATYPE: ['a']})
+                                 CleaningColumnNameConfig.IMAGE_LENGTH: [1],
+                                 CleaningColumnNameConfig.IMAGE_WIDTH: [1],
+                                 CleaningColumnNameConfig.MEDIA_TYPE: ['a']})
         obj = CleanTasks()
 
         actual = obj.RemoveRowNull(actual)
@@ -86,25 +86,25 @@ class PostgresDatabaseManagerTests(unittest.TestCase):
 
     def testCheckTypeImage(self):
         actual = pd.DataFrame({CleaningColumnNameConfig.ULLID: [1, 'a'],
-                               CleaningColumnNameConfig.ACCOUNTEDINKBLACK: [1, 2],
-                               CleaningColumnNameConfig.ACCOUNTEDINKCYAN: [1, 2],
-                               CleaningColumnNameConfig.ACCOUNTEDINKMAGENTA: [1, 2],
-                               CleaningColumnNameConfig.ACCOUNTEDINKYELLOW: [1, 2],
+                               CleaningColumnNameConfig.ACCOUNTED_INK_BLACK: [1, 2],
+                               CleaningColumnNameConfig.ACCOUNTED_INK_CYAN: [1, 2],
+                               CleaningColumnNameConfig.ACCOUNTED_INK_MAGENTA: [1, 2],
+                               CleaningColumnNameConfig.ACCOUNTED_INK_YELLOW: [1, 2],
                                CleaningColumnNameConfig.DATE: ['21/03/2001', 'b'],
-                               CleaningColumnNameConfig.IMAGELENGTH: [1, 2],
-                               CleaningColumnNameConfig.IMAGEWIDTH: [1, 2],
-                               CleaningColumnNameConfig.MEDIATYPE: ['Film', 1]})
+                               CleaningColumnNameConfig.IMAGE_LENGTH: [1, 2],
+                               CleaningColumnNameConfig.IMAGE_WIDTH: [1, 2],
+                               CleaningColumnNameConfig.MEDIA_TYPE: ['Film', 1]})
 
 
         expected = pd.DataFrame({CleaningColumnNameConfig.ULLID: [1, float("NaN")],
-                                 CleaningColumnNameConfig.ACCOUNTEDINKBLACK: [1, 2],
-                                 CleaningColumnNameConfig.ACCOUNTEDINKCYAN: [1, 2],
-                                 CleaningColumnNameConfig.ACCOUNTEDINKMAGENTA: [1, 2],
-                                 CleaningColumnNameConfig.ACCOUNTEDINKYELLOW: [1, 13840000],
+                                 CleaningColumnNameConfig.ACCOUNTED_INK_BLACK: [1, 2],
+                                 CleaningColumnNameConfig.ACCOUNTED_INK_CYAN: [1, 2],
+                                 CleaningColumnNameConfig.ACCOUNTED_INK_MAGENTA: [1, 2],
+                                 CleaningColumnNameConfig.ACCOUNTED_INK_YELLOW: [1, 13840000],
                                  CleaningColumnNameConfig.DATE: ['21/03/2001', float("NaN")],
-                                 CleaningColumnNameConfig.IMAGELENGTH: [1, 2],
-                                 CleaningColumnNameConfig.IMAGEWIDTH: [1, 2],
-                                 CleaningColumnNameConfig.MEDIATYPE: ['Film', float("NaN")]})
+                                 CleaningColumnNameConfig.IMAGE_LENGTH: [1, 2],
+                                 CleaningColumnNameConfig.IMAGE_WIDTH: [1, 2],
+                                 CleaningColumnNameConfig.MEDIA_TYPE: ['Film', float("NaN")]})
 
         obj = CleanTasks()
 
@@ -118,23 +118,23 @@ class PostgresDatabaseManagerTests(unittest.TestCase):
 
     def testRemoveInvalidMediaType(self):
         actual = pd.DataFrame({CleaningColumnNameConfig.ULLID: [1, 2],
-                                 CleaningColumnNameConfig.ACCOUNTEDINKBLACK: [1, 2],
-                                 CleaningColumnNameConfig.ACCOUNTEDINKCYAN: [1, 2],
-                                 CleaningColumnNameConfig.ACCOUNTEDINKMAGENTA: [1, 2],
-                                 CleaningColumnNameConfig.ACCOUNTEDINKYELLOW: [1, 2],
-                                 CleaningColumnNameConfig.DATE: ['21/03/2001', '21/03/2001'],
-                                 CleaningColumnNameConfig.IMAGELENGTH: [1, 2],
-                                 CleaningColumnNameConfig.IMAGEWIDTH: [1, 2],
-                                 CleaningColumnNameConfig.MEDIATYPE: ['Film', 'film1']})
+                               CleaningColumnNameConfig.ACCOUNTED_INK_BLACK: [1, 2],
+                               CleaningColumnNameConfig.ACCOUNTED_INK_CYAN: [1, 2],
+                               CleaningColumnNameConfig.ACCOUNTED_INK_MAGENTA: [1, 2],
+                               CleaningColumnNameConfig.ACCOUNTED_INK_YELLOW: [1, 2],
+                               CleaningColumnNameConfig.DATE: ['21/03/2001', '21/03/2001'],
+                               CleaningColumnNameConfig.IMAGE_LENGTH: [1, 2],
+                               CleaningColumnNameConfig.IMAGE_WIDTH: [1, 2],
+                               CleaningColumnNameConfig.MEDIA_TYPE: ['Film', 'film1']})
         expected = pd.DataFrame({CleaningColumnNameConfig.ULLID: [1],
-                               CleaningColumnNameConfig.ACCOUNTEDINKBLACK: [1],
-                               CleaningColumnNameConfig.ACCOUNTEDINKCYAN: [1],
-                               CleaningColumnNameConfig.ACCOUNTEDINKMAGENTA: [1],
-                               CleaningColumnNameConfig.ACCOUNTEDINKYELLOW: [1],
-                               CleaningColumnNameConfig.DATE: ['21/03/2001'],
-                               CleaningColumnNameConfig.IMAGELENGTH: [1],
-                               CleaningColumnNameConfig.IMAGEWIDTH: [1],
-                               CleaningColumnNameConfig.MEDIATYPE: ['Film']})
+                                 CleaningColumnNameConfig.ACCOUNTED_INK_BLACK: [1],
+                                 CleaningColumnNameConfig.ACCOUNTED_INK_CYAN: [1],
+                                 CleaningColumnNameConfig.ACCOUNTED_INK_MAGENTA: [1],
+                                 CleaningColumnNameConfig.ACCOUNTED_INK_YELLOW: [1],
+                                 CleaningColumnNameConfig.DATE: ['21/03/2001'],
+                                 CleaningColumnNameConfig.IMAGE_LENGTH: [1],
+                                 CleaningColumnNameConfig.IMAGE_WIDTH: [1],
+                                 CleaningColumnNameConfig.MEDIA_TYPE: ['Film']})
         obj = CleanTasks()
 
         actual = obj.RemoveInvalidMediaType(actual)
@@ -147,28 +147,28 @@ class PostgresDatabaseManagerTests(unittest.TestCase):
 
     def testMakeDataFrameImage(self):
         actual = pd.DataFrame({CleaningColumnNameConfig.ULLID: [1],
-                               CleaningColumnNameConfig.ACCOUNTEDINKBLACK: [1],
-                               CleaningColumnNameConfig.ACCOUNTEDINKCYAN: [1],
-                               CleaningColumnNameConfig.ACCOUNTEDINKMAGENTA: [1],
-                               CleaningColumnNameConfig.ACCOUNTEDINKYELLOW: [1],
+                               CleaningColumnNameConfig.ACCOUNTED_INK_BLACK: [1],
+                               CleaningColumnNameConfig.ACCOUNTED_INK_CYAN: [1],
+                               CleaningColumnNameConfig.ACCOUNTED_INK_MAGENTA: [1],
+                               CleaningColumnNameConfig.ACCOUNTED_INK_YELLOW: [1],
                                CleaningColumnNameConfig.DATE: ['21/03/2001'],
-                               CleaningColumnNameConfig.IMAGELENGTH: [1],
-                               CleaningColumnNameConfig.IMAGEWIDTH: [1],
-                               CleaningColumnNameConfig.MEDIATYPE: ['Film1'],
+                               CleaningColumnNameConfig.IMAGE_LENGTH: [1],
+                               CleaningColumnNameConfig.IMAGE_WIDTH: [1],
+                               CleaningColumnNameConfig.MEDIA_TYPE: ['Film1'],
                                CleaningColumnNameConfig.DATE: ['21/03/2001'],
-                               CleaningColumnNameConfig.IMAGELENGTH: [1],
-                               CleaningColumnNameConfig.IMAGEWIDTH: [1],
-                               CleaningColumnNameConfig.MEDIATYPE: ['Film1'],
+                               CleaningColumnNameConfig.IMAGE_LENGTH: [1],
+                               CleaningColumnNameConfig.IMAGE_WIDTH: [1],
+                               CleaningColumnNameConfig.MEDIA_TYPE: ['Film1'],
                                })
         expected = pd.DataFrame({CleaningColumnNameConfig.ULLID: [1],
-                               CleaningColumnNameConfig.ACCOUNTEDINKBLACK: [1],
-                               CleaningColumnNameConfig.ACCOUNTEDINKCYAN: [1],
-                               CleaningColumnNameConfig.ACCOUNTEDINKMAGENTA: [1],
-                               CleaningColumnNameConfig.ACCOUNTEDINKYELLOW: [1],
-                               CleaningColumnNameConfig.DATE: ['21/03/2001'],
-                               CleaningColumnNameConfig.IMAGELENGTH: [1],
-                               CleaningColumnNameConfig.IMAGEWIDTH: [1],
-                               CleaningColumnNameConfig.MEDIATYPE: ['Film1']})
+                                 CleaningColumnNameConfig.ACCOUNTED_INK_BLACK: [1],
+                                 CleaningColumnNameConfig.ACCOUNTED_INK_CYAN: [1],
+                                 CleaningColumnNameConfig.ACCOUNTED_INK_MAGENTA: [1],
+                                 CleaningColumnNameConfig.ACCOUNTED_INK_YELLOW: [1],
+                                 CleaningColumnNameConfig.DATE: ['21/03/2001'],
+                                 CleaningColumnNameConfig.IMAGE_LENGTH: [1],
+                                 CleaningColumnNameConfig.IMAGE_WIDTH: [1],
+                                 CleaningColumnNameConfig.MEDIA_TYPE: ['Film1']})
 
 
 
