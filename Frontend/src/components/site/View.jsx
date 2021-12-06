@@ -3,7 +3,7 @@ import '../../css/site/View.css';
 import { disableFullScreen, enableFullScreen } from '../../util/fullScreen';
 
 import Chart from '../shared/Chart';
-import Filter from '../shared/Filter';
+import Filters from '../shared/Filters';
 import Header from '../static/Header';
 import chartTitleSwitch from '../../util/chartTitleSwitch';
 import { useParams } from 'react-router-dom';
@@ -22,7 +22,7 @@ const View = () => {
       <Header />
       <main>
         <h1>{chartTitle}</h1>
-        <Filter
+        <Filters
           chartPath={chartPath}
           enableFullScreen={() => { enableFullScreen(chart, toggleFullScreen) }} />
         <Chart
