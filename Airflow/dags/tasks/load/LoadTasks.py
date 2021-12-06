@@ -11,31 +11,31 @@ class LoadTasks:
 
 
     @staticmethod
-    def LoadMediaCategoryUsage():
-        df = LoadTasks.__read_from_db_postgresql(AggregateTableNameConfig.AGGREGATE_IMAGE)
+    def load_media_category_usage():
+        df = LoadTasks._read_from_db_postgresql(AggregateTableNameConfig.AGGREGATE_IMAGE)
         if df.empty:
             logging.info("No new data was found, skipping step.")
             return
 
 
-        first_date_df = LoadTasks.__get_first_value_from_df(df, AggregateColumnNameConfig.DATE)
-        first_area_df = LoadTasks.__get_first_value_from_df(df, AggregateColumnNameConfig.IMAGE_AREA)
+        first_date_df = LoadTasks._get_first_value_from_df(df, AggregateColumnNameConfig.DATE)
+        first_area_df = LoadTasks._get_first_value_from_df(df, AggregateColumnNameConfig.IMAGE_AREA)
 
-        last_date_api = LoadTasks.__get_last_value_from_api("media_category_usage", AggregateColumnNameConfig.DATE)
-        last_area_api = LoadTasks.__get_last_value_from_api("media_category_usage", "printed_square_meters")
+        last_date_api = LoadTasks._get_last_value_from_api("media_category_usage", AggregateColumnNameConfig.DATE)
+        last_area_api = LoadTasks._get_last_value_from_api("media_category_usage", "printed_square_meters")
 
 
 
 
         if last_area_api != "" and last_date_api != "":
-            if LoadTasks.__check_adding_area(last_date_api, first_date_df):
-                new_area = LoadTasks.__adding_area(last_area_api, first_area_df)
-                LoadTasks.__update_area('media_category_usage', new_area, last_date_api)
+            if LoadTasks._check_adding_area(last_date_api, first_date_df):
+                new_area = LoadTasks._adding_area(last_area_api, first_area_df)
+                LoadTasks._update_area('media_category_usage', new_area, last_date_api)
                 df = df[df[AggregateColumnNameConfig.DATE] != pd.to_datetime(last_date_api.strftime('%Y-%m-%d'), format='%Y-%m-%d')]
                 logging.info(tabulate(df, headers='keys', tablefmt='psql'))
                 logging.info(new_area)
         logging.info(df)
-        LoadTasks.__add_data_to_api(df)
+        LoadTasks._add_data_to_api(df)
         logging.info(last_date_api)
         logging.info(first_date_df)
         logging.info(last_area_api)
@@ -47,15 +47,15 @@ class LoadTasks:
 
 
     @staticmethod
-    def __read_from_db_postgresql(table_name) -> pd.DataFrame:
+    def _read_from_db_postgresql(table_name) -> pd.DataFrame:
         logging.info("Reading the data from database.")
         pdm = PostgresDatabaseManager()
-        df = pdm.readTable(table_name)
+        df = pdm.read_table(table_name)
         return df
 
 
     @staticmethod
-    def __get_last_value_from_api(table_name, column_name):
+    def _get_last_value_from_api(table_name, column_name):
         try:
             logging.info("Reading data to the  MySql database")
             connection = pymysql.connect(host='host.docker.internal', user='canon', password='canon', db='canon')
@@ -77,12 +77,12 @@ class LoadTasks:
 
 
     @staticmethod
-    def __get_first_value_from_df(df, column_name):
+    def _get_first_value_from_df(df, column_name):
         return df[column_name].loc[0]
 
 
     @staticmethod
-    def __check_adding_area(last_date_api, last_date_df):
+    def _check_adding_area(last_date_api, last_date_df):
         last_date_api = last_date_api.strftime('%Y-%m-%d')
         logging.info(last_date_api)
         logging.info(last_date_df)
@@ -94,14 +94,14 @@ class LoadTasks:
 
 
     @staticmethod
-    def __adding_area(area_api, area_df):
+    def _adding_area(area_api, area_df):
         return area_api + area_df
 
 
 
 
     @staticmethod
-    def __update_area(table_name, new_area, date):
+    def _update_area(table_name, new_area, date):
         try:
             logging.info("Making connection with MySql database")
             logging.info("Adding data to the  MySql database")
@@ -127,7 +127,7 @@ class LoadTasks:
 
 
     @staticmethod
-    def __add_data_to_api(df):
+    def _add_data_to_api(df):
         try:
             logging.info("Adding data to the  MySql database")
             connection = pymysql.connect(host='host.docker.internal', user='canon', password='canon', db='canon')
@@ -153,17 +153,17 @@ class LoadTasks:
 
 
     @staticmethod
-    def LoadSqmPerPrintMode():
+    def load_sqm_per_print_mode():
         pass
 
     @staticmethod
-    def LoadInkUsage():
+    def load_ink_usage():
         pass
 
     @staticmethod
-    def LoadTopTenPrintVolume():
+    def load_top_ten_print_volume():
         pass
 
     @staticmethod
-    def LoadMediaTypesPerMachine():
+    def load_media_types_per_machine():
         pass

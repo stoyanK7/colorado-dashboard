@@ -10,41 +10,41 @@ from DAL.PostgresDatabaseManager import PostgresDatabaseManager
 class AggregateTasks:
 
     @staticmethod
-    def AggregateMediaCategoryUsage():
+    def aggregate_media_category_usage():
         # Take the dataframe from the previous step
         df = AggregateTasks.__read_from_db(CleanTableNameConfig.READ_IMAGE)
         if df.empty:
             logging.info("No new data was found, skipping step.")
             return
         # Multiply ImageLength and ImageWidth into Area column
-        df = AggregateTasks.__aggregate_two_columns(df,
-                                                    CleaningColumnNameConfig.IMAGE_WIDTH,
-                                                    CleaningColumnNameConfig.IMAGE_LENGTH,
-                                                    AggregateColumnNameConfig.IMAGE_AREA,
-                                                    True)
+        df = AggregateTasks._aggregate_two_columns(df,
+                                                   CleaningColumnNameConfig.IMAGE_WIDTH,
+                                                   CleaningColumnNameConfig.IMAGE_LENGTH,
+                                                   AggregateColumnNameConfig.IMAGE_AREA,
+                                                   True)
 
         # Group
-        df = AggregateTasks.__group_by_two_columns_and_sum_third(df,
-                                                                 CleaningColumnNameConfig.DATE,
-                                                                 CleaningColumnNameConfig.MEDIA_TYPE,
-                                                                 AggregateColumnNameConfig.IMAGE_AREA)
+        df = AggregateTasks._group_by_two_columns_and_sum_third(df,
+                                                                CleaningColumnNameConfig.DATE,
+                                                                CleaningColumnNameConfig.MEDIA_TYPE,
+                                                                AggregateColumnNameConfig.IMAGE_AREA)
         # Save into a database
-        AggregateTasks.__insert_into_db(df, AggregateTableNameConfig.AGGREGATE_IMAGE)
+        AggregateTasks._insert_into_db(df, AggregateTableNameConfig.AGGREGATE_IMAGE)
 
     @staticmethod
-    def AggregateSqmPerPrintMode():
+    def aggregate_sqm_per_print_mode():
         pass
 
     @staticmethod
-    def AggregateInkUsage():
+    def aggregate_ink_usage():
         pass
 
     @staticmethod
-    def AggregateTopTenPrintVolume():
+    def aggregate_top_ten_print_volume():
         pass
 
     @staticmethod
-    def AggregateMediaTypesPerMachine():
+    def aggregate_media_types_per_machine():
         pass
 
 
@@ -53,14 +53,14 @@ class AggregateTasks:
         # read from db
         logging.info("Reading the cleaned data from database.")
         pdm = PostgresDatabaseManager()
-        df = pdm.readTable(table_name)
+        df = pdm.read_table(table_name)
         if df.empty:
             return df
         df = df.set_index(AggregateColumnNameConfig.ULLID)
         return df
 
     @staticmethod
-    def __aggregate_two_columns(df, c1, c2, new_column, to_delete):
+    def _aggregate_two_columns(df, c1, c2, new_column, to_delete):
         # aggregate two columns
         logging.info(f"Aggregation of {c1} and {c2} into {new_column}.")
         df[new_column] = df[c1] * df[c2]
@@ -70,15 +70,15 @@ class AggregateTasks:
         return df
 
     @staticmethod
-    def __group_by_two_columns_and_sum_third(df, c1, c2, col_to_sum):
+    def _group_by_two_columns_and_sum_third(df, c1, c2, col_to_sum):
         # group two columns and sum the third
         logging.info(f"Grouping {c1} and {c2} and summing {col_to_sum}.")
         df = pd.to_numeric(df.groupby([c1, c2])[col_to_sum].sum(), errors='coerce')
         return df
 
     @staticmethod
-    def __insert_into_db(df, table_name):
+    def _insert_into_db(df, table_name):
         # put in db
         logging.info("Inserting aggregated data to database.")
         pdm = PostgresDatabaseManager()
-        pdm.insertIntoTable(df, table_name)
+        pdm.insert_into_table(df, table_name)

@@ -15,12 +15,12 @@ from config import CleaningColumnNameConfig
 
 class PostgresDatabaseManagerTests(unittest.TestCase):
 
-    def testRemoveDuplicatesImage(self):
+    def test_remove_duplicates_image(self):
         actual = pd.DataFrame({CleaningColumnNameConfig.ULLID: [1, 2, 2, 3, 4, 5], CleaningColumnNameConfig.MEDIA_TYPE: ['a', 'b', 'b', 'c', 'd', 'e']})
         expected = pd.DataFrame({CleaningColumnNameConfig.ULLID: [1, 2, 3, 4, 5], CleaningColumnNameConfig.MEDIA_TYPE: ['a', 'b', 'c', 'd', 'e']})
         obj = CleanTasks()
 
-        actual = obj.RemoveDuplicates(actual)
+        actual = obj.remove_duplicates(actual)
         print(actual)
         print('------')
         print(expected)
@@ -28,7 +28,7 @@ class PostgresDatabaseManagerTests(unittest.TestCase):
         pd.testing.assert_frame_equal(actual.reset_index(drop=True), expected.reset_index(drop=True))
 
 
-    def testCheckNegativeImage(self):
+    def test_check_negative_image(self):
         actual = pd.DataFrame({CleaningColumnNameConfig.ULLID: [1, -2, 3, 4, 5, 6, 7, 8],
                                CleaningColumnNameConfig.ACCOUNTED_INK_BLACK: [1, 2, -3, 4, 5, 6, 7, 8],
                                CleaningColumnNameConfig.ACCOUNTED_INK_CYAN: [1, 2, 3, -4, 5, 6, 7, 8],
@@ -50,13 +50,13 @@ class PostgresDatabaseManagerTests(unittest.TestCase):
                                  CleaningColumnNameConfig.MEDIA_TYPE: ['a']})
         obj = CleanTasks()
 
-        actual = obj.CheckNegativeImage(actual)
+        actual = obj.check_negative_image(actual)
         print(actual)
 
         pd.testing.assert_frame_equal(actual.reset_index(drop=True), expected.reset_index(drop=True))
 
 
-    def testRemoveNull(self):
+    def test_remove_null(self):
         actual = pd.DataFrame({CleaningColumnNameConfig.ULLID: [1, -2],
                                CleaningColumnNameConfig.ACCOUNTED_INK_BLACK: [1, 2],
                                CleaningColumnNameConfig.ACCOUNTED_INK_CYAN: [1, 2],
@@ -77,14 +77,14 @@ class PostgresDatabaseManagerTests(unittest.TestCase):
                                  CleaningColumnNameConfig.MEDIA_TYPE: ['a']})
         obj = CleanTasks()
 
-        actual = obj.RemoveRowNull(actual)
+        actual = obj.remove_row_null(actual)
         print(tabulate(actual, headers='keys', tablefmt='psql'))
         print('------')
         print(tabulate(expected, headers='keys', tablefmt='psql'))
 
         pd.testing.assert_frame_equal(actual.reset_index(drop=True), expected.reset_index(drop=True))
 
-    def testCheckTypeImage(self):
+    def test_check_type_image(self):
         actual = pd.DataFrame({CleaningColumnNameConfig.ULLID: [1, 'a'],
                                CleaningColumnNameConfig.ACCOUNTED_INK_BLACK: [1, 2],
                                CleaningColumnNameConfig.ACCOUNTED_INK_CYAN: [1, 2],
@@ -108,7 +108,7 @@ class PostgresDatabaseManagerTests(unittest.TestCase):
 
         obj = CleanTasks()
 
-        actual = obj.CheckTypeImage(actual)
+        actual = obj.check_type_image(actual)
 
         print(tabulate(actual, headers='keys', tablefmt='psql'))
         print('------')
@@ -116,7 +116,7 @@ class PostgresDatabaseManagerTests(unittest.TestCase):
 
         #pd.testing.assert_frame_equal(actual.reset_index(drop=True), expected.reset_index(drop=True))
 
-    def testRemoveInvalidMediaType(self):
+    def test_remove_invalid_media_type(self):
         actual = pd.DataFrame({CleaningColumnNameConfig.ULLID: [1, 2],
                                CleaningColumnNameConfig.ACCOUNTED_INK_BLACK: [1, 2],
                                CleaningColumnNameConfig.ACCOUNTED_INK_CYAN: [1, 2],
@@ -137,7 +137,7 @@ class PostgresDatabaseManagerTests(unittest.TestCase):
                                  CleaningColumnNameConfig.MEDIA_TYPE: ['Film']})
         obj = CleanTasks()
 
-        actual = obj.RemoveInvalidMediaType(actual)
+        actual = obj.RemoveInvalid_media_type(actual)
         print(tabulate(actual, headers='keys', tablefmt='psql'))
         print('------')
         print(tabulate(expected, headers='keys', tablefmt='psql'))
@@ -145,7 +145,7 @@ class PostgresDatabaseManagerTests(unittest.TestCase):
         pd.testing.assert_frame_equal(actual.reset_index(drop=True), expected.reset_index(drop=True))
 
 
-    def testMakeDataFrameImage(self):
+    def test_make_data_frame_image(self):
         actual = pd.DataFrame({CleaningColumnNameConfig.ULLID: [1],
                                CleaningColumnNameConfig.ACCOUNTED_INK_BLACK: [1],
                                CleaningColumnNameConfig.ACCOUNTED_INK_CYAN: [1],
@@ -174,7 +174,7 @@ class PostgresDatabaseManagerTests(unittest.TestCase):
 
         obj = CleanTasks()
 
-        actual = obj.MakeDataFrameImage(actual)
+        actual = obj.make_data_frame_image(actual)
         print(tabulate(actual, headers='keys', tablefmt='psql'))
         print('------')
         print(tabulate(expected, headers='keys', tablefmt='psql'))

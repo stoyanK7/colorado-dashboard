@@ -15,7 +15,7 @@ class TestFileReader(unittest.TestCase):
             open(testFilesDir + fileName, "x").close()
         fr = FileReader()
 
-        result = fr.getFileNamesInDirectory(testFilesDir)
+        result = fr.get_file_names_in_directory(testFilesDir)
 
         self.assertListEqual(fileNames, result)
 
@@ -33,7 +33,7 @@ class TestFileReader(unittest.TestCase):
             open(testFilesDir + fileName, "x").close()
         fr = FileReader()
 
-        result = fr.getSortedFileNamesInDirectory(testFilesDir)
+        result = fr.get_sorted_file_names_in_directory(testFilesDir)
 
         self.assertListEqual(["afile3", "bfile2.conf", "cfile1.txt"], result)
 
@@ -52,7 +52,7 @@ class TestFileReader(unittest.TestCase):
             open(testFilesDir + fileName, "x").close()
         fr = FileReader()
 
-        result = fr.getFileNamesStartingFrom(testFilesDir, "file2.conf")
+        result = fr.get_file_names_starting_from(testFilesDir, "file2.conf")
 
         self.assertListEqual(["file2.conf", "file3"], result)
 

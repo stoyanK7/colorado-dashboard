@@ -15,51 +15,51 @@ from config import ReadTableNameConfig, LastSeenTableConfig, LastSeenColumnNameC
 class ReadTasks():
 
     @staticmethod
-    def ReadImage(ti):
+    def read_image(ti):
 
-        lastSeenFile, lastSeenRow = ReadTasks._getLastFileAndRow(LastSeenTableConfig.LAST_SEEN_IMAGE_TABLE,
-                                      LastSeenColumnNameConfig.LAST_SEEN_IMAGE_FILE_PATH,
-                                      LastSeenColumnNameConfig.LAST_SEEN_IMAGE_ROW_ID)
+        lastSeenFile, lastSeenRow = ReadTasks._get_last_file_and_row(LastSeenTableConfig.LAST_SEEN_IMAGE_TABLE,
+                                                                     LastSeenColumnNameConfig.LAST_SEEN_IMAGE_FILE_PATH,
+                                                                     LastSeenColumnNameConfig.LAST_SEEN_IMAGE_ROW_ID)
 
-        filesToRead = ReadTasks._getFileNames("image_file_directory", lastSeenFile)
+        filesToRead = ReadTasks._get_file_names("image_file_directory", lastSeenFile)
 
         if len(filesToRead) <= 0:
             logging.info("No files were found, terminating reading step successfully.")
             return
 
-        data = ReadTasks._getFilesToDataFrames("image_file_directory", filesToRead, lastSeenFile, lastSeenRow)
+        data = ReadTasks._get_files_to_data_frames("image_file_directory", filesToRead, lastSeenFile, lastSeenRow)
 
         if data.empty:
             logging.info("No new data was found, terminating reading step successfully.")
             return
 
-        ReadTasks._changeColNames(data, ReadImageColNameConstants)
+        ReadTasks._change_col_names(data, ReadImageColNameConstants)
 
-        ReadTasks._insertIntoDb(data, ReadTableNameConfig.READ_IMAGE)
+        ReadTasks._insert_into_db(data, ReadTableNameConfig.READ_IMAGE)
 
-        ReadTasks._makeXcom(ti, filesToRead[len(filesToRead) - 1], data[Variable.get("image_col_name_ullid")].iloc[-1])
+        ReadTasks._make_xcom(ti, filesToRead[len(filesToRead) - 1], data[Variable.get("image_col_name_ullid")].iloc[-1])
 
         # lastReadData = {LastSeenColumnNameConfig.LAST_SEEN_IMAGE_FILE_PATH:[filesToRead[len(filesToRead) - 1]], LastSeenColumnNameConfig.LAST_SEEN_IMAGE_ROW_ID:[data["ullid"].iloc[-1]]}
         # lastSeenDf = pd.DataFrame(data=lastReadData)
         # pdm=PostgresDatabaseManager()
         # pdm.insertIntoTable(lastSeenDf, LastSeenTableConfig.LAST_SEEN_IMAGE_TABLE)
     @staticmethod
-    def ReadMediaPrepare():
+    def read_media_prepare():
         # do stuff, remove pass
         pass
     @staticmethod
-    def ReadPrintCycle():
+    def read_print_cycle():
         # do stuff, remove pass
         pass
 
     @staticmethod
-    def _getLastFileAndRow(tableName, filePathColName, rowColName):
+    def _get_last_file_and_row(tableName, filePathColName, rowColName):
         # Read last seen table & row
         logging.info("Getting last seen file and row.")
         pdm = PostgresDatabaseManager()
         lastSeenTable = ""
         try:
-            lastSeenTable = pdm.readTable(tableName)
+            lastSeenTable = pdm.read_table(tableName)
         except:
             lastSeenTable = pd.DataFrame()
         lastSeenFile = ""
@@ -73,19 +73,19 @@ class ReadTasks():
         return lastSeenFile, lastSeenRow
 
     @staticmethod
-    def _getFileNames(directoryVariableKey, lastSeenFile):
+    def _get_file_names(directoryVariableKey, lastSeenFile):
         # Get filenames
         logging.info("Getting filenames from directory.")
         fileReader = FileReader()
         directory = os.getenv("AIRFLOW_HOME") + Variable.get(directoryVariableKey)
         logging.info(
             f"Reading files from {directory} {f'starting at file {lastSeenFile}' if lastSeenFile != '' else ''}")
-        filesToRead = fileReader.getFileNamesStartingFrom(directory, lastSeenFile)
+        filesToRead = fileReader.get_file_names_starting_from(directory, lastSeenFile)
         logging.info(f'Found {len(filesToRead)} files.')
         return filesToRead
 
     @staticmethod
-    def _getFilesToDataFrames(directoryVariableKey, filesToRead, lastSeenFile, lastSeenRow) -> pd.DataFrame:
+    def _get_files_to_data_frames(directoryVariableKey, filesToRead, lastSeenFile, lastSeenRow) -> pd.DataFrame:
         # get files
         logging.info("Getting data from files.")
         dataFrames = []
@@ -94,7 +94,7 @@ class ReadTasks():
 
         for file in filesToRead:
             logging.info(f"Getting data from file {file}.")
-            df = fileReader.readPandasCsvFile(directory + file, ";")
+            df = fileReader.read_pandas_csv_file(directory + file, ";")
             df = df.set_index(df[Variable.get("image_col_name_ullid")])
             df = df.sort_index('index')
             if file == lastSeenFile:
@@ -106,7 +106,7 @@ class ReadTasks():
         return resultDataFrames
 
     @staticmethod
-    def _changeColNames(data, constantsFile):
+    def _change_col_names(data, constantsFile):
         # change the column names
         logging.info("Renaming columns for internal use.")
         renameScheme = {}
@@ -125,14 +125,14 @@ class ReadTasks():
 
 
     @staticmethod
-    def _insertIntoDb(data, tableName):
+    def _insert_into_db(data, tableName):
         # put in db
         logging.info("Inserting read data to database.")
         pdm = PostgresDatabaseManager()
-        pdm.insertIntoTable(data, tableName)
+        pdm.insert_into_table(data, tableName)
 
     @staticmethod
-    def _makeXcom(ti, lastSeenFile, lastSeenRow):
+    def _make_xcom(ti, lastSeenFile, lastSeenRow):
         # send xcom about last read file and row
         logging.info("Sending xcom about last read information.")
         ti.xcom_push("lastSeenFile", str(lastSeenFile))

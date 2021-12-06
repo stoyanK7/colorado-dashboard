@@ -13,12 +13,12 @@ from config import LastSeenColumnNameConfig, LastSeenTableConfig, ReadTableNameC
 
 class TestReadTasks(unittest.TestCase):
     @patch("DAL.PostgresDatabaseManager.PostgresDatabaseManager.readTable")
-    def test_getLastFileAndRow(self, mockPdm: MagicMock):
+    def test_get_last_file_and_row(self, mockPdm: MagicMock):
         mockPdm.return_value = \
             pd.DataFrame(data={LastSeenColumnNameConfig.LAST_SEEN_IMAGE_ROW_ID: ['8', '3'],
                                LastSeenColumnNameConfig.LAST_SEEN_IMAGE_FILE_PATH: ["SomeOtherFile", "testFile1.csv"]})
 
-        lastSeenFile, lastSeenRow = ReadTasks._getLastFileAndRow(
+        lastSeenFile, lastSeenRow = ReadTasks._get_last_file_and_row(
             "testTable",
             LastSeenColumnNameConfig.LAST_SEEN_IMAGE_FILE_PATH,
             LastSeenColumnNameConfig.LAST_SEEN_IMAGE_ROW_ID)
@@ -27,12 +27,12 @@ class TestReadTasks(unittest.TestCase):
         mockPdm.assert_called_once_with("testTable")
 
     @patch("DAL.PostgresDatabaseManager.PostgresDatabaseManager.readTable")
-    def test_getLastFileAndRowIfEmpty(self, mockPdm: MagicMock):
+    def test_get_last_file_and_row_if_empty(self, mockPdm: MagicMock):
         mockPdm.return_value = \
             pd.DataFrame(data={LastSeenColumnNameConfig.LAST_SEEN_IMAGE_ROW_ID: [],
                                LastSeenColumnNameConfig.LAST_SEEN_IMAGE_FILE_PATH: []})
 
-        lastSeenFile, lastSeenRow = ReadTasks._getLastFileAndRow(
+        lastSeenFile, lastSeenRow = ReadTasks._get_last_file_and_row(
             "testTable",
             LastSeenColumnNameConfig.LAST_SEEN_IMAGE_FILE_PATH,
             LastSeenColumnNameConfig.LAST_SEEN_IMAGE_ROW_ID)
@@ -42,13 +42,13 @@ class TestReadTasks(unittest.TestCase):
 
     @patch("airflow.models.variable.Variable.get")
     @patch("os.getenv")
-    @patch("tasks.read.FileReader.FileReader.getFileNamesStartingFrom")
-    def test_getFileNames(self, mockFileReader: MagicMock, mockOs: MagicMock, mockVar: MagicMock):
+    @patch("tasks.read.FileReader.FileReader.get_file_names_starting_from")
+    def test_get_file_names(self, mockFileReader: MagicMock, mockOs: MagicMock, mockVar: MagicMock):
         mockFileReader.return_value = ["testFile1", "testFile2"]
         mockOs.return_value = "Some/Os/Path/"
         mockVar.return_value = "To/The/Files/"
 
-        filesToRead = ReadTasks._getFileNames("somekey", "testFile1")
+        filesToRead = ReadTasks._get_file_names("somekey", "testFile1")
 
         self.assertListEqual(filesToRead, ["testFile1", "testFile2"])
         mockFileReader.assert_called_once_with("Some/Os/Path/To/The/Files/", "testFile1")
@@ -57,13 +57,13 @@ class TestReadTasks(unittest.TestCase):
 
     @patch("airflow.models.variable.Variable.get")
     @patch("os.getenv")
-    @patch("tasks.read.FileReader.FileReader.getFileNamesStartingFrom")
-    def test_getFileNamesEmtpy(self, mockFileReader: MagicMock, mockOs: MagicMock, mockVar: MagicMock):
+    @patch("tasks.read.FileReader.FileReader.get_file_names_starting_from")
+    def test_get_file_names_emtpy(self, mockFileReader: MagicMock, mockOs: MagicMock, mockVar: MagicMock):
         mockFileReader.return_value = []
         mockOs.return_value = "Some/Os/Path/"
         mockVar.return_value = "To/The/Files/"
 
-        filesToRead = ReadTasks._getFileNames("somekey", "lastSeenFile")
+        filesToRead = ReadTasks._get_file_names("somekey", "lastSeenFile")
 
         self.assertListEqual(filesToRead, [])
         mockFileReader.assert_called_once_with("Some/Os/Path/To/The/Files/", "lastSeenFile")
@@ -72,8 +72,8 @@ class TestReadTasks(unittest.TestCase):
 
     @patch("airflow.models.variable.Variable.get")
     @patch("os.getenv")
-    @patch("tasks.read.FileReader.FileReader.readPandasCsvFile")
-    def test_getFilesToDataFramesWithEmptyLastSeen(self, mockFileReader: MagicMock, mockOs: MagicMock, mockVar: MagicMock):
+    @patch("tasks.read.FileReader.FileReader.read_pandas_csv_file")
+    def test_get_files_to_data_frames_with_empty_last_seen(self, mockFileReader: MagicMock, mockOs: MagicMock, mockVar: MagicMock):
         df1 = pd.DataFrame(data={"ullid": [0, 1, 2, 3], "values": ["value1", "value2", "value3", "value4"]})
         df2 = pd.DataFrame(data={"ullid": [4, 5, 6, 7], "values": ["value5", "value6", "value7", "value8"]})
         mockFileReader.side_effect = [df1, df2]
@@ -92,7 +92,7 @@ class TestReadTasks(unittest.TestCase):
         lastSeenFile = ""
         lastSeenRow = ""
 
-        resultDataFrames = ReadTasks._getFilesToDataFrames(directoryVariableKey, filesToRead, lastSeenFile, lastSeenRow)
+        resultDataFrames = ReadTasks._get_files_to_data_frames(directoryVariableKey, filesToRead, lastSeenFile, lastSeenRow)
 
         expected = pd.concat([df1, df2], ignore_index=True)
         pd.testing.assert_frame_equal(resultDataFrames, expected)
@@ -103,8 +103,8 @@ class TestReadTasks(unittest.TestCase):
 
     @patch("airflow.models.variable.Variable.get")
     @patch("os.getenv")
-    @patch("tasks.read.FileReader.FileReader.readPandasCsvFile")
-    def test_getFilesToDataFramesWithLastSeen(self, mockFileReader: MagicMock, mockOs: MagicMock, mockVar: MagicMock):
+    @patch("tasks.read.FileReader.FileReader.read_pandas_csv_file")
+    def test_get_files_to_data_frames_with_last_seen(self, mockFileReader: MagicMock, mockOs: MagicMock, mockVar: MagicMock):
         df1 = pd.DataFrame(data={"ullid":[0, 1, 2, 3], "values": ["value1", "value2", "value3", "value4"]})
         df2 = pd.DataFrame(data={"ullid": [4, 5, 6, 7], "values": ["value5", "value6", "value7", "value8"]})
         mockFileReader.side_effect = [df1, df2]
@@ -121,7 +121,7 @@ class TestReadTasks(unittest.TestCase):
         lastSeenFile = "file1"
         lastSeenRow = "2"
 
-        resultDataFrames = ReadTasks._getFilesToDataFrames(directoryVariableKey, filesToRead, lastSeenFile, lastSeenRow)
+        resultDataFrames = ReadTasks._get_files_to_data_frames(directoryVariableKey, filesToRead, lastSeenFile, lastSeenRow)
 
         expected = pd.DataFrame(data={"ullid":[3, 4, 5, 6, 7], "values":["value4", "value5", "value6", "value7", "value8"]})
         pd.testing.assert_frame_equal(resultDataFrames, expected)
@@ -130,30 +130,30 @@ class TestReadTasks(unittest.TestCase):
         mockVar.assert_has_calls([unittest.mock.call(directoryVariableKey), unittest.mock.call("image_col_name_ullid")])
 
     @patch("DAL.PostgresDatabaseManager.PostgresDatabaseManager.insertIntoTable")
-    def test_insertIntoDb(self, mockPdm: MagicMock):
+    def test_insert_into_db(self, mockPdm: MagicMock):
         data = "SomeRandomData"
         tableName="SomeTable"
 
-        ReadTasks._insertIntoDb(data, tableName)
+        ReadTasks._insert_into_db(data, tableName)
 
         # Assert
         mockPdm.assert_called_once_with(data, tableName)
 
     def test_makeXcom(self):
         ti = Mock()
-        ReadTasks._makeXcom(ti, "someFile", "someRow")
+        ReadTasks._make_xcom(ti, "someFile", "someRow")
         # Assert
         ti.xcom_push.assert_has_calls([unittest.mock.call("lastSeenFile", "someFile"), unittest.mock.call("lastSeenRow", "someRow")])
 
 
     @patch("airflow.models.variable.Variable.get")
-    @patch("tasks.read.ReadTasks.ReadTasks._makeXcom")
-    @patch("tasks.read.ReadTasks.ReadTasks._insertIntoDb")
-    @patch("tasks.read.ReadTasks.ReadTasks._changeColNames")
-    @patch("tasks.read.ReadTasks.ReadTasks._getFilesToDataFrames")
-    @patch("tasks.read.ReadTasks.ReadTasks._getFileNames")
-    @patch("tasks.read.ReadTasks.ReadTasks._getLastFileAndRow")
-    def test_readImageFull(self, mockGetLastSeen: MagicMock, mockFileNames: MagicMock, mockFilesToDf: MagicMock, mockChangeColNames: MagicMock, mockInsert: MagicMock, mockXcom: MagicMock, mockVar: MagicMock):
+    @patch("tasks.read.ReadTasks.ReadTasks._make_xcom")
+    @patch("tasks.read.ReadTasks.ReadTasks._insert_into_db")
+    @patch("tasks.read.ReadTasks.ReadTasks._change_col_names")
+    @patch("tasks.read.ReadTasks.ReadTasks._get_files_to_data_frames")
+    @patch("tasks.read.ReadTasks.ReadTasks._get_file_names")
+    @patch("tasks.read.ReadTasks.ReadTasks._get_last_file_and_row")
+    def test_read_image_full(self, mockGetLastSeen: MagicMock, mockFileNames: MagicMock, mockFilesToDf: MagicMock, mockChangeColNames: MagicMock, mockInsert: MagicMock, mockXcom: MagicMock, mockVar: MagicMock):
         lastSeenFile, lastSeenRow = "someFile", 4
         filesToRead = ["file1", "file2"]
         variableKey = "image_file_directory"
@@ -165,7 +165,7 @@ class TestReadTasks(unittest.TestCase):
         ti = Mock()
 
         # Act
-        ReadTasks.ReadImage(ti)
+        ReadTasks.read_image(ti)
 
         # Assert
         mockGetLastSeen.assert_called_once_with(LastSeenTableConfig.LAST_SEEN_IMAGE_TABLE,
@@ -177,12 +177,12 @@ class TestReadTasks(unittest.TestCase):
         mockInsert.assert_called_once_with(data, ReadTableNameConfig.READ_IMAGE)
         mockXcom.assert_called_once_with(ti, "file2", 3)
 
-    @patch("tasks.read.ReadTasks.ReadTasks._makeXcom")
-    @patch("tasks.read.ReadTasks.ReadTasks._insertIntoDb")
-    @patch("tasks.read.ReadTasks.ReadTasks._getFilesToDataFrames")
-    @patch("tasks.read.ReadTasks.ReadTasks._getFileNames")
-    @patch("tasks.read.ReadTasks.ReadTasks._getLastFileAndRow")
-    def test_readImageNoFiles(self, mockGetLastSeen: MagicMock, mockFileNames: MagicMock, mockFilesToDf: MagicMock, mockInsert: MagicMock, mockXcom: MagicMock):
+    @patch("tasks.read.ReadTasks.ReadTasks._make_xcom")
+    @patch("tasks.read.ReadTasks.ReadTasks._insert_into_db")
+    @patch("tasks.read.ReadTasks.ReadTasks._get_files_to_data_frames")
+    @patch("tasks.read.ReadTasks.ReadTasks._get_file_names")
+    @patch("tasks.read.ReadTasks.ReadTasks._get_last_file_and_row")
+    def test_read_image_no_files(self, mockGetLastSeen: MagicMock, mockFileNames: MagicMock, mockFilesToDf: MagicMock, mockInsert: MagicMock, mockXcom: MagicMock):
         lastSeenFile, lastSeenRow = "someFile", 4
         filesToRead = []
         variableKey = "image_file_directory"
@@ -193,7 +193,7 @@ class TestReadTasks(unittest.TestCase):
         ti = Mock()
 
         # Act
-        ReadTasks.ReadImage(ti)
+        ReadTasks.read_image(ti)
 
         # Assert
         mockGetLastSeen.assert_called_once_with(LastSeenTableConfig.LAST_SEEN_IMAGE_TABLE,
@@ -204,13 +204,13 @@ class TestReadTasks(unittest.TestCase):
         mockInsert.assert_not_called()
         mockXcom.assert_not_called()
 
-    @patch("tasks.read.ReadTasks.ReadTasks._makeXcom")
-    @patch("tasks.read.ReadTasks.ReadTasks._insertIntoDb")
-    @patch("tasks.read.ReadTasks.ReadTasks._getFilesToDataFrames")
-    @patch("tasks.read.ReadTasks.ReadTasks._getFileNames")
-    @patch("tasks.read.ReadTasks.ReadTasks._getLastFileAndRow")
-    def test_readImageNoNewData(self, mockGetLastSeen: MagicMock, mockFileNames: MagicMock, mockFilesToDf: MagicMock,
-                           mockInsert: MagicMock, mockXcom: MagicMock):
+    @patch("tasks.read.ReadTasks.ReadTasks._make_xcom")
+    @patch("tasks.read.ReadTasks.ReadTasks._insert_into_db")
+    @patch("tasks.read.ReadTasks.ReadTasks._get_files_to_data_frames")
+    @patch("tasks.read.ReadTasks.ReadTasks._get_file_names")
+    @patch("tasks.read.ReadTasks.ReadTasks._get_last_file_and_row")
+    def test_read_image_no_new_data(self, mockGetLastSeen: MagicMock, mockFileNames: MagicMock, mockFilesToDf: MagicMock,
+                                    mockInsert: MagicMock, mockXcom: MagicMock):
         lastSeenFile, lastSeenRow = "file2", 3
         filesToRead = ["file1", "file2"]
         variableKey = "image_file_directory"
@@ -221,7 +221,7 @@ class TestReadTasks(unittest.TestCase):
         ti = Mock()
 
         # Act
-        ReadTasks.ReadImage(ti)
+        ReadTasks.read_image(ti)
 
         # Assert
         mockGetLastSeen.assert_called_once_with(LastSeenTableConfig.LAST_SEEN_IMAGE_TABLE,

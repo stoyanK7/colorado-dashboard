@@ -8,11 +8,11 @@ from tabulate import tabulate
 class CleanTasks():
 
     @staticmethod
-    def CleanImage():
+    def clean_image():
         pdm = PostgresDatabaseManager()
 
         # Read Image table from Db
-        df = pdm.readTable(ReadTableNameConfig.READ_IMAGE)
+        df = pdm.read_table(ReadTableNameConfig.READ_IMAGE)
         if (df.empty):
             logging.info("No new data was found, skipping step.")
             return
@@ -20,49 +20,49 @@ class CleanTasks():
         logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # Make dataframe using pandas
-        df = CleanTasks.MakeDataFrameImage(df)
+        df = CleanTasks.make_data_frame_image(df)
         logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # check if ullid is same then drop
-        df = CleanTasks.RemoveDuplicates(df)
+        df = CleanTasks.remove_duplicates(df)
         logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # check integer or string.
-        df = CleanTasks.CheckTypeImage(df)
+        df = CleanTasks.check_type_image(df)
         logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # check if some row values are empty
-        df = CleanTasks.RemoveRowNull(df)
+        df = CleanTasks.remove_row_null(df)
         logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # Check absurd value?
 
         # Check negative value.
-        df = CleanTasks.CheckNegativeImage(df)
+        df = CleanTasks.check_negative_image(df)
         logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # Check if mediatype is valid
-        #df = self.RemoveInvalidMediaType(df)
+        #df = self.RemoveInvalid_media_type(df)
 
         # Create table and store
-        CleanTasks._insertIntoDb(df, CleanTableNameConfig.READ_IMAGE)
+        CleanTasks._insert_into_db(df, CleanTableNameConfig.READ_IMAGE)
 
     @staticmethod
-    def _readFromDb(tableName):
+    def _read_from_db(tableName):
         # put in db
         logging.info("Reading data from the database.")
         pdm = PostgresDatabaseManager()
-        pdm.readTable(tableName)
+        pdm.read_table(tableName)
 
     @staticmethod
-    def _insertIntoDb(data, tableName):
+    def _insert_into_db(data, tableName):
         # put in db
         logging.info("Inserting read data to database.")
         pdm = PostgresDatabaseManager()
-        pdm.insertIntoTable(data, tableName)
+        pdm.insert_into_table(data, tableName)
 
     @staticmethod
-    def MakeDataFrameImage(df):
+    def make_data_frame_image(df):
         logging.info("Making the dataframe with the right columns.")
         df = df[[CleaningColumnNameConfig.ULLID,
                  CleaningColumnNameConfig.ACCOUNTED_INK_BLACK,
@@ -76,13 +76,13 @@ class CleanTasks():
         return df
 
     @staticmethod
-    def RemoveDuplicates(df):
+    def remove_duplicates(df):
         logging.info("Removing all the rows with duplicate ullids.")
         df = df.drop_duplicates(subset=[CleaningColumnNameConfig.ULLID])
         return df
 
     @staticmethod
-    def CheckTypeImage(df):
+    def check_type_image(df):
         logging.info("Making value NaN for all the columns with invalid datatype.")
         df[CleaningColumnNameConfig.ULLID] = pd.to_numeric(df[CleaningColumnNameConfig.ULLID], errors='coerce')
         df[CleaningColumnNameConfig.ACCOUNTED_INK_BLACK] = pd.to_numeric(df[CleaningColumnNameConfig.ACCOUNTED_INK_BLACK], errors='coerce')
@@ -96,7 +96,7 @@ class CleanTasks():
         return df
 
     @staticmethod
-    def RemoveRowNull(df):
+    def remove_row_null(df):
         logging.info("Removing all rows with empty or NaN value.")
         nan_value = float("NaN")
         df.replace('', nan_value, inplace=True)
@@ -104,7 +104,7 @@ class CleanTasks():
         return df
 
     @staticmethod
-    def CheckNegativeImage(df):
+    def check_negative_image(df):
         logging.info("Removing all rows with negative values.")
         df = df[(df[CleaningColumnNameConfig.ULLID] > 0)]
         df = df[(df[CleaningColumnNameConfig.ACCOUNTED_INK_BLACK] > 0)]
@@ -116,7 +116,7 @@ class CleanTasks():
         return df
 
     @staticmethod
-    def RemoveInvalidMediaType(df):
+    def RemoveInvalid_media_type(df):
         logging.info("Removing all rows with invalid mediatype.")
         array = ['Canvas', 'Film', 'Monomeric vinyl',
                  'Textile', 'Unknown papertype', 'Polymeric & cast vinyl',
@@ -125,9 +125,9 @@ class CleanTasks():
         df = df.loc[df[CleaningColumnNameConfig.MEDIA_TYPE].isin(array)]
         return df
     @staticmethod
-    def CleanMediaPrepare():
+    def clean_media_prepare():
         pass
 
     @staticmethod
-    def CleanPrintCycle():
+    def clean_print_cycle():
         pass

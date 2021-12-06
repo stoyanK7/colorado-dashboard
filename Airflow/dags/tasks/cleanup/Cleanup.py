@@ -39,7 +39,7 @@ class CleanupTasks:
 
                 logging.info(f"Cleaning the table {table_name}.")
 
-                pdm.deleteTable(table_name)
+                pdm.delete_table(table_name)
 
     @staticmethod
     def _xcom_to_db(ti, c1_name, c2_name, table_name):
@@ -60,4 +60,4 @@ class CleanupTasks:
         pdm = PostgresDatabaseManager()
 
         df = pd.DataFrame({c1_name: [last_seen_file], c2_name: [last_seen_row]})
-        pdm.insertIntoTable(df, table_name)
+        pdm.insert_into_table(df, table_name)
