@@ -50,8 +50,8 @@ class TopMachinesWithMostPrintVolumeControllerIntegrationTest {
                 .getAllForPeriod(fromArgumentCaptor.capture(), toArgumentCaptor.capture());
 
 
-        assertThat(fromArgumentCaptor.getValue()).isEqualTo(PeriodDto.removeTime(from));
-        assertThat(toArgumentCaptor.getValue()).isEqualTo(PeriodDto.removeTime(to));
+        assertThat(fromArgumentCaptor.getValue()).isEqualTo(from);
+        assertThat(toArgumentCaptor.getValue()).isEqualTo(to);
     }
 
     @Test
