@@ -1,5 +1,5 @@
 # Image table
 ULLID = "ullid"
 DATE = "date"
-IMAGEAREA = "imagearea"
+IMAGE_AREA = "imagearea"
 MEDIATYPE = "mediacategory"

@@ -4,7 +4,7 @@ from textwrap import dedent
 from pipelineParts import logTest
 from pipelineParts import dataReader
 from pipelineParts import dataAggregator
-from DAL import PostgresDatabaseManager
+from DAL import postgres_database_manager
 
 
 # The DAG object; we'll need this to instantiate a DAG
