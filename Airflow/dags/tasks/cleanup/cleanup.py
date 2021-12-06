@@ -45,8 +45,8 @@ class CleanupTasks:
     def _xcom_to_db(ti, c1_name, c2_name, table_name):
         logging.info(f"Saving last seen file and last seen row in table {table_name}.")
         try:
-            last_seen_file = ti.xcom_pull(task_ids='readImage', key='lastSeenFile')  # to change task_id
-            last_seen_row = ti.xcom_pull(task_ids='readImage', key='lastSeenRow')  # to change task_id
+            last_seen_file = ti.xcom_pull(task_ids='readImage', key='last_seen_file')  # to change task_id
+            last_seen_row = ti.xcom_pull(task_ids='readImage', key='last_seen_row')  # to change task_id
         except:
             logging.error("Cleanup - There was a problem with reading the xcom.")
             return

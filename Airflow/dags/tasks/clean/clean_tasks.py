@@ -42,25 +42,25 @@ class CleanTasks():
         logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # Check if mediatype is valid
-        #df = self.RemoveInvalid_media_type(df)
+        #df = self.remove_invalid_media_type(df)
 
         # Create table and store
         CleanTasks._insert_into_db(df, clean_table_name_config
 .READ_IMAGE)
 
     @staticmethod
-    def _read_from_db(tableName):
+    def _read_from_db(table_name):
         # put in db
         logging.info("Reading data from the database.")
         pdm = PostgresDatabaseManager()
-        pdm.read_table(tableName)
+        pdm.read_table(table_name)
 
     @staticmethod
-    def _insert_into_db(data, tableName):
+    def _insert_into_db(data, table_name):
         # put in db
         logging.info("Inserting read data to database.")
         pdm = PostgresDatabaseManager()
-        pdm.insert_into_table(data, tableName)
+        pdm.insert_into_table(data, table_name)
 
     @staticmethod
     def make_data_frame_image(df):
@@ -117,7 +117,7 @@ class CleanTasks():
         return df
 
     @staticmethod
-    def RemoveInvalid_media_type(df):
+    def remove_invalid_media_type(df):
         logging.info("Removing all rows with invalid mediatype.")
         array = ['Canvas', 'Film', 'Monomeric vinyl',
                  'Textile', 'Unknown papertype', 'Polymeric & cast vinyl',

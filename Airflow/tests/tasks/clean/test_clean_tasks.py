@@ -137,7 +137,7 @@ class PostgresDatabaseManagerTests(unittest.TestCase):
                                  cleaning_column_name_config.MEDIA_TYPE: ['Film']})
         obj = CleanTasks()
 
-        actual = obj.RemoveInvalid_media_type(actual)
+        actual = obj.remove_invalid_media_type(actual)
         print(tabulate(actual, headers='keys', tablefmt='psql'))
         print('------')
         print(tabulate(expected, headers='keys', tablefmt='psql'))

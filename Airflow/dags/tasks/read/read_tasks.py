@@ -17,17 +17,17 @@ class ReadTasks():
     @staticmethod
     def read_image(ti):
 
-        lastSeenFile, lastSeenRow = ReadTasks._get_last_file_and_row(last_seen_table_config.LAST_SEEN_IMAGE_TABLE,
+        last_seen_file, last_seen_row = ReadTasks._get_last_file_and_row(last_seen_table_config.LAST_SEEN_IMAGE_TABLE,
                                                                      last_seen_column_name_config.LAST_SEEN_IMAGE_FILE_PATH,
                                                                      last_seen_column_name_config.LAST_SEEN_IMAGE_ROW_ID)
 
-        filesToRead = ReadTasks._get_file_names("image_file_directory", lastSeenFile)
+        files_to_read = ReadTasks._get_file_names("image_file_directory", last_seen_file)
 
-        if len(filesToRead) <= 0:
+        if len(files_to_read) <= 0:
             logging.info("No files were found, terminating reading step successfully.")
             return
 
-        data = ReadTasks._get_files_to_data_frames("image_file_directory", filesToRead, lastSeenFile, lastSeenRow)
+        data = ReadTasks._get_files_to_data_frames("image_file_directory", files_to_read, last_seen_file, last_seen_row)
 
         if data.empty:
             logging.info("No new data was found, terminating reading step successfully.")
@@ -37,9 +37,9 @@ class ReadTasks():
 
         ReadTasks._insert_into_db(data, read_table_name_config.READ_IMAGE)
 
-        ReadTasks._make_xcom(ti, filesToRead[len(filesToRead) - 1], data[Variable.get("image_col_name_ullid")].iloc[-1])
+        ReadTasks._make_xcom(ti, files_to_read[len(files_to_read) - 1], data[Variable.get("image_col_name_ullid")].iloc[-1])
 
-        # lastReadData = {last_seen_column_name_config.LAST_SEEN_IMAGE_FILE_PATH:[filesToRead[len(filesToRead) - 1]], last_seen_column_name_config.LAST_SEEN_IMAGE_ROW_ID:[data["ullid"].iloc[-1]]}
+        # lastReadData = {last_seen_column_name_config.LAST_SEEN_IMAGE_FILE_PATH:[files_to_read[len(files_to_read) - 1]], last_seen_column_name_config.LAST_SEEN_IMAGE_ROW_ID:[data["ullid"].iloc[-1]]}
         # lastSeenDf = pd.DataFrame(data=lastReadData)
         # pdm=PostgresDatabaseManager()
         # pdm.insertIntoTable(lastSeenDf, last_seen_table_config.LAST_SEEN_IMAGE_TABLE)
@@ -53,71 +53,71 @@ class ReadTasks():
         pass
 
     @staticmethod
-    def _get_last_file_and_row(tableName, filePathColName, rowColName):
+    def _get_last_file_and_row(table_name, file_path_col_name, row_col_name):
         # Read last seen table & row
         logging.info("Getting last seen file and row.")
         pdm = PostgresDatabaseManager()
-        lastSeenTable = ""
+        last_seen_table = ""
         try:
-            lastSeenTable = pdm.read_table(tableName)
+            last_seen_table = pdm.read_table(table_name)
         except:
-            lastSeenTable = pd.DataFrame()
-        lastSeenFile = ""
-        lastSeenRow = ""
-        if not lastSeenTable.empty:
-            lastSeenFile = lastSeenTable[filePathColName].iloc[-1]
-            lastSeenRow = lastSeenTable[rowColName].iloc[-1]
-            logging.info("Found last seen file: " + lastSeenFile + " at row with ullid " + lastSeenRow + ".")
+            last_seen_table = pd.DataFrame()
+        last_seen_file = ""
+        last_seen_row = ""
+        if not last_seen_table.empty:
+            last_seen_file = last_seen_table[file_path_col_name].iloc[-1]
+            last_seen_row = last_seen_table[row_col_name].iloc[-1]
+            logging.info("Found last seen file: " + last_seen_file + " at row with ullid " + last_seen_row + ".")
         else:
-            logging.info("Table " + tableName + " was empty, reading all instead.")
-        return lastSeenFile, lastSeenRow
+            logging.info("Table " + table_name + " was empty, reading all instead.")
+        return last_seen_file, last_seen_row
 
     @staticmethod
-    def _get_file_names(directoryVariableKey, lastSeenFile):
+    def _get_file_names(directory_variable_key, last_seen_file):
         # Get filenames
         logging.info("Getting filenames from directory.")
-        fileReader = FileReader()
-        directory = os.getenv("AIRFLOW_HOME") + Variable.get(directoryVariableKey)
+        file_reader = FileReader()
+        directory = os.getenv("AIRFLOW_HOME") + Variable.get(directory_variable_key)
         logging.info(
-            f"Reading files from {directory} {f'starting at file {lastSeenFile}' if lastSeenFile != '' else ''}")
-        filesToRead = fileReader.get_file_names_starting_from(directory, lastSeenFile)
-        logging.info(f'Found {len(filesToRead)} files.')
-        return filesToRead
+            f"Reading files from {directory} {f'starting at file {last_seen_file}' if last_seen_file != '' else ''}")
+        files_to_read = file_reader.get_file_names_starting_from(directory, last_seen_file)
+        logging.info(f'Found {len(files_to_read)} files.')
+        return files_to_read
 
     @staticmethod
-    def _get_files_to_data_frames(directoryVariableKey, filesToRead, lastSeenFile, lastSeenRow) -> pd.DataFrame:
+    def _get_files_to_data_frames(directory_variable_key, files_to_read, last_seen_file, last_seen_row) -> pd.DataFrame:
         # get files
         logging.info("Getting data from files.")
-        dataFrames = []
-        fileReader = FileReader()
-        directory = os.getenv("AIRFLOW_HOME") + Variable.get(directoryVariableKey)
+        data_frames = []
+        file_reader = FileReader()
+        directory = os.getenv("AIRFLOW_HOME") + Variable.get(directory_variable_key)
 
-        for file in filesToRead:
+        for file in files_to_read:
             logging.info(f"Getting data from file {file}.")
-            df = fileReader.read_pandas_csv_file(directory + file, ";")
+            df = file_reader.read_pandas_csv_file(directory + file, ";")
             df = df.set_index(df[Variable.get("image_col_name_ullid")])
             df = df.sort_index('index')
-            if file == lastSeenFile:
-                df = df[df[Variable.get("image_col_name_ullid")] > int(lastSeenRow)]
+            if file == last_seen_file:
+                df = df[df[Variable.get("image_col_name_ullid")] > int(last_seen_row)]
                 logging.info(
-                    "Removed rows " + lastSeenRow + " and before from file " + file + " because they were seen before.")
-            dataFrames.append(df)
-        resultDataFrames = pd.concat(dataFrames, ignore_index=True)
-        return resultDataFrames
+                    "Removed rows " + last_seen_row + " and before from file " + file + " because they were seen before.")
+            data_frames.append(df)
+        result_data_frames = pd.concat(data_frames, ignore_index=True)
+        return result_data_frames
 
     @staticmethod
-    def _change_col_names(data, constantsFile):
+    def _change_col_names(data, constants_file):
         # change the column names
         logging.info("Renaming columns for internal use.")
-        renameScheme = {}
-        for pair in constantsFile.__dict__:
+        rename_scheme = {}
+        for pair in constants_file.__dict__:
             if not pair.startswith('_'):
                 if (pair.startswith("p")):
-                    pair = getattr(constantsFile, pair)
-                    renameScheme[Variable.get(pair[0])] = pair[1]
+                    pair = getattr(constants_file, pair)
+                    rename_scheme[Variable.get(pair[0])] = pair[1]
         logging.info("Old column names:")
         logging.info(data.columns)
-        data.rename(columns=renameScheme, inplace=True)
+        data.rename(columns=rename_scheme, inplace=True)
         logging.info("New column names:")
         logging.info(data.columns)
         return data
@@ -125,15 +125,15 @@ class ReadTasks():
 
 
     @staticmethod
-    def _insert_into_db(data, tableName):
+    def _insert_into_db(data, table_name):
         # put in db
         logging.info("Inserting read data to database.")
         pdm = PostgresDatabaseManager()
-        pdm.insert_into_table(data, tableName)
+        pdm.insert_into_table(data, table_name)
 
     @staticmethod
-    def _make_xcom(ti, lastSeenFile, lastSeenRow):
+    def _make_xcom(ti, last_seen_file, last_seen_row):
         # send xcom about last read file and row
         logging.info("Sending xcom about last read information.")
-        ti.xcom_push("lastSeenFile", str(lastSeenFile))
-        ti.xcom_push("lastSeenRow", str(lastSeenRow))
+        ti.xcom_push("last_seen_file", str(last_seen_file))
+        ti.xcom_push("last_seen_row", str(last_seen_row))
