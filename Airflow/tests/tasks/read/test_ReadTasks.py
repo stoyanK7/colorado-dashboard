@@ -12,7 +12,7 @@ from config import LastSeenColumnNameConfig, LastSeenTableConfig, ReadTableNameC
 
 
 class TestReadTasks(unittest.TestCase):
-    @patch("DAL.PostgresDatabaseManager.PostgresDatabaseManager.readTable")
+    @patch("DAL.PostgresDatabaseManager.PostgresDatabaseManager.read_table")
     def test_get_last_file_and_row(self, mockPdm: MagicMock):
         mockPdm.return_value = \
             pd.DataFrame(data={LastSeenColumnNameConfig.LAST_SEEN_IMAGE_ROW_ID: ['8', '3'],
@@ -26,7 +26,7 @@ class TestReadTasks(unittest.TestCase):
         self.assertEqual(lastSeenRow, '3')
         mockPdm.assert_called_once_with("testTable")
 
-    @patch("DAL.PostgresDatabaseManager.PostgresDatabaseManager.readTable")
+    @patch("DAL.PostgresDatabaseManager.PostgresDatabaseManager.read_table")
     def test_get_last_file_and_row_if_empty(self, mockPdm: MagicMock):
         mockPdm.return_value = \
             pd.DataFrame(data={LastSeenColumnNameConfig.LAST_SEEN_IMAGE_ROW_ID: [],
@@ -129,7 +129,7 @@ class TestReadTasks(unittest.TestCase):
         mockOs.assert_called_once_with("AIRFLOW_HOME")
         mockVar.assert_has_calls([unittest.mock.call(directoryVariableKey), unittest.mock.call("image_col_name_ullid")])
 
-    @patch("DAL.PostgresDatabaseManager.PostgresDatabaseManager.insertIntoTable")
+    @patch("DAL.PostgresDatabaseManager.PostgresDatabaseManager.insert_into_table")
     def test_insert_into_db(self, mockPdm: MagicMock):
         data = "SomeRandomData"
         tableName="SomeTable"
