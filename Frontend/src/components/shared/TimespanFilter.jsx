@@ -36,8 +36,10 @@ const TimespanFilter = ({ chartPath, to, setTo, from, setFrom }) => {
               min={min}
               max={max}
               onChange={(e) => {
-                if (e.target.value > to)
+                if (e.target.value > to) {
+                  e.target.value = from;
                   return alert('Starting date cannot be later than ending date. Chart will not be rendered.');
+                }
                 setFrom(e.target.value);
               }} />
             <FontAwesomeIcon icon={faCalendarAlt} className='fa-calendar-alt' />
@@ -50,8 +52,10 @@ const TimespanFilter = ({ chartPath, to, setTo, from, setFrom }) => {
               min={min}
               max={max}
               onChange={(e) => {
-                if (e.target.value < from)
+                if (e.target.value < from) {
+                  e.target.value = max;
                   return alert('Ending date cannot be earlier than starting date. Chart will not be rendered.');
+                }
                 setTo(e.target.value);
               }} />
             <FontAwesomeIcon icon={faCalendarAlt} className='fa-calendar-alt' />

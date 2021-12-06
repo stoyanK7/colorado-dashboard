@@ -13,7 +13,7 @@ import useToggle from '../../hooks/useToggle';
 const View = () => {
   // Gets path from URL: i.e. https://xxxxx.com/InkInfo -> InkInfo
   const { chartPath } = useParams();
-  const chartTitle = chartTitleSwitch(chartPath);
+  const [chartTitle, setChartTitle] = useState('');
   const chart = useRef(null);
   const [fullScreen, toggleFullScreen] = useToggle();
 
@@ -23,6 +23,7 @@ const View = () => {
   useEffect(() => {
     let link = chartPath;
     if (from && to) {
+      setChartTitle(`${chartTitleSwitch(chartPath)} from ${from} until ${to}`)
       link += '/Period'
       chart.current.makeRequest(link, { from, to });
     }
