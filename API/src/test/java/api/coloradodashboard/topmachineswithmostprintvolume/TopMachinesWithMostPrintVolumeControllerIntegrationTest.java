@@ -1,8 +1,8 @@
 package api.coloradodashboard.topmachineswithmostprintvolume;
 
-import api.coloradodashboard.PeriodAndPrinterRequest;
-import api.coloradodashboard.PeriodRequest;
-import api.coloradodashboard.PrinterRequest;
+import api.coloradodashboard.PeriodAndPrinterIdsDto;
+import api.coloradodashboard.PeriodDto;
+import api.coloradodashboard.PrinterIdsDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,7 +39,7 @@ class TopMachinesWithMostPrintVolumeControllerIntegrationTest {
     void integrationTestGetAllForPeriod() {
         Date from = mock(Date.class);
         Date to = mock(Date.class);
-        PeriodRequest request = new PeriodRequest(from, to);
+        PeriodDto request = new PeriodDto(from, to);
 
         componentUnderTest.getAllForPeriod(request);
 
@@ -50,15 +50,15 @@ class TopMachinesWithMostPrintVolumeControllerIntegrationTest {
                 .getAllForPeriod(fromArgumentCaptor.capture(), toArgumentCaptor.capture());
 
 
-        assertThat(fromArgumentCaptor.getValue()).isEqualTo(PeriodRequest.removeTime(from));
-        assertThat(toArgumentCaptor.getValue()).isEqualTo(PeriodRequest.removeTime(to));
+        assertThat(fromArgumentCaptor.getValue()).isEqualTo(PeriodDto.removeTime(from));
+        assertThat(toArgumentCaptor.getValue()).isEqualTo(PeriodDto.removeTime(to));
     }
 
     @Test
     @DisplayName("INTEGRATION: getPrinters() invokes service method.")
     void integrationTestGetPrinters() {
         List printerIds = mock(List.class, RETURNS_DEEP_STUBS);
-        PrinterRequest request = new PrinterRequest(printerIds);
+        PrinterIdsDto request = new PrinterIdsDto(printerIds);
 
         componentUnderTest.getPrinters(request);
 
@@ -76,7 +76,7 @@ class TopMachinesWithMostPrintVolumeControllerIntegrationTest {
         Date from = mock(Date.class, RETURNS_DEEP_STUBS);
         Date to = mock(Date.class, RETURNS_DEEP_STUBS);
         List printerIds = mock(List.class, RETURNS_DEEP_STUBS);
-        PeriodAndPrinterRequest request = new PeriodAndPrinterRequest(from, to, printerIds);
+        PeriodAndPrinterIdsDto request = new PeriodAndPrinterIdsDto(from, to, printerIds);
 
         componentUnderTest.getPrintersForPeriod(request);
 

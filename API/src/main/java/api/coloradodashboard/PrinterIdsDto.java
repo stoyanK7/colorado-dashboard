@@ -9,6 +9,6 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PrinterRequest {
+public class PrinterIdsDto {
     private List<String> printerIds;
 }

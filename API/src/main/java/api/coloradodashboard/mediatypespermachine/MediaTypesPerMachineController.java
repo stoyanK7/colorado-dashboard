@@ -1,8 +1,8 @@
 package api.coloradodashboard.mediatypespermachine;
 
-import api.coloradodashboard.PeriodAndPrinterRequest;
-import api.coloradodashboard.PeriodRequest;
-import api.coloradodashboard.PrinterRequest;
+import api.coloradodashboard.PeriodAndPrinterIdsDto;
+import api.coloradodashboard.PeriodDto;
+import api.coloradodashboard.PrinterIdsDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -54,7 +54,7 @@ public class MediaTypesPerMachineController {
      * one representing a different printer, or <b>404</b> if no data is present.
      */
     @PostMapping("/Period")
-    public ResponseEntity<List<MediaTypesPerMachineDto>> getAllForPeriod(@RequestBody PeriodRequest request) {
+    public ResponseEntity<List<MediaTypesPerMachineDto>> getAllForPeriod(@RequestBody PeriodDto request) {
         List<MediaTypesPerMachineDto> data
                 = service.getAllForPeriod(request.getFrom(), request.getTo());
         if (data.isEmpty())
@@ -78,7 +78,7 @@ public class MediaTypesPerMachineController {
      * one representing a different printer, or <b>404</b> if no data is present.
      */
     @PostMapping("/Printer")
-    public ResponseEntity<List<MediaTypesPerMachineDto>> getPrinters(@RequestBody PrinterRequest request) {
+    public ResponseEntity<List<MediaTypesPerMachineDto>> getPrinters(@RequestBody PrinterIdsDto request) {
         List<MediaTypesPerMachineDto> data
                 = service.getPrinters(request.getPrinterIds());
         if (data.isEmpty())
@@ -104,7 +104,7 @@ public class MediaTypesPerMachineController {
      * one representing a different printer, or <b>404</b> if no data is present.
      */
     @PostMapping("/PeriodAndPrinter")
-    public ResponseEntity<List<MediaTypesPerMachineDto>> getPrintersForPeriod(@RequestBody PeriodAndPrinterRequest request) {
+    public ResponseEntity<List<MediaTypesPerMachineDto>> getPrintersForPeriod(@RequestBody PeriodAndPrinterIdsDto request) {
         List<MediaTypesPerMachineDto> data
                 = service.getPrintersForPeriod(request.getFrom(), request.getTo(), request.getPrinterIds());
         if (data.isEmpty())

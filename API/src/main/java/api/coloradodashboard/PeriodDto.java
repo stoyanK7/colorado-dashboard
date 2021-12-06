@@ -3,13 +3,17 @@ package api.coloradodashboard;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Calendar;
 import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class PeriodRequest {
+public class PeriodDto {
+    @Temporal(TemporalType.DATE)
     private Date from;
+    @Temporal(TemporalType.DATE)
     private Date to;
 
     public Date getFrom() {

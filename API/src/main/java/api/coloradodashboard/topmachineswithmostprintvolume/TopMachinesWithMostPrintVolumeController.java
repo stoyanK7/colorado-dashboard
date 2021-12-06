@@ -1,8 +1,8 @@
 package api.coloradodashboard.topmachineswithmostprintvolume;
 
-import api.coloradodashboard.PeriodAndPrinterRequest;
-import api.coloradodashboard.PeriodRequest;
-import api.coloradodashboard.PrinterRequest;
+import api.coloradodashboard.PeriodAndPrinterIdsDto;
+import api.coloradodashboard.PeriodDto;
+import api.coloradodashboard.PrinterIdsDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -53,7 +53,7 @@ public class TopMachinesWithMostPrintVolumeController {
      * one representing a different printer, or <b>404</b> if no data is present.
      */
     @PostMapping("/Period")
-    public ResponseEntity<List<TopMachinesWithMostPrintVolumeDto>> getAllForPeriod(@RequestBody PeriodRequest request) {
+    public ResponseEntity<List<TopMachinesWithMostPrintVolumeDto>> getAllForPeriod(@RequestBody PeriodDto request) {
         List<TopMachinesWithMostPrintVolumeDto> data
                 = service.getAllForPeriod(request.getFrom(), request.getTo());
         if (data.isEmpty())
@@ -77,7 +77,7 @@ public class TopMachinesWithMostPrintVolumeController {
      * one representing a different printer, or <b>404</b> if no data is present.
      */
     @PostMapping("/Printer")
-    public ResponseEntity<List<TopMachinesWithMostPrintVolumeDto>> getPrinters(@RequestBody PrinterRequest request) {
+    public ResponseEntity<List<TopMachinesWithMostPrintVolumeDto>> getPrinters(@RequestBody PrinterIdsDto request) {
         List<TopMachinesWithMostPrintVolumeDto> data
                 = service.getPrinters(request.getPrinterIds());
         if (data.isEmpty())
@@ -103,7 +103,7 @@ public class TopMachinesWithMostPrintVolumeController {
      * one representing a different printer, or <b>404</b> if no data is present.
      */
     @PostMapping("/PeriodAndPrinter")
-    public ResponseEntity<List<TopMachinesWithMostPrintVolumeDto>> getPrintersForPeriod(@RequestBody PeriodAndPrinterRequest request) {
+    public ResponseEntity<List<TopMachinesWithMostPrintVolumeDto>> getPrintersForPeriod(@RequestBody PeriodAndPrinterIdsDto request) {
         List<TopMachinesWithMostPrintVolumeDto> data
                 = service.getPrintersForPeriod(request.getFrom(), request.getTo(), request.getPrinterIds());
         if (data.isEmpty())
@@ -113,9 +113,9 @@ public class TopMachinesWithMostPrintVolumeController {
     }
 
     // TODO: make seperate controller and stuff only for available time period
-        @GetMapping("/AvailableTimePeriod")
-    public ResponseEntity<PeriodRequest> getAvailableTimePeriod() {
-        PeriodRequest data = service.getAvailableTimePeriod();
+    @GetMapping("/AvailableTimePeriod")
+    public ResponseEntity<PeriodDto> getAvailableTimePeriod() {
+        PeriodDto data = service.getAvailableTimePeriod();
         if (data == null)
             return ResponseEntity.notFound().build();
 

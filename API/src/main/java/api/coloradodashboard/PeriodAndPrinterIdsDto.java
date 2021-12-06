@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PeriodAndPrinterRequest {
+public class PeriodAndPrinterIdsDto {
     private Date from;
     private Date to;
     private List<String> printerIds;

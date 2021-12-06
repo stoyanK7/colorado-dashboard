@@ -1,8 +1,8 @@
 package api.coloradodashboard.topmachineswithmostprintvolume;
 
-import api.coloradodashboard.PeriodAndPrinterRequest;
-import api.coloradodashboard.PeriodRequest;
-import api.coloradodashboard.PrinterRequest;
+import api.coloradodashboard.PeriodAndPrinterIdsDto;
+import api.coloradodashboard.PeriodDto;
+import api.coloradodashboard.PrinterIdsDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -56,8 +56,8 @@ public class TopMachinesWithMostPrintVolumeControllerUnitTest {
     @Test
     @DisplayName("UNIT: POST /TopMachinesWithMostPrintVolume/Period returns (200) OK when data is present.")
     void unitTestGetAllForPeriod() throws Exception {
-        PeriodRequest request
-                = new PeriodRequest(
+        PeriodDto request
+                = new PeriodDto(
                 formatter.parse("2021-12-11"),
                 formatter.parse("2021-12-12"));
 
@@ -73,8 +73,8 @@ public class TopMachinesWithMostPrintVolumeControllerUnitTest {
     @Test
     @DisplayName("UNIT: POST /TopMachinesWithMostPrintVolume/Printer returns (200) OK when data is present.")
     void unitTestGetPrinters() throws Exception {
-        PrinterRequest request =
-                new PrinterRequest(Arrays.asList("700", "702"));
+        PrinterIdsDto request =
+                new PrinterIdsDto(Arrays.asList("700", "702"));
 
         mockMvc.perform(post("/TopMachinesWithMostPrintVolume/Printer")
                         .content(asJsonString(request))
@@ -88,8 +88,8 @@ public class TopMachinesWithMostPrintVolumeControllerUnitTest {
     @Test
     @DisplayName("UNIT: POST /TopMachinesWithMostPrintVolume/PeriodAndPrinter returns (200) OK when data is present.")
     void unitTestGetPrintersForPeriod() throws Exception {
-        PeriodAndPrinterRequest request
-                = new PeriodAndPrinterRequest(
+        PeriodAndPrinterIdsDto request
+                = new PeriodAndPrinterIdsDto(
                 formatter.parse("2021-12-11"),
                 formatter.parse("2021-12-12"),
                 Arrays.asList("700", "702"));

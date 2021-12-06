@@ -1,8 +1,8 @@
 package api.coloradodashboard.topmachineswithmostprintvolume;
 
-import api.coloradodashboard.PeriodAndPrinterRequest;
-import api.coloradodashboard.PeriodRequest;
-import api.coloradodashboard.PrinterRequest;
+import api.coloradodashboard.PeriodAndPrinterIdsDto;
+import api.coloradodashboard.PeriodDto;
+import api.coloradodashboard.PrinterIdsDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -58,7 +58,7 @@ public class TopMachinesWithMostPrintVolumeControllerUnitTestNotFound {
     @Test
     @DisplayName("UNIT: POST /TopMachinesWithMostPrintVolume/Period returns (404) NOT FOUND when no data is present.")
     void unitTestGetAllForPeriodNotFound() throws Exception {
-        PeriodRequest request = new PeriodRequest(new Date(), new Date());
+        PeriodDto request = new PeriodDto(new Date(), new Date());
 
         given(service.getAllForPeriod(any(), any())).willReturn(new ArrayList<>());
 
@@ -74,7 +74,7 @@ public class TopMachinesWithMostPrintVolumeControllerUnitTestNotFound {
     @Test
     @DisplayName("UNIT: POST /TopMachinesWithMostPrintVolume/Printer returns (404) NOT FOUND when no data is present.")
     void unitTestGetPrintersNotFound() throws Exception {
-        PrinterRequest request = new PrinterRequest();
+        PrinterIdsDto request = new PrinterIdsDto();
 
         given(service.getPrinters(any())).willReturn(new ArrayList<>());
 
@@ -89,7 +89,7 @@ public class TopMachinesWithMostPrintVolumeControllerUnitTestNotFound {
     @Test
     @DisplayName("UNIT: POST /TopMachinesWithMostPrintVolume/PeriodAndPrinter returns (404) NOT FOUND when no data is present.")
     void unitTestGetPrintersForPeriodNotFound() throws Exception {
-        PeriodAndPrinterRequest request = new PeriodAndPrinterRequest(new Date(), new Date(), new ArrayList<>());
+        PeriodAndPrinterIdsDto request = new PeriodAndPrinterIdsDto(new Date(), new Date(), new ArrayList<>());
 
         given(service.getPrintersForPeriod(any(), any(), any())).willReturn(new ArrayList<>());
 

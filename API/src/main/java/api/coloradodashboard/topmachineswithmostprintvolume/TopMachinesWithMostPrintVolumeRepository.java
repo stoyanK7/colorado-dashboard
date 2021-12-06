@@ -1,6 +1,6 @@
 package api.coloradodashboard.topmachineswithmostprintvolume;
 
-import api.coloradodashboard.PeriodRequest;
+import api.coloradodashboard.PeriodDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -79,7 +79,7 @@ public interface TopMachinesWithMostPrintVolumeRepository extends JpaRepository<
             "ORDER BY sum(t.printedSquareMeters) DESC")
     List<TopMachinesWithMostPrintVolumeDto> getPrintersForPeriod(@Param("from") Date from, @Param("to") Date to, @Param("printerIds") List<String> printerIds);
 
-    @Query("SELECT new api.coloradodashboard.PeriodRequest(min(t.date), max(t.date)) " +
+    @Query("SELECT new api.coloradodashboard.PeriodDto(min(t.date), max(t.date)) " +
             "FROM TopMachinesWithMostPrintVolumeEntity t")
-    PeriodRequest getAvailableTimePeriod();
+    PeriodDto getAvailableTimePeriod();
 }
