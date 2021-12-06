@@ -1,19 +1,20 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import TimespanFilter from './TimespanFilter';
 import { faExpand } from '@fortawesome/free-solid-svg-icons';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
-import TimespanFilter from './TimespanFilter';
-
-const Filters = ({ chartPath, enableFullScreen }) => {
-
-
+const Filters = ({ chartPath, enableFullScreen, from, setFrom, to, setTo }) => {
   return (
     <>
       <div className='bins'>
         <span className='one-day'>1D</span>
         <span className='one-week'>1W</span>
       </div>
-      <TimespanFilter chartPath={chartPath} />
+      <TimespanFilter
+        from={from}
+        setFrom={setFrom}
+        to={to}
+        setTo={setTo}
+        chartPath={chartPath} />
       <div className='specific-printers'>
         <input type='text' placeholder='Specific printers..' />
       </div>
@@ -23,6 +24,6 @@ const Filters = ({ chartPath, enableFullScreen }) => {
       </div>
     </>
   );
-}
+};
 
 export default Filters;

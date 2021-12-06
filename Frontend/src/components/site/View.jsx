@@ -1,13 +1,13 @@
 import '../../css/site/View.css';
 
 import { disableFullScreen, enableFullScreen } from '../../util/fullScreen';
+import { useEffect, useRef, useState } from 'react';
 
 import Chart from '../shared/Chart';
 import Filters from '../shared/Filters';
 import Header from '../static/Header';
 import chartTitleSwitch from '../../util/chartTitleSwitch';
 import { useParams } from 'react-router-dom';
-import { useRef } from 'react';
 import useToggle from '../../hooks/useToggle';
 
 const View = () => {
@@ -17,12 +17,28 @@ const View = () => {
   const chart = useRef(null);
   const [fullScreen, toggleFullScreen] = useToggle();
 
+  const [from, setFrom] = useState();
+  const [to, setTo] = useState();
+
+  useEffect(() => {
+    let link = chartPath;
+    if (from && to) {
+      link += '/Period'
+      chart.current.makeRequest(link, { from, to });
+    }
+    // TODO: add rest of dependecies when available
+  }, [from, to]);
+
   return (
     <div className='view'>
       <Header />
       <main>
         <h1>{chartTitle}</h1>
         <Filters
+          from={from}
+          setFrom={setFrom}
+          to={to}
+          setTo={setTo}
           chartPath={chartPath}
           enableFullScreen={() => { enableFullScreen(chart, toggleFullScreen) }} />
         <Chart

@@ -1,26 +1,30 @@
 import { useEffect, useState } from 'react';
 
-const baseURL = 'http://localhost:8080';
+import axios from 'axios';
 
-const useFetch = (url) => {
+const baseURL = 'http://localhost:8080/';
+
+const useFetch = (url, requestBody) => {
   const [data, setData] = useState(null);
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const abortController = new AbortController();
-
-    fetch(baseURL + url, { signal: abortController.signal })
+    console.log(`Making a request with url ${url} and request body ${JSON.stringify(requestBody)}`);
+    axios.post(baseURL + url, {...requestBody})
       .then(res => {
         if (res.status !== 200) throw Error(res.message);
-        return res.json();
+        return res.data;
       })
       .then(data => {
+        console.log(data)
         setData(data);
         setError(null);
         setIsPending(false);
       })
       .catch(err => {
+        console.log(err);
         if (err.name === 'AbortError') console.log('fetch aborted')
         else {
           setIsPending(false);
@@ -29,7 +33,7 @@ const useFetch = (url) => {
       });
 
     return () => abortController.abort();
-  }, [url]);
+  }, [url, requestBody]);
 
   return { data, isPending, error };
 }

@@ -1,11 +1,12 @@
-import { faCalendarAlt, faExpand } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-const TimespanFilter = ({ chartPath }) => {
-  const [from, setFrom] = useState();
-  const [to, setTo] = useState();
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
+import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+
+const TimespanFilter = ({ chartPath, to, setTo, from, setFrom }) => {
+  const [min, setMin] = useState();
+  const [max, setMax] = useState();
 
   useEffect(() => {
     axios.get(`${chartPath}/AvailableTimePeriod`)
@@ -15,7 +16,13 @@ const TimespanFilter = ({ chartPath }) => {
       .then(data => {
         setFrom(data.from);
         setTo(data.to);
+
+        setMin(data.from);
+        setMax(data.to);
       })
+      .catch(err => {
+        // TODO: introduce error handling logic
+      }) 
   }, []);
 
   return (
@@ -26,8 +33,9 @@ const TimespanFilter = ({ chartPath }) => {
             <input
               type='date'
               defaultValue={from}
-              min={from}
-              max={to} />
+              min={min}
+              max={max}
+              onChange={(e) => setFrom(e.target.value)} />
             <FontAwesomeIcon icon={faCalendarAlt} className='fa-calendar-alt' />
           </div>
           <span>to</span>
@@ -35,14 +43,15 @@ const TimespanFilter = ({ chartPath }) => {
             <input
               type='date'
               defaultValue={to}
-              min={from}
-              max={to} />
+              min={min}
+              max={max}
+              onChange={(e) => setTo(e.target.value)} />
             <FontAwesomeIcon icon={faCalendarAlt} className='fa-calendar-alt' />
           </div>
         </div>
       }
     </>
   );
-}
+};
 
 export default TimespanFilter;
