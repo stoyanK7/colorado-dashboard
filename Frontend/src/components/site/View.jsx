@@ -30,8 +30,23 @@ const View = () => {
       setLink(requestLink + '/Period')
       setRequestBody({ from, to })
     }
+
+    if(from &&  to && chosenPrinters.length > 0) {
+      setChartTitle(`${chartTitleSwitch(chartPath)} from ${formatDate(from)} until ${formatDate(to)}`)
+      setLink(requestLink + '/PeriodAndPrinter')
+      setRequestBody({ from, to, printerIds: chosenPrinters })
+    }
     // TODO: add rest of dependecies when available
-  }, [from, to]);
+  }, [from, to, chosenPrinters]);
+
+  // Use this if rendering chosen printers on the go is too laggy
+  const makeSpecificPrinterRequestHandler = () => {
+    // let requestLink = chartPath;
+    // if(from &&  to && chosenPrinters.length > 0) {
+    //   setLink(requestLink + '/PeriodAndPrinter')
+    //   setRequestBody({ from, to, printerIds: chosenPrinters })
+    // }
+  };
 
   return (
     <div className='view'>
@@ -46,6 +61,7 @@ const View = () => {
           chartPath={chartPath}
           chosenPrinters={chosenPrinters}
           setChosenPrinters={setChosenPrinters}
+          makeSpecificPrinterRequestHandler={makeSpecificPrinterRequestHandler}
           enableFullScreen={() => { enableFullScreen(chart, toggleFullScreen) }} />
         <Chart
           ref={chart}

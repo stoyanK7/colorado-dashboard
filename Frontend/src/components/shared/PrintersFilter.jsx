@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 
-const PrintersFilter = ({ chartPath, chosenPrinters, setChosenPrinters }) => {
+const PrintersFilter = ({ chartPath, chosenPrinters, setChosenPrinters, makeSpecificPrinterRequestHandler }) => {
   const [availablePrinters, setAvailablePrinters] = useState();
   const [menuStyle, setMenuStyle] = useState();
   useEffect(() => {
@@ -22,19 +22,19 @@ const PrintersFilter = ({ chartPath, chosenPrinters, setChosenPrinters }) => {
   }, []);
 
   useEffect(() => { }, [chosenPrinters]);
-  const openMenuHandler = e => setMenuStyle({ y: 50});
+  const openMenuHandler = e => setMenuStyle({ y: 50 });
   const closeMenuHandler = e => setMenuStyle({ y: '-100vh' });
 
   return (
     <div className='specific-printers'>
       <input type='text' placeholder='Specific printers..' value={chosenPrinters} onClick={openMenuHandler} />
       {availablePrinters &&
-        <motion.div 
-        className='printers-menu' 
-        // style={menuStyle}
-        initial={{y: '-100vh'}}
-        animate={menuStyle}
-        transition={{duration: 0.6, type:'spring', stiffness: 80}}
+        <motion.div
+          className='printers-menu'
+          // style={menuStyle}
+          initial={{ y: '-100vh' }}
+          animate={menuStyle}
+          transition={{ duration: 0.6, type: 'spring', stiffness: 80 }}
         >
           <h2>Available printers</h2>
           <div className='available-printers' >
@@ -45,6 +45,7 @@ const PrintersFilter = ({ chartPath, chosenPrinters, setChosenPrinters }) => {
                   type="checkbox"
                   name={printerId}
                   id={printerId}
+                  checked={chosenPrinters.includes(printerId)}
                   onClick={e => {
                     // Add element if checked
                     if (e.target.checked)
@@ -57,10 +58,10 @@ const PrintersFilter = ({ chartPath, chosenPrinters, setChosenPrinters }) => {
               </div>
             ))}
           </div>
-          <FontAwesomeIcon icon={faTimesCircle} className='fa-circle' onClick={closeMenuHandler}/>
+          <FontAwesomeIcon icon={faTimesCircle} className='fa-circle' onClick={closeMenuHandler} />
         </motion.div>
       }
-      <FontAwesomeIcon icon={faSearch} className='fa-expand' />
+      {/* <FontAwesomeIcon icon={faSearch} className='fa-expand' onClick={makeSpecificPrinterRequestHandler} /> */}
     </div>
   );
 };
