@@ -20,6 +20,7 @@ const View = () => {
   const [from, setFrom] = useState();
   const [to, setTo] = useState();
   const [link, setLink] = useState();
+  const [chosenPrinters, setChosenPrinters] = useState([]);
   const [requestBody, setRequestBody] = useState();
 
   useEffect(() => {
@@ -43,6 +44,8 @@ const View = () => {
           to={to}
           setTo={setTo}
           chartPath={chartPath}
+          chosenPrinters={chosenPrinters}
+          setChosenPrinters={setChosenPrinters}
           enableFullScreen={() => { enableFullScreen(chart, toggleFullScreen) }} />
         <Chart
           ref={chart}

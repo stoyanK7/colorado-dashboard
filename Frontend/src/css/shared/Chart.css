@@ -18,16 +18,16 @@
   font-weight: 300;
 }
 
-.chart-wrapper-1 .fa-circle {
+.fa-circle {
   position: absolute;
-  top: 1%;
-  right: 1%;
+  top: 10px;
+  right: 10px;
   font-size: 3rem;
   color: var(--carnelian);
   z-index: 1;
 }
 
-.chart-wrapper-1 .fa-circle:hover {
+.fa-circle:hover {
   cursor: pointer;
   opacity: 0.8;
 }

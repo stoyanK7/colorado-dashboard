@@ -3,7 +3,7 @@ import PrintersFilter from './PrintersFilter';
 import TimespanFilter from './TimespanFilter';
 import { faExpand } from '@fortawesome/free-solid-svg-icons';
 
-const Filters = ({ chartPath, enableFullScreen, from, setFrom, to, setTo }) => {
+const Filters = ({ chartPath, enableFullScreen, from, setFrom, to, setTo, chosenPrinters, setChosenPrinters }) => {
   return (
     <>
       <div className='bins'>
@@ -17,9 +17,11 @@ const Filters = ({ chartPath, enableFullScreen, from, setFrom, to, setTo }) => {
         setTo={setTo}
         chartPath={chartPath} />
       <PrintersFilter
-        chartPath={chartPath} />
+        chartPath={chartPath} 
+        chosenPrinters={chosenPrinters}
+        setChosenPrinters={setChosenPrinters}/>
       <div className='full-screen' onClick={enableFullScreen}>
-        <FontAwesomeIcon icon={faExpand} className='fa-expand' />
+        <FontAwesomeIcon icon={faExpand} className='fa-search' />
         <span>Full screen</span>
       </div>
     </>
