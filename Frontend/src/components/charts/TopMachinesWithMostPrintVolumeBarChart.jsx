@@ -1,31 +1,31 @@
-import { ResponsiveBarCanvas } from '@nivo/bar';
+import { ResponsiveBar } from '@nivo/bar';
 
-const SquareMeterPerPrintModeBarChart = ({ data, index }) => {
+const TopMachinesWithMostPrintVolumeBarChart = ({ data, index }) => {
   if (typeof data === 'undefined' || data.length === 0) return null;
   // TODO: Seperate into own function
   let keys = Object.keys(data[0]);
-  keys.splice(keys.indexOf('date'), 1);
+  keys.splice(keys.indexOf(index), 1);
   keys.sort();
   return (
     <>
-      <ResponsiveBarCanvas
+      <ResponsiveBar
         animate={true}
         borderWidth={1}
         data={data}
         keys={keys}
         indexBy={index}
-        margin={{ top: 50, right: 130, bottom: 70, left: 60 }}
+        margin={{ top: 50, right: 160, bottom: 70, left: 60 }}
         padding={0.05}
         valueScale={{ type: 'linear' }}
         indexScale={{ type: 'band', round: true }}
         // colors={({ data, id, indexValue }) => chartTheme(data, id, indexValue, 'square-meter-per-print-mode')}
-        colors={{ scheme: 'nivo' }}
+        colors={{ scheme: 'spectral' }}
         borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
         axisBottom={{
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 40,
-          legend: 'Date',
+          legend: 'Printer',
           legendPosition: 'middle',
           legendOffset: 55
         }}
@@ -44,7 +44,7 @@ const SquareMeterPerPrintModeBarChart = ({ data, index }) => {
             anchor: 'bottom-right',
             direction: 'column',
             justify: false,
-            translateX: 120,
+            translateX: 90,
             translateY: -10,
             itemsSpacing: 2,
             itemWidth: 100,
@@ -73,12 +73,12 @@ const SquareMeterPerPrintModeBarChart = ({ data, index }) => {
             </div>
             Printed square meters: <b>{value}</b>
             <br />
-            Date: <b>{indexValue}</b>
+            {index}: <b>{indexValue}</b>
           </div>
         }}
       />
     </>
   );
-};
+}
 
-export default SquareMeterPerPrintModeBarChart;
+export default TopMachinesWithMostPrintVolumeBarChart;

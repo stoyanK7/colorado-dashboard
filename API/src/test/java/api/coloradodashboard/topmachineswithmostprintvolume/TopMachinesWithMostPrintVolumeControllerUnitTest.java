@@ -1,8 +1,8 @@
 package api.coloradodashboard.topmachineswithmostprintvolume;
 
-import api.coloradodashboard.request.PeriodAndPrinterRequest;
-import api.coloradodashboard.request.PeriodRequest;
-import api.coloradodashboard.request.PrinterRequest;
+import api.coloradodashboard.PeriodAndPrinterIdsDto;
+import api.coloradodashboard.PeriodDto;
+import api.coloradodashboard.PrinterIdsDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,6 @@ import java.util.Arrays;
 import java.util.Locale;
 
 import static api.coloradodashboard.TestUtil.asJsonString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -45,9 +44,9 @@ public class TopMachinesWithMostPrintVolumeControllerUnitTest {
     }
 
     @Test
-    @DisplayName("UNIT: GET /TopMachinesWithMostPrintVolume returns (200) OK when data is present.")
+    @DisplayName("UNIT: POST /TopMachinesWithMostPrintVolume returns (200) OK when data is present.")
     void unitTestGetAll() throws Exception {
-        mockMvc.perform(get("/TopMachinesWithMostPrintVolume"))
+        mockMvc.perform(post("/TopMachinesWithMostPrintVolume"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[{'Printer id':'701','Printed square meters':243.0},{'Printer id':'702','Printed square meters':238.0},{'Printer id':'700','Printed square meters':196.0}]"))
                 .andReturn();
@@ -56,8 +55,8 @@ public class TopMachinesWithMostPrintVolumeControllerUnitTest {
     @Test
     @DisplayName("UNIT: POST /TopMachinesWithMostPrintVolume/Period returns (200) OK when data is present.")
     void unitTestGetAllForPeriod() throws Exception {
-        PeriodRequest request
-                = new PeriodRequest(
+        PeriodDto request
+                = new PeriodDto(
                 formatter.parse("2021-12-11"),
                 formatter.parse("2021-12-12"));
 
@@ -73,8 +72,8 @@ public class TopMachinesWithMostPrintVolumeControllerUnitTest {
     @Test
     @DisplayName("UNIT: POST /TopMachinesWithMostPrintVolume/Printer returns (200) OK when data is present.")
     void unitTestGetPrinters() throws Exception {
-        PrinterRequest request =
-                new PrinterRequest(Arrays.asList("700", "702"));
+        PrinterIdsDto request =
+                new PrinterIdsDto(Arrays.asList("700", "702"));
 
         mockMvc.perform(post("/TopMachinesWithMostPrintVolume/Printer")
                         .content(asJsonString(request))
@@ -88,8 +87,8 @@ public class TopMachinesWithMostPrintVolumeControllerUnitTest {
     @Test
     @DisplayName("UNIT: POST /TopMachinesWithMostPrintVolume/PeriodAndPrinter returns (200) OK when data is present.")
     void unitTestGetPrintersForPeriod() throws Exception {
-        PeriodAndPrinterRequest request
-                = new PeriodAndPrinterRequest(
+        PeriodAndPrinterIdsDto request
+                = new PeriodAndPrinterIdsDto(
                 formatter.parse("2021-12-11"),
                 formatter.parse("2021-12-12"),
                 Arrays.asList("700", "702"));

@@ -1,8 +1,8 @@
 package api.coloradodashboard.topmachineswithmostprintvolume;
 
-import api.coloradodashboard.request.PeriodAndPrinterRequest;
-import api.coloradodashboard.request.PeriodRequest;
-import api.coloradodashboard.request.PrinterRequest;
+import api.coloradodashboard.PeriodAndPrinterIdsDto;
+import api.coloradodashboard.PeriodDto;
+import api.coloradodashboard.PrinterIdsDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,7 +31,7 @@ public class TopMachinesWithMostPrintVolumeController {
      * @return A <b>list of TopMachinesWithMostPrintVolumeDto objects</b>, each
      * one representing a different printer, or <b>404</b> if no data is present.
      */
-    @GetMapping
+    @PostMapping
     public ResponseEntity<List<TopMachinesWithMostPrintVolumeDto>> getAll() {
         List<TopMachinesWithMostPrintVolumeDto> data = service.getAll();
         if (data.isEmpty())
@@ -53,7 +53,7 @@ public class TopMachinesWithMostPrintVolumeController {
      * one representing a different printer, or <b>404</b> if no data is present.
      */
     @PostMapping("/Period")
-    public ResponseEntity<List<TopMachinesWithMostPrintVolumeDto>> getAllForPeriod(@RequestBody PeriodRequest request) {
+    public ResponseEntity<List<TopMachinesWithMostPrintVolumeDto>> getAllForPeriod(@RequestBody PeriodDto request) {
         List<TopMachinesWithMostPrintVolumeDto> data
                 = service.getAllForPeriod(request.getFrom(), request.getTo());
         if (data.isEmpty())
@@ -68,16 +68,16 @@ public class TopMachinesWithMostPrintVolumeController {
      *
      * @param request A <b>JSON object</b>, with one field. Expected format:
      *                {
-     *                  "printerIds": [
-     *                      "702",
-     *                      "703
-     *                  ]
+     *                "printerIds": [
+     *                "702",
+     *                "703
+     *                ]
      *                }
      * @return A <b>list of TopMachinesWithMostPrintVolumeDto objects</b>, each
      * one representing a different printer, or <b>404</b> if no data is present.
      */
     @PostMapping("/Printer")
-    public ResponseEntity<List<TopMachinesWithMostPrintVolumeDto>> getPrinters(@RequestBody PrinterRequest request) {
+    public ResponseEntity<List<TopMachinesWithMostPrintVolumeDto>> getPrinters(@RequestBody PrinterIdsDto request) {
         List<TopMachinesWithMostPrintVolumeDto> data
                 = service.getPrinters(request.getPrinterIds());
         if (data.isEmpty())
@@ -92,21 +92,52 @@ public class TopMachinesWithMostPrintVolumeController {
      *
      * @param request A <b>JSON object</b>, with one field. Expected format:
      *                {
-     *                  "from": "2021-12-20",
-     *                  "to": "2021-12-30",
-     *                  "printerIds": [
-     *                      "702",
-     *                      "703
-     *                  ]
+     *                "from": "2021-12-20",
+     *                "to": "2021-12-30",
+     *                "printerIds": [
+     *                "702",
+     *                "703
+     *                ]
      *                }
      * @return A <b>list of TopMachinesWithMostPrintVolumeDto objects</b>, each
      * one representing a different printer, or <b>404</b> if no data is present.
      */
     @PostMapping("/PeriodAndPrinter")
-    public ResponseEntity<List<TopMachinesWithMostPrintVolumeDto>> getPrintersForPeriod(@RequestBody PeriodAndPrinterRequest request) {
+    public ResponseEntity<List<TopMachinesWithMostPrintVolumeDto>> getPrintersForPeriod(@RequestBody PeriodAndPrinterIdsDto request) {
         List<TopMachinesWithMostPrintVolumeDto> data
                 = service.getPrintersForPeriod(request.getFrom(), request.getTo(), request.getPrinterIds());
         if (data.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok().body(data);
+    }
+
+    /**
+     * <b>GET</b> request returning the minimum and maximum date from the database
+     * table.
+     *
+     * @return A <b>PeriodDto object</b>, containing the minimum and maximum possible
+     * dates.
+     */
+    @GetMapping("/AvailableTimePeriod")
+    public ResponseEntity<PeriodDto> getAvailableTimePeriod() {
+        PeriodDto data = service.getAvailableTimePeriod();
+        if (data == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok().body(data);
+    }
+
+    /**
+     * <b>GET</b> request returning all available printers in the database table.
+     *
+     * @return A <b>PrinterIdsDto object</b>, containing a list of all available
+     * printers.
+     */
+    @GetMapping("/AvailablePrinters")
+    public ResponseEntity<PrinterIdsDto> getAvailablePrinters() {
+        PrinterIdsDto data = service.getAvailablePrinters();
+        if (data == null)
             return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok().body(data);

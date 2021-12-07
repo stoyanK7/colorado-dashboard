@@ -1,8 +1,8 @@
 package api.coloradodashboard.topmachineswithmostprintvolume;
 
-import api.coloradodashboard.request.PeriodAndPrinterRequest;
-import api.coloradodashboard.request.PeriodRequest;
-import api.coloradodashboard.request.PrinterRequest;
+import api.coloradodashboard.PeriodAndPrinterIdsDto;
+import api.coloradodashboard.PeriodDto;
+import api.coloradodashboard.PrinterIdsDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,6 @@ import java.util.Date;
 import static api.coloradodashboard.TestUtil.asJsonString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -46,11 +45,11 @@ public class TopMachinesWithMostPrintVolumeControllerUnitTestNotFound {
     }
 
     @Test
-    @DisplayName("UNIT: GET /TopMachinesWithMostPrintVolume returns (404) NOT FOUND when no data is present.")
+    @DisplayName("UNIT: POST /TopMachinesWithMostPrintVolume returns (404) NOT FOUND when no data is present.")
     void unitTestGetAllNotFound() throws Exception {
         given(service.getAll()).willReturn(new ArrayList<>());
 
-        mockMvc.perform(get("/TopMachinesWithMostPrintVolume"))
+        mockMvc.perform(post("/TopMachinesWithMostPrintVolume"))
                 .andExpect(status().isNotFound())
                 .andReturn();
     }
@@ -58,7 +57,7 @@ public class TopMachinesWithMostPrintVolumeControllerUnitTestNotFound {
     @Test
     @DisplayName("UNIT: POST /TopMachinesWithMostPrintVolume/Period returns (404) NOT FOUND when no data is present.")
     void unitTestGetAllForPeriodNotFound() throws Exception {
-        PeriodRequest request = new PeriodRequest(new Date(), new Date());
+        PeriodDto request = new PeriodDto(new Date(), new Date());
 
         given(service.getAllForPeriod(any(), any())).willReturn(new ArrayList<>());
 
@@ -74,7 +73,7 @@ public class TopMachinesWithMostPrintVolumeControllerUnitTestNotFound {
     @Test
     @DisplayName("UNIT: POST /TopMachinesWithMostPrintVolume/Printer returns (404) NOT FOUND when no data is present.")
     void unitTestGetPrintersNotFound() throws Exception {
-        PrinterRequest request = new PrinterRequest();
+        PrinterIdsDto request = new PrinterIdsDto();
 
         given(service.getPrinters(any())).willReturn(new ArrayList<>());
 
@@ -89,7 +88,7 @@ public class TopMachinesWithMostPrintVolumeControllerUnitTestNotFound {
     @Test
     @DisplayName("UNIT: POST /TopMachinesWithMostPrintVolume/PeriodAndPrinter returns (404) NOT FOUND when no data is present.")
     void unitTestGetPrintersForPeriodNotFound() throws Exception {
-        PeriodAndPrinterRequest request = new PeriodAndPrinterRequest(new Date(), new Date(), new ArrayList<>());
+        PeriodAndPrinterIdsDto request = new PeriodAndPrinterIdsDto(new Date(), new Date(), new ArrayList<>());
 
         given(service.getPrintersForPeriod(any(), any(), any())).willReturn(new ArrayList<>());
 
