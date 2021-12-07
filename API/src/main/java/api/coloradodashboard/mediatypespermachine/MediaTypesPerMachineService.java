@@ -1,5 +1,7 @@
 package api.coloradodashboard.mediatypespermachine;
 
+import api.coloradodashboard.PeriodDto;
+import api.coloradodashboard.PrinterIdsDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +16,14 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class MediaTypesPerMachineService {
+    private MediaTypesPerMachineRepository repository;
+
     public List<MediaTypesPerMachineDto> getAll() {
-        return new ArrayList<MediaTypesPerMachineDto>();
+        return repository.getAll();
     }
 
     public List<MediaTypesPerMachineDto> getAllForPeriod(Date from, Date to) {
-        return new ArrayList<MediaTypesPerMachineDto>();
-
+        return repository.getAllForPeriod(from, to);
     }
 
     public List<MediaTypesPerMachineDto> getPrinters(List<String> printerIds) {
@@ -31,5 +34,25 @@ public class MediaTypesPerMachineService {
     public List<MediaTypesPerMachineDto> getPrintersForPeriod(Date from, Date to, List<String> printerIds) {
         return new ArrayList<MediaTypesPerMachineDto>();
 
+    }
+
+    /**
+     * Retrieve minimum and maximum possible dates.
+     *
+     * @return A <b>PeriodDto object</b> containing the minimum and maximum possible
+     * dates.
+     */
+    public PeriodDto getAvailableTimePeriod() {
+        return repository.getAvailableTimePeriod();
+    }
+
+    /**
+     * Retrieve all available printers in the database table.
+     *
+     * @return A <b>PrinterIdsDto object</b>, containing a list of all available
+     * printers.
+     */
+    public PrinterIdsDto getAvailablePrinters() {
+        return new PrinterIdsDto(repository.getAvailablePrinters());
     }
 }

@@ -25,7 +25,6 @@ import java.util.List;
 public class MediaTypesPerMachineController {
     private MediaTypesPerMachineService service;
 
-
     /**
      * <b>GET</b> request returning all data from the database.
      *
@@ -108,6 +107,37 @@ public class MediaTypesPerMachineController {
         List<MediaTypesPerMachineDto> data
                 = service.getPrintersForPeriod(request.getFrom(), request.getTo(), request.getPrinterIds());
         if (data.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok().body(data);
+    }
+
+    /**
+     * <b>GET</b> request returning the minimum and maximum date from the database
+     * table.
+     *
+     * @return A <b>PeriodDto object</b>, containing the minimum and maximum possible
+     * dates.
+     */
+    @GetMapping("/AvailableTimePeriod")
+    public ResponseEntity<PeriodDto> getAvailableTimePeriod() {
+        PeriodDto data = service.getAvailableTimePeriod();
+        if (data == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok().body(data);
+    }
+
+    /**
+     * <b>GET</b> request returning all available printers in the database table.
+     *
+     * @return A <b>PrinterIdsDto object</b>, containing a list of all available
+     * printers.
+     */
+    @GetMapping("/AvailablePrinters")
+    public ResponseEntity<PrinterIdsDto> getAvailablePrinters() {
+        PrinterIdsDto data = service.getAvailablePrinters();
+        if (data == null)
             return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok().body(data);

@@ -14,7 +14,7 @@ const Home = () => {
         <Link to='/TopMachinesWithMostPrintVolume' className='chart side-chart-top'>
           <div className='chart-header'>Top machines with most print volume</div>
         </Link>
-        <Link to='/' className='chart side-chart-middle'>
+        <Link to='/MediaTypesPerMachine' className='chart side-chart-middle'>
           <div className='chart-header'>Used media types per machine</div>
         </Link>
         <Link to='/SquareMeterPerPrintMode' className='chart second-line-left-chart'>

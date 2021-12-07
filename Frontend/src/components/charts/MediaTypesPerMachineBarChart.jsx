@@ -1,7 +1,7 @@
 import { ResponsiveBar } from '@nivo/bar';
 import chartTheme from '../../util/chartTheme';
 
-const MediaCategoryUsageBarChart = ({ data, index }) => {
+const MediaTypesMerMachineBarChart = ({ data, index }) => {
     if (typeof data === 'undefined' || data.length === 0) return null;
     // TODO: Seperate into own function
     let keys = Object.keys(data[0]);
@@ -15,12 +15,12 @@ const MediaCategoryUsageBarChart = ({ data, index }) => {
                 data={data}
                 keys={keys}
                 indexBy={index}
-                margin={{ top: 50, right: 130, bottom: 70, left: 60 }}
+                margin={{ top: 50, right: 130, bottom: 170, left: 80 }}
                 padding={0.05}
                 valueScale={{ type: 'linear' }}
                 indexScale={{ type: 'band', round: true }}
                 // colors={({ data, id, indexValue }) => chartTheme(data, id, indexValue, 'media-category-usage')}
-                colors={{scheme:'nivo'}}
+                colors={{scheme:'category10'}}
                 borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
                 axisBottom={{
                     tickSize: 5,
@@ -28,7 +28,7 @@ const MediaCategoryUsageBarChart = ({ data, index }) => {
                     tickRotation: 40,
                     legend: 'Media type',
                     legendPosition: 'middle',
-                    legendOffset: 55
+                    legendOffset: 120
                 }}
                 axisLeft={{
                     tickSize: 5,
@@ -36,7 +36,7 @@ const MediaCategoryUsageBarChart = ({ data, index }) => {
                     tickRotation: 0,
                     legend: 'Printed square meters',
                     legendPosition: 'middle',
-                    legendOffset: -40
+                    legendOffset: -60
                 }}
                 enableLabel={false}
                 legends={[
@@ -74,7 +74,7 @@ const MediaCategoryUsageBarChart = ({ data, index }) => {
                         </div>
                         Printed square meters: <b>{value}</b>
                         <br />
-                        Date: <b>{indexValue}</b>
+                        {index}: <b>{indexValue}</b>
                     </div>
                 }}
             />
@@ -82,4 +82,4 @@ const MediaCategoryUsageBarChart = ({ data, index }) => {
     );
 };
 
-export default MediaCategoryUsageBarChart;
+export default MediaTypesMerMachineBarChart;
