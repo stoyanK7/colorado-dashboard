@@ -112,6 +112,13 @@ public class TopMachinesWithMostPrintVolumeController {
         return ResponseEntity.ok().body(data);
     }
 
+    /**
+     * <b>GET</b> request returning the minimum and maximum date from the database
+     * table.
+     *
+     * @return A <b>PeriodDto object</b>, containing the minimum and maximum possible
+     * dates.
+     */
     @GetMapping("/AvailableTimePeriod")
     public ResponseEntity<PeriodDto> getAvailableTimePeriod() {
         PeriodDto data = service.getAvailableTimePeriod();
@@ -121,6 +128,12 @@ public class TopMachinesWithMostPrintVolumeController {
         return ResponseEntity.ok().body(data);
     }
 
+    /**
+     * <b>GET</b> request returning all available printers in the database table.
+     *
+     * @return A <b>PrinterIdsDto object</b>, containing a list of all available
+     * printers.
+     */
     @GetMapping("/AvailablePrinters")
     public ResponseEntity<PrinterIdsDto> getAvailablePrinters() {
         PrinterIdsDto data = service.getAvailablePrinters();

@@ -68,10 +68,22 @@ public class TopMachinesWithMostPrintVolumeService {
         return repository.getPrintersForPeriod(from, to, printerIds);
     }
 
+    /**
+     * Retrieve minimum and maximum possible dates.
+     *
+     * @return A <b>PeriodDto object</b> containing the minimum and maximum possible
+     * dates.
+     */
     public PeriodDto getAvailableTimePeriod() {
         return repository.getAvailableTimePeriod();
     }
 
+    /**
+     * Retrieve all available printers in the database table.
+     *
+     * @return A <b>PrinterIdsDto object</b>, containing a list of all available
+     * printers.
+     */
     public PrinterIdsDto getAvailablePrinters() {
         return new PrinterIdsDto(repository.getAvailablePrinters());
     }
