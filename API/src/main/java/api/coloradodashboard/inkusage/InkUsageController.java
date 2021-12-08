@@ -1,39 +1,147 @@
 package api.coloradodashboard.inkusage;
 
+import api.coloradodashboard.PeriodAndPrinterIdsDto;
+import api.coloradodashboard.PeriodDto;
+import api.coloradodashboard.PrinterIdsDto;
+import api.coloradodashboard.topmachineswithmostprintvolume.TopMachinesWithMostPrintVolumeDto;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
+
 
 /**
- * REST api controller for Ink Usage. Outgoing graph information is output as
- * a List of Maps, where very Map represents a bar in the graph.
+ * <b>REST API</b> controller for <b><i>Ink usage</i></b> chart.
+ * Returns a list of <b>InkUsageDto</b> objects or <b>404</b> if no data is present.
  */
 @RestController
 @RequestMapping("InkUsage")
 @CrossOrigin("http://localhost:4000")
 @AllArgsConstructor
 public class InkUsageController {
-    InkUsageConverter graphConverter;
-
-    InkUsageService service;
+    private InkUsageService service;
 
     /**
-     * GET request that returns all the data stored in the repository
+     * <b>GET</b> request returning all data from the database.
      *
-     * @return A List of Maps, representing all the days stored in the repository
+     * @return A <b>list of InkUsageDto objects</b>, each
+     * one representing a different printer, or <b>404</b> if no data is present.
      */
-    @GetMapping
-    public ResponseEntity<List<Map<String, String>>> getAll() {
-        List<Map<String, String>> graphDayBars =
-                graphConverter.modelToDTO(service.getAll());
-        if (graphDayBars != null) return ResponseEntity.ok().body(graphDayBars);
-        return new ResponseEntity("No data found.", HttpStatus.NOT_FOUND);
+    @PostMapping
+    public ResponseEntity<List<InkUsageDto>> getAll() {
+        List<InkUsageDto> data = service.getAll();
+        if (data.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok().body(data);
+    }
+
+    /**
+     * <b>POST</b> request returning all data from the database for the provided
+     * time period.
+     *
+     * @param request A <b>JSON object</b>, with two fields. Expected format:
+     *                {
+     *                "from": "2021-12-20",
+     *                "to": "2021-12-30
+     *                }
+     * @return A <b>list of InkUsageDto objects</b>, each
+     * one representing a different printer, or <b>404</b> if no data is present.
+     */
+    @PostMapping("/Period")
+    public ResponseEntity<List<InkUsageDto>> getAllForPeriod(@RequestBody PeriodDto request) {
+        List<InkUsageDto> data
+                = service.getAllForPeriod(request.getFrom(), request.getTo());
+        if (data.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok().body(data);
+    }
+
+    /**
+     * <b>POST</b> request returning all data from the database for the provided
+     * list of printers.
+     *
+     * @param request A <b>JSON object</b>, with one field. Expected format:
+     *                {
+     *                "printerIds": [
+     *                "702",
+     *                "703
+     *                ]
+     *                }
+     * @return A <b>list of InkUsageDto objects</b>, each
+     * one representing a different printer, or <b>404</b> if no data is present.
+     */
+    @PostMapping("/Printer")
+    public ResponseEntity<List<InkUsageDto>> getPrinters(@RequestBody PrinterIdsDto request) {
+        List<InkUsageDto> data
+                = service.getPrinters(request.getPrinterIds());
+        if (data.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok().body(data);
+    }
+
+    /**
+     * <b>POST</b> request returning all data from the database for the provided
+     * time period and list of printers.
+     *
+     * @param request A <b>JSON object</b>, with one field. Expected format:
+     *                {
+     *                "from": "2021-12-20",
+     *                "to": "2021-12-30",
+     *                "printerIds": [
+     *                "702",
+     *                "703
+     *                ]
+     *                }
+     * @return A <b>list of InkUsageDto objects</b>, each
+     * one representing a different printer, or <b>404</b> if no data is present.
+     */
+    @PostMapping("/PeriodAndPrinter")
+    public ResponseEntity<List<InkUsageDto>> getPrintersForPeriod(@RequestBody PeriodAndPrinterIdsDto request) {
+        List<InkUsageDto> data
+                = service.getPrintersForPeriod(request.getFrom(), request.getTo(), request.getPrinterIds());
+        if (data.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok().body(data);
+    }
+
+    /**
+     * <b>GET</b> request returning the minimum and maximum date from the database
+     * table.
+     *
+     * @return A <b>PeriodDto object</b>, containing the minimum and maximum possible
+     * dates.
+     */
+    @GetMapping("/AvailableTimePeriod")
+    public ResponseEntity<PeriodDto> getAvailableTimePeriod() {
+        PeriodDto data = service.getAvailableTimePeriod();
+        if (data == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok().body(data);
+    }
+
+    /**
+     * <b>GET</b> request returning all available printers in the database table.
+     *
+     * @return A <b>PrinterIdsDto object</b>, containing a list of all available
+     * printers.
+     */
+    @GetMapping("/AvailablePrinters")
+    public ResponseEntity<PrinterIdsDto> getAvailablePrinters() {
+        PrinterIdsDto data = service.getAvailablePrinters();
+        if (data == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok().body(data);
     }
 }

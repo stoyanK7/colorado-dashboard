@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * <b>REST API</b> controller for <b><i>Media types per machine</i></b> chart.
- * Returns a list of MediaTypesPerMachineDto objects or <b>404</b> if no data is present.
+ * Returns a list of <b>MediaTypesPerMachineDto</b> objects or <b>404</b> if no data is present.
  */
 @RestController
 @RequestMapping("MediaTypesPerMachine")

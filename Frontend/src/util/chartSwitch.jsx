@@ -8,7 +8,7 @@ const chartSwitch = (chartPath, data) => {
   let component;
   switch (chartPath) {
     case 'MediaCategoryUsage': component = <MediaCategoryUsageBarChart data={data} index='date' />; break;
-    case 'InkUsage': component = <InkUsageBarChart data={data} index='date' />; break;
+    case 'InkUsage': component = <InkUsageBarChart data={data} index='Date' />; break;
     case 'SquareMeterPerPrintMode': component = <SquareMeterPerPrintModeBarChart data={data} index='date' />; break;
     case 'TopMachinesWithMostPrintVolume': component = <TopMachinesWithMostPrintVolumeBarChart data={data} index='Printer id' />; break;
     case 'MediaTypesPerMachine': component = <MediaTypesMerMachineBarChart data={data} index='Media type' />; break;

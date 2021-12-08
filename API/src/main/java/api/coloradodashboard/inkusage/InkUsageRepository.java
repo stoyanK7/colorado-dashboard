@@ -1,9 +1,101 @@
 package api.coloradodashboard.inkusage;
 
+import api.coloradodashboard.PeriodDto;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
-public interface InkUsageRepository extends JpaRepository<InkUsage, Long> {
-    List<InkUsage> getAllByOrderByDateAsc();
+/**
+ * Repository providing access to the table with all data for <b>Ink usage</b>.
+ */
+public interface InkUsageRepository extends JpaRepository<InkUsageEntity, Long> {
+    /**
+     * Retrieve aggregated ink usage for cyan, magenta, yellow and black for all printers for all time
+     * grouping by date, ordered by date ascending.
+     *
+     * @return A <b>list of InkUsageDto objects</b>, each
+     * one representing a different printer. An <b>empty list</b> if no data
+     * is present in the database.
+     */
+    @Query("SELECT new api.coloradodashboard.inkusage.InkUsageDto(i.date, sum(i.cyanUsed), sum(i.magentaUsed), sum(i.yellowUsed), sum(i.blackUsed)) " +
+            "FROM InkUsageEntity i " +
+            "GROUP BY i.date " +
+            "ORDER BY i.date ASC")
+    List<InkUsageDto> getAll();
+
+    /**
+     * Retrieve aggregated ink usage for cyan, magenta, yellow and black for all printers for provided
+     * period of interest, ordered by date ascending.
+     *
+     * @param from Period of interest starting date inclusive.
+     * @param to   Period of interest ending date inclusive.
+     * @return A <b>list of InkUsageDto objects</b>, each
+     * one representing a different printer. An <b>empty list</b> if no data
+     * is present in the database.
+     */
+    @Query("SELECT new api.coloradodashboard.inkusage.InkUsageDto(i.date, sum(i.cyanUsed), sum(i.magentaUsed), sum(i.yellowUsed), sum(i.blackUsed)) " +
+            "FROM InkUsageEntity i " +
+            "WHERE i.date BETWEEN :from AND :to " +
+            "GROUP BY i.date " +
+            "ORDER BY i.date ASC")
+    List<InkUsageDto> getAllForPeriod(@Param("from") Date from, @Param("to") Date to);
+
+    /**
+     * Retrieve aggregated ink usage for cyan, magenta, yellow and black for all time for provided
+     * list of printers, ordered by date ascending.
+     *
+     * @param printerIds List of printer id's.
+     * @return A <b>list of InkUsageDto objects</b>, each
+     * one representing a different printer. An <b>empty list</b> if no data
+     * is present in the database.
+     */
+    @Query("SELECT new api.coloradodashboard.inkusage.InkUsageDto(i.date, sum(i.cyanUsed), sum(i.magentaUsed), sum(i.yellowUsed), sum(i.blackUsed)) " +
+            "FROM InkUsageEntity i " +
+            "WHERE i.printerId IN :printerIds " +
+            "GROUP BY i.date " +
+            "ORDER BY i.date ASC")
+    List<InkUsageDto> getPrinters(@Param("printerIds") List<String> printerIds);
+
+    /**
+     * Retrieve aggregated ink usage for cyan, magenta, yellow and black for provided period of interest
+     * and list of printers, ordered by date ascending.
+     *
+     * @param from       Period of interest starting date inclusive.
+     * @param to         Period of interest ending date inclusive.
+     * @param printerIds List of printer id's.
+     * @return A <b>list of InkUsageDto objects</b>, each
+     * one representing a different printer. An <b>empty list</b> if no data
+     * is present in the database.
+     */
+    @Query("SELECT new api.coloradodashboard.inkusage.InkUsageDto(i.date, sum(i.cyanUsed), sum(i.magentaUsed), sum(i.yellowUsed), sum(i.blackUsed)) " +
+            "FROM InkUsageEntity i " +
+            "WHERE (i.date BETWEEN :from AND :to) " +
+            "AND (i.printerId IN :printerIds) " +
+            "GROUP BY i.date " +
+            "ORDER BY i.date ASC")
+    List<InkUsageDto> getPrintersForPeriod(@Param("from") Date from, @Param("to") Date to, @Param("printerIds") List<String> printerIds);
+
+    /**
+     * Retrieve min and max date from the table.
+     *
+     * @return A <b>PeriodDto object</b> containing the min and max date.<b>From</b>
+     * contains the <b>min</b> and <b>to</b> contains the <b>max</b> date.
+     */
+    @Query("SELECT new api.coloradodashboard.PeriodDto(min(i.date), max(i.date)) " +
+            "FROM InkUsageEntity i")
+    PeriodDto getAvailableTimePeriod();
+
+    /**
+     * Retrieve all available printers from the table.
+     *
+     * @return A <b>list of Strings</b>, each one representing a <b>printer id</b>.
+     */
+    @Query("SELECT i.printerId " +
+            "FROM InkUsageEntity i " +
+            "GROUP BY i.printerId " +
+            "ORDER BY i.printerId ASC")
+    List<String> getAvailablePrinters();
 }

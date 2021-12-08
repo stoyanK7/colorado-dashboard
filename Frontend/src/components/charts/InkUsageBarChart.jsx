@@ -5,7 +5,7 @@ const InkUsageBarChart = ({ data, index }) => {
     if (typeof data === 'undefined' || data.length === 0) return null;
     // TODO: Seperate into own function
     let keys = Object.keys(data[0]);
-    keys.splice(keys.indexOf('date'), 1);
+    keys.splice(keys.indexOf('Date'), 1);
     keys.sort();
     return (
         <>

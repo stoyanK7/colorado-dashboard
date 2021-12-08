@@ -1,12 +1,9 @@
 package api.coloradodashboard.topmachineswithmostprintvolume;
 
-import api.coloradodashboard.squaremeterperprintmode.SquareMeterPerPrintModeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import api.coloradodashboard.PeriodDto;
 import api.coloradodashboard.PrinterIdsDto;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;

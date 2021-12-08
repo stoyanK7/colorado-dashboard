@@ -1,13 +1,8 @@
 package api.coloradodashboard.topmachineswithmostprintvolume;
 
-<<<<<<< HEAD
-import api.coloradodashboard.squaremeterperprintmode.SquareMeterPerPrintModeConverter;
-import api.coloradodashboard.squaremeterperprintmode.SquareMeterPerPrintModeService;
-=======
 import api.coloradodashboard.PeriodAndPrinterIdsDto;
 import api.coloradodashboard.PeriodDto;
 import api.coloradodashboard.PrinterIdsDto;
->>>>>>> 78b2a3b2b6401d06c9af2c5736b4952e7814710b
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,7 +16,7 @@ import java.util.List;
 
 /**
  * <b>REST API</b> controller for <b><i>Top machines with most print volume</i></b> chart.
- * Returns a list of TopMachinesWithMostPrintVolumeDto objects or <b>404</b> if no data is present.
+ * Returns a list of <b>TopMachinesWithMostPrintVolumeDto</b> objects or <b>404</b> if no data is present.
  */
 @RestController
 @RequestMapping("TopMachinesWithMostPrintVolume")
