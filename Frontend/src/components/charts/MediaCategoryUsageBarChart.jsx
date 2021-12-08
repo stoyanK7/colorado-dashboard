@@ -1,16 +1,16 @@
-import { ResponsiveBar } from '@nivo/bar';
+import { ResponsiveBarCanvas } from '@nivo/bar';
 import chartTheme from '../../util/chartTheme';
 
 const MediaCategoryUsageBarChart = ({ data, index }) => {
     if (typeof data === 'undefined' || data.length === 0) return null;
     // TODO: Seperate into own function
     let keys = Object.keys(data[0]);
-    keys.splice(keys.indexOf('Media type'), 1);
+    keys.splice(keys.indexOf('Date'), 1);
     keys.sort();
     return (
         <>
-            <ResponsiveBar
-                animate={true}
+            <ResponsiveBarCanvas
+                animate={false}
                 borderWidth={1}
                 data={data}
                 keys={keys}
