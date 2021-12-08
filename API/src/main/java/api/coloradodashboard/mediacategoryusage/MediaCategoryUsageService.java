@@ -21,7 +21,7 @@ public class MediaCategoryUsageService{
      * Retrieve all data from database for all printers and all time.
      *
      * @return A <b>list of MediaCategoryUsageDto objects</b>, each
-     * one representing a different printer. An <b>empty list</b> if no data
+     * one representing a different date. An <b>empty list</b> if no data
      * is present in the database.
      */
     public List<MediaCategoryUsageDto> getAll() {
@@ -34,7 +34,7 @@ public class MediaCategoryUsageService{
      * @param from Period of interest starting date inclusive.
      * @param to   Period of interest ending date inclusive.
      * @return A <b>list of MediaCategoryUsageDto objects</b>, each
-     * one representing a different printer. An <b>empty list</b> if no data
+     * one representing a different date. An <b>empty list</b> if no data
      * is present in the database.
      */
     public List<MediaCategoryUsageDto> getAllForPeriod(Date from, Date to) {
@@ -46,7 +46,7 @@ public class MediaCategoryUsageService{
      *
      * @param printerIds List of printer id's.
      * @return A <b>list of MediaCategoryUsageDto objects</b>, each
-     * one representing a different printer. An <b>empty list</b> if no data
+     * one representing a different date. An <b>empty list</b> if no data
      * is present in the database.
      */
     public List<MediaCategoryUsageDto> getPrinters(List<String> printerIds) {
@@ -61,7 +61,7 @@ public class MediaCategoryUsageService{
      * @param to         Period of interest ending date inclusive.
      * @param printerIds List of printer id's.
      * @return A <b>list of MediaCategoryUsageDto objects</b>, each
-     * one representing a different printer. An <b>empty list</b> if no data
+     * one representing a different date. An <b>empty list</b> if no data
      * is present in the database.
      */
     public List<MediaCategoryUsageDto> getPrintersForPeriod(Date from, Date to, List<String> printerIds) {

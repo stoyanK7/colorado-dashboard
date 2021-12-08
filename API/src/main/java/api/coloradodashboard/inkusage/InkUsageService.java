@@ -21,7 +21,7 @@ public class InkUsageService {
      * Retrieve all data from database for all printers and all time.
      *
      * @return A <b>list of InkUsageDto objects</b>, each
-     * one representing a different printer. An <b>empty list</b> if no data
+     * one representing a different date. An <b>empty list</b> if no data
      * is present in the database.
      */
     public List<InkUsageDto> getAll() {
@@ -34,7 +34,7 @@ public class InkUsageService {
      * @param from Period of interest starting date inclusive.
      * @param to   Period of interest ending date inclusive.
      * @return A <b>list of InkUsageDto objects</b>, each
-     * one representing a different printer. An <b>empty list</b> if no data
+     * one representing a different date. An <b>empty list</b> if no data
      * is present in the database.
      */
     public List<InkUsageDto> getAllForPeriod(Date from, Date to) {
@@ -46,7 +46,7 @@ public class InkUsageService {
      *
      * @param printerIds List of printer id's.
      * @return A <b>list of InkUsageDto objects</b>, each
-     * one representing a different printer. An <b>empty list</b> if no data
+     * one representing a different date. An <b>empty list</b> if no data
      * is present in the database.
      */
     public List<InkUsageDto> getPrinters(List<String> printerIds) {
@@ -61,7 +61,7 @@ public class InkUsageService {
      * @param to         Period of interest ending date inclusive.
      * @param printerIds List of printer id's.
      * @return A <b>list of InkUsageDto objects</b>, each
-     * one representing a different printer. An <b>empty list</b> if no data
+     * one representing a different date. An <b>empty list</b> if no data
      * is present in the database.
      */
     public List<InkUsageDto> getPrintersForPeriod(Date from, Date to, List<String> printerIds) {
