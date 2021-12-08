@@ -1,27 +1,9 @@
 package api.coloradodashboard.squaremeterperprintmode;
 
-import api.coloradodashboard.interfaces.GenericRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-/**
- * Repository for SquareMeterPerPrintMode model.
- */
-@Repository
-@AllArgsConstructor
-public class SquareMeterPerPrintModeRepository
-        implements GenericRepository<SquareMeterPerPrintMode> {
-    private JpaSquareMeterPerPrintModeRepository jpa;
-
-    /**
-     * Retrieves all SquareMeterPerPrintMode models from the database.
-     *
-     * @return
-     */
-    @Override
-    public List<SquareMeterPerPrintMode> getAll() {
-        return jpa.getAllByOrderByDateAsc();
-    }
+public interface SquareMeterPerPrintModeRepository extends JpaRepository<SquareMeterPerPrintMode, Long> {
+    List<SquareMeterPerPrintMode> getAllByOrderByDateAsc();
 }

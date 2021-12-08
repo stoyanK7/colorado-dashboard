@@ -1,6 +1,5 @@
 package api.coloradodashboard.inkusage;
 
-import api.coloradodashboard.interfaces.GenericGraphConverter;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
@@ -23,8 +22,7 @@ import java.util.Map;
  * Every map in the returned list represents a day.
  */
 @Component
-public class InkUsageConverter implements
-        GenericGraphConverter<List<InkUsage>, List<Map<String, String>>> {
+public class InkUsageConverter {
     /**
      * Converts a list of InkUsage objects to a list of maps in the
      * above specified format.
@@ -33,7 +31,8 @@ public class InkUsageConverter implements
      *                of days and categories.
      * @return List of Maps representing days.
      */
-    @Override
+
+
     public List<Map<String, String>> modelToDTO(List<InkUsage> objects) {
         List<Map<String, String>> result = new ArrayList<>();
         Map<String, Map<InkType, Double>> intermediate = new LinkedHashMap<>();

@@ -1,7 +1,5 @@
 package api.coloradodashboard.squaremeterperprintmode;
 
-import api.coloradodashboard.interfaces.GenericRepository;
-import api.coloradodashboard.interfaces.GenericService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +10,8 @@ import java.util.List;
  */
 @Service
 @AllArgsConstructor
-public class SquareMeterPerPrintModeService
-        implements GenericService<SquareMeterPerPrintMode> {
-    private GenericRepository<SquareMeterPerPrintMode> repository;
+public class SquareMeterPerPrintModeService {
+    private SquareMeterPerPrintModeRepository repository;
 
     /**
      * Retrieves all SquareMeterPerPrintModePerDay model objects.
@@ -22,6 +19,6 @@ public class SquareMeterPerPrintModeService
      * @return
      */
     public List<SquareMeterPerPrintMode> getAll() {
-        return repository.getAll();
+        return repository.getAllByOrderByDateAsc();
     }
 }

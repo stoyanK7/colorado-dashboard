@@ -1,7 +1,5 @@
 package api.coloradodashboard.inkusage;
 
-import api.coloradodashboard.interfaces.GenericGraphConverter;
-import api.coloradodashboard.interfaces.GenericService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +20,9 @@ import java.util.Map;
 @CrossOrigin("http://localhost:4000")
 @AllArgsConstructor
 public class InkUsageController {
-    GenericGraphConverter<List<InkUsage>, List<Map<String, String>>>
-            graphConverter;
+    InkUsageConverter graphConverter;
 
-    GenericService<InkUsage> service;
+    InkUsageService service;
 
     /**
      * GET request that returns all the data stored in the repository

@@ -1,10 +1,8 @@
 package api.coloradodashboard;
 
 import api.coloradodashboard.inkusage.*;
-import api.coloradodashboard.mediacategoryusage.MediaCategoryUsageConverter;
 import api.coloradodashboard.mediacategoryusage.MediaCategoryUsageRepository;
 import api.coloradodashboard.mediacategoryusage.MediaCategoryUsageService;
-import api.coloradodashboard.squaremeterperprintmode.SquareMeterPerPrintModeConverter;
 import api.coloradodashboard.squaremeterperprintmode.SquareMeterPerPrintModeRepository;
 import api.coloradodashboard.squaremeterperprintmode.SquareMeterPerPrintModeService;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,11 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
 
@@ -49,7 +44,7 @@ public class CanonDashboardApiMockingTests {
         //when
         inkUsageServiceTest.getAll();
         //then
-        verify(inkUsageRepo).getAll();
+        verify(inkUsageRepo).getAllByOrderByDateAsc();
     }
 
     @Test
@@ -57,13 +52,13 @@ public class CanonDashboardApiMockingTests {
         //when
         mediaCategoryServiceTest.getAll();
         //then
-        verify(mediaCategoryUsageRepo).getAll();
+        verify(mediaCategoryUsageRepo).getAllByOrderByDateAsc();
     }
     @Test
     void canGetInkUsageWhenThereIsNoData(){
         //when
         squareMeterServiceTest.getAll();
         //then
-        verify(squareMeterPerPrintModeRepo).getAll();
+        verify(squareMeterPerPrintModeRepo).getAllByOrderByDateAsc();
     }
 }

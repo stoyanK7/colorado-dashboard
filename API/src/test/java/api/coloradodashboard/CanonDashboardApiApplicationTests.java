@@ -2,12 +2,9 @@ package api.coloradodashboard;
 
 import api.coloradodashboard.inkusage.InkUsage;
 import api.coloradodashboard.inkusage.InkUsageService;
-import api.coloradodashboard.interfaces.GenericRepository;
-import api.coloradodashboard.interfaces.GenericService;
 import api.coloradodashboard.mediacategoryusage.MediaCategoryUsageService;
 import api.coloradodashboard.squaremeterperprintmode.SquareMeterPerPrintModeService;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,8 +1,7 @@
 package api.coloradodashboard.topmachineswithmostprintvolume;
 
-import api.coloradodashboard.interfaces.GenericGraphConverter;
-import api.coloradodashboard.interfaces.GenericService;
-import api.coloradodashboard.squaremeterperprintmode.SquareMeterPerPrintMode;
+import api.coloradodashboard.squaremeterperprintmode.SquareMeterPerPrintModeConverter;
+import api.coloradodashboard.squaremeterperprintmode.SquareMeterPerPrintModeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +24,9 @@ import java.util.Map;
 @CrossOrigin("http://localhost:4000")
 @AllArgsConstructor
 public class TopMachinesWithMostPrintVolumeController {
-    GenericGraphConverter<List<SquareMeterPerPrintMode>, List<Map<String, String>>>
-            graphConverter;
+    SquareMeterPerPrintModeConverter graphConverter;
 
-    GenericService<SquareMeterPerPrintMode> service;
+    SquareMeterPerPrintModeService service;
 
     /**
      * GET request that returns all the data stored in the repository
