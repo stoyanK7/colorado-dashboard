@@ -1,13 +1,8 @@
-package api.coloradodashboard.topmachineswithmostprintvolume;
+package api.coloradodashboard.mediatypespermachine;
 
-<<<<<<< HEAD
-import api.coloradodashboard.squaremeterperprintmode.SquareMeterPerPrintModeConverter;
-import api.coloradodashboard.squaremeterperprintmode.SquareMeterPerPrintModeService;
-=======
 import api.coloradodashboard.PeriodAndPrinterIdsDto;
 import api.coloradodashboard.PeriodDto;
 import api.coloradodashboard.PrinterIdsDto;
->>>>>>> 78b2a3b2b6401d06c9af2c5736b4952e7814710b
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,25 +15,26 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * <b>REST API</b> controller for <b><i>Top machines with most print volume</i></b> chart.
- * Returns a list of TopMachinesWithMostPrintVolumeDto objects or <b>404</b> if no data is present.
+ * <b>REST API</b> controller for <b><i>Media types per machine</i></b> chart.
+ * Returns a list of MediaTypesPerMachineDto objects or <b>404</b> if no data is present.
  */
 @RestController
-@RequestMapping("TopMachinesWithMostPrintVolume")
+@RequestMapping("MediaTypesPerMachine")
 @CrossOrigin("http://localhost:4000")
 @AllArgsConstructor
-public class TopMachinesWithMostPrintVolumeController {
-    private TopMachinesWithMostPrintVolumeService service;
+public class MediaTypesPerMachineController {
+    private MediaTypesPerMachineService service;
+
 
     /**
      * <b>GET</b> request returning all data from the database.
      *
-     * @return A <b>list of TopMachinesWithMostPrintVolumeDto objects</b>, each
+     * @return A <b>list of MediaTypesPerMachineDto objects</b>, each
      * one representing a different printer, or <b>404</b> if no data is present.
      */
-    @PostMapping
-    public ResponseEntity<List<TopMachinesWithMostPrintVolumeDto>> getAll() {
-        List<TopMachinesWithMostPrintVolumeDto> data = service.getAll();
+    @GetMapping
+    public ResponseEntity<List<MediaTypesPerMachineDto>> getAll() {
+        List<MediaTypesPerMachineDto> data = service.getAll();
         if (data.isEmpty())
             return ResponseEntity.notFound().build();
 
@@ -54,12 +50,12 @@ public class TopMachinesWithMostPrintVolumeController {
      *                "from": "2021-12-20",
      *                "to": "2021-12-30
      *                }
-     * @return A <b>list of TopMachinesWithMostPrintVolumeDto objects</b>, each
+     * @return A <b>list of MediaTypesPerMachineDto objects</b>, each
      * one representing a different printer, or <b>404</b> if no data is present.
      */
     @PostMapping("/Period")
-    public ResponseEntity<List<TopMachinesWithMostPrintVolumeDto>> getAllForPeriod(@RequestBody PeriodDto request) {
-        List<TopMachinesWithMostPrintVolumeDto> data
+    public ResponseEntity<List<MediaTypesPerMachineDto>> getAllForPeriod(@RequestBody PeriodDto request) {
+        List<MediaTypesPerMachineDto> data
                 = service.getAllForPeriod(request.getFrom(), request.getTo());
         if (data.isEmpty())
             return ResponseEntity.notFound().build();
@@ -78,12 +74,12 @@ public class TopMachinesWithMostPrintVolumeController {
      *                "703
      *                ]
      *                }
-     * @return A <b>list of TopMachinesWithMostPrintVolumeDto objects</b>, each
+     * @return A <b>list of MediaTypesPerMachineDto objects</b>, each
      * one representing a different printer, or <b>404</b> if no data is present.
      */
     @PostMapping("/Printer")
-    public ResponseEntity<List<TopMachinesWithMostPrintVolumeDto>> getPrinters(@RequestBody PrinterIdsDto request) {
-        List<TopMachinesWithMostPrintVolumeDto> data
+    public ResponseEntity<List<MediaTypesPerMachineDto>> getPrinters(@RequestBody PrinterIdsDto request) {
+        List<MediaTypesPerMachineDto> data
                 = service.getPrinters(request.getPrinterIds());
         if (data.isEmpty())
             return ResponseEntity.notFound().build();
@@ -104,45 +100,14 @@ public class TopMachinesWithMostPrintVolumeController {
      *                "703
      *                ]
      *                }
-     * @return A <b>list of TopMachinesWithMostPrintVolumeDto objects</b>, each
+     * @return A <b>list of MediaTypesPerMachineDto objects</b>, each
      * one representing a different printer, or <b>404</b> if no data is present.
      */
     @PostMapping("/PeriodAndPrinter")
-    public ResponseEntity<List<TopMachinesWithMostPrintVolumeDto>> getPrintersForPeriod(@RequestBody PeriodAndPrinterIdsDto request) {
-        List<TopMachinesWithMostPrintVolumeDto> data
+    public ResponseEntity<List<MediaTypesPerMachineDto>> getPrintersForPeriod(@RequestBody PeriodAndPrinterIdsDto request) {
+        List<MediaTypesPerMachineDto> data
                 = service.getPrintersForPeriod(request.getFrom(), request.getTo(), request.getPrinterIds());
         if (data.isEmpty())
-            return ResponseEntity.notFound().build();
-
-        return ResponseEntity.ok().body(data);
-    }
-
-    /**
-     * <b>GET</b> request returning the minimum and maximum date from the database
-     * table.
-     *
-     * @return A <b>PeriodDto object</b>, containing the minimum and maximum possible
-     * dates.
-     */
-    @GetMapping("/AvailableTimePeriod")
-    public ResponseEntity<PeriodDto> getAvailableTimePeriod() {
-        PeriodDto data = service.getAvailableTimePeriod();
-        if (data == null)
-            return ResponseEntity.notFound().build();
-
-        return ResponseEntity.ok().body(data);
-    }
-
-    /**
-     * <b>GET</b> request returning all available printers in the database table.
-     *
-     * @return A <b>PrinterIdsDto object</b>, containing a list of all available
-     * printers.
-     */
-    @GetMapping("/AvailablePrinters")
-    public ResponseEntity<PrinterIdsDto> getAvailablePrinters() {
-        PrinterIdsDto data = service.getAvailablePrinters();
-        if (data == null)
             return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok().body(data);

@@ -11,7 +11,7 @@ const Home = () => {
         <Link to='/InkUsage' className='chart main-chart'>
           <div className='chart-header'>Ink usage</div>
         </Link>
-        <Link to='/' className='chart side-chart-top'>
+        <Link to='/TopMachinesWithMostPrintVolume' className='chart side-chart-top'>
           <div className='chart-header'>Top machines with most print volume</div>
         </Link>
         <Link to='/' className='chart side-chart-middle'>
