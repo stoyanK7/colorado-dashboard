@@ -1,6 +1,4 @@
 package api.coloradodashboard.squaremeterperprintmode;
-
-import api.coloradodashboard.interfaces.GenericGraphConverter;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
@@ -22,8 +20,7 @@ import java.util.Map;
  * Every map in the returned list represents a day.
  */
 @Component
-public class SquareMeterPerPrintModeConverter implements
-        GenericGraphConverter<List<SquareMeterPerPrintMode>, List<Map<String, String>>> {
+public class SquareMeterPerPrintModeConverter{
     /**
      * Converts a list of SquareMeterPerPrintMode objects to a list
      * of maps in the above specified format.
@@ -32,7 +29,6 @@ public class SquareMeterPerPrintModeConverter implements
      *                of days and categories.
      * @return List of Maps representing days.
      */
-    @Override
     public List<Map<String, String>> modelToDTO(
             List<SquareMeterPerPrintMode> objects) {
         List<Map<String, String>> result = new ArrayList<>();

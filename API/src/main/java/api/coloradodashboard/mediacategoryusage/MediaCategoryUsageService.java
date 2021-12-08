@@ -1,8 +1,5 @@
 package api.coloradodashboard.mediacategoryusage;
 
-
-import api.coloradodashboard.interfaces.GenericService;
-import api.coloradodashboard.interfaces.GenericRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +10,8 @@ import java.util.List;
  */
 @Service
 @AllArgsConstructor
-public class MediaCategoryUsageService implements
-        GenericService<MediaCategoryUsage> {
-    private GenericRepository<MediaCategoryUsage> repository;
+public class MediaCategoryUsageService{
+    private MediaCategoryUsageRepository repository;
 
     /**
      * Retrieves all MediaCategoryUsage model objects.
@@ -23,6 +19,6 @@ public class MediaCategoryUsageService implements
      * @return
      */
     public List<MediaCategoryUsage> getAll() {
-        return repository.getAll();
+        return repository.getAllByOrderByDateAsc();
     }
 }

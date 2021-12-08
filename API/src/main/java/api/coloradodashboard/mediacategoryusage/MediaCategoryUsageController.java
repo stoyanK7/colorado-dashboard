@@ -1,8 +1,5 @@
 package api.coloradodashboard.mediacategoryusage;
 
-
-import api.coloradodashboard.interfaces.GenericGraphConverter;
-import api.coloradodashboard.interfaces.GenericService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +20,9 @@ import java.util.Map;
 @CrossOrigin("http://localhost:4000")
 @AllArgsConstructor
 public class MediaCategoryUsageController {
-    GenericGraphConverter<List<MediaCategoryUsage>, List<Map<String, String>>>
-            graphConverter;
+    MediaCategoryUsageConverter graphConverter;
 
-    GenericService<MediaCategoryUsage> service;
+    MediaCategoryUsageService service;
 
     /**
      * GET request that returns all the data stored in the repository.
@@ -34,8 +30,8 @@ public class MediaCategoryUsageController {
      * @return A List of Maps, representing all the days stored in the repository.
      */
     @GetMapping()
-    public ResponseEntity<List<Map<String, String>>> getAll() {
-        List<Map<String, String>> graphDayBars = graphConverter.modelToDTO(service.getAll());
+    public ResponseEntity<List<MediaCategoryUsageDTO>> getAll() {
+        List<MediaCategoryUsageDTO> graphDayBars = graphConverter.modelToDTO(service.getAll());
         if (graphDayBars != null) return ResponseEntity.ok().body(graphDayBars);
         return new ResponseEntity("No data found.", HttpStatus.NOT_FOUND);
     }

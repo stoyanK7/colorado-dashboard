@@ -1,26 +1,9 @@
 package api.coloradodashboard.inkusage;
 
-import api.coloradodashboard.interfaces.GenericRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-/**
- * Repository for InkUsage model.
- */
-@Repository
-@AllArgsConstructor
-public class InkUsageRepository implements GenericRepository<InkUsage> {
-    private JpaInkUsageRepository jpa;
-
-    /**
-     * Retrieves all InkUsage models from the database.
-     *
-     * @return
-     */
-    @Override
-    public List<InkUsage> getAll() {
-        return jpa.getAllByOrderByDateAsc();
-    }
+public interface InkUsageRepository extends JpaRepository<InkUsage, Long> {
+    List<InkUsage> getAllByOrderByDateAsc();
 }
