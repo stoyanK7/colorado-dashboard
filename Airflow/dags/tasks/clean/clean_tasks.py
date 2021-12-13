@@ -18,30 +18,23 @@ class CleanTasks:
             logging.info("No new data was found, skipping step.")
             return
 
-        logging.info(tabulate(df, headers='keys', tablefmt='psql'))
-
         # Make dataframe using pandas
         cols = [getattr(clean_image_col_name_constants, name)
                 for name in dir(clean_image_col_name_constants) if not name.startswith('_')]
         cols = cols[-1:] + cols[:-1]
         df = CleanTasks.make_data_frame(df, cols)
-        logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # check if ullid is same then drop
         df = CleanTasks.remove_duplicates(df)
-        logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # check data type.
         df = CleanTasks.check_data_type(df, clean_image_data_types.data_types)
-        logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # check if some row values are empty
         df = CleanTasks.remove_row_null(df)
-        logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # Check negative value.
         df = CleanTasks.check_negative_image(df, clean_image_data_types.data_types)
-        logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # Check if mediaType is valid
         #df = self.remove_invalid_media_type(df)
@@ -62,23 +55,18 @@ class CleanTasks:
                 for name in dir(clean_media_prepare_col_name_constants) if not name.startswith('_')]
         cols = cols[-1:] + cols[:-1]
         df = CleanTasks.make_data_frame(df, cols)
-        logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # check if ullid is same then drop
         df = CleanTasks.remove_duplicates(df)
-        logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # check data type.
         df = CleanTasks.check_data_type(df, clean_media_prepare_data_types.data_types)
-        logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # check if some row values are empty
         df = CleanTasks.remove_row_null(df)
-        logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # Check negative value.
         df = CleanTasks.check_negative_image(df, clean_media_prepare_data_types.data_types)
-        logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # Create table and store
         CleanTasks._insert_into_db(df, clean_table_name_config.READ_MEDIA_PREPARE)
@@ -96,23 +84,18 @@ class CleanTasks:
                 for name in dir(clean_print_cycle_col_name_constants) if not name.startswith('_')]
         cols = cols[-1:] + cols[:-1]
         df = CleanTasks.make_data_frame_image(df, cols)
-        logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # check if ullid is same then drop
         df = CleanTasks.remove_duplicates(df)
-        logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # check data type.
         df = CleanTasks.check_data_type(df, clean_print_cycle_data_types.data_types)
-        logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # check if some row values are empty
         df = CleanTasks.remove_row_null(df)
-        logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # Check negative value.
         df = CleanTasks.check_negative_image(df, clean_print_cycle_data_types.data_types)
-        logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # Create table and store
         CleanTasks._insert_into_db(df, clean_table_name_config.READ_PRINT_CYCLE)
