@@ -3,7 +3,7 @@ import logging
 import pandas as pd
 from tabulate import tabulate
 
-from config import aggregate_table_name_config, aggregate_column_name_config, clean_table_name_config, cleaning_column_name_config
+from config import aggregate_table_name_config, aggregate_column_name_config, clean_table_name_config, clean_image_col_name_constants
 from DAL.postgres_database_manager import PostgresDatabaseManager
 
 
