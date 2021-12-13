@@ -4,7 +4,7 @@ import logging
 from DAL.postgres_database_manager import PostgresDatabaseManager
 from config import read_table_name_config, clean_table_name_config, \
     clean_image_col_name_constants, clean_media_prepare_col_name_constants, clean_print_cycle_col_name_constants, \
-    clean_image_data_types
+    clean_image_data_types, clean_media_prepare_data_types, clean_print_cycle_data_types
 import pandas as pd
 from tabulate import tabulate
 
@@ -69,11 +69,15 @@ class CleanTasks:
         logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # check data type.
-        df = CleanTasks.check_data_type(df, clean_image_data_types.data_types)
+        df = CleanTasks.check_data_type(df, clean_media_prepare_data_types.data_types)
         logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # check if some row values are empty
         df = CleanTasks.remove_row_null(df)
+        logging.info(tabulate(df, headers='keys', tablefmt='psql'))
+
+        # Check negative value.
+        df = CleanTasks.check_negative_image(df, clean_media_prepare_data_types.data_types)
         logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # Create table and store
@@ -99,7 +103,7 @@ class CleanTasks:
         logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # check data type.
-        df = CleanTasks.check_data_type(df, clean_image_data_types.data_types)
+        df = CleanTasks.check_data_type(df, clean_print_cycle_data_types.data_types)
         logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # check if some row values are empty
@@ -107,7 +111,7 @@ class CleanTasks:
         logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # Check negative value.
-        df = CleanTasks.check_negative_image(df, clean_image_data_types.data_types)
+        df = CleanTasks.check_negative_image(df, clean_print_cycle_data_types.data_types)
         logging.info(tabulate(df, headers='keys', tablefmt='psql'))
 
         # Create table and store
