@@ -168,7 +168,7 @@ class CleanTasks:
         return df
 
     @staticmethod
-    def check_negative_image(df, data_types):
+    def check_negative_values(df, data_types):
         logging.info("Removing all rows with negative values.")
         for column in df:
             data_type = data_types.get(column)

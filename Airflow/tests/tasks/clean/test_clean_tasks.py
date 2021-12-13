@@ -10,8 +10,10 @@ from cryptography.fernet import Fernet
 from sqlalchemy import create_engine, text
 
 from tasks.clean.clean_tasks import CleanTasks
-from config import clean_image_col_name_constants
 from config import read_column_name_config
+from config import read_table_name_config, clean_table_name_config, \
+    clean_image_col_name_constants, clean_media_prepare_col_name_constants, clean_print_cycle_col_name_constants, \
+    clean_image_data_types, clean_media_prepare_data_types, clean_print_cycle_data_types
 
 
 class PostgresDatabaseManagerTests(unittest.TestCase):
@@ -29,7 +31,7 @@ class PostgresDatabaseManagerTests(unittest.TestCase):
         pd.testing.assert_frame_equal(actual.reset_index(drop=True), expected.reset_index(drop=True))
 
 
-    def test_check_negative_image(self):
+    def test_check_negative_values(self):
         actual = pd.DataFrame({clean_image_col_name_constants.ULLID: [1, -2, 3, 4, 5, 6, 7, 8],
                                clean_image_col_name_constants.ACCOUNTED_INK_BLACK: [1, 2, -3, 4, 5, 6, 7, 8],
                                clean_image_col_name_constants.ACCOUNTED_INK_CYAN: [1, 2, 3, -4, 5, 6, 7, 8],
@@ -51,7 +53,7 @@ class PostgresDatabaseManagerTests(unittest.TestCase):
                                  clean_image_col_name_constants.MEDIA_TYPE: ['a']})
         obj = CleanTasks()
 
-        actual = obj.check_negative_image(actual)
+        actual = obj.check_negative_values(actual, clean_image_data_types.data_types)
         print(actual)
 
         pd.testing.assert_frame_equal(actual.reset_index(drop=True), expected.reset_index(drop=True))
@@ -85,7 +87,7 @@ class PostgresDatabaseManagerTests(unittest.TestCase):
 
         pd.testing.assert_frame_equal(actual.reset_index(drop=True), expected.reset_index(drop=True))
 
-    def test_check_type_image(self):
+    def test_check_data_type(self):
         actual = pd.DataFrame({clean_image_col_name_constants.ULLID: [1, 'a'],
                                clean_image_col_name_constants.ACCOUNTED_INK_BLACK: [1, 2],
                                clean_image_col_name_constants.ACCOUNTED_INK_CYAN: [1, 2],
@@ -109,7 +111,7 @@ class PostgresDatabaseManagerTests(unittest.TestCase):
 
         obj = CleanTasks()
 
-        actual = obj.check_data_type(actual)
+        actual = obj.check_data_type(actual, clean_image_data_types.data_types)
 
         print(tabulate(actual, headers='keys', tablefmt='psql'))
         print('------')
