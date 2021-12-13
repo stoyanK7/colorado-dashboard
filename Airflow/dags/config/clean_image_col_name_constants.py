@@ -1,4 +1,5 @@
 # Image table
+MACHINEID = "machineid"
 ULLID = "ullid"
 ACCOUNTED_INK_BLACK = "accountedinkblack"
 ACCOUNTED_INK_CYAN = "accountedinkcyan"

@@ -1,6 +1,7 @@
 from config import clean_image_col_name_constants
 
 data_types = {
+    clean_image_col_name_constants.MACHINEID: 'integer',
     clean_image_col_name_constants.ULLID: 'integer',
     clean_image_col_name_constants.ACCOUNTED_INK_BLACK: 'integer',
     clean_image_col_name_constants.ACCOUNTED_INK_CYAN: 'integer',

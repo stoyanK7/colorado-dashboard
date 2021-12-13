@@ -1,4 +1,5 @@
 # print cycle table
+MACHINEID = "machineid"
 ULLID = "ullid"
 SQUARE_DECIMETER = "squaredecimeter"
 DATE = "date"
