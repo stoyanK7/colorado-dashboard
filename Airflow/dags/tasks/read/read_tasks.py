@@ -7,6 +7,8 @@ from airflow.models.variable import Variable
 # from tasks.read.FileReader import FileReader
 # from DAL.PostgresDatabaseManager import PostgresDatabaseManager
 # from config import read_table_name_config, last_seen_table_config, last_seen_column_name_config
+from config.read_column_name_config import MACHINEID
+from tasks.read.file_manager import FileManager
 from tasks.read.file_reader import FileReader
 from DAL.postgres_database_manager import PostgresDatabaseManager
 from config import read_table_name_config, last_seen_table_config, last_seen_column_name_config, read_image_col_name_constants
@@ -16,33 +18,33 @@ class ReadTasks():
 
     @staticmethod
     def read_image(ti):
+        rsync_directory = Variable.get("rsync_file_directory")
+        snapshot_directory = Variable.get("snapshot_directory")
+        last_seen_directory = Variable.get("last_read_files_directory")
+        image_file_directory_extension = Variable.get("image_file_directory_extension")
 
-        last_seen_file, last_seen_row = ReadTasks._get_last_file_and_row(last_seen_table_config.LAST_SEEN_IMAGE_TABLE,
-                                                                     last_seen_column_name_config.LAST_SEEN_IMAGE_FILE_PATH,
-                                                                     last_seen_column_name_config.LAST_SEEN_IMAGE_ROW_ID)
+        # Copy Rsync files to snapshot
+        ReadTasks._make_snapshot(rsync_directory, snapshot_directory, image_file_directory_extension)
 
-        files_to_read = ReadTasks._get_file_names("image_file_directory", last_seen_file)
+        # Get new files and different files
+        new_files, changed_files = ReadTasks._get_new_and_changed_files(snapshot_directory, last_seen_directory, image_file_directory_extension)
 
-        if len(files_to_read) <= 0:
-            logging.info("No files were found, terminating reading step successfully.")
+        # Check for no new files
+        if not ReadTasks._any_new_changed_files(new_files, changed_files):
+            logging.info("No new or changed files were found, terminating reading step successfully.")
             return
 
-        data = ReadTasks._get_files_to_data_frames("image_file_directory", files_to_read, last_seen_file, last_seen_row)
+        # Get file data (add machine ids)
+        data = ReadTasks._get_files_to_data_frames(new_files, changed_files, image_file_directory_extension, MACHINEID)
 
-        if data.empty:
-            logging.info("No new data was found, terminating reading step successfully.")
-            return
-
+        # Change col names
         ReadTasks._change_col_names(data, read_image_col_name_constants)
 
+        # Insert to database
         ReadTasks._insert_into_db(data, read_table_name_config.READ_IMAGE)
+        pass
 
-        ReadTasks._make_xcom(ti, files_to_read[len(files_to_read) - 1], data[Variable.get("image_col_name_ullid")].iloc[-1])
-
-        # lastReadData = {last_seen_column_name_config.LAST_SEEN_IMAGE_FILE_PATH:[files_to_read[len(files_to_read) - 1]], last_seen_column_name_config.LAST_SEEN_IMAGE_ROW_ID:[data["ullid"].iloc[-1]]}
-        # lastSeenDf = pd.DataFrame(data=lastReadData)
-        # pdm=PostgresDatabaseManager()
-        # pdm.insertIntoTable(lastSeenDf, last_seen_table_config.LAST_SEEN_IMAGE_TABLE)
+        # ReadTasks._make_xcom(ti, files_to_read[len(files_to_read) - 1], data[Variable.get("image_col_name_ullid")].iloc[-1])
     @staticmethod
     def read_media_prepare():
         # do stuff, remove pass
@@ -53,57 +55,64 @@ class ReadTasks():
         pass
 
     @staticmethod
-    def _get_last_file_and_row(table_name, file_path_col_name, row_col_name):
-        # Read last seen table & row
-        logging.info("Getting last seen file and row.")
-        pdm = PostgresDatabaseManager()
-        last_seen_table = ""
-        try:
-            last_seen_table = pdm.read_table(table_name)
-        except:
-            last_seen_table = pd.DataFrame()
-        last_seen_file = ""
-        last_seen_row = ""
-        if not last_seen_table.empty:
-            last_seen_file = last_seen_table[file_path_col_name].iloc[-1]
-            last_seen_row = last_seen_table[row_col_name].iloc[-1]
-            logging.info("Found last seen file: " + last_seen_file + " at row with ullid " + last_seen_row + ".")
-        else:
-            logging.info("Table " + table_name + " was empty, reading all instead.")
-        return last_seen_file, last_seen_row
+    def _make_snapshot(source_dir, target_dir, extension_to_folder):
+        logging.info(f"Making a snapshot by copying files from {source_dir} to {target_dir} focussing on the files at machine_id{extension_to_folder}")
+        file_manager = FileManager()
+        file_manager.copy_files_to_dir(source_dir, target_dir, extension_to_folder)
+        logging.info("Making snapshot finished")
 
     @staticmethod
-    def _get_file_names(directory_variable_key, last_seen_file):
-        # Get filenames
-        logging.info("Getting filenames from directory.")
+    def _get_new_and_changed_files(updated_dir, reference_dir, extension_to_folder):
+        logging.info(f"Getting the new and changed files by comparing the files in {updated_dir} to the files in {reference_dir} at the subdirectory machine_id{extension_to_folder}")
         file_reader = FileReader()
-        directory = os.getenv("AIRFLOW_HOME") + Variable.get(directory_variable_key)
-        logging.info(
-            f"Reading files from {directory} {f'starting at file {last_seen_file}' if last_seen_file != '' else ''}")
-        files_to_read = file_reader.get_file_names_starting_from(directory, last_seen_file)
-        logging.info(f'Found {len(files_to_read)} files.')
-        return files_to_read
+        return file_reader.get_different_files(updated_dir, reference_dir, extension_to_folder)
 
     @staticmethod
-    def _get_files_to_data_frames(directory_variable_key, files_to_read, last_seen_file, last_seen_row) -> pd.DataFrame:
+    def _any_new_changed_files(new_files, changed_files):
+        logging.info("Checking if there are any new or changed in files")
+        any_new = False
+        for machine_id in new_files:
+            if len(machine_id) > 0:
+                any_new = True
+                break
+        for machine_id in changed_files:
+            if len(machine_id) > 0:
+                any_new = True
+                break
+        return any_new
+
+    @staticmethod
+    def _get_files_to_data_frames(new_files, changed_files, identifier_column_name, machine_id_column_name) -> pd.DataFrame:
         # get files
-        logging.info("Getting data from files.")
-        data_frames = []
         file_reader = FileReader()
-        directory = os.getenv("AIRFLOW_HOME") + Variable.get(directory_variable_key)
-
-        for file in files_to_read:
-            logging.info(f"Getting data from file {file}.")
-            df = file_reader.read_pandas_csv_file(directory + file, ";")
-            df = df.set_index(df[Variable.get("image_col_name_ullid")])
-            df = df.sort_index('index')
-            if file == last_seen_file:
-                df = df[df[Variable.get("image_col_name_ullid")] > int(last_seen_row)]
-                logging.info(
-                    "Removed rows " + last_seen_row + " and before from file " + file + " because they were seen before.")
-            data_frames.append(df)
-        result_data_frames = pd.concat(data_frames, ignore_index=True)
-        return result_data_frames
+        dataframes = []
+        logging.info("Getting data from new files")
+        for machine_id in new_files:
+            for new_file in new_files[machine_id]:
+                # logging.info(f"Getting data from file {new_file}.")
+                df = file_reader.read_pandas_csv_file(new_file, ";")
+                # logging.info(f"Changing index to {identifier_column_name}")
+                # logging.info(f"Adding machine id column with value {int(machine_id)}")
+                df[machine_id_column_name] = int(machine_id)
+                dataframes.append(df)
+        logging.info("Getting data from changed files")
+        for machine_id in changed_files:
+            for changed_file in changed_files[machine_id]:
+                logging.info(f"Getting new data from {changed_file}.")
+                old_file = changed_file["old"]
+                new_file = changed_file["new"]
+                # logging.info(f"Getting data from file {old_file}.")
+                df_old = file_reader.read_pandas_csv_file(old_file, ";")
+                # logging.info(f"Getting data from file {new_file}.")
+                df_new = file_reader.read_pandas_csv_file(new_file, ";")
+                # logging.info("Substracting dataframes")
+                # logging.info(f"Changing index to {identifier_column_name}")
+                df_all = pd.concat([df_new,df_old]).drop_duplicates(keep=False, subset='ullid',ignore_index=True)
+                # logging.info(f"Number of added columns: {len(df_all.index)}")
+                # logging.info(f"Adding machine id column with value {int(machine_id)}")
+                df_all[machine_id_column_name] = int(machine_id)
+                dataframes.append(df_all)
+        return pd.concat(dataframes, ignore_index=True)
 
     @staticmethod
     def _change_col_names(data, constants_file):
