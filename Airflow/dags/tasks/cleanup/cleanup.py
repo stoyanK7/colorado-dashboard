@@ -68,6 +68,9 @@ class CleanupTasks:
 
     @staticmethod
     def _cleanup_snapshot():
-        Variable.get("snapshot_directory")
-        shutil.rmtree(Variable.get("snapshot_directory"))
+        logging.info("Removing last read files")
+        if (os.path.exists(Variable.get("last_read_files_directory"))):
+            shutil.rmtree(Variable.get("last_read_files_directory"))
+        logging.info("Moving snapshot to last read files")
+        os.rename(Variable.get("snapshot_directory"), Variable.get("last_read_files_directory"))
         pass
