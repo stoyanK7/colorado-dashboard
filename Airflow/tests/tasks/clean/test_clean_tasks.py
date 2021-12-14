@@ -10,7 +10,7 @@ from cryptography.fernet import Fernet
 from sqlalchemy import create_engine, text
 
 from tasks.clean.clean_tasks import CleanTasks
-from config import read_column_name_config
+from config import read_image_column_name_config
 from config import read_table_name_config, clean_table_name_config, \
     clean_image_col_name_constants, clean_media_prepare_col_name_constants, clean_print_cycle_col_name_constants, \
     clean_image_data_types, clean_media_prepare_data_types, clean_print_cycle_data_types
@@ -150,15 +150,15 @@ class PostgresDatabaseManagerTests(unittest.TestCase):
 
     def test_make_data_frame_image(self):
         actual = pd.DataFrame({read_column_name_config.ULLID: [1],
-                               read_column_name_config.ACCOUNTED_INK_BLACK: [1],
-                               read_column_name_config.ACCOUNTED_INK_CYAN: [1],
+                               read_image_column_name_config.ACCOUNTED_INK_BLACK: [1],
+                               read_image_column_name_config.ACCOUNTED_INK_CYAN: [1],
                                read_column_name_config.ACCOUNTED_INK_MAGENTA: [1],
-                               read_column_name_config.ACCOUNTED_INK_YELLOW: [1],
+                               read_image_column_name_config.ACCOUNTED_INK_YELLOW: [1],
                                read_column_name_config.DATE: ['21/03/2001'],
                                read_column_name_config.IMAGE_LENGTH: [1],
-                               read_column_name_config.IMAGE_WIDTH: [1],
+                               read_image_column_name_config.IMAGE_WIDTH: [1],
                                read_column_name_config.MEDIA_TYPE: ['Film1'],
-                               read_column_name_config.DATE: ['21/03/2001'],
+                               read_image_column_name_config.DATE: ['21/03/2001'],
                                read_column_name_config.IMAGE_LENGTH: [1],
                                read_column_name_config.IMAGE_WIDTH: [1],
                                read_column_name_config.MEDIA_TYPE: ['Film1'],
