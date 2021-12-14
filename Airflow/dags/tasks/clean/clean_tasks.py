@@ -13,6 +13,7 @@ class CleanTasks:
     @staticmethod
     def clean_image():
         # Read Image table from Db
+        pdm = PostgresDatabaseManager()
         df = pdm.read_table(read_table_name_config.READ_IMAGE)
         if df.empty:
             logging.info("No new data was found, skipping step.")
@@ -34,7 +35,7 @@ class CleanTasks:
         df = CleanTasks.remove_row_null(df)
 
         # Check negative value.
-        df = CleanTasks.check_negative_image(df, clean_image_data_types.data_types)
+        df = CleanTasks.check_negative_values(df, clean_image_data_types.data_types)
 
         # Check if mediaType is valid
         #df = self.remove_invalid_media_type(df)
@@ -66,7 +67,7 @@ class CleanTasks:
         df = CleanTasks.remove_row_null(df)
 
         # Check negative value.
-        df = CleanTasks.check_negative_image(df, clean_media_prepare_data_types.data_types)
+        df = CleanTasks.check_negative_values(df, clean_media_prepare_data_types.data_types)
 
         # Create table and store
         CleanTasks._insert_into_db(df, clean_table_name_config.READ_MEDIA_PREPARE)
