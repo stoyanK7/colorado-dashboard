@@ -9,7 +9,7 @@ from config import aggregate_table_name_config, \
     clean_table_name_config, \
     last_seen_table_config, \
     read_table_name_config, \
-    last_seen_column_name_config
+    last_seen_column_name_config, preprocess_table_name_config
 
 from DAL.postgres_database_manager import PostgresDatabaseManager
 
@@ -23,6 +23,7 @@ class CleanupTasks:
         CleanupTasks._cleanup_tables(clean_table_name_config)
         # CleanupTasks._cleanup_tables(last_seen_table_config)
         CleanupTasks._cleanup_tables(read_table_name_config)
+        CleanupTasks._cleanup_tables(preprocess_table_name_config)
 
         CleanupTasks._cleanup_snapshot()
         # # save from X com into the database

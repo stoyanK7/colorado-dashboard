@@ -11,7 +11,7 @@ from DAL.postgres_database_manager import PostgresDatabaseManager
 class PreprocessTasks():
     @staticmethod
     def preprocess_media_category_usage():
-        pass
+        return
         # The columns to mach the database names
         logging.info("Start preprocess for media category usage.")
         # Take the dataframe from the previous step
@@ -24,7 +24,7 @@ class PreprocessTasks():
 
     @staticmethod
     def preprocess_sqm_per_print_mode():
-        pass
+        return
         # The columns to mach the database names
         logging.info("Start preprocess for media category usage.")
         # Take the dataframe from the previous step
@@ -65,25 +65,29 @@ class PreprocessTasks():
 
         # Merge the dataframes
         df = PreprocessTasks._merge_two_dataframes(df1, df2, clean_print_cycle_col_name_constants.ENGINE_CYCLE_ID)
-
         # Make sure to not have unnecessary data
         df = df[[clean_print_cycle_col_name_constants.DATE + "_x",
                  clean_media_prepare_col_name_constants.MEDIA_TYPE_DISPLAY_NAME,
-                 clean_print_cycle_col_name_constants.SQUARE_DECIMETER]]
+                 clean_print_cycle_col_name_constants.SQUARE_DECIMETER,
+                 clean_print_cycle_col_name_constants.MACHINEID + "_x"]]
+
 
         # Fix date column from date_x to date
         df = df.rename(
             columns={clean_print_cycle_col_name_constants.DATE + "_x": clean_print_cycle_col_name_constants.DATE})
+        df = df.rename(
+            columns={clean_print_cycle_col_name_constants.MACHINEID + "_x": clean_print_cycle_col_name_constants.MACHINEID})
 
         # Divide two column by 100
         df = PreprocessTasks._divide_column_by(df,
                                                clean_print_cycle_col_name_constants.SQUARE_DECIMETER,
                                                preprocess_col_name_constants.PREPROCESSED_SQUARE_DECIMETER,
                                                100)
-
+        print(f"After dividing: {df.columns}")
         df = df.rename(columns={clean_print_cycle_col_name_constants.MACHINEID: preprocess_col_name_constants.MACHINEID})
         df = df.rename(columns={clean_print_cycle_col_name_constants.DATE: preprocess_col_name_constants.DATE})
         df = df.rename(columns={clean_media_prepare_col_name_constants.MEDIA_TYPE_DISPLAY_NAME: preprocess_col_name_constants.MEDIA_TYPE_DISPLAY_NAME})
+        print(f"After renaming: {df.columns}")
 
         # Save dataframe into database
         PreprocessTasks._insert_into_db(df, preprocess_table_name_config.PREPROCESS_MEDIA_TYPES_PER_MACHINE)

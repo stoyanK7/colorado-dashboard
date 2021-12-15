@@ -12,7 +12,7 @@ class AggregateTasks:
 
     @staticmethod
     def aggregate_media_category_usage():
-        pass
+        return
         # Take the dataframe from the previous step
         df = AggregateTasks._read_from_db(preprocess_table_name_config.PREPROCESS_MEDIA_CATEGORY_USAGE)
         if df.empty:
@@ -36,7 +36,7 @@ class AggregateTasks:
 
     @staticmethod
     def aggregate_sqm_per_print_mode():
-        pass
+        return
         # Take the dataframe from the previous step
         df = AggregateTasks._read_from_db(preprocess_table_name_config.PREPROCESS_SQM_PER_PRINT_MODE)
         if df.empty:
@@ -75,9 +75,9 @@ class AggregateTasks:
 
         # Group
         df = AggregateTasks._group_by_two_columns_and_sum_third(df,
-                                                                preprocess_col_name_constants.DATE,
-                                                                preprocess_col_name_constants.MACHINEID,
-                                                                preprocess_col_name_constants.SQUARE_DECIMETER)
+                                                            preprocess_col_name_constants.DATE,
+                                                            preprocess_col_name_constants.MACHINEID,
+                                                            preprocess_col_name_constants.PREPROCESSED_SQUARE_DECIMETER)
         # Save into a database
         AggregateTasks._insert_into_db(df, aggregate_table_name_config.AGGREGATE_TOP_TEN_PRINT_VOLUME)
 
@@ -105,7 +105,7 @@ class AggregateTasks:
         df = pdm.read_table(table_name)
         if df.empty:
             return df
-        df = df.set_index(aggregate_column_name_config.ULLID)
+        # df = df.set_index(aggregate_column_name_config.ULLID)
         return df
 
     @staticmethod
