@@ -58,3 +58,16 @@ make stop-airflow
 ```
 psql -d airflow -U airflow
 ```
+## Configuring data source
+1. Extract printer data to a accesible folder.
+2. Copy the folder path
+3. Open docker compose
+    a. In Scheduler:
+    b. Under Volumes:
+    c. Add: - C/path/to/data:/root/airflow/Data
+4. After a pipeline fails wait until the cleanup passes then:
+    a. Open CLI of airflow-scheduler in docker desktop
+    b. cd airflow
+    c. rm -r Snapshot
+    d. rm -r LastReadData
+
