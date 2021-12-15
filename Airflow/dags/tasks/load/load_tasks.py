@@ -7,12 +7,50 @@ from config import aggregate_table_name_config, aggregate_column_name_config
 from DAL.postgres_database_manager import PostgresDatabaseManager
 from tabulate import tabulate
 
+from config.aggregate_column_name_config import DATE
+from config.aggregate_table_name_config import AGGREGATE_MEDIA_CATEGORY_USAGE, AGGREGATE_INK_USAGE
+from config.preprocess_col_name_constants import MACHINEID
+
+
 class LoadTasks:
 
 
     @staticmethod
     def load_media_category_usage():
+        # load data from airflow db
+        pdm = PostgresDatabaseManager()
+        df = pdm.read_table(AGGREGATE_INK_USAGE)
+        api_table_name = "ink_usage"
+        date_col = "date"
+        start_date = df[DATE].min()
+        end_date = df[DATE].max()
+        machineid = MACHINEID
+        params = [start_date, end_date]
+
+        connection = LoadTasks.connect_to_api_database()
+
+        sql = f"SELECT * FROM {api_table_name} WHERE {date_col} BETWEEN %s AND %s"
+        api_df = pd.read_sql(sql, connection, params=params)
+        concat_df = pd.concat(df, api_df)
+        sum_df = concat_df.groupby([date_col, machineid], as_index=False).sum()
+        sum_df.to_sql(api_table_name, connection, if_exists="replace")
+
+        #
+        # put data in api database
+
         pass
+
+
+
+
+
+
+
+    @staticmethod
+    def connect_to_api_database():
+        return pymysql.connect(host='host.docker.internal', user='canon', password='canon', db='canon')
+
+
         # df = LoadTasks._read_from_db_postgresql(aggregate_table_name_config.AGGREGATE_IMAGE)
         # if df.empty:
         #     logging.info("No new data was found, skipping step.")
