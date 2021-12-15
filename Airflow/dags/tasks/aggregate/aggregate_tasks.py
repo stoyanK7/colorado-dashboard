@@ -18,15 +18,15 @@ class AggregateTasks:
             return
         # Multiply ImageLength and ImageWidth into Area column
         df = AggregateTasks._aggregate_two_columns(df,
-                                                   cleaning_column_name_config.IMAGE_WIDTH,
-                                                   cleaning_column_name_config.IMAGE_LENGTH,
+                                                   clean_image_col_name_constants.IMAGE_WIDTH,
+                                                   clean_image_col_name_constants.IMAGE_LENGTH,
                                                    aggregate_column_name_config.IMAGE_AREA,
                                                    True)
 
         # Group
         df = AggregateTasks._group_by_two_columns_and_sum_third(df,
-                                                                cleaning_column_name_config.DATE,
-                                                                cleaning_column_name_config.MEDIA_TYPE,
+                                                                clean_image_col_name_constants.DATE,
+                                                                clean_image_col_name_constants.MEDIA_TYPE,
                                                                 aggregate_column_name_config.IMAGE_AREA)
         # Save into a database
         AggregateTasks._insert_into_db(df, aggregate_table_name_config.AGGREGATE_IMAGE)

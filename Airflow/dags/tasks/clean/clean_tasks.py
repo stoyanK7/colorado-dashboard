@@ -13,6 +13,7 @@ class CleanTasks:
     @staticmethod
     def clean_image():
         # Read Image table from Db
+        pdm = PostgresDatabaseManager()
         df = pdm.read_table(read_table_name_config.READ_IMAGE)
         if df.empty:
             logging.info("No new data was found, skipping step.")
@@ -34,7 +35,7 @@ class CleanTasks:
         df = CleanTasks.remove_row_null(df)
 
         # Check negative value.
-        df = CleanTasks.check_negative_image(df, clean_image_data_types.data_types)
+        df = CleanTasks.check_negative_values(df, clean_image_data_types.data_types)
 
         # Check if mediaType is valid
         #df = self.remove_invalid_media_type(df)
@@ -45,6 +46,7 @@ class CleanTasks:
     @staticmethod
     def clean_media_prepare():
         # Read media prepare from Db
+        pdm = PostgresDatabaseManager()
         df = pdm.read_table(read_table_name_config.READ_MEDIA_PREPARE)
         if df.empty:
             logging.info("No new data was found, skipping step.")
@@ -66,7 +68,7 @@ class CleanTasks:
         df = CleanTasks.remove_row_null(df)
 
         # Check negative value.
-        df = CleanTasks.check_negative_image(df, clean_media_prepare_data_types.data_types)
+        df = CleanTasks.check_negative_values(df, clean_media_prepare_data_types.data_types)
 
         # Create table and store
         CleanTasks._insert_into_db(df, clean_table_name_config.READ_MEDIA_PREPARE)
@@ -74,6 +76,7 @@ class CleanTasks:
     @staticmethod
     def clean_print_cycle():
         # read print cycle from Db
+        pdm = PostgresDatabaseManager()
         df = pdm.read_table(read_table_name_config.READ_PRINT_CYCLE)
         if df.empty:
             logging.info("No new data was found, skipping step.")
@@ -83,7 +86,7 @@ class CleanTasks:
         cols = [getattr(clean_print_cycle_col_name_constants, name)
                 for name in dir(clean_print_cycle_col_name_constants) if not name.startswith('_')]
         cols = cols[-1:] + cols[:-1]
-        df = CleanTasks.make_data_frame_image(df, cols)
+        df = CleanTasks.make_data_frame(df, cols)
 
         # check if ullid is same then drop
         df = CleanTasks.remove_duplicates(df)
@@ -95,7 +98,7 @@ class CleanTasks:
         df = CleanTasks.remove_row_null(df)
 
         # Check negative value.
-        df = CleanTasks.check_negative_image(df, clean_print_cycle_data_types.data_types)
+        df = CleanTasks.check_negative_values(df, clean_print_cycle_data_types.data_types)
 
         # Create table and store
         CleanTasks._insert_into_db(df, clean_table_name_config.READ_PRINT_CYCLE)
@@ -104,6 +107,7 @@ class CleanTasks:
     def _read_from_db(table_name):
         # put in db
         logging.info("Reading data from the database.")
+        pdm = PostgresDatabaseManager()
         pdm.read_table(table_name)
 
     @staticmethod
