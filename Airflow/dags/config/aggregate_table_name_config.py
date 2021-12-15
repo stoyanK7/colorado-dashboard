@@ -1,3 +1,5 @@
-AGGREGATE_IMAGE = "aggregateimage"
-AGGREGATE_MEDIA_PREPARE = "aggregatemediaprepare"
-AGGREGATE_PRINT_CYCLE = "aggregateprintcycle"
+AGGREGATE_MEDIA_CATEGORY_USAGE = "aggregatemediacategoryusage"
+AGGREGATE_MEDIA_TYPES_PER_MACHINE = "aggregatemediatypespermachine"
+AGGREGATE_TOP_TEN_PRINT_VOLUME = "aggregatetoptenprintvolume"
+AGGREGATE_INK_USAGE = "aggregateinkusage"
+AGGREGATE_SQM_PER_PRINT_MODE = "aggregatesqmperprintmode"
