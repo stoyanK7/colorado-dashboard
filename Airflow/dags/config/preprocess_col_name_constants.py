@@ -1,10 +1,10 @@
-MACHINEID = "printerId"
+MACHINEID = "printer_id"
 DATE = "date"
 # Image
-ACCOUNTED_INK_BLACK = "blackUsed"
-ACCOUNTED_INK_CYAN = "cyanUsed"
-ACCOUNTED_INK_MAGENTA = "magentaUsed"
-ACCOUNTED_INK_YELLOW = "yellowUsed"
+ACCOUNTED_INK_BLACK = "black_used"
+ACCOUNTED_INK_CYAN = "cyan_used"
+ACCOUNTED_INK_MAGENTA = "magenta_used"
+ACCOUNTED_INK_YELLOW = "yellow_used"
 MEDIA_TYPE = "mediaName"
 # MediaPrepare
 MEDIA_TYPE_DISPLAY_NAME = "mediaType"

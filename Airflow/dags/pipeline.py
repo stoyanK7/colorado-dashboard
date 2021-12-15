@@ -16,7 +16,7 @@ default_args = {
     'email': ['airflow@example.com'],
     'email_on_failure': False,
     'email_on_retry': False,
-    'retries': 1,
+    'retries': 0,
     'retry_delay': timedelta(minutes=5),
 }
 
@@ -126,6 +126,7 @@ with DAG(
     #CLEANUP
     cleanUp = PythonOperator(
         task_id='cleanUp',
+        trigger_rule="all_done",
         python_callable=CleanupTasks.cleanup
     )
 

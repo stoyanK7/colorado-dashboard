@@ -17,6 +17,7 @@ class LoadTasks:
 
     @staticmethod
     def load_media_category_usage():
+        return
         # load data from airflow db
         pdm = PostgresDatabaseManager()
         df = pdm.read_table(AGGREGATE_INK_USAGE)
@@ -197,7 +198,26 @@ class LoadTasks:
 
     @staticmethod
     def load_ink_usage():
-        pass
+        pdm = PostgresDatabaseManager()
+        df = pdm.read_table(AGGREGATE_INK_USAGE)
+        api_table_name = "ink_usage"
+        date_col = "date"
+        start_date = df[DATE].min()
+        end_date = df[DATE].max()
+        machineid = MACHINEID
+        params = [start_date, end_date]
+
+        connection = LoadTasks.connect_to_api_database()
+
+        sql = f"SELECT * FROM {api_table_name} WHERE {date_col} BETWEEN {start_date} AND {end_date}"
+        api_df = pd.read_sql(sql, connection)
+        print(f"pipeline df: {df.head(100)}")
+        print(f"api response: {api_df.head(100)}")
+        concat_df = pd.concat([df, api_df])
+        sum_df = concat_df.groupby([date_col, machineid], as_index=False).sum()
+        print(f"summed df: {sum_df.head(100)}")
+        sum_df.to_sql(api_table_name, connection, if_exists="replace")
+
 
     @staticmethod
     def load_top_ten_print_volume():
