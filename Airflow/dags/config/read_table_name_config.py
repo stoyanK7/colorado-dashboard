@@ -1,3 +1,3 @@
-READ_IMAGE = "readimage"
-READ_MEDIA_PREPARE = "readimage"
-READ_PRINT_CYCLE = "readimage"
+READ_IMAGE = "read_image"
+READ_MEDIA_PREPARE = "read_media_prepare"
+READ_PRINT_CYCLE = "read_print_cycle"

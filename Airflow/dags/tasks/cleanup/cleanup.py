@@ -1,6 +1,9 @@
 import logging
+import os
+import shutil
 
 import pandas as pd
+from airflow.models import Variable
 
 from config import aggregate_table_name_config, \
     clean_table_name_config, \
@@ -21,11 +24,12 @@ class CleanupTasks:
         # CleanupTasks._cleanup_tables(last_seen_table_config)
         CleanupTasks._cleanup_tables(read_table_name_config)
 
-        # save from X com into the database
-        CleanupTasks._xcom_to_db(ti,
-                                 last_seen_column_name_config.LAST_SEEN_IMAGE_FILE_PATH,
-                                 last_seen_column_name_config.LAST_SEEN_IMAGE_ROW_ID,
-                                 last_seen_table_config.LAST_SEEN_IMAGE_TABLE)
+        CleanupTasks._cleanup_snapshot()
+        # # save from X com into the database
+        # CleanupTasks._xcom_to_db(ti,
+        #                          last_seen_column_name_config.LAST_SEEN_IMAGE_FILE_PATH,
+        #                          last_seen_column_name_config.LAST_SEEN_IMAGE_ROW_ID,
+        #                          last_seen_table_config.LAST_SEEN_IMAGE_TABLE)
 
     @staticmethod
     def _cleanup_tables(table_name_config):
@@ -61,3 +65,12 @@ class CleanupTasks:
 
         df = pd.DataFrame({c1_name: [last_seen_file], c2_name: [last_seen_row]})
         pdm.insert_into_table(df, table_name)
+
+    @staticmethod
+    def _cleanup_snapshot():
+        logging.info("Removing last read files")
+        if (os.path.exists(Variable.get("last_read_files_directory"))):
+            shutil.rmtree(Variable.get("last_read_files_directory"))
+        logging.info("Moving snapshot to last read files")
+        os.rename(Variable.get("snapshot_directory"), Variable.get("last_read_files_directory"))
+        pass
