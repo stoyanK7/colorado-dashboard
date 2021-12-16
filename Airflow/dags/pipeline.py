@@ -35,11 +35,11 @@ with DAG(
         python_callable=ReadTasks.read_image
     )
     readMediaPrepare = PythonOperator(
-        task_id='readMediaPrepare_TODO',
+        task_id='readMediaPrepare',
         python_callable=ReadTasks.read_media_prepare
     )
     readPrintCycle = PythonOperator(
-        task_id='readPrintCycle_TODO',
+        task_id='readPrintCycle',
         python_callable=ReadTasks.read_print_cycle
     )
 
@@ -49,11 +49,11 @@ with DAG(
         python_callable=CleanTasks.clean_image
     )
     cleanMediaPrepare = PythonOperator(
-        task_id='cleanMediaPrepare_TODO',
+        task_id='cleanMediaPrepare',
         python_callable=CleanTasks.clean_media_prepare
     )
     cleanPrintCycle = PythonOperator(
-        task_id='cleanPrintCycle_TODO',
+        task_id='cleanPrintCycle',
         python_callable=CleanTasks.clean_print_cycle
     )
 
@@ -67,15 +67,15 @@ with DAG(
         python_callable=PreprocessTasks.preprocess_sqm_per_print_mode
     )
     preprocessInkUsage = PythonOperator(
-        task_id='preprocessInkUsage_TODO',
+        task_id='preprocessInkUsage_WIP',
         python_callable=PreprocessTasks.preprocess_ink_usage
     )
     preprocessTopTenPrintVolume = PythonOperator(
-        task_id='preprocessTopTenPrintVolume_TODO',
+        task_id='preprocessTopTenPrintVolume_WIP',
         python_callable=PreprocessTasks.preprocess_top_ten_print_volume
     )
     preprocessMediaTypesPerMachine = PythonOperator(
-        task_id='preprocessMediaTypesPerMachine_TODO',
+        task_id='preprocessMediaTypesPerMachine_WIP',
         python_callable=PreprocessTasks.preprocess_media_types_per_machine
     )
 
@@ -89,15 +89,15 @@ with DAG(
         python_callable=AggregateTasks.aggregate_sqm_per_print_mode
     )
     aggregateInkUsage = PythonOperator(
-        task_id='aggregateInkUsage_TODO',
+        task_id='aggregateInkUsage_WIP',
         python_callable=AggregateTasks.aggregate_ink_usage
     )
     aggregateTopTenPrintVolume = PythonOperator(
-        task_id='aggregateTopTenPrintVolume_TODO',
+        task_id='aggregateTopTenPrintVolume_WIP',
         python_callable=AggregateTasks.aggregate_top_ten_print_volume
     )
     aggregateMediaTypesPerMachine = PythonOperator(
-        task_id='aggregateMediaTypesPerMachine_TODO',
+        task_id='aggregateMediaTypesPerMachine_WIP',
         python_callable=AggregateTasks.aggregate_media_types_per_machine
     )
 
@@ -111,7 +111,7 @@ with DAG(
         python_callable=LoadTasks.load_sqm_per_print_mode
     )
     loadInkUsage = PythonOperator(
-        task_id='loadInkUsage_TODO',
+        task_id='loadInkUsage_WIP',
         python_callable=LoadTasks.load_ink_usage
     )
     loadTopTenPrintVolume = PythonOperator(
@@ -149,10 +149,18 @@ with DAG(
     preprocessMediaTypesPerMachine >> aggregateMediaTypesPerMachine
     # load
     aggregateMediaCategoryUsage >> loadMediaCategoryUsage
-    aggregateSqmPerPrintMode >> loadSqmPerPrintMode
     aggregateInkUsage >> loadInkUsage
+    aggregateMediaCategoryUsage >> loadInkUsage
+    aggregateInkUsage >> loadMediaCategoryUsage
+    aggregateSqmPerPrintMode >> loadSqmPerPrintMode
     aggregateTopTenPrintVolume >> loadTopTenPrintVolume
     aggregateMediaTypesPerMachine >> loadMediaTypesPerMachine
+    aggregateSqmPerPrintMode >> loadTopTenPrintVolume
+    aggregateTopTenPrintVolume >> loadMediaTypesPerMachine
+    aggregateMediaTypesPerMachine >> loadSqmPerPrintMode
+    aggregateSqmPerPrintMode >> loadMediaTypesPerMachine
+    aggregateTopTenPrintVolume >> loadSqmPerPrintMode
+    aggregateMediaTypesPerMachine >> loadTopTenPrintVolume
 
     # cleanup
     loadMediaCategoryUsage >> cleanUp
