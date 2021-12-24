@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import Chart from '../shared/Chart';
 import Filters from '../shared/Filters';
 import Header from '../static/Header';
+import React from 'react';
 import chartTitleSwitch from '../../util/chartTitleSwitch';
 import formatDate from '../../util/formatDate';
 import { useParams } from 'react-router-dom';

@@ -1,6 +1,7 @@
 import { Route, Switch } from 'react-router-dom';
 
 import Home from './Home';
+import React from 'react';
 import View from './View';
 
 const App = () => {

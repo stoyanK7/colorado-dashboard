@@ -4,6 +4,7 @@ import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Loading from '../static/Loading';
+import React from 'react';
 import chartSwitch from '../../util/chartSwitch';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import useFetch from '../../hooks/useFetch';

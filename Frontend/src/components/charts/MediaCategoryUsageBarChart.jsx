@@ -1,85 +1,49 @@
-import { ResponsiveBarCanvas } from '@nivo/bar';
-import chartTheme from '../../util/chartTheme';
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis
+} from 'recharts';
 
-const MediaCategoryUsageBarChart = ({ data, index }) => {
-    if (typeof data === 'undefined' || data.length === 0) return null;
-    // TODO: Seperate into own function
-    let keys = Object.keys(data[0]);
-    keys.splice(keys.indexOf('Date'), 1);
-    keys.sort();
-    return (
-        <>
-            <ResponsiveBarCanvas
-                animate={false}
-                borderWidth={1}
-                data={data}
-                keys={keys}
-                indexBy={index}
-                margin={{ top: 50, right: 130, bottom: 70, left: 60 }}
-                padding={0.05}
-                valueScale={{ type: 'linear' }}
-                indexScale={{ type: 'band', round: true }}
-                // colors={({ data, id, indexValue }) => chartTheme(data, id, indexValue, 'media-category-usage')}
-                colors={{scheme:'nivo'}}
-                borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-                axisBottom={{
-                    tickSize: 5,
-                    tickPadding: 5,
-                    tickRotation: 40,
-                    legend: 'Media type',
-                    legendPosition: 'middle',
-                    legendOffset: 55
-                }}
-                axisLeft={{
-                    tickSize: 5,
-                    tickPadding: 5,
-                    tickRotation: 0,
-                    legend: 'Printed square meters',
-                    legendPosition: 'middle',
-                    legendOffset: -40
-                }}
-                enableLabel={false}
-                legends={[
-                    {
-                        dataFrom: 'keys',
-                        anchor: 'bottom-right',
-                        direction: 'column',
-                        justify: false,
-                        translateX: 120,
-                        translateY: -10,
-                        itemsSpacing: 2,
-                        itemWidth: 100,
-                        itemHeight: 20,
-                        itemDirection: 'left-to-right',
-                        itemOpacity: 0.85,
-                        symbolSize: 20,
-                        effects: [
-                            {
-                                on: 'hover',
-                                style: {
-                                    itemOpacity: 1
-                                }
-                            }
-                        ],
-                        toggleSerie: true
-                    }
-                ]}
-                pixelRatio={2}
-                role='application'
-                tooltip={({ id, value, indexValue, color }) => {
-                    return <div style={{ backgroundColor: 'rgba(68,68,68, 0.9)', padding: '5px', color: '#ffffff', fontSize: '1rem', borderRadius: '4px' }}>
-                        <div style={{ display: 'flex' }}>
-                            <svg width='20px' height='20px' style={{ marginRight: '5px' }}><rect width='20px' height='20px' fill={color}></rect></svg>
-                            <span style={{ fontSize: '1.1rem' }}>{id}</span>
-                        </div>
-                        Printed square meters: <b>{value}</b>
-                        <br />
-                        Date: <b>{indexValue}</b>
-                    </div>
-                }}
-            />
-        </>
-    );
+import React from 'react';
+
+const MediaCategoryUsageBarChart = ({ data }) => {
+  return (
+    <ResponsiveContainer width='100%' height='100%'>
+
+      <BarChart
+        width={700}
+        height={300}
+        data={data}
+        margin={{
+          top: 20,
+          right: 30,
+          left: 20,
+          bottom: 5
+        }}
+      >
+        <CartesianGrid strokeDasharray='3 3' />
+        <XAxis dataKey='date' />
+        <YAxis unit='SqM' />
+        <Tooltip />
+        <Legend />
+        <Bar dataKey='Film' stackId='a' fill='#49BFF9' />
+        <Bar dataKey='Light paper < 120gsm' stackId='a' fill='#C5C714' />
+        <Bar dataKey='Heavy paper > 200gsm' stackId='a' fill='#A843B1' />
+        <Bar dataKey='Light banner < 400gsm' stackId='a' fill='#6735E1' />
+        <Bar dataKey='Monomeric vinyl' stackId='a' fill='#BFFA7F' />
+        <Bar dataKey='Canvas' stackId='a' fill='#1D3317' />
+        <Bar dataKey='Polymeric & cast vinyl' stackId='a' fill='#0C5B54' />
+        <Bar dataKey='Heavy banner > 400gsm' stackId='a' fill='#C8D0C8' />
+        <Bar dataKey='Paper' stackId='a' fill='#3FBCB9' />
+        <Bar dataKey='Thick film > 200um' stackId='a' fill='#F4236B' />
+      </BarChart>
+    </ResponsiveContainer>
+  );
 };
 
 export default MediaCategoryUsageBarChart;
