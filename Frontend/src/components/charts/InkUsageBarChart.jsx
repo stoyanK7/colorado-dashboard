@@ -25,7 +25,10 @@ const InkUsageBarChart = ({ data }) => {
       >
         <CartesianGrid strokeDasharray='3 3' />
         <XAxis dataKey='Date' textAnchor='start' angle={40} />
-        <YAxis unit='L' />
+        <YAxis unit='L' type='number'
+        // TODO: set this with maxvalue to fix overflowing labels
+        // domain={[0, maxValue]} 
+        />
         <Tooltip />
         <Legend verticalAlign='top' iconType='circle' />
         <Bar dataKey='Black' stackId='a' fill='#333333' />

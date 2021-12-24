@@ -14,27 +14,30 @@ import React from 'react';
 const MediaCategoryUsageBarChart = ({ data }) => {
   return (
     <ResponsiveContainer width='100%' height='100%'>
-
       <BarChart
         width={700}
         height={300}
         data={data}
         margin={{
           top: 20,
-          right: 30,
-          left: 20,
-          bottom: 5
+          right: 50,
+          left: 40,
+          bottom: 50
         }}
       >
         <CartesianGrid strokeDasharray='3 3' />
-        <XAxis dataKey='date' />
-        <YAxis unit='SqM' />
+        <XAxis dataKey='Date' textAnchor='start' angle={40} />
+        <YAxis unit='SqM' type='number'
+        // TODO: set this with maxvalue to fix overflowing labels
+        // domain={[0, maxValue]} 
+        />
         <Tooltip />
-        <Legend />
+        <Legend verticalAlign='top' iconType='circle' />
         <Bar dataKey='Film' stackId='a' fill='#49BFF9' />
         <Bar dataKey='Light paper < 120gsm' stackId='a' fill='#C5C714' />
         <Bar dataKey='Heavy paper > 200gsm' stackId='a' fill='#A843B1' />
         <Bar dataKey='Light banner < 400gsm' stackId='a' fill='#6735E1' />
+        <Bar dataKey='Textile' stackId='a' fill='#1013A6' />
         <Bar dataKey='Monomeric vinyl' stackId='a' fill='#BFFA7F' />
         <Bar dataKey='Canvas' stackId='a' fill='#1D3317' />
         <Bar dataKey='Polymeric & cast vinyl' stackId='a' fill='#0C5B54' />
