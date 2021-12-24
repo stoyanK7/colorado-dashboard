@@ -1,6 +1,7 @@
 import InkUsageBarChart from "../components/charts/InkUsageBarChart";
 import MediaCategoryUsageBarChart from "../components/charts/MediaCategoryUsageBarChart";
 import MediaTypesMerMachineBarChart from "../components/charts/MediaTypesPerMachineBarChart";
+import React from 'react';
 import SquareMeterPerPrintModeBarChart from "../components/charts/SquareMeterPerPrintModeBarChart";
 import TopMachinesWithMostPrintVolumeBarChart from "../components/charts/TopMachinesWithMostPrintVolumeBarChart";
 

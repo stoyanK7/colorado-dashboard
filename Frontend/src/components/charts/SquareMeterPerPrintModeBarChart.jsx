@@ -1,83 +1,48 @@
-import { ResponsiveBarCanvas } from '@nivo/bar';
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis
+} from 'recharts';
 
-const SquareMeterPerPrintModeBarChart = ({ data, index }) => {
-  if (typeof data === 'undefined' || data.length === 0) return null;
-  // TODO: Seperate into own function
-  let keys = Object.keys(data[0]);
-  keys.splice(keys.indexOf('Date'), 1);
-  keys.sort();
+import React from 'react';
+
+const SquareMeterPerPrintModeBarChart = ({ data }) => {
   return (
-    <>
-      <ResponsiveBarCanvas
-        animate={true}
-        borderWidth={1}
+    <ResponsiveContainer width='100%' height='100%'>
+      <BarChart
+        width={700}
+        height={300}
         data={data}
-        keys={keys}
-        indexBy={index}
-        margin={{ top: 50, right: 130, bottom: 70, left: 60 }}
-        padding={0.05}
-        valueScale={{ type: 'linear' }}
-        indexScale={{ type: 'band', round: true }}
-        // colors={({ data, id, indexValue }) => chartTheme(data, id, indexValue, 'square-meter-per-print-mode')}
-        colors={{ scheme: 'nivo' }}
-        borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-        axisBottom={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 40,
-          legend: 'Date',
-          legendPosition: 'middle',
-          legendOffset: 55
+        margin={{
+          top: 20,
+          right: 50,
+          left: 40,
+          bottom: 50
         }}
-        axisLeft={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: 'Printed square meters',
-          legendPosition: 'middle',
-          legendOffset: -40
-        }}
-        enableLabel={false}
-        legends={[
-          {
-            dataFrom: 'keys',
-            anchor: 'bottom-right',
-            direction: 'column',
-            justify: false,
-            translateX: 120,
-            translateY: -10,
-            itemsSpacing: 2,
-            itemWidth: 100,
-            itemHeight: 20,
-            itemDirection: 'left-to-right',
-            itemOpacity: 0.85,
-            symbolSize: 20,
-            effects: [
-              {
-                on: 'hover',
-                style: {
-                  itemOpacity: 1
-                }
-              }
-            ],
-            toggleSerie: true
-          }
-        ]}
-        pixelRatio={2}
-        role='application'
-        tooltip={({ id, value, indexValue, color }) => {
-          return <div style={{ backgroundColor: 'rgba(68,68,68, 0.9)', padding: '5px', color: '#ffffff', fontSize: '1rem', borderRadius: '4px' }}>
-            <div style={{ display: 'flex' }}>
-              <svg width='20px' height='20px' style={{ marginRight: '5px' }}><rect width='20px' height='20px' fill={color}></rect></svg>
-              <span style={{ fontSize: '1.1rem' }}>{id}</span>
-            </div>
-            Printed square meters: <b>{value}</b>
-            <br />
-            Date: <b>{indexValue}</b>
-          </div>
-        }}
-      />
-    </>
+      >
+        <CartesianGrid strokeDasharray='3 3' />
+        <XAxis dataKey='Date' textAnchor='start' angle={40} />
+        <YAxis unit='SqM' type='number'
+        // TODO: set this with maxvalue to fix overflowing labels
+        // domain={[0, maxValue]} 
+        />
+        <Tooltip />
+        <Legend verticalAlign='top' iconType='circle' />
+        <Bar dataKey='Max speed' stackId='a' fill='#A6DA4E' />
+        <Bar dataKey='High speed' stackId='a' fill='#9C2BCB' />
+        <Bar dataKey='Production' stackId='a' fill='#35EA33' />
+        <Bar dataKey='High quality' stackId='a' fill='#C87A9C' />
+        <Bar dataKey='Specialty' stackId='a' fill='#1013A6' />
+        <Bar dataKey='Backlit' stackId='a' fill='#F63B45' />
+        <Bar dataKey='Reliance' stackId='a' fill='#1D3317' />
+        <Bar dataKey='Other' stackId='a' fill='#69283A' />
+      </BarChart>
+    </ResponsiveContainer>
   );
 };
 
