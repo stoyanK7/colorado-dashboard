@@ -15,9 +15,14 @@
 }
 
 .specific-printers .printers-menu h2 {
-  font-weight: 300;
+  font-weight: 400;
   text-align: center;
   margin: 20px;
+  margin-bottom: 5px;
+}
+
+.specific-printers .select-all {
+  margin-bottom: 15px;
 }
 
 .printers-menu .available-printers {
@@ -25,6 +30,7 @@
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   row-gap: 1vh;
   column-gap: 1.5vw;
+  font-weight: 300;
 }
 
 .printers-menu .available-printer input[type=checkbox] {
