@@ -33,7 +33,7 @@ const PrintersFilter = ({ chartPath, chosenPrinters, setChosenPrinters, makeSpec
         <motion.div
           className='printers-menu'
           // style={menuStyle}
-          initial={{ y: '-100vh' }}
+          initial={{ y: '-200vh' }}
           animate={menuStyle}
           transition={{ duration: 0.6, type: 'spring', stiffness: 80 }}
         >
