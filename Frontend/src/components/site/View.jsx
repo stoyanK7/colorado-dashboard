@@ -1,6 +1,6 @@
 import '../../css/site/View.css';
 
-import { disableFullScreen, enableFullScreen } from '../../util/fullScreen';
+import { disableFullScreen, enableFullScreen, rotateFullScreen } from '../../util/fullScreen';
 import { useEffect, useRef, useState } from 'react';
 
 import Chart from '../shared/Chart';
@@ -32,7 +32,7 @@ const View = () => {
       setRequestBody({ from, to })
     }
 
-    if(from &&  to && chosenPrinters.length > 0) {
+    if (from && to && chosenPrinters.length > 0) {
       setChartTitle(`${chartTitleSwitch(chartPath)} from ${formatDate(from)} until ${formatDate(to)}`)
       setLink(requestLink + '/PeriodAndPrinter')
       setRequestBody({ from, to, printerIds: chosenPrinters })
@@ -70,7 +70,8 @@ const View = () => {
           fullScreen={fullScreen}
           link={link}
           requestBody={requestBody}
-          disableFullScreen={() => { disableFullScreen(chart, toggleFullScreen) }} />
+          disableFullScreen={() => { disableFullScreen(chart, toggleFullScreen) }}
+          rotateFullScreen={() => { rotateFullScreen(chart) }} />
       </main>
     </div>
   );

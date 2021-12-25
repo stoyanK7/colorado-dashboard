@@ -12,6 +12,7 @@ import {
 import React from 'react';
 
 const InkUsageBarChart = ({ data }) => {
+
   return (
     <ResponsiveContainer width='100%' height='100%'>
       <BarChart
@@ -31,10 +32,10 @@ const InkUsageBarChart = ({ data }) => {
         />
         <Tooltip />
         <Legend verticalAlign='top' iconType='circle' />
-        <Bar dataKey='Black' stackId='a' fill='#333333' />
-        <Bar dataKey='Cyan' stackId='a' fill='#00FFFF' />
-        <Bar dataKey='Magenta' stackId='a' fill='#FF00FF' />
-        <Bar dataKey='Yellow' stackId='a' fill='#DDDD00' />
+        <Bar dataKey='Black' isAnimationActive={false} stackId='a' fill='#333333' />
+        <Bar dataKey='Cyan' isAnimationActive={false} stackId='a' fill='#00FFFF' />
+        <Bar dataKey='Magenta' isAnimationActive={false} stackId='a' fill='#FF00FF' />
+        <Bar dataKey='Yellow' isAnimationActive={false} stackId='a' fill='#DDDD00' />
       </BarChart>
     </ResponsiveContainer>
   );

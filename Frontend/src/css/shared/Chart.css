@@ -27,7 +27,15 @@
   z-index: 1;
 }
 
-.fa-circle:hover {
+.fa-redo {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+  font-size: 3rem;
+}
+
+.fa-circle:hover, .fa-redo:hover {
   cursor: pointer;
   opacity: 0.8;
 }

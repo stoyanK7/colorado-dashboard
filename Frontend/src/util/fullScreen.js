@@ -27,4 +27,10 @@ const enableFullScreen = (chart, toggleFullScreen) => {
   setTimeout(() => toggleFullScreen(), 100);
 };
 
-export { enableFullScreen, disableFullScreen };
+const rotateFullScreen = (chart) => {
+  if (chart.current.classList.contains('chart-full-screen-rotated'))
+    return chart.current.classList.remove('chart-full-screen-rotated')
+  return chart.current.classList.add('chart-full-screen-rotated');
+};
+
+export { enableFullScreen, disableFullScreen, rotateFullScreen };

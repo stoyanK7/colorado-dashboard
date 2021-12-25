@@ -149,7 +149,7 @@
   margin-right: 10px;
 }
 
-.chart-full-screen[style] {
+.chart-full-screen {
   width: 100vw !important;
   height: 100vh !important;
   position: fixed;
@@ -159,6 +159,15 @@
   -moz-transition: var(--chart-transition);
   -ms-transition: var(--chart-transition);
   transition: var(--chart-transition);
+}
+
+.chart-full-screen-rotated {
+  transform-origin: left top;
+  transform: rotate(90deg);
+  right: -100vh !important;
+  left: auto !important;
+  width: 100vh !important;
+  height: 100vw !important;
 }
 
 /* Tablet */
@@ -208,15 +217,6 @@
 
   .timespan>div .fa-calendar-alt {
     top: 5px;
-  }
-
-  .chart-full-screen[style] {
-    transform-origin: left top;
-    transform: rotate(90deg);
-    right: -100vh !important;
-    left: auto !important;
-    width: 100vh !important;
-    height: 100vw !important;
   }
 }
 
