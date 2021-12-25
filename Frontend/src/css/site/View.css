@@ -181,6 +181,10 @@
     font-size: 1.8rem;
   }
 
+  .view main>h1 {
+    font-size: 1.6rem;
+  }
+
   .timespan, .specific-printers {
     border-right: none;
   }
@@ -225,6 +229,10 @@
 @media only screen and (max-width: 630px) {
   .view main {
     font-size: 1.3rem;
+  }
+
+  .view main>h1 {
+    font-size: 1.2rem;
   }
 
   .view input {

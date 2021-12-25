@@ -23,8 +23,8 @@ const PrintersFilter = ({ chartPath, chosenPrinters, setChosenPrinters, makeSpec
   }, []);
 
   useEffect(() => { }, [chosenPrinters]);
-  const openMenuHandler = e => setMenuStyle({ y: -20 });
-  const closeMenuHandler = e => setMenuStyle({ y: '-100vh' });
+  const openMenuHandler = e => setMenuStyle({ y: -20, display: 'block' });
+  const closeMenuHandler = e => setMenuStyle({ opacity: 0, y: '-100vh', transitionEnd: { display: 'none' } });
 
   return (
     <div className='specific-printers'>
@@ -32,9 +32,9 @@ const PrintersFilter = ({ chartPath, chosenPrinters, setChosenPrinters, makeSpec
       {availablePrinters &&
         <motion.div
           className='printers-menu'
-          initial={{ y: '-200vh' }}
+          initial={{ y: '-100vh', display: 'none' }}
           animate={menuStyle}
-          transition={{ duration: 0.6, type: 'spring', stiffness: 80 }}
+          transition={{ duration: 0.5, type: 'spring', stiffness: 80 }}
         >
           <h2>Available printers</h2>
           <div className="available-printer select-all">
