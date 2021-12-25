@@ -1,6 +1,8 @@
 import logging
 
 import pandas as pd
+import re
+
 import os
 from airflow.models.variable import Variable
 
@@ -40,11 +42,30 @@ class ReadTasks():
         # Get file data (add machine ids)
         data = ReadTasks._get_files_to_data_frames(new_files, changed_files, image_file_directory_extension, config.read_image_column_name_config.MACHINEID)
 
+        # Adding unit columns to the dataframe
+        ReadTasks._add_unit_columns(data)
+
         # Change col names
         ReadTasks._change_col_names(data, read_image_col_name_constants)
 
         # Insert to database
         ReadTasks._insert_into_db(data, read_table_name_config.READ_IMAGE)
+
+    @staticmethod
+    def _add_unit_columns(data):
+        for col_name in data.columns:
+            if "[" in col_name and "]" in col_name:
+                unit = re.search(".+\[(.+)\].+", col_name).group(1)
+                new_col_name = re.search("(\D+)\[", col_name).group(1) + "Unit"
+                index_no = data.columns.get_loc(col_name)
+                new_col_index = index_no + 1
+                # this might work for adding the unit on all roles after inserting
+                data.insert(new_col_index, new_col_name, unit)
+
+                # alternative solution to adding the units
+                # data[new_col_name] = unit
+
+        return data
 
     @staticmethod
     def read_media_prepare():
