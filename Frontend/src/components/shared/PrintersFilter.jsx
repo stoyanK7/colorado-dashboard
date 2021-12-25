@@ -23,8 +23,8 @@ const PrintersFilter = ({ chartPath, chosenPrinters, setChosenPrinters, makeSpec
   }, []);
 
   useEffect(() => { }, [chosenPrinters]);
-  const openMenuHandler = e => setMenuStyle({ y: 50 });
-  const closeMenuHandler = e => setMenuStyle({ y: '-100vh' });
+  const openMenuHandler = e => setMenuStyle({ y: -20, display: 'block' });
+  const closeMenuHandler = e => setMenuStyle({ opacity: 0, y: '-100vh', transitionEnd: { display: 'none' } });
 
   return (
     <div className='specific-printers'>
@@ -32,12 +32,23 @@ const PrintersFilter = ({ chartPath, chosenPrinters, setChosenPrinters, makeSpec
       {availablePrinters &&
         <motion.div
           className='printers-menu'
-          // style={menuStyle}
-          initial={{ y: '-200vh' }}
+          initial={{ y: '-100vh', display: 'none' }}
           animate={menuStyle}
-          transition={{ duration: 0.6, type: 'spring', stiffness: 80 }}
+          transition={{ duration: 0.5, type: 'spring', stiffness: 80 }}
         >
           <h2>Available printers</h2>
+          <div className="available-printer select-all">
+            <label htmlFor='select-all'>Select / Deselect all</label>
+            <input
+              type="checkbox"
+              name='select-all'
+              id='select-all'
+              onClick={e => {
+                if (e.target.checked)
+                  return setChosenPrinters([...availablePrinters]);
+                return setChosenPrinters([]);
+              }} />
+          </div>
           <div className='available-printers' >
             {availablePrinters.map(printerId => (
               <div className='available-printer' key={printerId}>
