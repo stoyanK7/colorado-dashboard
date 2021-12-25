@@ -17,28 +17,13 @@ import java.util.List;
 public class InkUsageService {
     private InkUsageRepository repository;
 
-    /**
-     * Retrieve all data from database for all printers and all time.
-     *
-     * @return A <b>list of InkUsageDto objects</b>, each
-     * one representing a different date. An <b>empty list</b> if no data
-     * is present in the database.
-     */
-    public List<InkUsageDto> getAll() {
-        return repository.getAll();
+    public <T> List<T> getAll(boolean aggregated) {
+        return aggregated ? repository.getAllAggregated() : repository.getAllNonAggregated();
     }
 
-    /**
-     * Retrieve all data from database for a provided period of interest.
-     *
-     * @param from Period of interest starting date inclusive.
-     * @param to   Period of interest ending date inclusive.
-     * @return A <b>list of InkUsageDto objects</b>, each
-     * one representing a different date. An <b>empty list</b> if no data
-     * is present in the database.
-     */
-    public List<InkUsageDto> getAllForPeriod(Date from, Date to) {
-        return repository.getAllForPeriod(from, to);
+    public <T> List<T> getAllForPeriod(boolean aggregated, Date from, Date to) {
+        return aggregated ? repository.getAllForPeriodAggregated(from, to)
+                : repository.getAllForPeriodNonAggregated(from, to);
     }
 
     /**

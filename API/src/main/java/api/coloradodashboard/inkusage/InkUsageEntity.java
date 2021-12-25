@@ -25,8 +25,8 @@ public class InkUsageEntity {
     private String printerId;
     @Temporal(TemporalType.DATE)
     private Date date;
-    private Double cyanUsed;
-    private Double magentaUsed;
-    private Double yellowUsed;
-    private Double blackUsed;
+    private Double cyanLitresUsed;
+    private Double magentaLitresUsed;
+    private Double yellowLitresUsed;
+    private Double blackLitresUsed;
 }

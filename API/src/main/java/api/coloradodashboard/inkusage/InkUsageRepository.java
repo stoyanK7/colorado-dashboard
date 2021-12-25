@@ -12,47 +12,34 @@ import java.util.List;
  * Repository providing access to the table with all data for <b>Ink usage</b>.
  */
 public interface InkUsageRepository extends JpaRepository<InkUsageEntity, Long> {
-    /**
-     * Retrieve aggregated ink usage for cyan, magenta, yellow and black for all printers for all time
-     * grouping by date, ordered by date ascending.
-     *
-     * @return A <b>list of InkUsageDto objects</b>, each
-     * one representing a different printer. An <b>empty list</b> if no data
-     * is present in the database.
-     */
-    @Query("SELECT new api.coloradodashboard.inkusage.InkUsageDto(i.date, sum(i.cyanUsed), sum(i.magentaUsed), sum(i.yellowUsed), sum(i.blackUsed)) " +
+    @Query("SELECT new api.coloradodashboard.inkusage.InkUsageDto(i.date, sum(i.cyanLitresUsed), sum(i.magentaLitresUsed), sum(i.yellowLitresUsed), sum(i.blackLitresUsed)) " +
             "FROM InkUsageEntity i " +
             "GROUP BY i.date " +
             "ORDER BY i.date ASC")
-    List<InkUsageDto> getAll();
+    <T> List<T> getAllAggregated();
 
-    /**
-     * Retrieve aggregated ink usage for cyan, magenta, yellow and black for all printers for provided
-     * period of interest, ordered by date ascending.
-     *
-     * @param from Period of interest starting date inclusive.
-     * @param to   Period of interest ending date inclusive.
-     * @return A <b>list of InkUsageDto objects</b>, each
-     * one representing a different printer. An <b>empty list</b> if no data
-     * is present in the database.
-     */
-    @Query("SELECT new api.coloradodashboard.inkusage.InkUsageDto(i.date, sum(i.cyanUsed), sum(i.magentaUsed), sum(i.yellowUsed), sum(i.blackUsed)) " +
+    @Query("SELECT new api.coloradodashboard.inkusage.InkUsageDto(i.date, i.printerId, i.cyanLitresUsed, i.magentaLitresUsed, i.yellowLitresUsed, i.blackLitresUsed) " +
+            "FROM InkUsageEntity i " +
+            "ORDER BY i.date ASC")
+    <T> List<T> getAllNonAggregated();
+
+    @Query("SELECT new api.coloradodashboard.inkusage.InkUsageDto(i.date, sum(i.cyanLitresUsed), sum(i.magentaLitresUsed), sum(i.yellowLitresUsed), sum(i.blackLitresUsed)) " +
             "FROM InkUsageEntity i " +
             "WHERE i.date BETWEEN :from AND :to " +
             "GROUP BY i.date " +
             "ORDER BY i.date ASC")
-    List<InkUsageDto> getAllForPeriod(@Param("from") Date from, @Param("to") Date to);
+    <T> List<T> getAllForPeriodAggregated(@Param("from") Date from, @Param("to") Date to);
 
-    /**
-     * Retrieve aggregated ink usage for cyan, magenta, yellow and black for all time for provided
-     * list of printers, ordered by date ascending.
-     *
-     * @param printerIds List of printer id's.
-     * @return A <b>list of InkUsageDto objects</b>, each
-     * one representing a different printer. An <b>empty list</b> if no data
-     * is present in the database.
-     */
-    @Query("SELECT new api.coloradodashboard.inkusage.InkUsageDto(i.date, sum(i.cyanUsed), sum(i.magentaUsed), sum(i.yellowUsed), sum(i.blackUsed)) " +
+    @Query("SELECT new api.coloradodashboard.inkusage.InkUsageDto(i.date, i.printerId, i.cyanLitresUsed, i.magentaLitresUsed, i.yellowLitresUsed, i.blackLitresUsed) " +
+            "FROM InkUsageEntity i " +
+            "WHERE i.date BETWEEN :from AND :to " +
+            "ORDER BY i.date ASC")
+    <T> List<T> getAllForPeriodNonAggregated(@Param("from") Date from, @Param("to") Date to);
+
+
+
+
+    @Query("SELECT new api.coloradodashboard.inkusage.InkUsageDto(i.date, sum(i.cyanLitresUsed), sum(i.magentaLitresUsed), sum(i.yellowLitresUsed), sum(i.blackLitresUsed)) " +
             "FROM InkUsageEntity i " +
             "WHERE i.printerId IN :printerIds " +
             "GROUP BY i.date " +
@@ -70,7 +57,7 @@ public interface InkUsageRepository extends JpaRepository<InkUsageEntity, Long> 
      * one representing a different printer. An <b>empty list</b> if no data
      * is present in the database.
      */
-    @Query("SELECT new api.coloradodashboard.inkusage.InkUsageDto(i.date, sum(i.cyanUsed), sum(i.magentaUsed), sum(i.yellowUsed), sum(i.blackUsed)) " +
+    @Query("SELECT new api.coloradodashboard.inkusage.InkUsageDto(i.date, sum(i.cyanLitresUsed), sum(i.magentaLitresUsed), sum(i.yellowLitresUsed), sum(i.blackLitresUsed)) " +
             "FROM InkUsageEntity i " +
             "WHERE (i.date BETWEEN :from AND :to) " +
             "AND (i.printerId IN :printerIds) " +
