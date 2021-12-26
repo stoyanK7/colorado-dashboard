@@ -1,11 +1,12 @@
 import '../../css/shared/PrintersFilter.css';
 
-import { faLayerGroup, faSearch, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faObjectGroup, faObjectUngroup } from '@fortawesome/free-regular-svg-icons';
 import { useEffect, useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import axios from 'axios';
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
 
 const PrintersFilter = ({ chartPath, chosenPrinters, setChosenPrinters, aggregated, setAggregated }) => {
@@ -73,12 +74,12 @@ const PrintersFilter = ({ chartPath, chosenPrinters, setChosenPrinters, aggregat
           <FontAwesomeIcon icon={faTimesCircle} className='fa-circle' onClick={closeMenuHandler} />
         </motion.div>
       }
-      <FontAwesomeIcon icon={faLayerGroup} className='fa' onClick={() => {
-        if (aggregated) {
-          return setAggregated(false);
-        }
-        return setAggregated(true);
-      }} />
+      <FontAwesomeIcon
+        style={{ color: aggregated ? 'var(--inherit)' : 'var(--carnelian)' }}
+        icon={aggregated ? faObjectGroup : faObjectUngroup}
+        className='fa'
+        onClick={() => { return setAggregated(!aggregated) }}
+      />
     </div>
   );
 };
