@@ -127,11 +127,11 @@ class ReadTasks():
         logging.info("Checking if there are any new or changed in files")
         any_new = False
         for machine_id in new_files:
-            if len(machine_id) > 0:
+            if len(new_files[machine_id]) > 0:
                 any_new = True
                 break
         for machine_id in changed_files:
-            if len(machine_id) > 0:
+            if len(changed_files[machine_id]) > 0:
                 any_new = True
                 break
         return any_new
