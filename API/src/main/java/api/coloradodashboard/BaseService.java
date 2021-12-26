@@ -11,7 +11,7 @@ import java.util.List;
 public class BaseService<T> {
     private BaseRepository<T> repository;
 
-    public List<T> getAll(boolean aggregated) {
+    public List<T> getAll(boolean aggregated, String bin) {
         return aggregated ? repository.getAllAggregated() : repository.getAllNonAggregated();
     }
 

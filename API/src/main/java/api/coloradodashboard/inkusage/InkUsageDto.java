@@ -6,15 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class InkUsageDto {
     @JsonProperty("Date")
-    private Date date;
+    private String date;
     @JsonProperty("Printer id")
     private String printerId;
     @JsonProperty("Cyan")
@@ -26,7 +24,7 @@ public class InkUsageDto {
     @JsonProperty("Black")
     private Double blackLitresUsed;
 
-    public InkUsageDto(Date date,
+    public InkUsageDto(String date,
                        Double cyanLitresUsed, Double magentaLitresUsed,
                        Double yellowLitresUsed, Double blackLitresUsed) {
         this.date = date;
