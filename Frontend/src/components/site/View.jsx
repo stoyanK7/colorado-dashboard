@@ -34,7 +34,7 @@ const View = () => {
 
     if (from && to && chosenPrinters.length > 0) {
       setChartTitle(`${chartTitleSwitch(chartPath)} from ${formatDate(from)} until ${formatDate(to)}`)
-      setLink(requestLink + '/PeriodAndPrinter')
+      setLink(requestLink + '/PeriodAndPrinters')
       setRequestBody({ from, to, printerIds: chosenPrinters })
     }
     // TODO: add rest of dependecies when available

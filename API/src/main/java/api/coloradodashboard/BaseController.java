@@ -25,21 +25,21 @@ public class BaseController<T> {
     public ResponseEntity<List<T>> getAllForPeriod(@RequestParam(value = "aggregated", defaultValue = "true") boolean aggregated,
                                                    @RequestParam(value = "bin", defaultValue = "day") String bin,
                                                    @RequestBody PeriodDto request) {
-        return createResponse(service.getAllForPeriod(aggregated, request.getFrom(), request.getTo()));
+        return createResponse(service.getAllForPeriod(aggregated, bin, request.getFrom(), request.getTo()));
     }
 
     @PostMapping("/Printer")
     public ResponseEntity<List<T>> getAllForPrinters(@RequestParam(value = "aggregated", defaultValue = "true") boolean aggregated,
                                                      @RequestParam(value = "bin", defaultValue = "day") String bin,
                                                      @RequestBody PrinterIdsDto request) {
-        return createResponse(service.getAllForPrinters(aggregated, request.getPrinterIds()));
+        return createResponse(service.getAllForPrinters(aggregated, bin, request.getPrinterIds()));
     }
 
     @PostMapping("/PeriodAndPrinters")
     public ResponseEntity<List<T>> getAllForPeriodAndPrinters(@RequestParam(value = "aggregated", defaultValue = "true") boolean aggregated,
                                                               @RequestParam(value = "bin", defaultValue = "day") String bin,
                                                               @RequestBody PeriodAndPrinterIdsDto request) {
-        return createResponse(service.getAllForPeriodAndPrinters(aggregated, request.getFrom(), request.getTo(), request.getPrinterIds()));
+        return createResponse(service.getAllForPeriodAndPrinters(aggregated, bin, request.getFrom(), request.getTo(), request.getPrinterIds()));
     }
 
     @GetMapping("/AvailableTimePeriod")

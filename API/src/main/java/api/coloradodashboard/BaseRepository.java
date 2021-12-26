@@ -4,21 +4,21 @@ import java.util.Date;
 import java.util.List;
 
 public interface BaseRepository<T> {
-    List<T> getAllAggregated();
+    List<T> getAllAggregated(String dateFormat);
 
-    List<T> getAllNonAggregated();
+    List<T> getAllNonAggregated(String dateFormat);
 
-    List<T> getAllForPeriodAggregated(Date from, Date to);
+    List<T> getAllForPeriodAggregated(String dateFormat, Date from, Date to);
 
-    List<T> getAllForPeriodNonAggregated(Date from, Date to);
+    List<T> getAllForPeriodNonAggregated(String dateFormat, Date from, Date to);
 
-    List<T> getAllForPrintersAggregated(List<String> printerIds);
+    List<T> getAllForPrintersAggregated(String dateFormat, List<String> printerIds);
 
-    List<T> getAllForPrintersNonAggregated(List<String> printerIds);
+    List<T> getAllForPrintersNonAggregated(String dateFormat, List<String> printerIds);
 
-    List<T> getAllForPeriodAndPrintersAggregated(Date from, Date to, List<String> printerIds);
+    List<T> getAllForPeriodAndPrintersAggregated(String dateFormat, Date from, Date to, List<String> printerIds);
 
-    List<T> getAllForPeriodAndPrintersNonAggregated(Date from, Date to, List<String> printerIds);
+    List<T> getAllForPeriodAndPrintersNonAggregated(String dateFormat, Date from, Date to, List<String> printerIds);
 
     PeriodDto getAvailableTimePeriod();
 
