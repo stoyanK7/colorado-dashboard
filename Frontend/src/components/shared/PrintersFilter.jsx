@@ -1,14 +1,15 @@
 import '../../css/shared/PrintersFilter.css';
 
-import { faSearch, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faObjectGroup, faObjectUngroup } from '@fortawesome/free-regular-svg-icons';
 import { useEffect, useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import axios from 'axios';
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
 
-const PrintersFilter = ({ chartPath, chosenPrinters, setChosenPrinters, makeSpecificPrinterRequestHandler }) => {
+const PrintersFilter = ({ chartPath, chosenPrinters, setChosenPrinters, aggregated, setAggregated }) => {
   const [availablePrinters, setAvailablePrinters] = useState();
   const [menuStyle, setMenuStyle] = useState();
   useEffect(() => {
@@ -73,7 +74,12 @@ const PrintersFilter = ({ chartPath, chosenPrinters, setChosenPrinters, makeSpec
           <FontAwesomeIcon icon={faTimesCircle} className='fa-circle' onClick={closeMenuHandler} />
         </motion.div>
       }
-      {/* <FontAwesomeIcon icon={faSearch} className='fa-expand' onClick={makeSpecificPrinterRequestHandler} /> */}
+      <FontAwesomeIcon
+        style={{ color: aggregated ? 'var(--inherit)' : 'var(--carnelian)' }}
+        icon={aggregated ? faObjectGroup : faObjectUngroup}
+        className='fa'
+        onClick={() => { return setAggregated(!aggregated) }}
+      />
     </div>
   );
 };

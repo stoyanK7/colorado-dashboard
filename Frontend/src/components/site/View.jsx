@@ -22,6 +22,8 @@ const View = () => {
   const [to, setTo] = useState();
   const [link, setLink] = useState();
   const [chosenPrinters, setChosenPrinters] = useState([]);
+  const [bin, setBin] = useState('day');
+  const [aggregated, setAggregated] = useState(true);
   const [requestBody, setRequestBody] = useState();
 
   useEffect(() => {
@@ -34,20 +36,12 @@ const View = () => {
 
     if (from && to && chosenPrinters.length > 0) {
       setChartTitle(`${chartTitleSwitch(chartPath)} from ${formatDate(from)} until ${formatDate(to)}`)
-      setLink(requestLink + '/PeriodAndPrinter')
+      setLink(`${requestLink}/PeriodAndPrinters?aggregated=${aggregated}`)
       setRequestBody({ from, to, printerIds: chosenPrinters })
     }
     // TODO: add rest of dependecies when available
-  }, [from, to, chosenPrinters]);
+  }, [from, to, chosenPrinters, aggregated]);
 
-  // Use this if rendering chosen printers on the go is too laggy
-  const makeSpecificPrinterRequestHandler = () => {
-    // let requestLink = chartPath;
-    // if(from &&  to && chosenPrinters.length > 0) {
-    //   setLink(requestLink + '/PeriodAndPrinter')
-    //   setRequestBody({ from, to, printerIds: chosenPrinters })
-    // }
-  };
 
   return (
     <div className='view'>
@@ -62,7 +56,8 @@ const View = () => {
           chartPath={chartPath}
           chosenPrinters={chosenPrinters}
           setChosenPrinters={setChosenPrinters}
-          makeSpecificPrinterRequestHandler={makeSpecificPrinterRequestHandler}
+          aggregated={aggregated}
+          setAggregated={setAggregated}
           enableFullScreen={() => { enableFullScreen(chart, toggleFullScreen) }} />
         <Chart
           ref={chart}
@@ -70,6 +65,7 @@ const View = () => {
           fullScreen={fullScreen}
           link={link}
           requestBody={requestBody}
+          aggregated={aggregated}
           disableFullScreen={() => { disableFullScreen(chart, toggleFullScreen) }}
           rotateFullScreen={() => { rotateFullScreen(chart) }} />
       </main>

@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,8 +26,8 @@ public class InkUsageEntity {
     private String printerId;
     @Temporal(TemporalType.DATE)
     private Date date;
-    private Double cyanUsed;
-    private Double magentaUsed;
-    private Double yellowUsed;
-    private Double blackUsed;
+    private Double cyanLitresUsed;
+    private Double magentaLitresUsed;
+    private Double yellowLitresUsed;
+    private Double blackLitresUsed;
 }

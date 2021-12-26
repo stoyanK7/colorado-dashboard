@@ -8,11 +8,9 @@ import {
   XAxis,
   YAxis
 } from 'recharts';
+import React, { useEffect } from 'react';
 
-import React from 'react';
-
-const InkUsageBarChart = ({ data }) => {
-
+const InkUsageBarChart = ({ data, aggregated }) => {
   return (
     <ResponsiveContainer width='100%' height='100%'>
       <BarChart
@@ -25,7 +23,14 @@ const InkUsageBarChart = ({ data }) => {
         }}
       >
         <CartesianGrid strokeDasharray='3 3' />
-        <XAxis dataKey='Date' textAnchor='start' angle={40} />
+        <XAxis
+          dataKey='Date'
+          textAnchor='start'
+          angle={40}
+          xAxisId={!aggregated ? 1 : 0}
+          allowDuplicatedCategory={false} />
+        {!aggregated && <XAxis dataKey="Printer id" xAxisId={0} />}
+
         <YAxis unit='L' type='number'
         // TODO: set this with maxvalue to fix overflowing labels
         // domain={[0, maxValue]} 
