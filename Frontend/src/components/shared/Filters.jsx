@@ -1,16 +1,13 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PrintersFilter from './PrintersFilter';
 import React from 'react';
 import TimespanFilter from './TimespanFilter';
-import { faExpand } from '@fortawesome/free-solid-svg-icons';
+import BinFilter from './BinFilter';
+import FullScreen from './FullScreen';
 
-const Filters = ({ chartPath, enableFullScreen, from, setFrom, to, setTo, chosenPrinters, setChosenPrinters, aggregated, setAggregated }) => {
+const Filters = ({ chartPath, enableFullScreen, from, setFrom, to, setTo, chosenPrinters, setChosenPrinters, aggregated, setAggregated, setBin }) => {
   return (
     <>
-      <div className='bins'>
-        <span className='one-day'>1D</span>
-        <span className='one-week'>1W</span>
-      </div>
+      <BinFilter setBin={setBin} />
       <TimespanFilter
         from={from}
         setFrom={setFrom}
@@ -23,10 +20,7 @@ const Filters = ({ chartPath, enableFullScreen, from, setFrom, to, setTo, chosen
         setChosenPrinters={setChosenPrinters}
         aggregated={aggregated}
         setAggregated={setAggregated} />
-      <div className='full-screen' onClick={enableFullScreen}>
-        <FontAwesomeIcon icon={faExpand} className='fa-search' />
-        <span>Full screen</span>
-      </div>
+      <FullScreen enableFullScreen={enableFullScreen} />
     </>
   );
 };

@@ -28,7 +28,9 @@ const InkUsageBarChart = ({ data, aggregated }) => {
           textAnchor='start'
           angle={40}
           xAxisId={!aggregated ? 1 : 0}
-          allowDuplicatedCategory={false} />
+          // TODO: this hides the tooltip for some reason
+          // allowDuplicatedCategory={false} 
+          />
         {!aggregated && <XAxis dataKey="Printer id" xAxisId={0} />}
 
         <YAxis unit='L' type='number'

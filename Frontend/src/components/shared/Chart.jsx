@@ -10,10 +10,10 @@ import { forwardRef } from 'react';
 import useFetch from '../../hooks/useFetch';
 
 // Represents the chart that you see below the filters
-const Chart = forwardRef(({ link, aggregated,requestBody, chartPath, fullScreen, disableFullScreen, rotateFullScreen }, ref) => {
+const Chart = forwardRef(({ requestUrl, aggregated,requestBody, chartPath, fullScreen, disableFullScreen, rotateFullScreen }, ref) => {
   // Retrieve chart data
   // Assumes that URL path is same as API endpoint
-  const { data, isPending, error } = useFetch(link || `/${chartPath}`, requestBody);
+  const { data, isPending, error } = useFetch(requestUrl, requestBody);
 
   return (
     <div ref={ref}
