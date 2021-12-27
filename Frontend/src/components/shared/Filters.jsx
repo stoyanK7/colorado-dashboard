@@ -3,14 +3,12 @@ import PrintersFilter from './PrintersFilter';
 import React from 'react';
 import TimespanFilter from './TimespanFilter';
 import { faExpand } from '@fortawesome/free-solid-svg-icons';
+import BinFilter from './BinFilter';
 
-const Filters = ({ chartPath, enableFullScreen, from, setFrom, to, setTo, chosenPrinters, setChosenPrinters, aggregated, setAggregated }) => {
+const Filters = ({ chartPath, enableFullScreen, from, setFrom, to, setTo, chosenPrinters, setChosenPrinters, aggregated, setAggregated, setBin }) => {
   return (
     <>
-      <div className='bins'>
-        <span className='one-day'>1D</span>
-        <span className='one-week'>1W</span>
-      </div>
+      <BinFilter setBin={setBin}/>
       <TimespanFilter
         from={from}
         setFrom={setFrom}

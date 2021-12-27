@@ -13,35 +13,33 @@ import { useParams } from 'react-router-dom';
 import useToggle from '../../hooks/useToggle';
 
 const View = () => {
-  // Gets path from URL: i.e. https://xxxxx.com/InkInfo -> InkInfo
+  // Gets path from URL: i.e. https://xxxxx.com/InkUsage -> InkUsage
   const { chartPath } = useParams();
-  const [chartTitle, setChartTitle] = useState('');
   const chart = useRef(null);
+  const [chartTitle, setChartTitle] = useState('');
+  const [requestUrl, setRequestUrl] = useState(`/${chartPath}`);
+  const [requestBody, setRequestBody] = useState();
   const [fullScreen, toggleFullScreen] = useToggle();
+  // Filters
   const [from, setFrom] = useState();
   const [to, setTo] = useState();
-  const [link, setLink] = useState();
   const [chosenPrinters, setChosenPrinters] = useState([]);
   const [bin, setBin] = useState('day');
   const [aggregated, setAggregated] = useState(true);
-  const [requestBody, setRequestBody] = useState();
 
   useEffect(() => {
-    let requestLink = chartPath;
+    // TODO: this can be removed
+    setChartTitle(`${chartTitleSwitch(chartPath)} from ${formatDate(from)} until ${formatDate(to)}`)
     if (from && to) {
-      setChartTitle(`${chartTitleSwitch(chartPath)} from ${formatDate(from)} until ${formatDate(to)}`)
-      setLink(requestLink + '/Period')
-      setRequestBody({ from, to })
+      setRequestUrl(`${chartPath}/Period?aggregated=${aggregated}&bin=${bin}`);
+      setRequestBody({ from, to });
     }
 
     if (from && to && chosenPrinters.length > 0) {
-      setChartTitle(`${chartTitleSwitch(chartPath)} from ${formatDate(from)} until ${formatDate(to)}`)
-      setLink(`${requestLink}/PeriodAndPrinters?aggregated=${aggregated}`)
-      setRequestBody({ from, to, printerIds: chosenPrinters })
+      setRequestUrl(`${chartPath}/PeriodAndPrinters?aggregated=${aggregated}&bin=${bin}`);
+      setRequestBody({ from, to, printerIds: chosenPrinters });
     }
-    // TODO: add rest of dependecies when available
-  }, [from, to, chosenPrinters, aggregated]);
-
+  }, [from, to, chosenPrinters, aggregated, bin]);
 
   return (
     <div className='view'>
@@ -58,12 +56,13 @@ const View = () => {
           setChosenPrinters={setChosenPrinters}
           aggregated={aggregated}
           setAggregated={setAggregated}
+          setBin={setBin}
           enableFullScreen={() => { enableFullScreen(chart, toggleFullScreen) }} />
         <Chart
           ref={chart}
           chartPath={chartPath}
           fullScreen={fullScreen}
-          link={link}
+          requestUrl={requestUrl}
           requestBody={requestBody}
           aggregated={aggregated}
           disableFullScreen={() => { disableFullScreen(chart, toggleFullScreen) }}
