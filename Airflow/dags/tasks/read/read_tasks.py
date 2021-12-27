@@ -54,8 +54,10 @@ class ReadTasks():
     @staticmethod
     def _add_unit_columns(data):
         for col_name in data.columns:
-            if "[" in col_name and "]" in col_name:
-                unit = re.search(".+\[(.+)\].+", col_name).group(1)
+            if "Accounted" in col_name and "[" in col_name and "]" in col_name:
+                logging.info(col_name)
+                logging.info(re.search('.+\[(.+)\](.+)?', col_name))
+                unit = re.search(".+\[(.+)\](.+)?", col_name).group(1)
                 new_col_name = re.search("(\D+)\[", col_name).group(1) + "Unit"
                 index_no = data.columns.get_loc(col_name)
                 new_col_index = index_no + 1
