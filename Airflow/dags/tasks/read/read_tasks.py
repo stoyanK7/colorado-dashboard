@@ -59,14 +59,15 @@ class ReadTasks():
                 logging.info(re.search('.+\[(.+)\](.+)?', col_name))
                 unit = re.search(".+\[(.+)\](.+)?", col_name).group(1)
                 new_col_name = re.search("(\D+)\[", col_name).group(1) + "Unit"
+                new_column_to_lower = new_col_name.lower()
                 index_no = data.columns.get_loc(col_name)
                 new_col_index = index_no + 1
                 # this might work for adding the unit on all roles after inserting
-                data.insert(new_col_index, new_col_name, unit)
+                data.insert(new_col_index, new_column_to_lower, unit)
 
                 # alternative solution to adding the units
                 # data[new_col_name] = unit
-
+        #logging.info('dataframe head - {}'.format(data.to_string()))
         return data
 
     @staticmethod
