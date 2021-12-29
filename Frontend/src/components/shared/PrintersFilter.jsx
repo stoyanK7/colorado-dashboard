@@ -44,7 +44,7 @@ const PrintersFilter = ({ chartPath, chosenPrinters, setChosenPrinters, aggregat
               type="checkbox"
               name='select-all'
               id='select-all'
-              onClick={e => {
+              onChange={e => {
                 if (e.target.checked)
                   return setChosenPrinters([...availablePrinters]);
                 return setChosenPrinters([]);
@@ -59,7 +59,7 @@ const PrintersFilter = ({ chartPath, chosenPrinters, setChosenPrinters, aggregat
                   name={printerId}
                   id={printerId}
                   checked={chosenPrinters.includes(printerId)}
-                  onClick={e => {
+                  onChange={e => {
                     // Add element if checked
                     if (e.target.checked)
                       return setChosenPrinters([...chosenPrinters, e.target.name])

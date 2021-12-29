@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RequestMapping("MediaCategoryUsage")
 @RestController
-public class MediaCategoryUsageController extends BaseController<Object[]> {
-    public MediaCategoryUsageController(BaseService<Object[]> service) {
+public class MediaCategoryUsageController extends BaseController<MediaCategoryUsageDto> {
+    public MediaCategoryUsageController(BaseService<MediaCategoryUsageDto> service) {
         super(service);
     }
 }
