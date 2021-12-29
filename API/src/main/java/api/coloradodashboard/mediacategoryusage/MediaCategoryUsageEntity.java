@@ -25,15 +25,6 @@ public class MediaCategoryUsageEntity {
     private String printerId;
     @Temporal(TemporalType.DATE)
     private Date date;
-    private Double filmUsed;
-    private Double lightPaperUsed;
-    private Double heavyPaperUsed;
-    private Double lightBannerUsed;
-    private Double textileUsed;
-    private Double monomericVinylUsed;
-    private Double canvasUsed;
-    private Double polymericAndCastVinylUsed;
-    private Double heavyBannerUsed;
-    private Double paperUsed;
-    private Double thickFilmUsed;
+    private String mediaCategory;
+    private Double printedSquareMeters;
 }

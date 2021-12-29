@@ -23,4 +23,6 @@ public interface BaseRepository<T> {
     PeriodDto getAvailableTimePeriod();
 
     List<String> getAvailablePrinters();
+
+    List<String> getChartDataKeys();
 }

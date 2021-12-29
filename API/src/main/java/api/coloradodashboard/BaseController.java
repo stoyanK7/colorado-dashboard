@@ -52,6 +52,11 @@ public class BaseController<T> {
         return createResponse(service.getAvailablePrinters());
     }
 
+    @GetMapping("/ChartDataKeys")
+    public ResponseEntity<ChartDataKeysDto> getChartDataKeys() {
+        return createResponse(service.getChartDataKeys());
+    }
+
     private ResponseEntity<List<T>> createResponse(List<T> data) {
         if (data.isEmpty())
             return ResponseEntity.notFound().build();

@@ -43,6 +43,10 @@ public class BaseService<T> {
         return new PrinterIdsDto(repository.getAvailablePrinters());
     }
 
+    public ChartDataKeysDto getChartDataKeys() {
+        return new ChartDataKeysDto(repository.getChartDataKeys());
+    }
+
     private String dateFormatSwitch(String bin) {
         String dateFormat = "%Y/%b/%d"; // 2021/Dec/22 - day
         switch (bin) {

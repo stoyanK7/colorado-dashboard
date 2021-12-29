@@ -78,4 +78,9 @@ public interface InkUsageRepository extends JpaRepository<InkUsageEntity, Long>,
             "GROUP BY i.printerId " +
             "ORDER BY i.printerId ASC")
     List<String> getAvailablePrinters();
+
+    @Query("SELECT m.mediaCategory " +
+            "FROM MediaCategoryUsageEntity m " +
+            "GROUP BY m.mediaCategory")
+    List<String> getChartDataKeys();
 }
