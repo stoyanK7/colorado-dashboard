@@ -15,47 +15,47 @@ import java.util.List;
  */
 public interface InkUsageRepository extends JpaRepository<InkUsageEntity, Long>,
         BaseRepository<InkUsageDto> {
-    @Query("SELECT new api.coloradodashboard.inkusage.InkUsageDto(DATE_FORMAT(i.date, :dateFormat) AS formatted_date, sum(i.cyanLitresUsed), sum(i.magentaLitresUsed), sum(i.yellowLitresUsed), sum(i.blackLitresUsed)) " +
+    @Query("SELECT new api.coloradodashboard.dto.InkUsageDto(DATE_FORMAT(i.date, :dateFormat) AS formatted_date, sum(i.cyanLitresUsed), sum(i.magentaLitresUsed), sum(i.yellowLitresUsed), sum(i.blackLitresUsed)) " +
             "FROM InkUsageEntity i " +
             "GROUP BY formatted_date " +
             "ORDER BY formatted_date ASC")
     List<InkUsageDto> getAllAggregated(@Param("dateFormat") String dateFormat);
 
-    @Query("SELECT new api.coloradodashboard.inkusage.InkUsageDto(DATE_FORMAT(i.date, :dateFormat) AS formatted_date, i.printerId, sum(i.cyanLitresUsed), sum(i.magentaLitresUsed), sum(i.yellowLitresUsed), sum(i.blackLitresUsed)) " +
+    @Query("SELECT new api.coloradodashboard.dto.InkUsageDto(DATE_FORMAT(i.date, :dateFormat) AS formatted_date, i.printerId, sum(i.cyanLitresUsed), sum(i.magentaLitresUsed), sum(i.yellowLitresUsed), sum(i.blackLitresUsed)) " +
             "FROM InkUsageEntity i " +
             "GROUP BY formatted_date, i.printerId " +
             "ORDER BY formatted_date ASC")
     List<InkUsageDto> getAllNonAggregated(@Param("dateFormat") String dateFormat);
 
-    @Query("SELECT new api.coloradodashboard.inkusage.InkUsageDto(DATE_FORMAT(i.date, :dateFormat) AS formatted_date, sum(i.cyanLitresUsed), sum(i.magentaLitresUsed), sum(i.yellowLitresUsed), sum(i.blackLitresUsed)) " +
+    @Query("SELECT new api.coloradodashboard.dto.InkUsageDto(DATE_FORMAT(i.date, :dateFormat) AS formatted_date, sum(i.cyanLitresUsed), sum(i.magentaLitresUsed), sum(i.yellowLitresUsed), sum(i.blackLitresUsed)) " +
             "FROM InkUsageEntity i " +
             "WHERE i.date BETWEEN :from AND :to " +
             "GROUP BY formatted_date " +
             "ORDER BY formatted_date ASC")
     List<InkUsageDto> getAllForPeriodAggregated(@Param("dateFormat") String dateFormat, @Param("from") Date from, @Param("to") Date to);
 
-    @Query("SELECT new api.coloradodashboard.inkusage.InkUsageDto(DATE_FORMAT(i.date, :dateFormat) AS formatted_date, i.printerId, sum(i.cyanLitresUsed), sum(i.magentaLitresUsed), sum(i.yellowLitresUsed), sum(i.blackLitresUsed)) " +
+    @Query("SELECT new api.coloradodashboard.dto.InkUsageDto(DATE_FORMAT(i.date, :dateFormat) AS formatted_date, i.printerId, sum(i.cyanLitresUsed), sum(i.magentaLitresUsed), sum(i.yellowLitresUsed), sum(i.blackLitresUsed)) " +
             "FROM InkUsageEntity i " +
             "WHERE i.date BETWEEN :from AND :to " +
             "GROUP BY formatted_date, i.printerId " +
             "ORDER BY formatted_date ASC")
     List<InkUsageDto> getAllForPeriodNonAggregated(@Param("dateFormat") String dateFormat, @Param("from") Date from, @Param("to") Date to);
 
-    @Query("SELECT new api.coloradodashboard.inkusage.InkUsageDto(DATE_FORMAT(i.date, :dateFormat) AS formatted_date, sum(i.cyanLitresUsed), sum(i.magentaLitresUsed), sum(i.yellowLitresUsed), sum(i.blackLitresUsed)) " +
+    @Query("SELECT new api.coloradodashboard.dto.InkUsageDto(DATE_FORMAT(i.date, :dateFormat) AS formatted_date, sum(i.cyanLitresUsed), sum(i.magentaLitresUsed), sum(i.yellowLitresUsed), sum(i.blackLitresUsed)) " +
             "FROM InkUsageEntity i " +
             "WHERE i.printerId IN :printerIds " +
             "GROUP BY formatted_date " +
             "ORDER BY formatted_date ASC")
     List<InkUsageDto> getAllForPrintersAggregated(@Param("dateFormat") String dateFormat, @Param("printerIds") List<String> printerIds);
 
-    @Query("SELECT new api.coloradodashboard.inkusage.InkUsageDto(DATE_FORMAT(i.date, :dateFormat) AS formatted_date, i.printerId, sum(i.cyanLitresUsed), sum(i.magentaLitresUsed), sum(i.yellowLitresUsed), sum(i.blackLitresUsed)) " +
+    @Query("SELECT new api.coloradodashboard.dto.InkUsageDto(DATE_FORMAT(i.date, :dateFormat) AS formatted_date, i.printerId, sum(i.cyanLitresUsed), sum(i.magentaLitresUsed), sum(i.yellowLitresUsed), sum(i.blackLitresUsed)) " +
             "FROM InkUsageEntity i " +
             "WHERE i.printerId IN :printerIds " +
             "GROUP BY formatted_date, i.printerId " +
             "ORDER BY formatted_date ASC")
     List<InkUsageDto> getAllForPrintersNonAggregated(@Param("dateFormat") String dateFormat, @Param("printerIds") List<String> printerIds);
 
-    @Query("SELECT new api.coloradodashboard.inkusage.InkUsageDto(DATE_FORMAT(i.date, :dateFormat) AS formatted_date, sum(i.cyanLitresUsed), sum(i.magentaLitresUsed), sum(i.yellowLitresUsed), sum(i.blackLitresUsed)) " +
+    @Query("SELECT new api.coloradodashboard.dto.InkUsageDto(DATE_FORMAT(i.date, :dateFormat) AS formatted_date, sum(i.cyanLitresUsed), sum(i.magentaLitresUsed), sum(i.yellowLitresUsed), sum(i.blackLitresUsed)) " +
             "FROM InkUsageEntity i " +
             "WHERE (i.date BETWEEN :from AND :to) " +
             "AND (i.printerId IN :printerIds) " +
@@ -63,7 +63,7 @@ public interface InkUsageRepository extends JpaRepository<InkUsageEntity, Long>,
             "ORDER BY formatted_date ASC")
     List<InkUsageDto> getAllForPeriodAndPrintersAggregated(@Param("dateFormat") String dateFormat, @Param("from") Date from, @Param("to") Date to, @Param("printerIds") List<String> printerIds);
 
-    @Query("SELECT new api.coloradodashboard.inkusage.InkUsageDto(DATE_FORMAT(i.date, :dateFormat) AS formatted_date, i.printerId, sum(i.cyanLitresUsed), sum(i.magentaLitresUsed), sum(i.yellowLitresUsed), sum(i.blackLitresUsed)) " +
+    @Query("SELECT new api.coloradodashboard.dto.InkUsageDto(DATE_FORMAT(i.date, :dateFormat) AS formatted_date, i.printerId, sum(i.cyanLitresUsed), sum(i.magentaLitresUsed), sum(i.yellowLitresUsed), sum(i.blackLitresUsed)) " +
             "FROM InkUsageEntity i " +
             "WHERE (i.date BETWEEN :from AND :to) " +
             "AND (i.printerId IN :printerIds) " +
@@ -71,7 +71,7 @@ public interface InkUsageRepository extends JpaRepository<InkUsageEntity, Long>,
             "ORDER BY formatted_date ASC")
     List<InkUsageDto> getAllForPeriodAndPrintersNonAggregated(@Param("dateFormat") String dateFormat, @Param("from") Date from, @Param("to") Date to, @Param("printerIds") List<String> printerIds);
 
-    @Query("SELECT new api.coloradodashboard.PeriodDto(min(i.date), max(i.date)) " +
+    @Query("SELECT new api.coloradodashboard.dto.PeriodDto(min(i.date), max(i.date)) " +
             "FROM InkUsageEntity i")
     PeriodDto getAvailableTimePeriod();
 

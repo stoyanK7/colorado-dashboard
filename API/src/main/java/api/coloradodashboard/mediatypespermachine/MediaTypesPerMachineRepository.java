@@ -33,7 +33,7 @@ public interface MediaTypesPerMachineRepository extends JpaRepository<MediaTypes
      * @return A <b>PeriodDto object</b> containing the min and max date. <b>From</b>
      * contains the <b>min</b> and <b>to</b> contains the <b>max</b> date.
      */
-    @Query("SELECT new api.coloradodashboard.PeriodDto(min(m.date), max(m.date)) " +
+    @Query("SELECT new api.coloradodashboard.dto.PeriodDto(min(m.date), max(m.date)) " +
             "FROM MediaTypesPerMachineEntity m")
     PeriodDto getAvailableTimePeriod();
 

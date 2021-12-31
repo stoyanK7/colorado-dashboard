@@ -85,7 +85,7 @@ public interface SquareMeterPerPrintModeRepository extends JpaRepository<SquareM
      * @return A <b>PeriodDto object</b> containing the min and max date. <b>From</b>
      * contains the <b>min</b> and <b>to</b> contains the <b>max</b> date.
      */
-    @Query("SELECT new api.coloradodashboard.PeriodDto(min(s.date), max(s.date)) " +
+    @Query("SELECT new api.coloradodashboard.dto.PeriodDto(min(s.date), max(s.date)) " +
             "FROM SquareMeterPerPrintModeEntity s")
     PeriodDto getAvailableTimePeriod();
 

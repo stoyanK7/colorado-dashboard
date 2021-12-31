@@ -85,7 +85,7 @@ public interface TopMachinesWithMostPrintVolumeRepository extends JpaRepository<
      * @return A <b>PeriodDto object</b> containing the min and max date. <b>From</b>
      * contains the <b>min</b> and <b>to</b> contains the <b>max</b> date.
      */
-    @Query("SELECT new api.coloradodashboard.PeriodDto(min(t.date), max(t.date)) " +
+    @Query("SELECT new api.coloradodashboard.dto.PeriodDto(min(t.date), max(t.date)) " +
             "FROM TopMachinesWithMostPrintVolumeEntity t")
     PeriodDto getAvailableTimePeriod();
 

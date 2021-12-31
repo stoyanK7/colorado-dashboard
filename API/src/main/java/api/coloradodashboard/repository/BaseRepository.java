@@ -1,6 +1,5 @@
 package api.coloradodashboard.repository;
 
-
 import api.coloradodashboard.dto.PeriodDto;
 
 import java.util.Date;
