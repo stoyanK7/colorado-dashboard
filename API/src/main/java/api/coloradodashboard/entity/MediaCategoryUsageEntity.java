@@ -1,4 +1,4 @@
-package api.coloradodashboard.inkusage;
+package api.coloradodashboard.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,26 +8,23 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
 
 @Entity
-@Table(name = "ink_usage")
+@Table(name = "media_category_usage")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class InkUsageEntity {
+public class MediaCategoryUsageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String printerId;
     @Temporal(TemporalType.DATE)
     private Date date;
-    private Double cyanLitresUsed;
-    private Double magentaLitresUsed;
-    private Double yellowLitresUsed;
-    private Double blackLitresUsed;
+    private String mediaCategory;
+    private Double printedSquareMeters;
 }

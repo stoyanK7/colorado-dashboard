@@ -1,4 +1,4 @@
-package api.coloradodashboard;
+package api.coloradodashboard.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

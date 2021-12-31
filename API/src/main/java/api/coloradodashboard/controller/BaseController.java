@@ -1,5 +1,10 @@
-package api.coloradodashboard;
+package api.coloradodashboard.controller;
 
+import api.coloradodashboard.service.BaseService;
+import api.coloradodashboard.dto.ChartDataKeysDto;
+import api.coloradodashboard.dto.PeriodAndPrinterIdsDto;
+import api.coloradodashboard.dto.PeriodDto;
+import api.coloradodashboard.dto.PrinterIdsDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

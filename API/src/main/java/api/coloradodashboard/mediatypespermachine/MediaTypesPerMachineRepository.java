@@ -1,6 +1,6 @@
 package api.coloradodashboard.mediatypespermachine;
 
-import api.coloradodashboard.PeriodDto;
+import api.coloradodashboard.dto.PeriodDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

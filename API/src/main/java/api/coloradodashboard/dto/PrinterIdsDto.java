@@ -1,4 +1,4 @@
-package api.coloradodashboard;
+package api.coloradodashboard.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,6 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChartDataKeysDto {
-    private List<String> dataKeys;
+public class PrinterIdsDto {
+    private List<String> printerIds;
 }

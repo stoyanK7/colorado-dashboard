@@ -1,15 +1,14 @@
-package api.coloradodashboard;
+package api.coloradodashboard.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.util.List;
 
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-public class PeriodDto {
-    private Date from;
-    private Date to;
+public class ChartDataKeysDto {
+    private List<String> dataKeys;
 }

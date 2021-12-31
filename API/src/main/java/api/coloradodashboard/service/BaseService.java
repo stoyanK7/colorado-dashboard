@@ -1,15 +1,23 @@
-package api.coloradodashboard;
+package api.coloradodashboard.service;
 
-import lombok.AllArgsConstructor;
+import api.coloradodashboard.dto.ChartDataKeysDto;
+import api.coloradodashboard.dto.PeriodDto;
+import api.coloradodashboard.dto.PrinterIdsDto;
+import api.coloradodashboard.repository.BaseRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 
-@AllArgsConstructor
 @Service
 public class BaseService<T> {
-    private BaseRepository<T> repository;
+    private final BaseRepository<T> repository;
+
+    public BaseService(@Lazy @Autowired BaseRepository<T> repository) {
+        this.repository = repository;
+    }
 
     public List<T> getAll(boolean aggregated, String bin) {
         String dateFormat = dateFormatSwitch(bin);
