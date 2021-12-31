@@ -1,6 +1,8 @@
-package api.coloradodashboard.squaremeterperprintmode;
+package api.coloradodashboard.repository;
 
 import api.coloradodashboard.dto.PeriodDto;
+import api.coloradodashboard.dto.SquareMetersPerPrintModeDto;
+import api.coloradodashboard.entity.SquareMetersPerPrintModeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,7 +14,8 @@ import java.util.List;
  * Repository providing access to the table with all data for <b>Square meters per
  * print mode</b>.
  */
-public interface SquareMeterPerPrintModeRepository extends JpaRepository<SquareMeterPerPrintModeEntity, Long> {
+public interface SquareMetersPerPrintModeRepository extends JpaRepository<SquareMetersPerPrintModeEntity, Long>,
+        BaseRepository<SquareMetersPerPrintModeDto> {
     /**
      * Retrieve aggregated printed square meters for all print modes for all printers for all time
      * grouping by printer, ordered by printed square meters descending.
@@ -22,10 +25,10 @@ public interface SquareMeterPerPrintModeRepository extends JpaRepository<SquareM
      * is present in the database.
      */
     @Query("SELECT new api.coloradodashboard.squaremeterperprintmode.SquareMeterPerPrintModeDto(s.date, sum(s.maxSpeedPrinted), sum(s.highSpeedPrinted), sum(s.productionPrinted), sum(s.highQualityPrinted), sum(s.specialtyPrinted), sum(s.backlitPrinted), sum(s.reliancePrinted), sum(s.otherPrinted)) " +
-            "FROM SquareMeterPerPrintModeEntity s " +
+            "FROM SquareMetersPerPrintModeEntity s " +
             "GROUP BY s.date " +
             "ORDER BY s.date ASC")
-    List<SquareMeterPerPrintModeDto> getAll();
+    List<SquareMetersPerPrintModeDto> getAll();
 
     /**
      * Retrieve aggregated printed square meters for all print modes for all printers for provided
@@ -38,11 +41,11 @@ public interface SquareMeterPerPrintModeRepository extends JpaRepository<SquareM
      * is present in the database.
      */
     @Query("SELECT new api.coloradodashboard.squaremeterperprintmode.SquareMeterPerPrintModeDto(s.date, sum(s.maxSpeedPrinted), sum(s.highSpeedPrinted), sum(s.productionPrinted), sum(s.highQualityPrinted), sum(s.specialtyPrinted), sum(s.backlitPrinted), sum(s.reliancePrinted), sum(s.otherPrinted)) " +
-            "FROM SquareMeterPerPrintModeEntity s " +
+            "FROM SquareMetersPerPrintModeEntity s " +
             "WHERE s.date BETWEEN :from AND :to " +
             "GROUP BY s.date " +
             "ORDER BY s.date ASC")
-    List<SquareMeterPerPrintModeDto> getAllForPeriod(@Param("from") Date from, @Param("to") Date to);
+    List<SquareMetersPerPrintModeDto> getAllForPeriod(@Param("from") Date from, @Param("to") Date to);
 
     /**
      * Retrieve aggregated printed square meters for all time for provided
@@ -54,11 +57,11 @@ public interface SquareMeterPerPrintModeRepository extends JpaRepository<SquareM
      * is present in the database.
      */
     @Query("SELECT new api.coloradodashboard.squaremeterperprintmode.SquareMeterPerPrintModeDto(s.date, sum(s.maxSpeedPrinted), sum(s.highSpeedPrinted), sum(s.productionPrinted), sum(s.highQualityPrinted), sum(s.specialtyPrinted), sum(s.backlitPrinted), sum(s.reliancePrinted), sum(s.otherPrinted)) " +
-            "FROM SquareMeterPerPrintModeEntity s " +
+            "FROM SquareMetersPerPrintModeEntity s " +
             "WHERE s.printerId IN :printerIds " +
             "GROUP BY s.date " +
             "ORDER BY s.date ASC")
-    List<SquareMeterPerPrintModeDto> getPrinters(@Param("printerIds") List<String> printerIds);
+    List<SquareMetersPerPrintModeDto> getPrinters(@Param("printerIds") List<String> printerIds);
 
     /**
      * Retrieve aggregated printed square meters for provided period of interest
@@ -72,12 +75,12 @@ public interface SquareMeterPerPrintModeRepository extends JpaRepository<SquareM
      * is present in the database.
      */
     @Query("SELECT new api.coloradodashboard.squaremeterperprintmode.SquareMeterPerPrintModeDto(s.date, sum(s.maxSpeedPrinted), sum(s.highSpeedPrinted), sum(s.productionPrinted), sum(s.highQualityPrinted), sum(s.specialtyPrinted), sum(s.backlitPrinted), sum(s.reliancePrinted), sum(s.otherPrinted)) " +
-            "FROM SquareMeterPerPrintModeEntity s " +
+            "FROM SquareMetersPerPrintModeEntity s " +
             "WHERE (s.date BETWEEN :from AND :to) " +
             "AND (s.printerId IN :printerIds) " +
             "GROUP BY s.date " +
             "ORDER BY s.date ASC")
-    List<SquareMeterPerPrintModeDto> getPrintersForPeriod(@Param("from") Date from, @Param("to") Date to, @Param("printerIds") List<String> printerIds);
+    List<SquareMetersPerPrintModeDto> getPrintersForPeriod(@Param("from") Date from, @Param("to") Date to, @Param("printerIds") List<String> printerIds);
 
     /**
      * Retrieve min and max date from the table.
@@ -86,7 +89,7 @@ public interface SquareMeterPerPrintModeRepository extends JpaRepository<SquareM
      * contains the <b>min</b> and <b>to</b> contains the <b>max</b> date.
      */
     @Query("SELECT new api.coloradodashboard.dto.PeriodDto(min(s.date), max(s.date)) " +
-            "FROM SquareMeterPerPrintModeEntity s")
+            "FROM SquareMetersPerPrintModeEntity s")
     PeriodDto getAvailableTimePeriod();
 
     /**
@@ -95,7 +98,7 @@ public interface SquareMeterPerPrintModeRepository extends JpaRepository<SquareM
      * @return A <b>list of Strings</b>, each one representing a <b>printer id</b>.
      */
     @Query("SELECT s.printerId " +
-            "FROM SquareMeterPerPrintModeEntity s " +
+            "FROM SquareMetersPerPrintModeEntity s " +
             "GROUP BY s.printerId " +
             "ORDER BY s.printerId ASC")
     List<String> getAvailablePrinters();

@@ -1,8 +1,9 @@
-package api.coloradodashboard.squaremeterperprintmode;
+package api.coloradodashboard.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,23 +15,16 @@ import javax.persistence.TemporalType;
 import java.util.Date;
 
 @Entity
-@Table(name = "square_meter_per_print_mode")
+@Table(name = "top_machines_with_most_print_volume")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SquareMeterPerPrintModeEntity {
+public class TopMachinesWithMostPrintVolumeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String printerId;
     @Temporal(TemporalType.DATE)
     private Date date;
-    private Double maxSpeedPrinted;
-    private Double highSpeedPrinted;
-    private Double productionPrinted;
-    private Double highQualityPrinted;
-    private Double specialtyPrinted;
-    private Double backlitPrinted;
-    private Double reliancePrinted;
-    private Double otherPrinted;
+    private Double printedSquareMeters;
 }

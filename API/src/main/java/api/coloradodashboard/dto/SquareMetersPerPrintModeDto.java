@@ -1,4 +1,4 @@
-package api.coloradodashboard.squaremeterperprintmode;
+package api.coloradodashboard.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Getter
 @AllArgsConstructor
-public class SquareMeterPerPrintModeDto {
+public class SquareMetersPerPrintModeDto {
     @JsonProperty("Date")
     private Date date;
     @JsonProperty("Max speed")

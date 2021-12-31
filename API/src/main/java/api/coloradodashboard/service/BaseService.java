@@ -6,12 +6,10 @@ import api.coloradodashboard.dto.PrinterIdsDto;
 import api.coloradodashboard.repository.BaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 
-@Service
 public class BaseService<T> {
     private final BaseRepository<T> repository;
 

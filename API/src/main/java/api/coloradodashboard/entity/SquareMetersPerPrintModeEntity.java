@@ -1,4 +1,4 @@
-package api.coloradodashboard.mediatypespermachine;
+package api.coloradodashboard.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,17 +14,23 @@ import javax.persistence.TemporalType;
 import java.util.Date;
 
 @Entity
-@Table(name = "media_types_per_machine")
+@Table(name = "square_meter_per_print_mode")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MediaTypesPerMachineEntity {
+public class SquareMetersPerPrintModeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String printerId;
     @Temporal(TemporalType.DATE)
     private Date date;
-    private Double printedSquareMeters;
-    private String mediaType;
+    private Double maxSpeedPrinted;
+    private Double highSpeedPrinted;
+    private Double productionPrinted;
+    private Double highQualityPrinted;
+    private Double specialtyPrinted;
+    private Double backlitPrinted;
+    private Double reliancePrinted;
+    private Double otherPrinted;
 }

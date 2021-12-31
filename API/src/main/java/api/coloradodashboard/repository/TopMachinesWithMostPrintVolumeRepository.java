@@ -1,6 +1,8 @@
-package api.coloradodashboard.topmachineswithmostprintvolume;
+package api.coloradodashboard.repository;
 
 import api.coloradodashboard.dto.PeriodDto;
+import api.coloradodashboard.dto.TopMachinesWithMostPrintVolumeDto;
+import api.coloradodashboard.entity.TopMachinesWithMostPrintVolumeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

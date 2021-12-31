@@ -1,9 +1,8 @@
-package api.coloradodashboard.topmachineswithmostprintvolume;
+package api.coloradodashboard.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,11 +14,11 @@ import javax.persistence.TemporalType;
 import java.util.Date;
 
 @Entity
-@Table(name = "top_machines_with_most_print_volume")
+@Table(name = "media_types_per_machine")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TopMachinesWithMostPrintVolumeEntity {
+public class MediaTypesPerMachineEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -27,4 +26,5 @@ public class TopMachinesWithMostPrintVolumeEntity {
     @Temporal(TemporalType.DATE)
     private Date date;
     private Double printedSquareMeters;
+    private String mediaType;
 }

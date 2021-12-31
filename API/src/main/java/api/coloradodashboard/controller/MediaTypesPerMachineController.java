@@ -1,8 +1,9 @@
-package api.coloradodashboard.squaremeterperprintmode;
+package api.coloradodashboard.controller;
 
 import api.coloradodashboard.dto.PeriodAndPrinterIdsDto;
 import api.coloradodashboard.dto.PeriodDto;
 import api.coloradodashboard.dto.PrinterIdsDto;
+import api.coloradodashboard.dto.MediaTypesPerMachineDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,25 +16,25 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * <b>REST API</b> controller for <b><i>Square meters per print mode</i></b> chart.
- * Returns a list of <b>SquareMeterPerPrintModeDto</b> objects or <b>404</b> if no data is present.
+ * <b>REST API</b> controller for <b><i>Media types per machine</i></b> chart.
+ * Returns a list of <b>MediaTypesPerMachineDto</b> objects or <b>404</b> if no data is present.
  */
 @RestController
-@RequestMapping("SquareMeterPerPrintMode")
+@RequestMapping("MediaTypesPerMachine")
 @CrossOrigin("http://localhost:4000")
 @AllArgsConstructor
-public class SquareMeterPerPrintModeController {
-    private SquareMeterPerPrintModeService service;
+public class MediaTypesPerMachineController {
+    private MediaTypesPerMachineService service;
 
     /**
      * <b>GET</b> request returning all data from the database.
      *
-     * @return A <b>list of SquareMeterPerPrintModeDto objects</b>, each
+     * @return A <b>list of MediaTypesPerMachineDto objects</b>, each
      * one representing a different printer, or <b>404</b> if no data is present.
      */
-    @PostMapping
-    public ResponseEntity<List<SquareMeterPerPrintModeDto>> getAll() {
-        List<SquareMeterPerPrintModeDto> data = service.getAll();
+    @GetMapping
+    public ResponseEntity<List<MediaTypesPerMachineDto>> getAll() {
+        List<MediaTypesPerMachineDto> data = service.getAll();
         if (data.isEmpty())
             return ResponseEntity.notFound().build();
 
@@ -49,12 +50,12 @@ public class SquareMeterPerPrintModeController {
      *                "from": "2021-12-20",
      *                "to": "2021-12-30
      *                }
-     * @return A <b>list of SquareMeterPerPrintModeDto objects</b>, each
+     * @return A <b>list of MediaTypesPerMachineDto objects</b>, each
      * one representing a different printer, or <b>404</b> if no data is present.
      */
     @PostMapping("/Period")
-    public ResponseEntity<List<SquareMeterPerPrintModeDto>> getAllForPeriod(@RequestBody PeriodDto request) {
-        List<SquareMeterPerPrintModeDto> data
+    public ResponseEntity<List<MediaTypesPerMachineDto>> getAllForPeriod(@RequestBody PeriodDto request) {
+        List<MediaTypesPerMachineDto> data
                 = service.getAllForPeriod(request.getFrom(), request.getTo());
         if (data.isEmpty())
             return ResponseEntity.notFound().build();
@@ -73,12 +74,12 @@ public class SquareMeterPerPrintModeController {
      *                "703
      *                ]
      *                }
-     * @return A <b>list of SquareMeterPerPrintModeDto objects</b>, each
+     * @return A <b>list of MediaTypesPerMachineDto objects</b>, each
      * one representing a different printer, or <b>404</b> if no data is present.
      */
     @PostMapping("/Printer")
-    public ResponseEntity<List<SquareMeterPerPrintModeDto>> getPrinters(@RequestBody PrinterIdsDto request) {
-        List<SquareMeterPerPrintModeDto> data
+    public ResponseEntity<List<MediaTypesPerMachineDto>> getPrinters(@RequestBody PrinterIdsDto request) {
+        List<MediaTypesPerMachineDto> data
                 = service.getPrinters(request.getPrinterIds());
         if (data.isEmpty())
             return ResponseEntity.notFound().build();
@@ -99,12 +100,12 @@ public class SquareMeterPerPrintModeController {
      *                "703
      *                ]
      *                }
-     * @return A <b>list of SquareMeterPerPrintModeDto objects</b>, each
+     * @return A <b>list of MediaTypesPerMachineDto objects</b>, each
      * one representing a different printer, or <b>404</b> if no data is present.
      */
     @PostMapping("/PeriodAndPrinter")
-    public ResponseEntity<List<SquareMeterPerPrintModeDto>> getPrintersForPeriod(@RequestBody PeriodAndPrinterIdsDto request) {
-        List<SquareMeterPerPrintModeDto> data
+    public ResponseEntity<List<MediaTypesPerMachineDto>> getPrintersForPeriod(@RequestBody PeriodAndPrinterIdsDto request) {
+        List<MediaTypesPerMachineDto> data
                 = service.getPrintersForPeriod(request.getFrom(), request.getTo(), request.getPrinterIds());
         if (data.isEmpty())
             return ResponseEntity.notFound().build();
