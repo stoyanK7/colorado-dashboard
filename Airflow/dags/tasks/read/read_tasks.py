@@ -40,10 +40,11 @@ class ReadTasks():
             return
 
         # Get file data (add machine ids)
-        data = ReadTasks._get_files_to_data_frames(new_files, changed_files, image_file_directory_extension, config.read_image_column_name_config.MACHINEID)
+        # Get all data files in a list
+        dataframes = ReadTasks._get_files_to_data_frames(new_files, changed_files, image_file_directory_extension, config.read_image_column_name_config.MACHINEID)
 
-        # Adding unit columns to the dataframe
-        ReadTasks._add_unit_columns(data)
+        # fix dataframes columns and concatenation them
+        data = ReadTasks._concat_dataframes(dataframes)
 
         # Change col names
         ReadTasks._change_col_names(data, read_image_col_name_constants)
@@ -53,22 +54,48 @@ class ReadTasks():
 
     @staticmethod
     def _add_unit_columns(data):
-        for col_name in data.columns:
-            if "Accounted" in col_name and "[" in col_name and "]" in col_name:
-                logging.info(col_name)
-                logging.info(re.search('.+\[(.+)\](.+)?', col_name))
+        data_to_modify = data.copy()
+        for col_name in data_to_modify.columns:
+            if "[" in col_name and "]" in col_name:
+
+                # Get the unit
                 unit = re.search(".+\[(.+)\](.+)?", col_name).group(1)
+
+                # Get the name without the unit
+                name_without_unit = re.search("(.+)\[.+\](.+)?", col_name).group(1)
+
+                # Create a column name from the unit column based on the ink column
                 new_col_name = re.search("(\D+)\[", col_name).group(1) + "Unit"
                 new_column_to_lower = new_col_name.lower()
-                index_no = data.columns.get_loc(col_name)
-                new_col_index = index_no + 1
-                # this might work for adding the unit on all roles after inserting
-                data.insert(new_col_index, new_column_to_lower, unit)
 
-                # alternative solution to adding the units
-                # data[new_col_name] = unit
-        #logging.info('dataframe head - {}'.format(data.to_string()))
-        return data
+                # Get the index of the future unit column
+                index_no = data_to_modify.columns.get_loc(col_name)
+                new_col_index = index_no + 1
+
+                # Removes units from the column's name
+                data_to_modify = data_to_modify.rename(columns={col_name: name_without_unit})
+
+                # Check if column exists
+                if data_to_modify.columns[new_col_index] != new_col_name:
+
+                    # Insert the new column at the appropriate index and sets the value
+                    data_to_modify.insert(new_col_index, new_column_to_lower, unit)
+
+        return data_to_modify
+
+    @staticmethod
+    def _concat_dataframes(dataframe_list):
+        dataframes = []
+
+        for dataframe in dataframe_list:
+
+            # Adding unit columns to the dataframe
+            modified_df = ReadTasks._add_unit_columns(dataframe)
+
+            # Appends the modified df to the list
+            dataframes.append(modified_df)
+
+        return pd.concat(dataframes, ignore_index=True)
 
     @staticmethod
     def read_media_prepare():
@@ -161,7 +188,7 @@ class ReadTasks():
         return any_new
 
     @staticmethod
-    def _get_files_to_data_frames(new_files, changed_files, identifier_column_name, machine_id_column_name) -> pd.DataFrame:
+    def _get_files_to_data_frames(new_files, changed_files, identifier_column_name, machine_id_column_name):
         # get files
         file_reader = FileReader()
         dataframes = []
@@ -191,7 +218,7 @@ class ReadTasks():
                 # logging.info(f"Adding machine id column with value {int(machine_id)}")
                 df_all[machine_id_column_name] = int(machine_id)
                 dataframes.append(df_all)
-        return pd.concat(dataframes, ignore_index=True)
+        return dataframes
 
     @staticmethod
     def _change_col_names(data, constants_file):
