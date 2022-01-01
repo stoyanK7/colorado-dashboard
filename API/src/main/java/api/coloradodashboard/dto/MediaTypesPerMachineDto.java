@@ -9,8 +9,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MediaTypesPerMachineDto {
+    @JsonProperty("Printer id")
+    private String printerId;
     @JsonProperty("Media type")
     private String mediaType;
     @JsonProperty("Printed square meters")
     private Double printedSquareMeters;
+
+    public MediaTypesPerMachineDto(String mediaType, Double printedSquareMeters) {
+        this.mediaType = mediaType;
+        this.printedSquareMeters = printedSquareMeters;
+    }
 }
