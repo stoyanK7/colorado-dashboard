@@ -13,11 +13,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
 
-@Entity
-@Table(name = "media_types_per_machine")
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "media_types_per_machine")
+@Entity
 public class MediaTypesPerMachineEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,6 +25,6 @@ public class MediaTypesPerMachineEntity {
     private String printerId;
     @Temporal(TemporalType.DATE)
     private Date date;
-    private Double printedSquareMeters;
     private String mediaType;
+    private Double printedSquareMeters;
 }

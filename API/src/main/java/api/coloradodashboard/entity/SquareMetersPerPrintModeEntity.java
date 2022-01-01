@@ -13,11 +13,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
 
-@Entity
-@Table(name = "square_meter_per_print_mode")
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "square_meters_per_print_mode")
+@Entity
 public class SquareMetersPerPrintModeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,12 +25,6 @@ public class SquareMetersPerPrintModeEntity {
     private String printerId;
     @Temporal(TemporalType.DATE)
     private Date date;
-    private Double maxSpeedPrinted;
-    private Double highSpeedPrinted;
-    private Double productionPrinted;
-    private Double highQualityPrinted;
-    private Double specialtyPrinted;
-    private Double backlitPrinted;
-    private Double reliancePrinted;
-    private Double otherPrinted;
+    private String printMode;
+    private Double printedSquareMeters;
 }

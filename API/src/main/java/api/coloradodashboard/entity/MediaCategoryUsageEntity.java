@@ -13,11 +13,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
 
-@Entity
-@Table(name = "media_category_usage")
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "media_category_usage")
+@Entity
 public class MediaCategoryUsageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

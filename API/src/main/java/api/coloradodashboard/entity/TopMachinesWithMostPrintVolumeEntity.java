@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,11 +13,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
 
-@Entity
-@Table(name = "top_machines_with_most_print_volume")
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "top_machines_with_most_print_volume")
+@Entity
 public class TopMachinesWithMostPrintVolumeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
