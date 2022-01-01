@@ -1,5 +1,6 @@
 package api.coloradodashboard.topmachineswithmostprintvolume;
 
+import api.coloradodashboard.repository.TopMachinesWithMostPrintVolumeRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

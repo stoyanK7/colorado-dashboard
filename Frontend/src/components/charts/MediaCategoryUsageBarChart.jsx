@@ -8,16 +8,37 @@ import {
   XAxis,
   YAxis
 } from 'recharts';
+import React, { useEffect, useState } from 'react';
 
-import React from 'react';
+import axios from 'axios';
 
 const MediaCategoryUsageBarChart = ({ data }) => {
+  let result = Object.values(data.reduce((r, o) => {
+    let key = o.Date + '-' + o['Printer id'];
+    r[key] ??= { Date: o.Date, 'Printer id': o['Printer id'] };
+    r[key][o['Media category']] = (r[key][o['Media category']] ?? 0) + o['Printed square meters'];
+    return r;
+  }, {}));
+
+  const [chartDataKeys, setChartDataKeys] = useState();
+  useEffect(() => {
+    axios.get(`MediaCategoryUsage/ChartDataKeys`)
+      .then(res => res.data.dataKeys)
+      .then(data => {
+        setChartDataKeys(data);
+      })
+      .catch(err => {
+        // TODO: introduce error handling logic
+      })
+  }, [])
+
+
   return (
     <ResponsiveContainer width='100%' height='100%'>
       <BarChart
         width={700}
         height={300}
-        data={data}
+        data={result}
         margin={{
           top: 20,
           right: 50,
@@ -33,17 +54,10 @@ const MediaCategoryUsageBarChart = ({ data }) => {
         />
         <Tooltip />
         <Legend verticalAlign='top' iconType='circle' />
-        <Bar dataKey='Film' stackId='a' fill='#49BFF9' />
-        <Bar dataKey='Light paper < 120gsm' stackId='a' fill='#C5C714' />
-        <Bar dataKey='Heavy paper > 200gsm' stackId='a' fill='#A843B1' />
-        <Bar dataKey='Light banner < 400gsm' stackId='a' fill='#6735E1' />
-        <Bar dataKey='Textile' stackId='a' fill='#1013A6' />
-        <Bar dataKey='Monomeric vinyl' stackId='a' fill='#BFFA7F' />
-        <Bar dataKey='Canvas' stackId='a' fill='#1D3317' />
-        <Bar dataKey='Polymeric & cast vinyl' stackId='a' fill='#0C5B54' />
-        <Bar dataKey='Heavy banner > 400gsm' stackId='a' fill='#C8D0C8' />
-        <Bar dataKey='Paper' stackId='a' fill='#3FBCB9' />
-        <Bar dataKey='Thick film > 200um' stackId='a' fill='#F4236B' />
+        {chartDataKeys && chartDataKeys.map(key => {
+          console.log(key)
+          return <Bar dataKey={key} stackId='a' fill='#49BFF9' />
+        })}
       </BarChart>
     </ResponsiveContainer>
   );
