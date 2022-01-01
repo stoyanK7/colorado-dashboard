@@ -13,47 +13,47 @@ import java.util.List;
 
 public interface TopMachinesWithMostPrintVolumeRepository extends JpaRepository<TopMachinesWithMostPrintVolumeEntity, Long>,
         BaseRepository<TopMachinesWithMostPrintVolumeDto> {
-    @Query("SELECT new api.coloradodashboard.dto.TopMachinesWithMostPrintVolumeDto(t.printerId, SUM(t.printedSquareMeters)) " +
+    @Query("SELECT new api.coloradodashboard.dto.TopMachinesWithMostPrintVolumeDto(DATE_FORMAT(t.date, :dateFormat) AS formatted_date, t.printerId, SUM(t.printedSquareMeters)) " +
             "FROM TopMachinesWithMostPrintVolumeEntity t " +
             "GROUP BY t.printerId " +
             "ORDER BY sum(t.printedSquareMeters) DESC")
     List<TopMachinesWithMostPrintVolumeDto> getAllAggregated(@Param("dateFormat") String dateFormat);
 
-    @Query("SELECT new api.coloradodashboard.dto.TopMachinesWithMostPrintVolumeDto(t.printerId, SUM(t.printedSquareMeters)) " +
+    @Query("SELECT new api.coloradodashboard.dto.TopMachinesWithMostPrintVolumeDto(DATE_FORMAT(t.date, :dateFormat) AS formatted_date, t.printerId, SUM(t.printedSquareMeters)) " +
             "FROM TopMachinesWithMostPrintVolumeEntity t " +
             "GROUP BY t.printerId " +
             "ORDER BY sum(t.printedSquareMeters) DESC")
     List<TopMachinesWithMostPrintVolumeDto> getAllNonAggregated(@Param("dateFormat") String dateFormat);
 
-    @Query("SELECT new api.coloradodashboard.dto.TopMachinesWithMostPrintVolumeDto(t.printerId, sum(t.printedSquareMeters)) " +
+    @Query("SELECT new api.coloradodashboard.dto.TopMachinesWithMostPrintVolumeDto(DATE_FORMAT(t.date, :dateFormat) AS formatted_date, t.printerId, sum(t.printedSquareMeters)) " +
             "FROM TopMachinesWithMostPrintVolumeEntity t " +
             "WHERE t.date BETWEEN :from AND :to " +
             "GROUP BY t.printerId " +
             "ORDER BY sum(t.printedSquareMeters) DESC")
     List<TopMachinesWithMostPrintVolumeDto> getAllForPeriodAggregated(@Param("dateFormat") String dateFormat, @Param("from") Date from, @Param("to") Date to);
 
-    @Query("SELECT new api.coloradodashboard.dto.TopMachinesWithMostPrintVolumeDto(t.printerId, sum(t.printedSquareMeters)) " +
+    @Query("SELECT new api.coloradodashboard.dto.TopMachinesWithMostPrintVolumeDto(DATE_FORMAT(t.date, :dateFormat) AS formatted_date, t.printerId, sum(t.printedSquareMeters)) " +
             "FROM TopMachinesWithMostPrintVolumeEntity t " +
             "WHERE t.date BETWEEN :from AND :to " +
             "GROUP BY t.printerId " +
             "ORDER BY sum(t.printedSquareMeters) DESC")
     List<TopMachinesWithMostPrintVolumeDto> getAllForPeriodNonAggregated(@Param("dateFormat") String dateFormat, @Param("from") Date from, @Param("to") Date to);
 
-    @Query("SELECT new api.coloradodashboard.dto.TopMachinesWithMostPrintVolumeDto(t.printerId, sum(t.printedSquareMeters)) " +
+    @Query("SELECT new api.coloradodashboard.dto.TopMachinesWithMostPrintVolumeDto(DATE_FORMAT(t.date, :dateFormat) AS formatted_date, t.printerId, sum(t.printedSquareMeters)) " +
             "FROM TopMachinesWithMostPrintVolumeEntity t " +
             "WHERE t.printerId IN :printerIds " +
             "GROUP BY t.printerId " +
             "ORDER BY sum(t.printedSquareMeters) DESC")
     List<TopMachinesWithMostPrintVolumeDto> getAllForPrintersAggregated(@Param("dateFormat") String dateFormat, @Param("printerIds") List<String> printerIds);
 
-    @Query("SELECT new api.coloradodashboard.dto.TopMachinesWithMostPrintVolumeDto(t.printerId, sum(t.printedSquareMeters)) " +
+    @Query("SELECT new api.coloradodashboard.dto.TopMachinesWithMostPrintVolumeDto(DATE_FORMAT(t.date, :dateFormat) AS formatted_date, t.printerId, sum(t.printedSquareMeters)) " +
             "FROM TopMachinesWithMostPrintVolumeEntity t " +
             "WHERE t.printerId IN :printerIds " +
             "GROUP BY t.printerId " +
             "ORDER BY sum(t.printedSquareMeters) DESC")
     List<TopMachinesWithMostPrintVolumeDto> getAllForPrintersNonAggregated(@Param("dateFormat") String dateFormat, @Param("printerIds") List<String> printerIds);
 
-    @Query("SELECT new api.coloradodashboard.dto.TopMachinesWithMostPrintVolumeDto(t.printerId, sum(t.printedSquareMeters)) " +
+    @Query("SELECT new api.coloradodashboard.dto.TopMachinesWithMostPrintVolumeDto(DATE_FORMAT(t.date, :dateFormat) AS formatted_date, t.printerId, sum(t.printedSquareMeters)) " +
             "FROM TopMachinesWithMostPrintVolumeEntity t " +
             "WHERE (t.date BETWEEN :from AND :to) " +
             "AND (t.printerId IN :printerIds) " +
@@ -61,7 +61,7 @@ public interface TopMachinesWithMostPrintVolumeRepository extends JpaRepository<
             "ORDER BY sum(t.printedSquareMeters) DESC")
     List<TopMachinesWithMostPrintVolumeDto> getAllForPeriodAndPrintersAggregated(@Param("dateFormat") String dateFormat, @Param("from") Date from, @Param("to") Date to, @Param("printerIds") List<String> printerIds);
 
-    @Query("SELECT new api.coloradodashboard.dto.TopMachinesWithMostPrintVolumeDto(t.printerId, sum(t.printedSquareMeters)) " +
+    @Query("SELECT new api.coloradodashboard.dto.TopMachinesWithMostPrintVolumeDto(DATE_FORMAT(t.date, :dateFormat) AS formatted_date, t.printerId, sum(t.printedSquareMeters)) " +
             "FROM TopMachinesWithMostPrintVolumeEntity t " +
             "WHERE (t.date BETWEEN :from AND :to) " +
             "AND (t.printerId IN :printerIds) " +
