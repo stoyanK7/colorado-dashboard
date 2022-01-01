@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 public class PeriodDto {
     private Date from;
     private Date to;

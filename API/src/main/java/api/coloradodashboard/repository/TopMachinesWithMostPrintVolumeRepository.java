@@ -14,7 +14,8 @@ import java.util.List;
  * Repository providing access to the table with all data for <b>Top machines with
  * most print volume</b>.
  */
-public interface TopMachinesWithMostPrintVolumeRepository extends JpaRepository<TopMachinesWithMostPrintVolumeEntity, Long> {
+public interface TopMachinesWithMostPrintVolumeRepository extends JpaRepository<TopMachinesWithMostPrintVolumeEntity, Long>,
+        BaseRepository<TopMachinesWithMostPrintVolumeDto> {
     /**
      * Retrieve aggregated printed square meters for all printers for all time
      * grouping by printer, ordered by printed square meters descending.

@@ -1,30 +1,29 @@
 package api.coloradodashboard.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import java.util.Date;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SquareMetersPerPrintModeDto {
     @JsonProperty("Date")
-    private Date date;
-    @JsonProperty("Max speed")
-    private Double maxSpeedPrinted;
-    @JsonProperty("High speed")
-    private Double highSpeedPrinted;
-    @JsonProperty("Production")
-    private Double productionPrinted;
-    @JsonProperty("High quality")
-    private Double highQualityPrinted;
-    @JsonProperty("Specialty")
-    private Double specialtyPrinted;
-    @JsonProperty("Backlit")
-    private Double backlitPrinted;
-    @JsonProperty("Reliance")
-    private Double reliancePrinted;
-    @JsonProperty("Other")
-    private Double otherPrinted;
+    private String date;
+    @JsonProperty("Printer id")
+    private String printerId;
+    @JsonProperty("Print mode")
+    private String printMode;
+    @JsonProperty("Printed square meters")
+    private Double printedSquareMeters;
+
+    public SquareMetersPerPrintModeDto(String date, String printMode,
+                                       Double printedSquareMeters) {
+        this.date = date;
+        this.printMode = printMode;
+        this.printedSquareMeters = printedSquareMeters;
+    }
 }
