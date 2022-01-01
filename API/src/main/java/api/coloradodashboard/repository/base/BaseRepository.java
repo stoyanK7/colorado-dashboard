@@ -1,4 +1,4 @@
-package api.coloradodashboard.repository;
+package api.coloradodashboard.repository.base;
 
 import api.coloradodashboard.dto.PeriodDto;
 

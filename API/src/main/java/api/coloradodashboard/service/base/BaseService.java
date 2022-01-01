@@ -1,9 +1,9 @@
-package api.coloradodashboard.service;
+package api.coloradodashboard.service.base;
 
 import api.coloradodashboard.dto.ChartDataKeysDto;
 import api.coloradodashboard.dto.PeriodDto;
 import api.coloradodashboard.dto.PrinterIdsDto;
-import api.coloradodashboard.repository.BaseRepository;
+import api.coloradodashboard.repository.base.BaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 

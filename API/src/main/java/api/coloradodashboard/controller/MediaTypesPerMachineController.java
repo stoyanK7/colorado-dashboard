@@ -1,8 +1,9 @@
 package api.coloradodashboard.controller;
 
+import api.coloradodashboard.controller.base.BaseController;
 import api.coloradodashboard.dto.MediaTypesPerMachineDto;
 import api.coloradodashboard.repository.MediaTypesPerMachineRepository;
-import api.coloradodashboard.service.BaseServiceFactory;
+import api.coloradodashboard.service.base.BaseServiceFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

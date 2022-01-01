@@ -1,6 +1,6 @@
-package api.coloradodashboard.controller;
+package api.coloradodashboard.controller.base;
 
-import api.coloradodashboard.service.BaseService;
+import api.coloradodashboard.service.base.BaseService;
 import api.coloradodashboard.dto.ChartDataKeysDto;
 import api.coloradodashboard.dto.PeriodAndPrinterIdsDto;
 import api.coloradodashboard.dto.PeriodDto;

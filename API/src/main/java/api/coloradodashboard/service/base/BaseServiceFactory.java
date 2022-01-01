@@ -1,6 +1,6 @@
-package api.coloradodashboard.service;
+package api.coloradodashboard.service.base;
 
-import api.coloradodashboard.repository.BaseRepository;
+import api.coloradodashboard.repository.base.BaseRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 

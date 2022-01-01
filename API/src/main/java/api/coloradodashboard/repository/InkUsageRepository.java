@@ -3,6 +3,7 @@ package api.coloradodashboard.repository;
 import api.coloradodashboard.dto.InkUsageDto;
 import api.coloradodashboard.dto.PeriodDto;
 import api.coloradodashboard.entity.InkUsageEntity;
+import api.coloradodashboard.repository.base.BaseRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
