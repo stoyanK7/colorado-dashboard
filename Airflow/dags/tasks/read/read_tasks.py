@@ -53,6 +53,71 @@ class ReadTasks():
         ReadTasks._insert_into_db(data, read_table_name_config.READ_IMAGE)
 
     @staticmethod
+    def read_media_prepare():
+        rsync_directory = Variable.get("rsync_file_directory")
+        snapshot_directory = Variable.get("snapshot_directory")
+        last_seen_directory = Variable.get("last_read_files_directory")
+        media_prepare_file_directory_extension = Variable.get("media_prepare_file_directory_extension")
+
+        # Copy Rsync files to snapshot
+        ReadTasks._make_snapshot(rsync_directory, snapshot_directory, media_prepare_file_directory_extension)
+
+        # Get new files and different files
+        new_files, changed_files = ReadTasks._get_new_and_changed_files(snapshot_directory, last_seen_directory,
+                                                                        media_prepare_file_directory_extension)
+
+        # Check for no new files
+        if not ReadTasks._any_new_changed_files(new_files, changed_files):
+            logging.info("No new or changed files were found, terminating reading step successfully.")
+            return
+
+        # Get file data (add machine ids)
+        # Get all data files in a list
+        dataframes = ReadTasks._get_files_to_data_frames(new_files, changed_files, media_prepare_file_directory_extension, read_media_prepare_db_col_name_constants.MACHINEID)
+
+        # fix dataframes columns and concatenation them
+        data = ReadTasks._concat_dataframes(dataframes)
+
+        # Change col names
+        ReadTasks._change_col_names(data, read_media_prepare_schema_col_name_constants)
+
+        # Insert to database
+        ReadTasks._insert_into_db(data, read_table_name_config.READ_MEDIA_PREPARE)
+
+    @staticmethod
+    def read_print_cycle():
+        rsync_directory = Variable.get("rsync_file_directory")
+        snapshot_directory = Variable.get("snapshot_directory")
+        last_seen_directory = Variable.get("last_read_files_directory")
+        print_cycle_file_directory_extension = Variable.get("print_cycle_file_directory_extension")
+
+        # Copy Rsync files to snapshot
+        ReadTasks._make_snapshot(rsync_directory, snapshot_directory, print_cycle_file_directory_extension)
+
+        # Get new files and different files
+        new_files, changed_files = ReadTasks._get_new_and_changed_files(snapshot_directory, last_seen_directory,
+                                                                        print_cycle_file_directory_extension)
+
+        # Check for no new files
+        if not ReadTasks._any_new_changed_files(new_files, changed_files):
+            logging.info("No new or changed files were found, terminating reading step successfully.")
+            return
+
+        # Get file data (add machine ids)
+        # Get all data files in a list
+        dataframes = ReadTasks._get_files_to_data_frames(new_files, changed_files, print_cycle_file_directory_extension,
+                                                   read_print_cycle_db_col_name_constants.MACHINEID)
+
+        # fix dataframes columns and concatenation them
+        data = ReadTasks._concat_dataframes(dataframes)
+
+        # Change col names
+        ReadTasks._change_col_names(data, read_print_cycle_schema_col_name_constants)
+
+        # Insert to database
+        ReadTasks._insert_into_db(data, read_table_name_config.READ_PRINT_CYCLE)
+
+    @staticmethod
     def _add_unit_columns(data):
         data_to_modify = data.copy()
         for col_name in data_to_modify.columns:
@@ -96,62 +161,6 @@ class ReadTasks():
             dataframes.append(modified_df)
 
         return pd.concat(dataframes, ignore_index=True)
-
-    @staticmethod
-    def read_media_prepare():
-        rsync_directory = Variable.get("rsync_file_directory")
-        snapshot_directory = Variable.get("snapshot_directory")
-        last_seen_directory = Variable.get("last_read_files_directory")
-        media_prepare_file_directory_extension = Variable.get("media_prepare_file_directory_extension")
-
-        # Copy Rsync files to snapshot
-        ReadTasks._make_snapshot(rsync_directory, snapshot_directory, media_prepare_file_directory_extension)
-
-        # Get new files and different files
-        new_files, changed_files = ReadTasks._get_new_and_changed_files(snapshot_directory, last_seen_directory,
-                                                                        media_prepare_file_directory_extension)
-
-        # Check for no new files
-        if not ReadTasks._any_new_changed_files(new_files, changed_files):
-            logging.info("No new or changed files were found, terminating reading step successfully.")
-            return
-
-        # Get file data (add machine ids)
-        data = ReadTasks._get_files_to_data_frames(new_files, changed_files, media_prepare_file_directory_extension, read_media_prepare_db_col_name_constants.MACHINEID)
-
-        # Change col names
-        ReadTasks._change_col_names(data, read_media_prepare_schema_col_name_constants)
-
-        # Insert to database
-        ReadTasks._insert_into_db(data, read_table_name_config.READ_MEDIA_PREPARE)
-    @staticmethod
-    def read_print_cycle():
-        rsync_directory = Variable.get("rsync_file_directory")
-        snapshot_directory = Variable.get("snapshot_directory")
-        last_seen_directory = Variable.get("last_read_files_directory")
-        print_cycle_file_directory_extension = Variable.get("print_cycle_file_directory_extension")
-
-        # Copy Rsync files to snapshot
-        ReadTasks._make_snapshot(rsync_directory, snapshot_directory, print_cycle_file_directory_extension)
-
-        # Get new files and different files
-        new_files, changed_files = ReadTasks._get_new_and_changed_files(snapshot_directory, last_seen_directory,
-                                                                        print_cycle_file_directory_extension)
-
-        # Check for no new files
-        if not ReadTasks._any_new_changed_files(new_files, changed_files):
-            logging.info("No new or changed files were found, terminating reading step successfully.")
-            return
-
-        # Get file data (add machine ids)
-        data = ReadTasks._get_files_to_data_frames(new_files, changed_files, print_cycle_file_directory_extension,
-                                                   read_print_cycle_db_col_name_constants.MACHINEID)
-
-        # Change col names
-        ReadTasks._change_col_names(data, read_print_cycle_schema_col_name_constants)
-
-        # Insert to database
-        ReadTasks._insert_into_db(data, read_table_name_config.READ_PRINT_CYCLE)
 
     @staticmethod
     def _make_snapshot(source_dir, target_dir, extension_to_folder):
