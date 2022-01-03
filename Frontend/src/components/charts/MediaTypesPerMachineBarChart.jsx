@@ -9,15 +9,35 @@ import {
   YAxis
 } from 'recharts';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-const MediaTypesMerMachineBarChart = ({ data }) => {
+const MediaTypesMerMachineBarChart = ({ data, aggregated }) => {
+
+  let result = Object.values(data.reduce((r, o) => {
+    let key = o.Date + '-' + o['Printer id'];
+    r[key] ??= { Date: o.Date, 'Printer id': o['Printer id'] };
+    r[key][o['Media type']] = (r[key][o['Media type']] ?? 0) + o['Printed square meters'];
+    return r;
+  }, {}));
+
+  const [chartDataKeys, setChartDataKeys] = useState();
+  useEffect(() => {
+    axios.get(`MediaTypesPerMachine/ChartDataKeys`)
+      .then(res => res.data.dataKeys)
+      .then(data => {
+        setChartDataKeys(data);
+      })
+      .catch(err => {
+        // TODO: introduce error handling logic
+      })
+  }, []);
   return (
     <ResponsiveContainer width='100%' height='100%'>
       <BarChart
         width={700}
         height={300}
-        data={data}
+        data={result}
         margin={{
           top: 20,
           right: 50,
@@ -33,7 +53,10 @@ const MediaTypesMerMachineBarChart = ({ data }) => {
         />
         <Tooltip />
         <Legend verticalAlign='top' iconType='circle' />
-        <Bar dataKey='Printed square meters' stackId='a' fill='#69283A' />
+        {chartDataKeys && chartDataKeys.map(key => {
+          console.log(key)
+          return <Bar dataKey={key} stackId='a' fill='#49BFF9' />
+        })}
       </BarChart>
     </ResponsiveContainer>
   );

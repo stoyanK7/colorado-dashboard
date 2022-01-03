@@ -12,7 +12,7 @@ import React, { useEffect, useState } from 'react';
 
 import axios from 'axios';
 
-const MediaCategoryUsageBarChart = ({ data }) => {
+const MediaCategoryUsageBarChart = ({ data, aggregated }) => {
   let result = Object.values(data.reduce((r, o) => {
     let key = o.Date + '-' + o['Printer id'];
     r[key] ??= { Date: o.Date, 'Printer id': o['Printer id'] };
@@ -47,7 +47,15 @@ const MediaCategoryUsageBarChart = ({ data }) => {
         }}
       >
         <CartesianGrid strokeDasharray='3 3' />
-        <XAxis dataKey='Date' textAnchor='start' angle={40} />
+        <XAxis
+          dataKey='Date'
+          textAnchor='start'
+          angle={40}
+          xAxisId={!aggregated ? 1 : 0}
+          // TODO: this hides the tooltip for some reason
+          // allowDuplicatedCategory={false} 
+          />
+        {!aggregated && <XAxis dataKey="Printer id" xAxisId={0} />}
         <YAxis unit='SqM' type='number'
         // TODO: set this with maxvalue to fix overflowing labels
         // domain={[0, maxValue]} 
