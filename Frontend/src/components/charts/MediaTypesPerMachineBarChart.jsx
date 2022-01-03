@@ -12,14 +12,21 @@ import {
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const MediaTypesMerMachineBarChart = ({ data, aggregated }) => {
+const CustomTooltip = ({ active, payload, label }) => {
+  console.log(payload);
+  if (active && payload && payload.length) {
+    return (
+      <div className="custom-tooltip">
+        <p className="label">{`${payload[0].payload['Media type']}`}</p>
+        <p className="label">{`${label} : ${payload[0].value}`}</p>
+      </div>
+    );
+  }
 
-  let result = Object.values(data.reduce((r, o) => {
-    let key = o.Date + '-' + o['Printer id'];
-    r[key] ??= { Date: o.Date, 'Printer id': o['Printer id'] };
-    r[key][o['Media type']] = (r[key][o['Media type']] ?? 0) + o['Printed square meters'];
-    return r;
-  }, {}));
+  return null;
+};
+
+const MediaTypesMerMachineBarChart = ({ data, aggregated }) => {
 
   const [chartDataKeys, setChartDataKeys] = useState();
   useEffect(() => {
@@ -32,31 +39,38 @@ const MediaTypesMerMachineBarChart = ({ data, aggregated }) => {
         // TODO: introduce error handling logic
       })
   }, []);
+
   return (
     <ResponsiveContainer width='100%' height='100%'>
       <BarChart
         width={700}
         height={300}
-        data={result}
+        data={data}
         margin={{
           top: 20,
           right: 50,
           left: 40,
-          bottom: 50
+          bottom: 100
         }}
       >
         <CartesianGrid strokeDasharray='3 3' />
-        <XAxis dataKey='Media type' textAnchor='start' angle={40} />
+        <XAxis
+          dataKey='Media type'
+          textAnchor='start'
+          angle={40}
+          xAxisId={!aggregated ? 1 : 0}
+          allowDuplicatedCategory={false}
+          interval={0}
+        />
+        {!aggregated && <XAxis dataKey="Printer id" xAxisId={0} />}
         <YAxis unit='SqM' type='number'
         // TODO: set this with maxvalue to fix overflowing labels
         // domain={[0, maxValue]} 
         />
-        <Tooltip />
+        <Tooltip content={<CustomTooltip />} />
         <Legend verticalAlign='top' iconType='circle' />
-        {chartDataKeys && chartDataKeys.map(key => {
-          console.log(key)
-          return <Bar dataKey={key} stackId='a' fill='#49BFF9' />
-        })}
+        <Bar dataKey='Printed square meters' stackId='a' fill='#49BFF9' />
+
       </BarChart>
     </ResponsiveContainer>
   );
