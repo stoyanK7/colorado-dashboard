@@ -18,8 +18,8 @@ public class TopMachinesWithMostPrintVolumeDto {
     @JsonProperty("Printed square meters")
     private Double printedSquareMeters;
 
-    public TopMachinesWithMostPrintVolumeDto(String date, Double printedSquareMeters) {
-        this.date = date;
+    public TopMachinesWithMostPrintVolumeDto(String printerId, Double printedSquareMeters) {
+        this.printerId = printerId;
         this.printedSquareMeters = printedSquareMeters;
     }
 }

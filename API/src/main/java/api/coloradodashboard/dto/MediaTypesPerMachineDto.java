@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MediaTypesPerMachineDto {
-    @JsonProperty("Date")
-    private String date;
     @JsonProperty("Printer id")
     private String printerId;
     @JsonProperty("Media type")
@@ -20,9 +18,7 @@ public class MediaTypesPerMachineDto {
     @JsonProperty("Printed square meters")
     private Double printedSquareMeters;
 
-    public MediaTypesPerMachineDto(String date, String mediaType,
-                                   Double printedSquareMeters) {
-        this.date = date;
+    public MediaTypesPerMachineDto(String mediaType, Double printedSquareMeters) {
         this.mediaType = mediaType;
         this.printedSquareMeters = printedSquareMeters;
     }

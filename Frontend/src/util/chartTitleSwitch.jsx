@@ -3,7 +3,7 @@ const chartTitleSwitch = (chart) => {
   switch (chart) {
     case 'MediaCategoryUsage': title = 'Media categories usage'; break;
     case 'InkUsage': title = 'Ink usage'; break;
-    case 'SquareMeterPerPrintMode': title = 'Printed square meters per print mode'; break;
+    case 'SquareMetersPerPrintMode': title = 'Printed square meters per print mode'; break;
     case 'TopMachinesWithMostPrintVolume': title = 'Top machines with most print volume'; break;
     case 'MediaTypesPerMachine': title = 'Used media types per machine'; break;
     default: title = 'Unknown chart'; break;

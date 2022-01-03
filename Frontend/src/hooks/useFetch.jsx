@@ -11,20 +11,17 @@ const useFetch = (url, requestBody) => {
 
   useEffect(() => {
     const abortController = new AbortController();
-    console.log(`Making a request with url ${url} and request body ${JSON.stringify(requestBody)}`);
     axios.post(baseURL + url, {...requestBody})
       .then(res => {
         if (res.status !== 200) throw Error(res.message);
         return res.data;
       })
       .then(data => {
-        console.log(`Request succeeded: ${JSON.stringify(data)}`);
         setData(data);
         setError(null);
         setIsPending(false);
       })
       .catch(err => {
-        console.log(`Request failed: ${JSON.stringify(err)}`);
         if (err.name === 'AbortError') console.log('fetch aborted')
         else {
           setIsPending(false);
