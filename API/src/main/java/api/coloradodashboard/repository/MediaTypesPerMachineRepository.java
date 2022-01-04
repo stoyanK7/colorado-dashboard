@@ -6,7 +6,6 @@ import api.coloradodashboard.entity.MediaTypesPerMachineEntity;
 import api.coloradodashboard.repository.base.BaseRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -47,7 +46,9 @@ public interface MediaTypesPerMachineRepository extends JpaRepository<MediaTypes
             "AND (:dateFormat is not null)" +
             "GROUP BY m.printerId, m.mediaType " +
             "ORDER BY m.mediaType, m.printerId ASC")
-    List<MediaTypesPerMachineDto> getAllForPeriodNonAggregated(@Param("dateFormat") String dateFormat, @Param("from") Date from, @Param("to") Date to);
+    List<MediaTypesPerMachineDto> getAllForPeriodNonAggregated(String dateFormat,
+                                                               Date from,
+                                                               Date to);
 
     @Query("SELECT new api.coloradodashboard.dto.MediaTypesPerMachineDto(m.mediaType, sum(m.printedSquareMeters)) " +
             "FROM MediaTypesPerMachineEntity m " +
@@ -55,7 +56,8 @@ public interface MediaTypesPerMachineRepository extends JpaRepository<MediaTypes
             "AND (:dateFormat is not null)" +
             "GROUP BY m.mediaType " +
             "ORDER BY SUM(m.printedSquareMeters) ASC")
-    List<MediaTypesPerMachineDto> getAllForPrintersAggregated(@Param("dateFormat") String dateFormat, @Param("printerIds") List<String> printerIds);
+    List<MediaTypesPerMachineDto> getAllForPrintersAggregated(String dateFormat,
+                                                              List<String> printerIds);
 
     @Query("SELECT new api.coloradodashboard.dto.MediaTypesPerMachineDto(m.printerId, m.mediaType, sum(m.printedSquareMeters)) " +
             "FROM MediaTypesPerMachineEntity m " +
@@ -63,7 +65,8 @@ public interface MediaTypesPerMachineRepository extends JpaRepository<MediaTypes
             "AND (:dateFormat is not null)" +
             "GROUP BY m.printerId, m.mediaType " +
             "ORDER BY m.mediaType, m.printerId ASC")
-    List<MediaTypesPerMachineDto> getAllForPrintersNonAggregated(@Param("dateFormat") String dateFormat, @Param("printerIds") List<String> printerIds);
+    List<MediaTypesPerMachineDto> getAllForPrintersNonAggregated(String dateFormat,
+                                                                 List<String> printerIds);
 
     @Query("SELECT new api.coloradodashboard.dto.MediaTypesPerMachineDto(m.mediaType, sum(m.printedSquareMeters)) " +
             "FROM MediaTypesPerMachineEntity m " +
@@ -72,7 +75,10 @@ public interface MediaTypesPerMachineRepository extends JpaRepository<MediaTypes
             "AND (:dateFormat is not null)" +
             "GROUP BY m.mediaType " +
             "ORDER BY SUM(m.printedSquareMeters) DESC")
-    List<MediaTypesPerMachineDto> getAllForPeriodAndPrintersAggregated(@Param("dateFormat") String dateFormat, @Param("from") Date from, @Param("to") Date to, @Param("printerIds") List<String> printerIds);
+    List<MediaTypesPerMachineDto> getAllForPeriodAndPrintersAggregated(String dateFormat,
+                                                                       Date from,
+                                                                       Date to,
+                                                                       List<String> printerIds);
 
     @Query("SELECT new api.coloradodashboard.dto.MediaTypesPerMachineDto(m.printerId, m.mediaType, sum(m.printedSquareMeters)) " +
             "FROM MediaTypesPerMachineEntity m " +
@@ -81,7 +87,10 @@ public interface MediaTypesPerMachineRepository extends JpaRepository<MediaTypes
             "AND (:dateFormat is not null)" +
             "GROUP BY m.printerId, m.mediaType " +
             "ORDER BY m.mediaType, m.printerId ASC")
-    List<MediaTypesPerMachineDto> getAllForPeriodAndPrintersNonAggregated(@Param("dateFormat") String dateFormat, @Param("from") Date from, @Param("to") Date to, @Param("printerIds") List<String> printerIds);
+    List<MediaTypesPerMachineDto> getAllForPeriodAndPrintersNonAggregated(String dateFormat,
+                                                                          Date from,
+                                                                          Date to,
+                                                                          List<String> printerIds);
 
     @Query("SELECT new api.coloradodashboard.dto.PeriodDto(min(m.date), max(m.date)) " +
             "FROM MediaTypesPerMachineEntity m")

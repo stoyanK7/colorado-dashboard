@@ -6,7 +6,6 @@ import api.coloradodashboard.entity.SquareMetersPerPrintModeEntity;
 import api.coloradodashboard.repository.base.BaseRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -17,41 +16,47 @@ public interface SquareMetersPerPrintModeRepository extends JpaRepository<Square
             "FROM SquareMetersPerPrintModeEntity s " +
             "GROUP BY formatted_date, s.printMode " +
             "ORDER BY formatted_date ASC")
-    List<SquareMetersPerPrintModeDto> getAllAggregated(@Param("dateFormat") String dateFormat);
+    List<SquareMetersPerPrintModeDto> getAllAggregated(String dateFormat);
 
     @Query("SELECT new api.coloradodashboard.dto.SquareMetersPerPrintModeDto(DATE_FORMAT(s.date, :dateFormat) AS formatted_date, s.printerId, s.printMode, SUM(s.printedSquareMeters)) " +
             "FROM SquareMetersPerPrintModeEntity s " +
             "GROUP BY formatted_date, s.printerId, s.printMode " +
             "ORDER BY formatted_date ASC")
-    List<SquareMetersPerPrintModeDto> getAllNonAggregated(@Param("dateFormat") String dateFormat);
+    List<SquareMetersPerPrintModeDto> getAllNonAggregated(String dateFormat);
 
     @Query("SELECT new api.coloradodashboard.dto.SquareMetersPerPrintModeDto(DATE_FORMAT(s.date, :dateFormat) AS formatted_date, s.printMode, sum(s.printedSquareMeters)) " +
             "FROM SquareMetersPerPrintModeEntity s " +
             "WHERE s.date BETWEEN :from AND :to " +
             "GROUP BY formatted_date, s.printMode " +
             "ORDER BY formatted_date ASC")
-    List<SquareMetersPerPrintModeDto> getAllForPeriodAggregated(@Param("dateFormat") String dateFormat, @Param("from") Date from, @Param("to") Date to);
+    List<SquareMetersPerPrintModeDto> getAllForPeriodAggregated(String dateFormat,
+                                                                Date from,
+                                                                Date to);
 
     @Query("SELECT new api.coloradodashboard.dto.SquareMetersPerPrintModeDto(DATE_FORMAT(s.date, :dateFormat) AS formatted_date, s.printerId, s.printMode, sum(s.printedSquareMeters)) " +
             "FROM SquareMetersPerPrintModeEntity s " +
             "WHERE s.date BETWEEN :from AND :to " +
             "GROUP BY formatted_date, s.printerId, s.printMode " +
             "ORDER BY formatted_date ASC")
-    List<SquareMetersPerPrintModeDto> getAllForPeriodNonAggregated(@Param("dateFormat") String dateFormat, @Param("from") Date from, @Param("to") Date to);
+    List<SquareMetersPerPrintModeDto> getAllForPeriodNonAggregated(String dateFormat,
+                                                                   Date from,
+                                                                   Date to);
 
     @Query("SELECT new api.coloradodashboard.dto.SquareMetersPerPrintModeDto(DATE_FORMAT(s.date, :dateFormat) AS formatted_date, s.printMode, sum(s.printedSquareMeters)) " +
             "FROM SquareMetersPerPrintModeEntity s " +
             "WHERE s.printerId IN :printerIds " +
             "GROUP BY formatted_date, s.printMode " +
             "ORDER BY formatted_date ASC")
-    List<SquareMetersPerPrintModeDto> getAllForPrintersAggregated(@Param("dateFormat") String dateFormat, @Param("printerIds") List<String> printerIds);
+    List<SquareMetersPerPrintModeDto> getAllForPrintersAggregated(String dateFormat,
+                                                                  List<String> printerIds);
 
     @Query("SELECT new api.coloradodashboard.dto.SquareMetersPerPrintModeDto(DATE_FORMAT(s.date, :dateFormat) AS formatted_date, s.printerId, s.printMode, sum(s.printedSquareMeters)) " +
             "FROM SquareMetersPerPrintModeEntity s " +
             "WHERE s.printerId IN :printerIds " +
             "GROUP BY formatted_date, s.printerId, s.printMode " +
             "ORDER BY formatted_date ASC")
-    List<SquareMetersPerPrintModeDto> getAllForPrintersNonAggregated(@Param("dateFormat") String dateFormat, @Param("printerIds") List<String> printerIds);
+    List<SquareMetersPerPrintModeDto> getAllForPrintersNonAggregated(String dateFormat,
+                                                                     List<String> printerIds);
 
     @Query("SELECT new api.coloradodashboard.dto.SquareMetersPerPrintModeDto(DATE_FORMAT(s.date, :dateFormat) AS formatted_date, s.printMode, sum(s.printedSquareMeters)) " +
             "FROM SquareMetersPerPrintModeEntity s " +
@@ -59,7 +64,10 @@ public interface SquareMetersPerPrintModeRepository extends JpaRepository<Square
             "AND (s.printerId IN :printerIds) " +
             "GROUP BY formatted_date, s.printMode " +
             "ORDER BY formatted_date ASC")
-    List<SquareMetersPerPrintModeDto> getAllForPeriodAndPrintersAggregated(@Param("dateFormat") String dateFormat, @Param("from") Date from, @Param("to") Date to, @Param("printerIds") List<String> printerIds);
+    List<SquareMetersPerPrintModeDto> getAllForPeriodAndPrintersAggregated(String dateFormat,
+                                                                           Date from,
+                                                                           Date to,
+                                                                           List<String> printerIds);
 
     @Query("SELECT new api.coloradodashboard.dto.SquareMetersPerPrintModeDto(DATE_FORMAT(s.date, :dateFormat) AS formatted_date, s.printerId, s.printMode, sum(s.printedSquareMeters)) " +
             "FROM SquareMetersPerPrintModeEntity s " +
@@ -67,7 +75,10 @@ public interface SquareMetersPerPrintModeRepository extends JpaRepository<Square
             "AND (s.printerId IN :printerIds) " +
             "GROUP BY formatted_date, s.printerId, s.printMode " +
             "ORDER BY formatted_date ASC")
-    List<SquareMetersPerPrintModeDto> getAllForPeriodAndPrintersNonAggregated(@Param("dateFormat") String dateFormat, @Param("from") Date from, @Param("to") Date to, @Param("printerIds") List<String> printerIds);
+    List<SquareMetersPerPrintModeDto> getAllForPeriodAndPrintersNonAggregated(String dateFormat,
+                                                                              Date from,
+                                                                              Date to,
+                                                                              List<String> printerIds);
 
     @Query("SELECT new api.coloradodashboard.dto.PeriodDto(min(s.date), max(s.date)) " +
             "FROM SquareMetersPerPrintModeEntity s")

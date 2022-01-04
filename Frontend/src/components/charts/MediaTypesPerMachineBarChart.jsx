@@ -43,8 +43,6 @@ const MediaTypesMerMachineBarChart = ({ data, aggregated }) => {
   return (
     <ResponsiveContainer width='100%' height='100%'>
       <BarChart
-        width={700}
-        height={300}
         data={data}
         margin={{
           top: 20,
