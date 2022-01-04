@@ -14,7 +14,6 @@ import axios from 'axios';
 import getRandomColor from '../../util/getRandomColor';
 
 const CustomTooltip = ({ active, payload }) => {
-  console.log(payload);
   if (active && payload && payload.length) {
     return (
       <div className='colorado-custom-tooltip'>
