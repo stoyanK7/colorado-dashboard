@@ -50,3 +50,10 @@
 .chart {
   height: 100%;
 }
+
+.colorado-custom-tooltip {
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  padding: 10px;
+  box-shadow: var(--box-shadow);
+}

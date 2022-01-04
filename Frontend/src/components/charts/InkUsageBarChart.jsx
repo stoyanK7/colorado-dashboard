@@ -8,7 +8,22 @@ import {
   XAxis,
   YAxis
 } from 'recharts';
-import React, { useEffect } from 'react';
+
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className='colorado-custom-tooltip'>
+        <p className='label'>{`Date: ${payload[0].payload['Date']}`}</p>
+        {payload[0].payload['Printer id'] && <p className='label'>{`Printer id: ${payload[0].payload['Printer id']}`}</p>}
+        {payload.map(obj => {
+          return <p className='label' style={{ color: obj.fill }}>{`${obj.dataKey}: ${obj.value}`}</p>
+        })}
+      </div>
+    );
+  };
+
+  return null;
+};
 
 const InkUsageBarChart = ({ data, aggregated }) => {
   return (
@@ -16,28 +31,21 @@ const InkUsageBarChart = ({ data, aggregated }) => {
       <BarChart
         data={data}
         margin={{
-          top: 15,
-          right: 50,
-          left: 30,
-          bottom: 50
-        }}
-      >
+          top: 35,
+          right: 70,
+          left: 70,
+          bottom: 70
+        }}>
         <CartesianGrid strokeDasharray='3 3' />
         <XAxis
           dataKey='Date'
           textAnchor='start'
           angle={40}
-          xAxisId={!aggregated ? 1 : 0}
-          // TODO: this hides the tooltip for some reason
-          // allowDuplicatedCategory={false} 
-          />
-        {!aggregated && <XAxis dataKey="Printer id" xAxisId={0} />}
+          xAxisId={!aggregated ? 1 : 0} />
+        {!aggregated && <XAxis dataKey='Printer id' xAxisId={0} />}
 
-        <YAxis unit='L' type='number'
-        // TODO: set this with maxvalue to fix overflowing labels
-        // domain={[0, maxValue]} 
-        />
-        <Tooltip />
+        <YAxis unit='L' type='number' />
+        <Tooltip content={<CustomTooltip />} />
         <Legend verticalAlign='top' iconType='circle' />
         <Bar dataKey='Black' isAnimationActive={false} stackId='a' fill='#333333' />
         <Bar dataKey='Cyan' isAnimationActive={false} stackId='a' fill='#00FFFF' />
