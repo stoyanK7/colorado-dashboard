@@ -13,7 +13,7 @@ const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
       <div className='colorado-custom-tooltip'>
-        <p className='label'>{`Date: ${payload[0].payload['Date']}`}</p>
+        {payload[0].payload['Date'] && <p className='label'>{`Date: ${payload[0].payload['Date']}`}</p>}
         {payload[0].payload['Printer id'] && <p className='label'>{`Printer id: ${payload[0].payload['Printer id']}`}</p>}
         {payload.map(obj => {
           return <p className='label' style={{ color: obj.fill }}>{`${obj.dataKey}: ${obj.value}`}</p>
@@ -43,7 +43,6 @@ const InkUsageBarChart = ({ data, aggregated }) => {
           angle={40}
           xAxisId={!aggregated ? 1 : 0} />
         {!aggregated && <XAxis dataKey='Printer id' xAxisId={0} />}
-
         <YAxis unit='L' type='number' />
         <Tooltip content={<CustomTooltip />} />
         <Legend verticalAlign='top' iconType='circle' />
