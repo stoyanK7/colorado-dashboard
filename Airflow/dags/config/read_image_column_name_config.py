@@ -1,9 +1,13 @@
 #Image table
 ULLID = "ullid"
 ACCOUNTED_INK_BLACK = "accountedinkblack"
+ACCOUNTED_INK_BLACK_UNIT = "accountedinkblackunit"
 ACCOUNTED_INK_CYAN = "accountedinkcyan"
+ACCOUNTED_INK_CYAN_UNIT = "accountedinkcyanunit"
 ACCOUNTED_INK_MAGENTA = "accountedinkmagenta"
+ACCOUNTED_INK_MAGENTA_UNIT = "accountedinkmagentaunit"
 ACCOUNTED_INK_YELLOW = "accountedinkyellow"
+ACCOUNTED_INK_YELLOW_UNIT = "accountedinkyellowunit"
 DATE = "date"
 IMAGE_LENGTH = "imagelength"
 IMAGE_WIDTH = "imagewidth"

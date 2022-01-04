@@ -1,6 +1,8 @@
 import logging
 
 import pandas as pd
+import re
+
 import os
 from airflow.models.variable import Variable
 
@@ -38,7 +40,11 @@ class ReadTasks():
             return
 
         # Get file data (add machine ids)
-        data = ReadTasks._get_files_to_data_frames(new_files, changed_files, image_file_directory_extension, config.read_image_column_name_config.MACHINEID)
+        # Get all data files in a list
+        dataframes = ReadTasks._get_files_to_data_frames(new_files, changed_files, image_file_directory_extension, config.read_image_column_name_config.MACHINEID)
+
+        # fix dataframes columns and concatenation them
+        data = ReadTasks._concat_dataframes(dataframes)
 
         # Change col names
         ReadTasks._change_col_names(data, read_image_col_name_constants)
@@ -66,13 +72,18 @@ class ReadTasks():
             return
 
         # Get file data (add machine ids)
-        data = ReadTasks._get_files_to_data_frames(new_files, changed_files, media_prepare_file_directory_extension, read_media_prepare_db_col_name_constants.MACHINEID)
+        # Get all data files in a list
+        dataframes = ReadTasks._get_files_to_data_frames(new_files, changed_files, media_prepare_file_directory_extension, read_media_prepare_db_col_name_constants.MACHINEID)
+
+        # fix dataframes columns and concatenation them
+        data = ReadTasks._concat_dataframes(dataframes)
 
         # Change col names
         ReadTasks._change_col_names(data, read_media_prepare_schema_col_name_constants)
 
         # Insert to database
         ReadTasks._insert_into_db(data, read_table_name_config.READ_MEDIA_PREPARE)
+
     @staticmethod
     def read_print_cycle():
         rsync_directory = Variable.get("rsync_file_directory")
@@ -93,14 +104,63 @@ class ReadTasks():
             return
 
         # Get file data (add machine ids)
-        data = ReadTasks._get_files_to_data_frames(new_files, changed_files, print_cycle_file_directory_extension,
+        # Get all data files in a list
+        dataframes = ReadTasks._get_files_to_data_frames(new_files, changed_files, print_cycle_file_directory_extension,
                                                    read_print_cycle_db_col_name_constants.MACHINEID)
+
+        # fix dataframes columns and concatenation them
+        data = ReadTasks._concat_dataframes(dataframes)
 
         # Change col names
         ReadTasks._change_col_names(data, read_print_cycle_schema_col_name_constants)
 
         # Insert to database
         ReadTasks._insert_into_db(data, read_table_name_config.READ_PRINT_CYCLE)
+
+    @staticmethod
+    def _add_unit_columns(data):
+        data_to_modify = data.copy()
+        for col_name in data_to_modify.columns:
+            if "[" in col_name and "]" in col_name:
+
+                # Get the unit
+                unit = re.search(".+\[(.+)\](.+)?", col_name).group(1)
+
+                # Get the name without the unit
+                name_without_unit = re.search("(.+)\[.+\](.+)?", col_name).group(1)
+
+                # Create a column name from the unit column based on the ink column
+                new_col_name = re.search("(\D+)\[", col_name).group(1) + "Unit"
+                new_column_to_lower = new_col_name.lower()
+
+                # Get the index of the future unit column
+                index_no = data_to_modify.columns.get_loc(col_name)
+                new_col_index = index_no + 1
+
+                # Removes units from the column's name
+                data_to_modify = data_to_modify.rename(columns={col_name: name_without_unit})
+
+                # Check if column exists
+                if data_to_modify.columns[new_col_index] != new_col_name:
+
+                    # Insert the new column at the appropriate index and sets the value
+                    data_to_modify.insert(new_col_index, new_column_to_lower, unit)
+
+        return data_to_modify
+
+    @staticmethod
+    def _concat_dataframes(dataframe_list):
+        dataframes = []
+
+        for dataframe in dataframe_list:
+
+            # Adding unit columns to the dataframe
+            modified_df = ReadTasks._add_unit_columns(dataframe)
+
+            # Appends the modified df to the list
+            dataframes.append(modified_df)
+
+        return pd.concat(dataframes, ignore_index=True)
 
     @staticmethod
     def _make_snapshot(source_dir, target_dir, extension_to_folder):
@@ -137,7 +197,7 @@ class ReadTasks():
         return any_new
 
     @staticmethod
-    def _get_files_to_data_frames(new_files, changed_files, identifier_column_name, machine_id_column_name) -> pd.DataFrame:
+    def _get_files_to_data_frames(new_files, changed_files, identifier_column_name, machine_id_column_name):
         # get files
         file_reader = FileReader()
         dataframes = []
@@ -167,7 +227,7 @@ class ReadTasks():
                 # logging.info(f"Adding machine id column with value {int(machine_id)}")
                 df_all[machine_id_column_name] = int(machine_id)
                 dataframes.append(df_all)
-        return pd.concat(dataframes, ignore_index=True)
+        return dataframes
 
     @staticmethod
     def _change_col_names(data, constants_file):
