@@ -1,9 +1,0 @@
-INSERT INTO top_machines_with_most_print_volume ( id, date, printed_square_meters, printer_id) VALUES (1,'2021-12-10',100,700 );
-INSERT INTO top_machines_with_most_print_volume ( id, date, printed_square_meters, printer_id) VALUES (2,'2021-12-10',105,701 );
-INSERT INTO top_machines_with_most_print_volume ( id, date, printed_square_meters, printer_id) VALUES (3,'2021-12-10',102,702 );
-INSERT INTO top_machines_with_most_print_volume ( id, date, printed_square_meters, printer_id) VALUES (4,'2021-12-11',23,700 );
-INSERT INTO top_machines_with_most_print_volume ( id, date, printed_square_meters, printer_id) VALUES (5,'2021-12-11',50,701 );
-INSERT INTO top_machines_with_most_print_volume ( id, date, printed_square_meters, printer_id) VALUES (6,'2021-12-11',92,702 );
-INSERT INTO top_machines_with_most_print_volume ( id, date, printed_square_meters, printer_id) VALUES (7,'2021-12-12',73,700 );
-INSERT INTO top_machines_with_most_print_volume ( id, date, printed_square_meters, printer_id) VALUES (8,'2021-12-12',88,701 );
-INSERT INTO top_machines_with_most_print_volume ( id, date, printed_square_meters, printer_id) VALUES (9,'2021-12-12',44,702 );
