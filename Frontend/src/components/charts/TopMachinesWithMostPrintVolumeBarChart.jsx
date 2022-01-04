@@ -29,7 +29,6 @@ const CustomTooltip = ({ active, payload }) => {
   return null;
 };
 
-
 const TopMachinesWithMostPrintVolumeBarChart = ({ data, aggregated }) => {
   // Convert data into readable format for Recharts
   let result = Object.values(data.reduce((r, o) => {

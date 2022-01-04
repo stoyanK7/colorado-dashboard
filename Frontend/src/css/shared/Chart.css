@@ -10,7 +10,7 @@
   -moz-transition: var(--chart-transition);
   -ms-transition: var(--chart-transition);
   transition: var(--chart-transition);
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .chart-wrapper-1 h1 {
