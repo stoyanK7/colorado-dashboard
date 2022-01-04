@@ -11,9 +11,9 @@ import {
 import { useEffect, useState } from 'react';
 
 import axios from 'axios';
-import colors from '../../util/colors';
+import getRandomColor from '../../util/getRandomColor';
 
-const CustomTooltip = ({ active, payload, label }) => {
+const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
     return (
       <div className='colorado-custom-tooltip'>
@@ -66,6 +66,7 @@ const TopMachinesWithMostPrintVolumeBarChart = ({ data, aggregated }) => {
           dataKey='Printer id'
           textAnchor='start'
           angle={40}
+          allowDuplicatedCategory={aggregated ? true : false}
           xAxisId={!aggregated ? 1 : 0} />
         {!aggregated && <XAxis dataKey='Date' xAxisId={0} />}
         <YAxis unit='SqM' type='number' />
@@ -76,7 +77,7 @@ const TopMachinesWithMostPrintVolumeBarChart = ({ data, aggregated }) => {
             dataKey={key}
             stackId='a'
             isAnimationActive={false}
-            fill={colors[Math.floor(Math.random() * colors.length)]}
+            fill={getRandomColor()}
             key={key} />
         })}
       </BarChart>

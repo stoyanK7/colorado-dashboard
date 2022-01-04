@@ -13,4 +13,8 @@ const colors = ["#000000", "#1CE6FF", "#FF34FF", "#FF4A46", "#008941", "#006FA6"
   "#5B4534", "#404E55", "#0089A3", "#CB7E98", "#A4E804", "#324E72", "#6A3A4C"
 ];
 
-export default colors;
+const getRandomColor = () => {
+  return colors[Math.floor(Math.random() * colors.length)];
+};
+
+export default getRandomColor;

@@ -9,7 +9,7 @@ import {
   YAxis
 } from 'recharts';
 
-const CustomTooltip = ({ active, payload, label }) => {
+const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
     return (
       <div className='colorado-custom-tooltip'>
@@ -41,6 +41,7 @@ const InkUsageBarChart = ({ data, aggregated }) => {
           dataKey='Date'
           textAnchor='start'
           angle={40}
+          allowDuplicatedCategory={aggregated ? true : false}
           xAxisId={!aggregated ? 1 : 0} />
         {!aggregated && <XAxis dataKey='Printer id' xAxisId={0} />}
         <YAxis unit='L' type='number' />
