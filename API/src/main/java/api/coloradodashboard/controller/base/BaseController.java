@@ -31,7 +31,7 @@ public class BaseController<T> {
         return createResponse(service.getAllForPeriod(aggregated, bin, request.getFrom(), request.getTo()));
     }
 
-    @PostMapping("/Printer")
+    @PostMapping("/Printers")
     public ResponseEntity<List<T>> getAllForPrinters(@RequestParam(value = "aggregated", defaultValue = "true") boolean aggregated,
                                                      @RequestParam(value = "bin", defaultValue = "day") String bin,
                                                      @RequestBody PrinterIdsDto request) {
