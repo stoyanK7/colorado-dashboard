@@ -57,7 +57,7 @@ public interface TopMachinesWithMostPrintVolumeRepository extends JpaRepository<
             "FROM TopMachinesWithMostPrintVolumeEntity t " +
             "WHERE t.printerId IN :printerIds " +
             "GROUP BY formatted_date, t.printerId " +
-            "ORDER BY sum(t.printedSquareMeters) DESC")
+            "ORDER BY formatted_date ASC, sum(t.printedSquareMeters) DESC ")
     List<TopMachinesWithMostPrintVolumeDto> getAllForPrintersNonAggregated(String dateFormat,
                                                                            List<String> printerIds);
 

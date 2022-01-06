@@ -28,12 +28,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 @SpringBootTest
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class InkUsageControllerTest {
+class TopMachinesWithMostPrintVolumeControllerTest {
     @Autowired
     private MockMvc mockMvc;
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
@@ -41,72 +40,72 @@ class InkUsageControllerTest {
     @BeforeAll
     public void setUp(@Autowired DataSource dataSource) throws Exception {
         Connection conn = dataSource.getConnection();
-        ScriptUtils.executeSqlScript(conn, new ClassPathResource("sql/InkUsageTestData.sql"));
+        ScriptUtils.executeSqlScript(conn, new ClassPathResource("sql/TopMachinesWithMostPrintVolumeTestData.sql"));
     }
 
     @Test
-    @DisplayName("UNIT: POST /InkUsage?aggregated=true returns correct data.")
+    @DisplayName("UNIT: POST /TopMachinesWithMostPrintVolume?aggregated=true returns correct data.")
     void getAllAggregated() throws Exception {
-        mockMvc.perform(post("/InkUsage?aggregated=true"))
+        mockMvc.perform(post("/TopMachinesWithMostPrintVolume?aggregated=true"))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/01','Cyan':5.5,'Magenta':9.5,'Yellow':9.0,'Black':12.0},{'Date':'2021/Dec/02','Cyan':11.5,'Magenta':4.0,'Yellow':14.5,'Black':7.0},{'Date':'2021/Dec/03','Cyan':11.0,'Magenta':8.0,'Yellow':2.0,'Black':2.5}]"))
+                .andExpect(content().json("[{'Printer id':'701','Printed square meters':10.5},{'Printer id':'700','Printed square meters':6.5},{'Printer id':'702','Printed square meters':6.0}]"))
                 .andReturn();
     }
 
     @Test
-    @DisplayName("UNIT: POST /InkUsage?aggregated=true&bin=week returns correct data.")
-    void getAllAggregatedPerWeek() throws Exception {
-        mockMvc.perform(post("/InkUsage?aggregated=true&bin=week"))
+    @DisplayName("UNIT: POST /TopMachinesWithMostPrintVolume?aggregated=false&bin=week returns correct data.")
+    void getAllNonAggregatedPerWeek() throws Exception {
+        mockMvc.perform(post("/TopMachinesWithMostPrintVolume?aggregated=false&bin=week"))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/48','Cyan':28.0,'Magenta':21.5,'Yellow':25.5,'Black':21.5}]"))
+                .andExpect(content().json("[{'Date':'2021/48','Printer id':'701','Printed square meters':10.5},{'Date':'2021/48','Printer id':'700','Printed square meters':6.5},{'Date':'2021/48','Printer id':'702','Printed square meters':6.0}]\n"))
                 .andReturn();
     }
 
     @Test
-    @DisplayName("UNIT: POST /InkUsage?aggregated=false returns correct data.")
+    @DisplayName("UNIT: POST /'TopMachinesWithMostPrintVolume?aggregated=false returns correct data.")
     void getAllNonAggregated() throws Exception {
-        mockMvc.perform(post("/InkUsage?aggregated=false"))
+        mockMvc.perform(post("/TopMachinesWithMostPrintVolume?aggregated=false"))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/01','Printer id':'700','Cyan':1.5,'Magenta':2.5,'Yellow':3.5,'Black':4.5},{'Date':'2021/Dec/01','Printer id':'701','Cyan':1.0,'Magenta':2.5,'Yellow':1.5,'Black':5.5},{'Date':'2021/Dec/01','Printer id':'702','Cyan':3.0,'Magenta':4.5,'Yellow':4.0,'Black':2.0},{'Date':'2021/Dec/02','Printer id':'700','Cyan':2.5,'Magenta':0.5,'Yellow':5.5,'Black':3.0},{'Date':'2021/Dec/02','Printer id':'701','Cyan':5.5,'Magenta':2.5,'Yellow':3.5,'Black':1.0},{'Date':'2021/Dec/02','Printer id':'702','Cyan':3.5,'Magenta':1.0,'Yellow':5.5,'Black':3.0},{'Date':'2021/Dec/03','Printer id':'700','Cyan':4.5,'Magenta':5.5,'Yellow':0.5,'Black':1.5},{'Date':'2021/Dec/03','Printer id':'701','Cyan':4.0,'Magenta':1.0,'Yellow':0.5,'Black':0.5},{'Date':'2021/Dec/03','Printer id':'702','Cyan':2.5,'Magenta':1.5,'Yellow':1.0,'Black':0.5}]"))
+                .andExpect(content().json("[{'Date':'2021/Dec/02','Printer id':'701','Printed square meters':5.0},{'Date':'2021/Dec/02','Printer id':'700','Printed square meters':3.0},{'Date':'2021/Dec/03','Printer id':'701','Printed square meters':3.0},{'Date':'2021/Dec/01','Printer id':'701','Printed square meters':2.5},{'Date':'2021/Dec/01','Printer id':'702','Printed square meters':2.0},{'Date':'2021/Dec/02','Printer id':'702','Printed square meters':2.0},{'Date':'2021/Dec/03','Printer id':'700','Printed square meters':2.0},{'Date':'2021/Dec/03','Printer id':'702','Printed square meters':2.0},{'Date':'2021/Dec/01','Printer id':'700','Printed square meters':1.5}]"))
                 .andReturn();
     }
 
     @Test
-    @DisplayName("UNIT: POST /InkUsage/Period?aggregated=true returns correct data.")
+    @DisplayName("UNIT: POST /TopMachinesWithMostPrintVolume/Period?aggregated=true returns correct data.")
     void getAllForPeriodAggregated() throws Exception {
         PeriodDto request
                 = new PeriodDto(
                 formatter.parse("2021-12-02"),
                 formatter.parse("2021-12-03"));
 
-        mockMvc.perform(post("/InkUsage/Period?aggregated=true")
+        mockMvc.perform(post("/TopMachinesWithMostPrintVolume/Period?aggregated=true")
                         .content(asJsonString(request))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/02','Cyan':11.5,'Magenta':4.0,'Yellow':14.5,'Black':7.0},{'Date':'2021/Dec/03','Cyan':11.0,'Magenta':8.0,'Yellow':2.0,'Black':2.5}]"))
+                .andExpect(content().json("[{'Printer id':'701','Printed square meters':8.0},{'Printer id':'700','Printed square meters':5.0},{'Printer id':'702','Printed square meters':4.0}]"))
                 .andReturn();
     }
 
     @Test
-    @DisplayName("UNIT: POST /InkUsage/Period?aggregated=false returns correct data.")
+    @DisplayName("UNIT: POST /TopMachinesWithMostPrintVolume/Period?aggregated=false returns correct data.")
     void getAllForPeriodNonAggregated() throws Exception {
         PeriodDto request
                 = new PeriodDto(
                 formatter.parse("2021-12-02"),
                 formatter.parse("2021-12-03"));
 
-        mockMvc.perform(post("/InkUsage/Period?aggregated=false")
+        mockMvc.perform(post("/TopMachinesWithMostPrintVolume/Period?aggregated=false")
                         .content(asJsonString(request))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/02','Printer id':'700','Cyan':2.5,'Magenta':0.5,'Yellow':5.5,'Black':3.0},{'Date':'2021/Dec/02','Printer id':'701','Cyan':5.5,'Magenta':2.5,'Yellow':3.5,'Black':1.0},{'Date':'2021/Dec/02','Printer id':'702','Cyan':3.5,'Magenta':1.0,'Yellow':5.5,'Black':3.0},{'Date':'2021/Dec/03','Printer id':'700','Cyan':4.5,'Magenta':5.5,'Yellow':0.5,'Black':1.5},{'Date':'2021/Dec/03','Printer id':'701','Cyan':4.0,'Magenta':1.0,'Yellow':0.5,'Black':0.5},{'Date':'2021/Dec/03','Printer id':'702','Cyan':2.5,'Magenta':1.5,'Yellow':1.0,'Black':0.5}]"))
+                .andExpect(content().json("[{'Date':'2021/Dec/02','Printer id':'701','Printed square meters':5.0},{'Date':'2021/Dec/02','Printer id':'700','Printed square meters':3.0},{'Date':'2021/Dec/02','Printer id':'702','Printed square meters':2.0},{'Date':'2021/Dec/03','Printer id':'701','Printed square meters':3.0},{'Date':'2021/Dec/03','Printer id':'700','Printed square meters':2.0},{'Date':'2021/Dec/03','Printer id':'702','Printed square meters':2.0}]"))
                 .andReturn();
     }
 
     @Test
-    @DisplayName("UNIT: POST /InkUsage/PeriodAndPrinters?aggregated=true returns correct data.")
+    @DisplayName("UNIT: POST /TopMachinesWithMostPrintVolume/PeriodAndPrinters?aggregated=true returns correct data.")
     void getAllForPeriodAndPrintersAggregated() throws Exception {
         PeriodAndPrinterIdsDto request
                 = new PeriodAndPrinterIdsDto(
@@ -114,17 +113,17 @@ class InkUsageControllerTest {
                 formatter.parse("2021-12-03"),
                 Arrays.asList("700", "702"));
 
-        mockMvc.perform(post("/InkUsage/PeriodAndPrinters?aggregated=true")
+        mockMvc.perform(post("/TopMachinesWithMostPrintVolume/PeriodAndPrinters?aggregated=true")
                         .content(asJsonString(request))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/02','Cyan':6.0,'Magenta':1.5,'Yellow':11.0,'Black':6.0},{'Date':'2021/Dec/03','Cyan':7.0,'Magenta':7.0,'Yellow':1.5,'Black':2.0}]"))
+                .andExpect(content().json("[{'Printer id':'700','Printed square meters':5.0},{'Printer id':'702','Printed square meters':4.0}]"))
                 .andReturn();
     }
 
     @Test
-    @DisplayName("UNIT: POST /InkUsage/PeriodAndPrinters?aggregated=false returns correct data.")
+    @DisplayName("UNIT: POST /TopMachinesWithMostPrintVolume/PeriodAndPrinters?aggregated=false returns correct data.")
     void getAllForPeriodAndPrintersNonAggregated() throws Exception {
         PeriodAndPrinterIdsDto request
                 = new PeriodAndPrinterIdsDto(
@@ -132,30 +131,39 @@ class InkUsageControllerTest {
                 formatter.parse("2021-12-03"),
                 Arrays.asList("700", "702"));
 
-        mockMvc.perform(post("/InkUsage/PeriodAndPrinters?aggregated=false")
+        mockMvc.perform(post("/TopMachinesWithMostPrintVolume/PeriodAndPrinters?aggregated=false")
                         .content(asJsonString(request))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/02','Printer id':'700','Cyan':2.5,'Magenta':0.5,'Yellow':5.5,'Black':3.0},{'Date':'2021/Dec/02','Printer id':'702','Cyan':3.5,'Magenta':1.0,'Yellow':5.5,'Black':3.0},{'Date':'2021/Dec/03','Printer id':'700','Cyan':4.5,'Magenta':5.5,'Yellow':0.5,'Black':1.5},{'Date':'2021/Dec/03','Printer id':'702','Cyan':2.5,'Magenta':1.5,'Yellow':1.0,'Black':0.5}]"))
+                .andExpect(content().json("[{'Date':'2021/Dec/02','Printer id':'700','Printed square meters':3.0},{'Date':'2021/Dec/02','Printer id':'702','Printed square meters':2.0},{'Date':'2021/Dec/03','Printer id':'700','Printed square meters':2.0},{'Date':'2021/Dec/03','Printer id':'702','Printed square meters':2.0}]"))
                 .andReturn();
     }
 
     @Test
-    @DisplayName("UNIT: GET /InkUsage/AvailableTimePeriod returns correct data.")
+    @DisplayName("UNIT: GET /TopMachinesWithMostPrintVolume/AvailableTimePeriod returns correct data.")
     void getAvailableTimePeriod() throws Exception {
-        mockMvc.perform(get("/InkUsage/AvailableTimePeriod"))
+        mockMvc.perform(get("/TopMachinesWithMostPrintVolume/AvailableTimePeriod"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{'from':'2021-12-01','to':'2021-12-03'}"))
                 .andReturn();
     }
 
     @Test
-    @DisplayName("UNIT: GET /InkUsage/AvailablePrinters returns correct data.")
+    @DisplayName("UNIT: GET /TopMachinesWithMostPrintVolume/AvailablePrinters returns correct data.")
     void getAvailablePrinters() throws Exception {
-        mockMvc.perform(get("/InkUsage/AvailablePrinters"))
+        mockMvc.perform(get("/TopMachinesWithMostPrintVolume/AvailablePrinters"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{'printerIds':['700','701','702']}"))
+                .andReturn();
+    }
+
+    @Test
+    @DisplayName("UNIT: GET /TopMachinesWithMostPrintVolume/ChartDataKeys returns correct data.")
+    void getChartDataKeys() throws Exception {
+        mockMvc.perform(get("/TopMachinesWithMostPrintVolume/ChartDataKeys"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("{'dataKeys':['700','701','702']}"))
                 .andReturn();
     }
 }

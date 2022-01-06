@@ -53,6 +53,15 @@ class MediaCategoryUsageControllerTest {
     }
 
     @Test
+    @DisplayName("UNIT: POST /MediaCategoryUsage?aggregated=true&bin=week returns correct data.")
+    void getAllAggregatedPerWeek() throws Exception {
+        mockMvc.perform(post("/MediaCategoryUsage?aggregated=true&bin=week"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[{'Date':'2021/48','Media category':'Canvas','Printed square meters':6.5},{'Date':'2021/48','Media category':'Film','Printed square meters':9.0},{'Date':'2021/48','Media category':'Paper','Printed square meters':5.5},{'Date':'2021/48','Media category':'Polymeric & cast vinyl','Printed square meters':3.5},{'Date':'2021/48','Media category':'Textile','Printed square meters':5.0}]"))
+                .andReturn();
+    }
+
+    @Test
     @DisplayName("UNIT: POST /MediaCategoryUsage?aggregated=false returns correct data.")
     void getAllNonAggregated() throws Exception {
         mockMvc.perform(post("/MediaCategoryUsage?aggregated=false"))
