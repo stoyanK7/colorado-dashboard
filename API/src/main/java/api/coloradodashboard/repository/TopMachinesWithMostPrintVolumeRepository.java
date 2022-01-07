@@ -10,6 +10,10 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Repository providing access to the table with all data for 'Top machines with
+ * most print volume' chart.
+ */
 public interface TopMachinesWithMostPrintVolumeRepository extends JpaRepository<TopMachinesWithMostPrintVolumeEntity, Long>,
         BaseRepository<TopMachinesWithMostPrintVolumeDto> {
     @Query("SELECT new api.coloradodashboard.dto.TopMachinesWithMostPrintVolumeDto(t.printerId, SUM(t.printedSquareMeters)) " +

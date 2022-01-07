@@ -11,8 +11,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Repository providing access to the table with all data for <b>Media types per
- * machine</b>.
+ * Repository providing access to the table with all data for 'Media types per
+ * machine' chart.
  */
 public interface MediaTypesPerMachineRepository extends JpaRepository<MediaTypesPerMachineEntity, Long>,
         BaseRepository<MediaTypesPerMachineDto> {

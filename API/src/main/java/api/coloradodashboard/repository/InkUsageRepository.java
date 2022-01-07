@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Repository providing access to the table with all data for <b>Ink usage</b>.
+ * Repository providing access to the table with all data for 'Ink usage' chart.
  */
 public interface InkUsageRepository extends JpaRepository<InkUsageEntity, Long>,
         BaseRepository<InkUsageDto> {

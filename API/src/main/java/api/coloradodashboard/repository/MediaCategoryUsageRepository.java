@@ -11,8 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Repository providing access to the table with all data for <b>Media categories
- * usage</b>.
+ * Repository providing access to the table with all data for 'Media categories usage' chart.
  */
 public interface MediaCategoryUsageRepository extends JpaRepository<MediaCategoryUsageEntity, Long>,
         BaseRepository<MediaCategoryUsageDto> {

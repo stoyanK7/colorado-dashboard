@@ -10,6 +10,10 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Repository providing access to the table with all data for 'Square meters per
+ * print mode' chart.
+ */
 public interface SquareMetersPerPrintModeRepository extends JpaRepository<SquareMetersPerPrintModeEntity, Long>,
         BaseRepository<SquareMetersPerPrintModeDto> {
     @Query("SELECT new api.coloradodashboard.dto.SquareMetersPerPrintModeDto(DATE_FORMAT(s.date, :dateFormat) AS formatted_date, s.printMode, SUM(s.printedSquareMeters)) " +
