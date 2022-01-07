@@ -1,5 +1,4 @@
 const CustomTooltip = ({ active, payload, field: index, printer }) => {
-  console.log(payload[0])
   if (active && payload && payload.length) {
     return (
       <div className='colorado-custom-tooltip'>

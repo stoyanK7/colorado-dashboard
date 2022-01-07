@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import axios from 'axios';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import HoverTooltip from './HoverTooltip';
 
 const TimespanFilter = ({ chartPath, to, setTo, from, setFrom }) => {
   const [min, setMin] = useState();
@@ -30,9 +31,11 @@ const TimespanFilter = ({ chartPath, to, setTo, from, setFrom }) => {
     <>
       {from && to &&
         <div className='timespan'>
-          <div className='from'>
+          <div className='from' >
+          <HoverTooltip />
             <input
               type='date'
+              data-tip='Start date'
               defaultValue={from}
               min={min}
               max={max}
@@ -46,9 +49,10 @@ const TimespanFilter = ({ chartPath, to, setTo, from, setFrom }) => {
             <FontAwesomeIcon icon={faCalendarAlt} className='fa-calendar-alt' />
           </div>
           <span>to</span>
-          <div className='to'>
+          <div className='to' data-tip='Ending date'>
             <input
               type='date'
+              data-tip='End date'
               defaultValue={to}
               min={min}
               max={max}
