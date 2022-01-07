@@ -71,7 +71,7 @@ const SquareMeterPerPrintModeBarChart = ({ data, aggregated }) => {
             dataKey={key}
             stackId='a'
             isAnimationActive={false}
-            fill={getRandomColor()}
+            fill={getRandomColor('palette1', chartDataKeys.indexOf(key))}
             key={key} />
         })}
       </BarChart>

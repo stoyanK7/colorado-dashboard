@@ -71,7 +71,7 @@ const TopMachinesWithMostPrintVolumeBarChart = ({ data, aggregated }) => {
             dataKey={key}
             stackId='a'
             isAnimationActive={false}
-            fill={getRandomColor()}
+            fill={getRandomColor('palette9', chartDataKeys.indexOf(key))}
             key={key} />
         })}
       </BarChart>

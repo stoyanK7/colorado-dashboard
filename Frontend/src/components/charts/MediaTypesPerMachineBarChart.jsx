@@ -54,7 +54,7 @@ const MediaTypesMerMachineBarChart = ({ data, aggregated }) => {
           dataKey='Printed square meters'
           isAnimationActive={false}
           stackId='a'
-          fill={getRandomColor()} />
+          fill={getRandomColor('palette5', 2)} />
       </BarChart>
     </ResponsiveContainer>
   );

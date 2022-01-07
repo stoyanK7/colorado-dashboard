@@ -21,7 +21,7 @@ const CustomTooltip = ({ active, payload }) => {
         {payload[0].payload['Date'] && <p className='label'>{`Date: ${payload[0].payload['Date']}`}</p>}
         {payload[0].payload['Printer id'] && <p className='label'>{`Printer id: ${payload[0].payload['Printer id']}`}</p>}
         {payload.map(obj => {
-          return <p className='label' style={{ color: obj.fill }}>{`${obj.dataKey}: ${obj.value}`}</p>
+          return <p className='label' style={{ color: obj.fill }} key={obj.dataKey}>{`${obj.dataKey}: ${obj.value}`}</p>
         })}
       </div>
     );
@@ -72,7 +72,7 @@ const MediaCategoryUsageBarChart = ({ data, aggregated }) => {
             dataKey={key}
             stackId='a'
             isAnimationActive={false}
-            fill={getRandomColor()}
+            fill={getRandomColor('palette3', chartDataKeys.indexOf(key))}
             key={key} />
         })}
       </BarChart>
