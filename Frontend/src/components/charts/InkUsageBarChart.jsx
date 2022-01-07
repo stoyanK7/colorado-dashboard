@@ -8,22 +8,7 @@ import {
   XAxis,
   YAxis
 } from 'recharts';
-
-const CustomTooltip = ({ active, payload }) => {
-  if (active && payload && payload.length) {
-    return (
-      <div className='colorado-custom-tooltip'>
-        {payload[0].payload['Date'] && <p className='label'>{`Date: ${payload[0].payload['Date']}`}</p>}
-        {payload[0].payload['Printer id'] && <p className='label'>{`Printer id: ${payload[0].payload['Printer id']}`}</p>}
-        {payload.map(obj => {
-          return <p className='label' style={{ color: obj.fill }}>{`${obj.dataKey}: ${obj.value}`}</p>
-        })}
-      </div>
-    );
-  };
-
-  return null;
-};
+import CustomTooltip from '../shared/CustomTooltip';
 
 const InkUsageBarChart = ({ data, aggregated }) => {
   return (
@@ -45,7 +30,11 @@ const InkUsageBarChart = ({ data, aggregated }) => {
           xAxisId={!aggregated ? 1 : 0} />
         {!aggregated && <XAxis dataKey='Printer id' xAxisId={0} />}
         <YAxis unit='L' type='number' />
-        <Tooltip content={<CustomTooltip />} />
+        <Tooltip
+          content={
+            <CustomTooltip
+              field='Date'
+              printer={(obj) => `${obj.dataKey}: ${obj.value}`} />} />
         <Legend verticalAlign='top' iconType='circle' />
         <Bar dataKey='Black' isAnimationActive={false} stackId='a' fill='#333333' />
         <Bar dataKey='Cyan' isAnimationActive={false} stackId='a' fill='#00FFFF' />

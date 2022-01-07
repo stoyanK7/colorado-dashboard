@@ -13,22 +13,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import getRandomColor from '../../util/getRandomColor';
 import convertData from '../../util/convertData';
-
-const CustomTooltip = ({ active, payload }) => {
-  if (active && payload && payload.length) {
-    return (
-      <div className='colorado-custom-tooltip'>
-        {payload[0].payload['Date'] && <p className='label'>{`Date: ${payload[0].payload['Date']}`}</p>}
-        {payload[0].payload['Printer id'] && <p className='label'>{`Printer id: ${payload[0].payload['Printer id']}`}</p>}
-        {payload.map(obj => {
-          return <p className='label' style={{ color: obj.fill }}>{`Printed square meters: ${obj.value}`}</p>
-        })}
-      </div>
-    );
-  };
-
-  return null;
-};
+import CustomTooltip from '../shared/CustomTooltip';
 
 const TopMachinesWithMostPrintVolumeBarChart = ({ data, aggregated }) => {
   const convertedData = convertData(data, 'Printer id');
@@ -64,7 +49,11 @@ const TopMachinesWithMostPrintVolumeBarChart = ({ data, aggregated }) => {
           xAxisId={!aggregated ? 1 : 0} />
         {!aggregated && <XAxis dataKey='Date' xAxisId={0} />}
         <YAxis unit='SqM' type='number' />
-        <Tooltip content={<CustomTooltip />} />
+        <Tooltip
+          content={
+            <CustomTooltip
+              field={'Date'}
+              printer={(obj) => { return `Printed square meters: ${obj.value}` }} />} />
         <Legend verticalAlign='top' iconType='circle' />
         {chartDataKeys && chartDataKeys.map(key => {
           return <Bar

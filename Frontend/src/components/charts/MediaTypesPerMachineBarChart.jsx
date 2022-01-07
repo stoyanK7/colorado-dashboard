@@ -10,22 +10,7 @@ import {
 } from 'recharts';
 
 import getRandomColor from '../../util/getRandomColor';
-
-const CustomTooltip = ({ active, payload }) => {
-  if (active && payload && payload.length) {
-    return (
-      <div className='colorado-custom-tooltip'>
-        {payload[0].payload['Media type'] && <p className='label'>{`Media type: ${payload[0].payload['Media type']}`}</p>}
-        {payload[0].payload['Printer id'] && <p className='label'>{`Printer id: ${payload[0].payload['Printer id']}`}</p>}
-        {payload.map(obj => {
-          return <p className='label' style={{ color: obj.fill }}>{`Printed square meters: ${obj.value}`}</p>
-        })}
-      </div>
-    );
-  };
-
-  return null;
-};
+import CustomTooltip from '../shared/CustomTooltip';
 
 const MediaTypesMerMachineBarChart = ({ data, aggregated }) => {
   return (
@@ -48,7 +33,11 @@ const MediaTypesMerMachineBarChart = ({ data, aggregated }) => {
           interval={0} />
         {!aggregated && <XAxis dataKey='Printer id' xAxisId={0} />}
         <YAxis unit='SqM' type='number' />
-        <Tooltip content={<CustomTooltip />} />
+        <Tooltip
+          content={
+            <CustomTooltip
+              field='Media type'
+              printer={(obj) => { return `Printed square meters: ${obj.value}` }} />} />
         <Legend verticalAlign='top' iconType='circle' />
         <Bar
           dataKey='Printed square meters'
