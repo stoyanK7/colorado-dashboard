@@ -80,11 +80,11 @@ const PrintersFilter = ({ chartPath, chosenPrinters, setChosenPrinters, aggregat
         </motion.div>
       }
       <FontAwesomeIcon
-        style={{ color: aggregated ? 'var(--inherit)' : 'var(--carnelian)' }}
-        icon={aggregated ? faObjectGroup : faObjectUngroup}
+        // style={{ color: aggregated ? 'var(--inherit)' : 'var(--carnelian)' }}
+        icon={aggregated ? faObjectUngroup : faObjectGroup}
         className='fa'
         onClick={() => { return setAggregated(!aggregated) }}
-        data-tip={aggregated ? 'Aggregate' : 'Separate'}
+        data-tip={aggregated ? 'Separate' : 'Aggregate'}
       />
     </div>
   );
