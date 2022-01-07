@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 
 import axios from 'axios';
 import getRandomColor from '../../util/getRandomColor';
+import convertData from '../../util/convertData';
 
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
@@ -30,13 +31,7 @@ const CustomTooltip = ({ active, payload }) => {
 };
 
 const TopMachinesWithMostPrintVolumeBarChart = ({ data, aggregated }) => {
-  // Convert data into readable format for Recharts
-  let result = Object.values(data.reduce((r, o) => {
-    let key = o.Date + '-' + o['Printer id'];
-    r[key] ??= { Date: o.Date, 'Printer id': o['Printer id'] };
-    r[key][o['Printer id']] = (r[key][o['Printer id']] ?? 0) + o['Printed square meters'];
-    return r;
-  }, {}));
+  const convertedData = convertData(data, 'Printer id');
 
   const [chartDataKeys, setChartDataKeys] = useState();
   useEffect(() => {
@@ -53,7 +48,7 @@ const TopMachinesWithMostPrintVolumeBarChart = ({ data, aggregated }) => {
   return (
     <ResponsiveContainer width='100%' height='100%'>
       <BarChart
-        data={result}
+        data={convertedData}
         margin={{
           top: 35,
           right: 70,
