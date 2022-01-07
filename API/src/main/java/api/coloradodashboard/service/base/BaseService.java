@@ -10,6 +10,13 @@ import org.springframework.context.annotation.Lazy;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Base service that stands as a midpoint between controllers and BaseRepositories.
+ * The service decides which repository method to invoke based on the provided
+ * method parameters.
+ *
+ * @param <T> DTO that the service returns.
+ */
 public class BaseService<T> {
     private final BaseRepository<T> repository;
 
@@ -53,7 +60,14 @@ public class BaseService<T> {
         return new ChartDataKeysDto(repository.getChartDataKeys());
     }
 
+    /**
+     * Converts a bin into a date format which is used by the SQL database.
+     *
+     * @param bin day, week..
+     * @return Date format string.
+     */
     private String dateFormatSwitch(String bin) {
+        // day is the default bin
         String dateFormat = "%Y/%b/%d"; // 2021/Dec/22 - day
         switch (bin) {
             case "week":

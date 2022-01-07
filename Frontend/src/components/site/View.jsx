@@ -11,6 +11,7 @@ import chartTitleSwitch from '../../util/chartTitleSwitch';
 import formatDate from '../../util/formatDate';
 import { useParams } from 'react-router-dom';
 import useToggle from '../../hooks/useToggle';
+import HoverTooltip from '../shared/HoverTooltip';
 
 const View = () => {
   // Gets path from URL: i.e. https://xxxxx.com/InkUsage -> InkUsage
@@ -44,6 +45,7 @@ const View = () => {
   return (
     <div className='view'>
       <Header />
+      <HoverTooltip />
       <main>
         <h1>{chartTitle}</h1>
         <Filters

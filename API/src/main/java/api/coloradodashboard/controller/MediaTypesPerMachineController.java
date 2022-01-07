@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <b>REST API</b> controller for <b><i>Media types per machine</i></b> chart.
- * Returns a list of <b>MediaTypesPerMachineDto</b> objects or <b>404</b> if no data is present.
+ * REST API controller for 'Media types per machine' chart.
+ * Returns a list of MediaTypesPerMachineDto objects or 404/NOT FOUND if no data is present.
  */
 @RequestMapping("MediaTypesPerMachine")
 @RestController

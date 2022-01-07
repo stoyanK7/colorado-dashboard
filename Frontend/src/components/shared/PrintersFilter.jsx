@@ -28,8 +28,13 @@ const PrintersFilter = ({ chartPath, chosenPrinters, setChosenPrinters, aggregat
   const closeMenuHandler = e => setMenuStyle({ opacity: 0, y: '-100vh', transitionEnd: { display: 'none' } });
 
   return (
-    <div className='specific-printers'>
-      <input type='text' placeholder='Specific printers..' value={chosenPrinters} onClick={openMenuHandler} />
+    <div className='specific-printers' >
+      <input
+        type='text'
+        placeholder='Specific printers..'
+        value={chosenPrinters}
+        onClick={openMenuHandler}
+        data-tip='Select specific printers' />
       {availablePrinters &&
         <motion.div
           className='printers-menu'
@@ -75,10 +80,11 @@ const PrintersFilter = ({ chartPath, chosenPrinters, setChosenPrinters, aggregat
         </motion.div>
       }
       <FontAwesomeIcon
-        style={{ color: aggregated ? 'var(--inherit)' : 'var(--carnelian)' }}
-        icon={aggregated ? faObjectGroup : faObjectUngroup}
+        // style={{ color: aggregated ? 'var(--inherit)' : 'var(--carnelian)' }}
+        icon={aggregated ? faObjectUngroup : faObjectGroup}
         className='fa'
         onClick={() => { return setAggregated(!aggregated) }}
+        data-tip={aggregated ? 'Separate' : 'Aggregate'}
       />
     </div>
   );

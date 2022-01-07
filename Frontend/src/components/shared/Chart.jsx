@@ -22,7 +22,7 @@ const Chart = forwardRef(({ requestUrl, aggregated,requestBody, chartPath, fullS
       {error && <h1>An error occured: {error}</h1>}
       <div className='chart-wrapper-2' >
         {fullScreen && <FontAwesomeIcon icon={faTimesCircle} className='fa-circle' onClick={disableFullScreen} />}
-        {fullScreen && <FontAwesomeIcon icon={faRedoAlt} className='fa-redo' onClick={rotateFullScreen}/>}
+        {/* {fullScreen && <FontAwesomeIcon icon={faRedoAlt} className='fa-redo' onClick={rotateFullScreen}/>} */}
         {data && <div className='chart'>{chartSwitch(chartPath, data, aggregated)}</div>}
       </div>
     </div>

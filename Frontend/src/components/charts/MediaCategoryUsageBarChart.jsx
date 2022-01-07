@@ -8,18 +8,14 @@ import {
   XAxis,
   YAxis
 } from 'recharts';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import axios from 'axios';
+import getRandomColor from '../../util/getRandomColor';
+import convertData from '../../util/convertData';
+import CustomTooltip from '../shared/CustomTooltip';
 
-const MediaCategoryUsageBarChart = ({ data, aggregated }) => {
-  let result = Object.values(data.reduce((r, o) => {
-    let key = o.Date + '-' + o['Printer id'];
-    r[key] ??= { Date: o.Date, 'Printer id': o['Printer id'] };
-    r[key][o['Media category']] = (r[key][o['Media category']] ?? 0) + o['Printed square meters'];
-    return r;
-  }, {}));
-
+const MediaCategoryUsageBarChart = ({ data, aggregated, index }) => {
   const [chartDataKeys, setChartDataKeys] = useState();
   useEffect(() => {
     axios.get(`MediaCategoryUsage/ChartDataKeys`)
@@ -30,41 +26,40 @@ const MediaCategoryUsageBarChart = ({ data, aggregated }) => {
       .catch(err => {
         // TODO: introduce error handling logic
       })
-  }, [])
-
+  }, []);
 
   return (
     <ResponsiveContainer width='100%' height='100%'>
       <BarChart
-        width={700}
-        height={300}
-        data={result}
+        data={convertData(data, 'Media category')}
         margin={{
-          top: 20,
-          right: 50,
-          left: 40,
-          bottom: 50
-        }}
-      >
+          top: 35,
+          right: 70,
+          left: 70,
+          bottom: 70
+        }}>
         <CartesianGrid strokeDasharray='3 3' />
         <XAxis
-          dataKey='Date'
+          dataKey={index}
           textAnchor='start'
           angle={40}
-          xAxisId={!aggregated ? 1 : 0}
-          // TODO: this hides the tooltip for some reason
-          // allowDuplicatedCategory={false} 
-          />
-        {!aggregated && <XAxis dataKey="Printer id" xAxisId={0} />}
-        <YAxis unit='SqM' type='number'
-        // TODO: set this with maxvalue to fix overflowing labels
-        // domain={[0, maxValue]} 
-        />
-        <Tooltip />
+          allowDuplicatedCategory={aggregated ? true : false}
+          xAxisId={!aggregated ? 1 : 0} />
+        {!aggregated && <XAxis dataKey='Printer id' xAxisId={0} />}
+        <YAxis unit='SqM' type='number' />
+        <Tooltip
+          content={
+            <CustomTooltip
+              index={index}
+              printer={(obj) => `${obj.dataKey}: ${obj.value}`} />} />
         <Legend verticalAlign='top' iconType='circle' />
         {chartDataKeys && chartDataKeys.map(key => {
-          console.log(key)
-          return <Bar dataKey={key} stackId='a' fill='#49BFF9' />
+          return <Bar
+            dataKey={key}
+            stackId='a'
+            isAnimationActive={false}
+            fill={getRandomColor('palette3', chartDataKeys.indexOf(key))}
+            key={key} />
         })}
       </BarChart>
     </ResponsiveContainer>

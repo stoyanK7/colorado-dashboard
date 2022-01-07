@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <b>REST API</b> controller for <b><i>Top machines with most print volume</i></b> chart.
- * Returns a list of <b>TopMachinesWithMostPrintVolumeDto</b> objects or <b>404</b> if no data is present.
+ * REST API controller for 'Top machines with most print volume' chart.
+ * Returns a list of TopMachinesWithMostPrintVolumeDto objects or 404/NOT FOUND if no data is present.
  */
 @RequestMapping("TopMachinesWithMostPrintVolume")
 @RestController
