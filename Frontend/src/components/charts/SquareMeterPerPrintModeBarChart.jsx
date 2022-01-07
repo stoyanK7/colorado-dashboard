@@ -15,9 +15,7 @@ import getRandomColor from '../../util/getRandomColor';
 import convertData from '../../util/convertData';
 import CustomTooltip from '../shared/CustomTooltip';
 
-const SquareMeterPerPrintModeBarChart = ({ data, aggregated }) => {
-  const convertedData = convertData(data, 'Print mode');
-
+const SquareMeterPerPrintModeBarChart = ({ data, aggregated, index }) => {
   const [chartDataKeys, setChartDataKeys] = useState();
   useEffect(() => {
     axios.get(`SquareMetersPerPrintMode/ChartDataKeys`)
@@ -33,7 +31,7 @@ const SquareMeterPerPrintModeBarChart = ({ data, aggregated }) => {
   return (
     <ResponsiveContainer width='100%' height='100%'>
       <BarChart
-        data={convertedData}
+        data={convertData(data, 'Print mode')}
         margin={{
           top: 35,
           right: 70,
@@ -42,7 +40,7 @@ const SquareMeterPerPrintModeBarChart = ({ data, aggregated }) => {
         }}>
         <CartesianGrid strokeDasharray='3 3' />
         <XAxis
-          dataKey='Date'
+          dataKey={index}
           textAnchor='start'
           angle={40}
           allowDuplicatedCategory={aggregated ? true : false}
@@ -52,7 +50,7 @@ const SquareMeterPerPrintModeBarChart = ({ data, aggregated }) => {
         <Tooltip
           content={
             <CustomTooltip
-              field='Date'
+              index={index}
               printer={(obj) => `${obj.dataKey}: ${obj.value}`} />} />
         <Legend verticalAlign='top' iconType='circle' />
         {chartDataKeys && chartDataKeys.map(key => {

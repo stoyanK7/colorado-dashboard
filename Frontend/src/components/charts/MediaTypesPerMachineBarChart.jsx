@@ -12,7 +12,7 @@ import {
 import getRandomColor from '../../util/getRandomColor';
 import CustomTooltip from '../shared/CustomTooltip';
 
-const MediaTypesMerMachineBarChart = ({ data, aggregated }) => {
+const MediaTypesMerMachineBarChart = ({ data, aggregated, index }) => {
   return (
     <ResponsiveContainer width='100%' height='100%'>
       <BarChart
@@ -25,7 +25,7 @@ const MediaTypesMerMachineBarChart = ({ data, aggregated }) => {
         }}>
         <CartesianGrid strokeDasharray='3 3' />
         <XAxis
-          dataKey='Media type'
+          dataKey={index}
           textAnchor='start'
           angle={40}
           xAxisId={!aggregated ? 1 : 0}
@@ -36,7 +36,7 @@ const MediaTypesMerMachineBarChart = ({ data, aggregated }) => {
         <Tooltip
           content={
             <CustomTooltip
-              field='Media type'
+              index={index}
               printer={(obj) => { return `Printed square meters: ${obj.value}` }} />} />
         <Legend verticalAlign='top' iconType='circle' />
         <Bar

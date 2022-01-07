@@ -8,11 +8,41 @@ import TopMachinesWithMostPrintVolumeBarChart from "../components/charts/TopMach
 const chartSwitch = (chartPath, data, aggregated) => {
   let component;
   switch (chartPath) {
-    case 'MediaCategoryUsage': component = <MediaCategoryUsageBarChart data={data} index='Date' aggregated={aggregated} />; break;
-    case 'InkUsage': component = <InkUsageBarChart data={data} index='Date' aggregated={aggregated}/>; break;
-    case 'SquareMetersPerPrintMode': component = <SquareMeterPerPrintModeBarChart data={data} index='Date' aggregated={aggregated} />; break;
-    case 'TopMachinesWithMostPrintVolume': component = <TopMachinesWithMostPrintVolumeBarChart data={data} index='Printer id' aggregated={aggregated} />; break;
-    case 'MediaTypesPerMachine': component = <MediaTypesMerMachineBarChart data={data} index='Media type' aggregated={aggregated}/>; break;
+    case 'MediaCategoryUsage':
+      component =
+        <MediaCategoryUsageBarChart
+          data={data}
+          index='Date'
+          aggregated={aggregated} />;
+      break;
+    case 'InkUsage':
+      component =
+        <InkUsageBarChart
+          data={data}
+          index='Date'
+          aggregated={aggregated} />;
+      break;
+    case 'SquareMetersPerPrintMode':
+      component =
+        <SquareMeterPerPrintModeBarChart
+          data={data}
+          index='Date'
+          aggregated={aggregated} />;
+      break;
+    case 'TopMachinesWithMostPrintVolume':
+      component =
+        <TopMachinesWithMostPrintVolumeBarChart
+          data={data}
+          index='Printer id'
+          aggregated={aggregated} />;
+      break;
+    case 'MediaTypesPerMachine':
+      component =
+        <MediaTypesMerMachineBarChart
+          data={data}
+          index='Media type'
+          aggregated={aggregated} />;
+      break;
     default: break;
   };
   return component;

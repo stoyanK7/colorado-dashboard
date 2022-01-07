@@ -10,7 +10,7 @@ import {
 } from 'recharts';
 import CustomTooltip from '../shared/CustomTooltip';
 
-const InkUsageBarChart = ({ data, aggregated }) => {
+const InkUsageBarChart = ({ data, aggregated, index }) => {
   return (
     <ResponsiveContainer width='100%' height='100%'>
       <BarChart
@@ -23,7 +23,7 @@ const InkUsageBarChart = ({ data, aggregated }) => {
         }}>
         <CartesianGrid strokeDasharray='3 3' />
         <XAxis
-          dataKey='Date'
+          dataKey={index}
           textAnchor='start'
           angle={40}
           allowDuplicatedCategory={aggregated ? true : false}
@@ -33,7 +33,7 @@ const InkUsageBarChart = ({ data, aggregated }) => {
         <Tooltip
           content={
             <CustomTooltip
-              field='Date'
+              index={index}
               printer={(obj) => `${obj.dataKey}: ${obj.value}`} />} />
         <Legend verticalAlign='top' iconType='circle' />
         <Bar dataKey='Black' isAnimationActive={false} stackId='a' fill='#333333' />
