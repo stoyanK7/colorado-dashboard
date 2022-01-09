@@ -4,7 +4,7 @@ import api.coloradodashboard.controller.base.BaseController;
 import api.coloradodashboard.entity.TopMachinesWithMostPrintVolumeEntity;
 import api.coloradodashboard.factory.BaseServiceFactory;
 import api.coloradodashboard.dto.TopMachinesWithMostPrintVolumeDto;
-import api.coloradodashboard.repository.TopMachinesWithMostPrintVolumeRepository;
+import api.coloradodashboard.repository.base.BaseRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TopMachinesWithMostPrintVolumeController
         extends BaseController<TopMachinesWithMostPrintVolumeEntity, TopMachinesWithMostPrintVolumeDto> {
     public TopMachinesWithMostPrintVolumeController(BaseServiceFactory<TopMachinesWithMostPrintVolumeEntity, TopMachinesWithMostPrintVolumeDto> baseServiceFactory,
-                                                    TopMachinesWithMostPrintVolumeRepository repository) {
+                                                    BaseRepository<TopMachinesWithMostPrintVolumeEntity, TopMachinesWithMostPrintVolumeDto> repository) {
         super(baseServiceFactory.getBaseService(repository));
     }
 }

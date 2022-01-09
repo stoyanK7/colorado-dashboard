@@ -4,7 +4,7 @@ import api.coloradodashboard.controller.base.BaseController;
 import api.coloradodashboard.entity.SquareMetersPerPrintModeEntity;
 import api.coloradodashboard.factory.BaseServiceFactory;
 import api.coloradodashboard.dto.SquareMetersPerPrintModeDto;
-import api.coloradodashboard.repository.SquareMetersPerPrintModeRepository;
+import api.coloradodashboard.repository.base.BaseRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SquareMetersPerPrintModeController
         extends BaseController<SquareMetersPerPrintModeEntity, SquareMetersPerPrintModeDto> {
     public SquareMetersPerPrintModeController(BaseServiceFactory<SquareMetersPerPrintModeEntity, SquareMetersPerPrintModeDto> baseServiceFactory,
-                                              SquareMetersPerPrintModeRepository repository) {
+                                              BaseRepository<SquareMetersPerPrintModeEntity, SquareMetersPerPrintModeDto> repository) {
         super(baseServiceFactory.getBaseService(repository));
     }
 }
