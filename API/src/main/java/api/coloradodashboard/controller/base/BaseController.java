@@ -1,5 +1,6 @@
 package api.coloradodashboard.controller.base;
 
+import api.coloradodashboard.entity.base.BaseEntity;
 import api.coloradodashboard.service.base.BaseService;
 import api.coloradodashboard.dto.ChartDataKeysDto;
 import api.coloradodashboard.dto.PeriodAndPrinterIdsDto;
@@ -17,11 +18,12 @@ import java.util.List;
 /**
  * Base controller that defines the endpoints each controller should have.
  *
- * @param <T> DTO that the controller returns.
+ * @param <E> Entity
+ * @param <D> Dto
  */
 @AllArgsConstructor
-public abstract class BaseController<T> {
-    private BaseService<T> service;
+public abstract class BaseController<E extends BaseEntity, D> {
+    private BaseService<E, D> service;
 
     /**
      * Retrieves all data for all time.
@@ -33,7 +35,7 @@ public abstract class BaseController<T> {
      * @return List of DTOs
      */
     @PostMapping
-    public ResponseEntity<List<T>> getAll(@RequestParam(value = "aggregated", defaultValue = "true") boolean aggregated,
+    public ResponseEntity<List<D>> getAll(@RequestParam(value = "aggregated", defaultValue = "true") boolean aggregated,
                                           @RequestParam(value = "bin", defaultValue = "day") String bin) {
         return createResponse(service.getAll(aggregated, bin));
     }
@@ -48,7 +50,7 @@ public abstract class BaseController<T> {
      * @return List of DTOs
      */
     @PostMapping("/Period")
-    public ResponseEntity<List<T>> getAllForPeriod(@RequestParam(value = "aggregated", defaultValue = "true") boolean aggregated,
+    public ResponseEntity<List<D>> getAllForPeriod(@RequestParam(value = "aggregated", defaultValue = "true") boolean aggregated,
                                                    @RequestParam(value = "bin", defaultValue = "day") String bin,
                                                    @RequestBody PeriodDto request) {
         return createResponse(service.getAllForPeriod(aggregated, bin, request.getFrom(), request.getTo()));
@@ -64,7 +66,7 @@ public abstract class BaseController<T> {
      * @return List of DTOs
      */
     @PostMapping("/Printers")
-    public ResponseEntity<List<T>> getAllForPrinters(@RequestParam(value = "aggregated", defaultValue = "true") boolean aggregated,
+    public ResponseEntity<List<D>> getAllForPrinters(@RequestParam(value = "aggregated", defaultValue = "true") boolean aggregated,
                                                      @RequestParam(value = "bin", defaultValue = "day") String bin,
                                                      @RequestBody PrinterIdsDto request) {
         return createResponse(service.getAllForPrinters(aggregated, bin, request.getPrinterIds()));
@@ -80,7 +82,7 @@ public abstract class BaseController<T> {
      * @return List of DTOs
      */
     @PostMapping("/PeriodAndPrinters")
-    public ResponseEntity<List<T>> getAllForPeriodAndPrinters(@RequestParam(value = "aggregated", defaultValue = "true") boolean aggregated,
+    public ResponseEntity<List<D>> getAllForPeriodAndPrinters(@RequestParam(value = "aggregated", defaultValue = "true") boolean aggregated,
                                                               @RequestParam(value = "bin", defaultValue = "day") String bin,
                                                               @RequestBody PeriodAndPrinterIdsDto request) {
         return createResponse(service.getAllForPeriodAndPrinters(aggregated, bin, request.getFrom(), request.getTo(), request.getPrinterIds()));
@@ -125,7 +127,7 @@ public abstract class BaseController<T> {
      * @return ResponseEntity with status code 200/OK and the list of DTOs or 404/
      * NOT FOUND if the data list is empty.
      */
-    private ResponseEntity<List<T>> createResponse(List<T> data) {
+    private ResponseEntity<List<D>> createResponse(List<D> data) {
         if (data.isEmpty())
             return ResponseEntity.notFound().build();
 

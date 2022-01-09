@@ -4,7 +4,6 @@ import api.coloradodashboard.dto.InkUsageDto;
 import api.coloradodashboard.dto.PeriodDto;
 import api.coloradodashboard.entity.InkUsageEntity;
 import api.coloradodashboard.repository.base.BaseRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.Date;
@@ -13,8 +12,8 @@ import java.util.List;
 /**
  * Repository providing access to the table with all data for 'Ink usage' chart.
  */
-public interface InkUsageRepository extends JpaRepository<InkUsageEntity, Long>,
-        BaseRepository<InkUsageDto> {
+public interface InkUsageRepository
+        extends BaseRepository<InkUsageEntity, InkUsageDto> {
     @Query("SELECT new api.coloradodashboard.dto.InkUsageDto(DATE_FORMAT(i.date, :dateFormat) AS formatted_date, sum(i.cyanLitresUsed), sum(i.magentaLitresUsed), sum(i.yellowLitresUsed), sum(i.blackLitresUsed)) " +
             "FROM InkUsageEntity i " +
             "GROUP BY formatted_date " +

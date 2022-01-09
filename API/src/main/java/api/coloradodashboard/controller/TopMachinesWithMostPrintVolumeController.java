@@ -1,6 +1,7 @@
 package api.coloradodashboard.controller;
 
 import api.coloradodashboard.controller.base.BaseController;
+import api.coloradodashboard.entity.TopMachinesWithMostPrintVolumeEntity;
 import api.coloradodashboard.service.base.BaseServiceFactory;
 import api.coloradodashboard.dto.TopMachinesWithMostPrintVolumeDto;
 import api.coloradodashboard.repository.TopMachinesWithMostPrintVolumeRepository;
@@ -13,8 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RequestMapping("TopMachinesWithMostPrintVolume")
 @RestController
-public class TopMachinesWithMostPrintVolumeController extends BaseController<TopMachinesWithMostPrintVolumeDto> {
-    public TopMachinesWithMostPrintVolumeController(BaseServiceFactory<TopMachinesWithMostPrintVolumeDto> baseServiceFactory,
+public class TopMachinesWithMostPrintVolumeController
+        extends BaseController<TopMachinesWithMostPrintVolumeEntity, TopMachinesWithMostPrintVolumeDto> {
+    public TopMachinesWithMostPrintVolumeController(BaseServiceFactory<TopMachinesWithMostPrintVolumeEntity, TopMachinesWithMostPrintVolumeDto> baseServiceFactory,
                                                     TopMachinesWithMostPrintVolumeRepository repository) {
         super(baseServiceFactory.getBaseService(repository));
     }

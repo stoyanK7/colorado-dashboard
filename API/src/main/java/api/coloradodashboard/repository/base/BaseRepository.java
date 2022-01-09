@@ -1,6 +1,9 @@
 package api.coloradodashboard.repository.base;
 
 import api.coloradodashboard.dto.PeriodDto;
+import api.coloradodashboard.entity.base.BaseEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.NoRepositoryBean;
 
 import java.util.Date;
 import java.util.List;
@@ -9,9 +12,12 @@ import java.util.List;
  * Base repository interface that defines the methods/queries each repository should
  * implement.
  *
- * @param <T> DTO that the repository returns.
+ * @param <E> Entity
+ * @param <D> Dto
  */
-public interface BaseRepository<T> {
+@NoRepositoryBean
+public interface BaseRepository<E extends BaseEntity, D>
+        extends JpaRepository<E, Long> {
     /**
      * Retrieves all data for all time summarized for all printers.
      *
@@ -19,7 +25,7 @@ public interface BaseRepository<T> {
      *                   summarized by day, week, etc.
      * @return List of DTOs
      */
-    List<T> getAllAggregated(String dateFormat);
+    List<D> getAllAggregated(String dateFormat);
 
     /**
      * Retrieves all data for all time separate for each printer.
@@ -28,7 +34,7 @@ public interface BaseRepository<T> {
      *                   summarized by day, week, etc.
      * @return List of DTOs
      */
-    List<T> getAllNonAggregated(String dateFormat);
+    List<D> getAllNonAggregated(String dateFormat);
 
     /**
      * Retrieves all data for provided time period summarized by date.
@@ -39,7 +45,7 @@ public interface BaseRepository<T> {
      * @param to         Ending date
      * @return List of DTOs
      */
-    List<T> getAllForPeriodAggregated(String dateFormat,
+    List<D> getAllForPeriodAggregated(String dateFormat,
                                       Date from,
                                       Date to);
 
@@ -52,7 +58,7 @@ public interface BaseRepository<T> {
      * @param to         Ending date
      * @return List of DTOs
      */
-    List<T> getAllForPeriodNonAggregated(String dateFormat,
+    List<D> getAllForPeriodNonAggregated(String dateFormat,
                                          Date from,
                                          Date to);
 
@@ -64,7 +70,7 @@ public interface BaseRepository<T> {
      * @param printerIds Printers of interest
      * @return List of DTOs
      */
-    List<T> getAllForPrintersAggregated(String dateFormat,
+    List<D> getAllForPrintersAggregated(String dateFormat,
                                         List<String> printerIds);
 
     /**
@@ -75,7 +81,7 @@ public interface BaseRepository<T> {
      * @param printerIds Printers of interest
      * @return List of DTOs
      */
-    List<T> getAllForPrintersNonAggregated(String dateFormat,
+    List<D> getAllForPrintersNonAggregated(String dateFormat,
                                            List<String> printerIds);
 
     /**
@@ -89,7 +95,7 @@ public interface BaseRepository<T> {
      * @param printerIds Printers of interest
      * @return List of DTOs
      */
-    List<T> getAllForPeriodAndPrintersAggregated(String dateFormat,
+    List<D> getAllForPeriodAndPrintersAggregated(String dateFormat,
                                                  Date from, Date to,
                                                  List<String> printerIds);
 
@@ -104,7 +110,7 @@ public interface BaseRepository<T> {
      * @param printerIds Printers of interest
      * @return List of DTOs
      */
-    List<T> getAllForPeriodAndPrintersNonAggregated(String dateFormat,
+    List<D> getAllForPeriodAndPrintersNonAggregated(String dateFormat,
                                                     Date from,
                                                     Date to,
                                                     List<String> printerIds);
