@@ -2,7 +2,7 @@ package api.coloradodashboard.controller;
 
 import api.coloradodashboard.controller.base.BaseController;
 import api.coloradodashboard.entity.SquareMetersPerPrintModeEntity;
-import api.coloradodashboard.service.base.BaseServiceFactory;
+import api.coloradodashboard.factory.BaseServiceFactory;
 import api.coloradodashboard.dto.SquareMetersPerPrintModeDto;
 import api.coloradodashboard.repository.SquareMetersPerPrintModeRepository;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -2,7 +2,7 @@ package api.coloradodashboard.controller;
 
 import api.coloradodashboard.controller.base.BaseController;
 import api.coloradodashboard.entity.TopMachinesWithMostPrintVolumeEntity;
-import api.coloradodashboard.service.base.BaseServiceFactory;
+import api.coloradodashboard.factory.BaseServiceFactory;
 import api.coloradodashboard.dto.TopMachinesWithMostPrintVolumeDto;
 import api.coloradodashboard.repository.TopMachinesWithMostPrintVolumeRepository;
 import org.springframework.web.bind.annotation.RequestMapping;

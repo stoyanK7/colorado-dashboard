@@ -2,7 +2,7 @@ package api.coloradodashboard.controller;
 
 import api.coloradodashboard.controller.base.BaseController;
 import api.coloradodashboard.entity.InkUsageEntity;
-import api.coloradodashboard.service.base.BaseServiceFactory;
+import api.coloradodashboard.factory.BaseServiceFactory;
 import api.coloradodashboard.dto.InkUsageDto;
 import api.coloradodashboard.repository.InkUsageRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
