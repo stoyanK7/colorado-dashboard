@@ -1,6 +1,5 @@
 package api.coloradodashboard.entity.base;
 
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.GeneratedValue;
@@ -14,7 +13,6 @@ import javax.persistence.TemporalType;
 import java.util.Date;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @MappedSuperclass
 public abstract class BaseEntity {
