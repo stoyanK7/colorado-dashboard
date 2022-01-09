@@ -4,7 +4,6 @@ import api.coloradodashboard.dto.TopMachinesWithMostPrintVolumeDto;
 import api.coloradodashboard.dto.PeriodDto;
 import api.coloradodashboard.entity.TopMachinesWithMostPrintVolumeEntity;
 import api.coloradodashboard.repository.base.BaseRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.Date;
@@ -14,8 +13,8 @@ import java.util.List;
  * Repository providing access to the table with all data for 'Top machines with
  * most print volume' chart.
  */
-public interface TopMachinesWithMostPrintVolumeRepository extends JpaRepository<TopMachinesWithMostPrintVolumeEntity, Long>,
-        BaseRepository<TopMachinesWithMostPrintVolumeDto> {
+public interface TopMachinesWithMostPrintVolumeRepository
+        extends BaseRepository<TopMachinesWithMostPrintVolumeEntity, TopMachinesWithMostPrintVolumeDto> {
     @Query("SELECT new api.coloradodashboard.dto.TopMachinesWithMostPrintVolumeDto(t.printerId, SUM(t.printedSquareMeters)) " +
             "FROM TopMachinesWithMostPrintVolumeEntity t " +
             "WHERE (:dateFormat is not null) " +

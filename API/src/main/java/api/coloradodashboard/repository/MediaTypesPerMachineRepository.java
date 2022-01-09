@@ -4,7 +4,6 @@ import api.coloradodashboard.dto.MediaTypesPerMachineDto;
 import api.coloradodashboard.dto.PeriodDto;
 import api.coloradodashboard.entity.MediaTypesPerMachineEntity;
 import api.coloradodashboard.repository.base.BaseRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.Date;
@@ -14,8 +13,8 @@ import java.util.List;
  * Repository providing access to the table with all data for 'Media types per
  * machine' chart.
  */
-public interface MediaTypesPerMachineRepository extends JpaRepository<MediaTypesPerMachineEntity, Long>,
-        BaseRepository<MediaTypesPerMachineDto> {
+public interface MediaTypesPerMachineRepository
+        extends BaseRepository<MediaTypesPerMachineEntity, MediaTypesPerMachineDto> {
     @Query("SELECT new api.coloradodashboard.dto.MediaTypesPerMachineDto(m.mediaType, SUM(m.printedSquareMeters)) " +
             "FROM MediaTypesPerMachineEntity m " +
             "WHERE (:dateFormat is not null) " +

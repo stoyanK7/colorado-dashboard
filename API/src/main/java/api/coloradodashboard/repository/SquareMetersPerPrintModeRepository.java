@@ -4,7 +4,6 @@ import api.coloradodashboard.dto.SquareMetersPerPrintModeDto;
 import api.coloradodashboard.dto.PeriodDto;
 import api.coloradodashboard.entity.SquareMetersPerPrintModeEntity;
 import api.coloradodashboard.repository.base.BaseRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.Date;
@@ -14,8 +13,8 @@ import java.util.List;
  * Repository providing access to the table with all data for 'Square meters per
  * print mode' chart.
  */
-public interface SquareMetersPerPrintModeRepository extends JpaRepository<SquareMetersPerPrintModeEntity, Long>,
-        BaseRepository<SquareMetersPerPrintModeDto> {
+public interface SquareMetersPerPrintModeRepository
+        extends BaseRepository<SquareMetersPerPrintModeEntity, SquareMetersPerPrintModeDto> {
     @Query("SELECT new api.coloradodashboard.dto.SquareMetersPerPrintModeDto(DATE_FORMAT(s.date, :dateFormat) AS formatted_date, s.printMode, SUM(s.printedSquareMeters)) " +
             "FROM SquareMetersPerPrintModeEntity s " +
             "GROUP BY formatted_date, s.printMode " +

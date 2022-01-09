@@ -4,7 +4,6 @@ import api.coloradodashboard.dto.MediaCategoryUsageDto;
 import api.coloradodashboard.dto.PeriodDto;
 import api.coloradodashboard.entity.MediaCategoryUsageEntity;
 import api.coloradodashboard.repository.base.BaseRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.Date;
@@ -13,8 +12,8 @@ import java.util.List;
 /**
  * Repository providing access to the table with all data for 'Media categories usage' chart.
  */
-public interface MediaCategoryUsageRepository extends JpaRepository<MediaCategoryUsageEntity, Long>,
-        BaseRepository<MediaCategoryUsageDto> {
+public interface MediaCategoryUsageRepository
+        extends BaseRepository<MediaCategoryUsageEntity, MediaCategoryUsageDto> {
     @Query("SELECT new api.coloradodashboard.dto.MediaCategoryUsageDto(DATE_FORMAT(m.date, :dateFormat) AS formatted_date, m.mediaCategory, SUM(m.printedSquareMeters)) " +
             "FROM MediaCategoryUsageEntity m " +
             "GROUP BY formatted_date, m.mediaCategory " +
