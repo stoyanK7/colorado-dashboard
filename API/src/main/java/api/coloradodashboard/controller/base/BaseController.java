@@ -22,7 +22,7 @@ import java.util.List;
  * @param <D> Dto
  */
 @AllArgsConstructor
-public abstract class BaseController<E extends BaseEntity, D> {
+public class BaseController<E extends BaseEntity, D> {
     private BaseService<E, D> service;
 
     /**
