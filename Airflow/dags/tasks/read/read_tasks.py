@@ -46,6 +46,8 @@ class ReadTasks():
         # fix dataframes columns and concatenation them
         data = ReadTasks._concat_dataframes(dataframes)
 
+        logging.info(f"\n {data.to_string()}")
+
         # Change col names
         ReadTasks._change_col_names(data, read_image_col_name_constants)
 
