@@ -20,7 +20,7 @@ import java.util.List;
  * @param <T> DTO that the controller returns.
  */
 @AllArgsConstructor
-public class BaseController<T> {
+public abstract class BaseController<T> {
     private BaseService<T> service;
 
     /**
