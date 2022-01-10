@@ -7,7 +7,6 @@ import api.coloradodashboard.entity.base.BaseEntity;
 import api.coloradodashboard.repository.base.BaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
