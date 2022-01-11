@@ -131,7 +131,7 @@ class PreprocessTasks():
         #logging.info(f"\n {df.to_string()}")
         # Gets all column names with units
         for col_name in df.columns:
-            if "unit" in col_name:
+            if "|unit|" in col_name:
                 # Saves each one to a list
                 unit_columns.append(col_name)
 

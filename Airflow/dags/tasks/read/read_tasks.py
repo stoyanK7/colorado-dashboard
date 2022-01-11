@@ -132,7 +132,7 @@ class ReadTasks():
                 name_without_unit = re.search("(.+)\[.+\](.+)?", col_name).group(1)
 
                 # Create a column name from the unit column based on the ink column
-                new_col_name = re.search("(\D+)\[", col_name).group(1) + "Unit"
+                new_col_name = re.search("(\D+)\[", col_name).group(1) + "|Unit|"
                 new_column_to_lower = new_col_name.lower()
 
                 # Get the index of the future unit column
