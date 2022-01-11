@@ -17,7 +17,8 @@ const TimespanFilter = ({ chartPath, to, setTo, from, setFrom }) => {
       .then(data => {
         let d = new Date(data.to);
         d.setMonth(d.getMonth() - 1);
-        setFrom(d.toISOString().split('T')[0]);
+        // If from is closer than one month from to, use date from, else get data for one month back
+        setFrom(new Date(data.from) > d ? data.from : d.toISOString().split('T')[0]);
         setTo(data.to);
         setMin(data.from);
         setMax(data.to);
