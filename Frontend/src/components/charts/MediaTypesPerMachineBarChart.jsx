@@ -9,19 +9,24 @@ import {
   YAxis
 } from 'recharts';
 
-import getRandomColor from '../../util/getRandomColor';
 import CustomTooltip from '../shared/CustomTooltip';
+import getRandomColor from '../../util/getRandomColor';
 
-const MediaTypesMerMachineBarChart = ({ data, aggregated, index }) => {
+const MediaTypesMerMachineBarChart = ({ data, aggregated = true, index, legend = true }) => {
   return (
     <ResponsiveContainer width='100%' height='100%'>
       <BarChart
         data={data}
-        margin={{
+        margin={legend ? {
           top: 35,
           right: 70,
           left: 70,
           bottom: 70
+        } : {
+          top: 10,
+          right: 0,
+          left: 0,
+          bottom: 0
         }}>
         <CartesianGrid strokeDasharray='3 3' />
         <XAxis
@@ -38,7 +43,7 @@ const MediaTypesMerMachineBarChart = ({ data, aggregated, index }) => {
             <CustomTooltip
               index={index}
               printer={(obj) => { return `Printed square meters: ${obj.value}` }} />} />
-        <Legend verticalAlign='top' iconType='circle' />
+        {legend && <Legend verticalAlign='top' iconType='circle' />}
         <Bar
           dataKey='Printed square meters'
           isAnimationActive={false}

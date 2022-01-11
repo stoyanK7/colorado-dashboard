@@ -1,9 +1,11 @@
 @font-face {
   font-family: 'OpenSans';
   src: local('OpenSans'), url(../fonts/OpenSans.ttf) format('truetype');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'Canon Display';
   src: local('Canon'), url(../fonts/Canon.otf) format('opentype');
+  font-display: swap;
 }
