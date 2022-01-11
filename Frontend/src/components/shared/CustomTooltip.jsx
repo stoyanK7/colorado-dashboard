@@ -1,4 +1,4 @@
-const CustomTooltip = ({ active, payload, field: index, printer }) => {
+const CustomTooltip = ({ active, payload, index, printer }) => {
   if (active && payload && payload.length) {
     return (
       <div className='colorado-custom-tooltip'>
