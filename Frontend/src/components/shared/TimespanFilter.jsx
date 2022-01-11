@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import HoverTooltip from './HoverTooltip';
 import React from 'react';
 import axios from 'axios';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
-import HoverTooltip from './HoverTooltip';
 
 const TimespanFilter = ({ chartPath, to, setTo, from, setFrom }) => {
   const [min, setMin] = useState();
@@ -13,11 +13,11 @@ const TimespanFilter = ({ chartPath, to, setTo, from, setFrom }) => {
   // When the component is first rendered, retrieve the min and max date that can be provided to the API
   useEffect(() => {
     axios.get(`${chartPath}/AvailableTimePeriod`)
-      .then(res => {
-        return res.data;
-      })
+      .then(res => res.data)
       .then(data => {
-        setFrom(data.from);
+        let d = new Date(data.to);
+        d.setMonth(d.getMonth() - 1);
+        setFrom(d.toISOString().split('T')[0]);
         setTo(data.to);
         setMin(data.from);
         setMax(data.to);
@@ -32,7 +32,7 @@ const TimespanFilter = ({ chartPath, to, setTo, from, setFrom }) => {
       {from && to &&
         <div className='timespan'>
           <div className='from' >
-          <HoverTooltip />
+            <HoverTooltip />
             <input
               type='date'
               data-tip='Start date'

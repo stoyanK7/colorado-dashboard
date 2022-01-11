@@ -1,11 +1,10 @@
 import '../../css/shared/Chart.css';
 
-import { faRedoAlt, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Loading from '../static/Loading';
 import React from 'react';
 import chartSwitch from '../../util/chartSwitch';
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { forwardRef } from 'react';
 import useFetch from '../../hooks/useFetch';
 
