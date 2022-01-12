@@ -121,8 +121,7 @@ class ReadTasks():
 
     @staticmethod
     def _add_unit_columns(data):
-        data_to_modify = data.copy()
-        for col_name in data_to_modify.columns:
+        for col_name in data.columns:
             if "[" in col_name and "]" in col_name:
 
                 # Get the unit
@@ -136,19 +135,18 @@ class ReadTasks():
                 new_column_to_lower = new_col_name.lower()
 
                 # Get the index of the future unit column
-                index_no = data_to_modify.columns.get_loc(col_name)
+                index_no = data.columns.get_loc(col_name)
                 new_col_index = index_no + 1
 
                 # Removes units from the column's name
-                data_to_modify = data_to_modify.rename(columns={col_name: name_without_unit})
-
+                data = data.rename(columns={col_name: name_without_unit})
+                logging.info("Checking next column is unit: " + data.columns[new_col_index] + "units: " + new_column_to_lower)
                 # Check if column exists
-                if data_to_modify.columns[new_col_index] != new_col_name:
-
+                if data.columns[new_col_index] != new_column_to_lower:
                     # Insert the new column at the appropriate index and sets the value
-                    data_to_modify.insert(new_col_index, new_column_to_lower, unit)
+                    data.insert(new_col_index, new_column_to_lower, unit)
 
-        return data_to_modify
+        return data
 
     @staticmethod
     def _concat_dataframes(dataframe_list):
@@ -158,6 +156,7 @@ class ReadTasks():
 
             # Adding unit columns to the dataframe
             modified_df = ReadTasks._add_unit_columns(dataframe)
+            logging.info("Passed unit column addition")
 
             # Appends the modified df to the list
             dataframes.append(modified_df)

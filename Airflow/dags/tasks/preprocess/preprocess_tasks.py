@@ -128,7 +128,7 @@ class PreprocessTasks():
     @staticmethod
     def _converting_units_to_default_values(df):
         unit_columns = []
-        #logging.info(f"\n {df.to_string()}")
+        logging.info(f"\n {df.to_string()}")
         # Gets all column names with units
         for col_name in df.columns:
             if "|unit|" in col_name:
@@ -166,9 +166,9 @@ class PreprocessTasks():
                     row[data_col_name] = row_data_value / 10
 
         # Drop all unit columns after the conversion
-        df.drop(columns=unit_columns)
+        df = df.drop(columns=unit_columns)
 
-        #logging.info(f"\n {df.to_string()}")
+        logging.info(f"\n {df.to_string()}")
         return df
 
     @staticmethod
