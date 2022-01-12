@@ -1,6 +1,6 @@
 package api.coloradodashboard.controller;
 
-import api.coloradodashboard.controller.base.BaseController;
+import api.coloradodashboard.controller.base.BaseChartController;
 import api.coloradodashboard.dto.MediaTypesPerMachineDto;
 import api.coloradodashboard.entity.MediaTypesPerMachineEntity;
 import api.coloradodashboard.factory.BaseServiceFactory;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("MediaTypesPerMachine")
 @RestController
 public class MediaTypesPerMachineController
-        extends BaseController<MediaTypesPerMachineEntity, MediaTypesPerMachineDto> {
+        extends BaseChartController<MediaTypesPerMachineEntity, MediaTypesPerMachineDto> {
     public MediaTypesPerMachineController(BaseServiceFactory<MediaTypesPerMachineEntity, MediaTypesPerMachineDto> baseServiceFactory,
                                           BaseRepository<MediaTypesPerMachineEntity, MediaTypesPerMachineDto> repository) {
         super(baseServiceFactory.getBaseService(repository));

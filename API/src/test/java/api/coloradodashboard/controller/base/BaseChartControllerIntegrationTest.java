@@ -21,9 +21,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class BaseControllerIntegrationTest {
+class BaseChartControllerIntegrationTest {
     @InjectMocks
-    private BaseController componentUnderTest;
+    private BaseChartController componentUnderTest;
     @Mock
     private BaseService service;
     @Captor
