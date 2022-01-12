@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 /**
- * Base controller that defines the endpoints each controller should have.
+ * Base controller that defines the endpoints each chart controller should have.
  *
  * @param <E> Entity
  * @param <D> Dto
  */
 @AllArgsConstructor
 public class BaseChartController<E extends BaseEntity, D>
-        extends BaseController {
+        implements BaseController {
     private BaseService<E, D> service;
 
     /**

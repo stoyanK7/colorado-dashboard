@@ -9,11 +9,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * REST API controller for Apache Airflow data pipeline errors.
+ * Returns a DataPipelineErrorDto object or 404/NOT FOUND if no data is present.
+ */
 @AllArgsConstructor
 @RequestMapping("DataPipelineError")
 @RestController
 public class DataPipelineErrorController
-        extends BaseController {
+        implements BaseController {
     private DataPipelineErrorRepository repository;
 
     @GetMapping("/Latest")
