@@ -1,9 +1,9 @@
 import ReactTooltip from 'react-tooltip';
 
-const HoverTooltip = () => {
+const HoverTooltip = ({ backgroundColor = 'var(--carnelian)' }) => {
   return (
     <ReactTooltip
-      backgroundColor='var(--carnelian)'
+      backgroundColor={backgroundColor}
       textColor='var(--white)'
     />
   );

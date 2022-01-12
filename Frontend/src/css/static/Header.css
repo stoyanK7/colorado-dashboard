@@ -1,13 +1,28 @@
 header {
   background-color: var(--white);
-  color: var(--carnelian);
-  font-size: 3rem;
-  font-family: 'Canon Display', sans-serif;
-  text-align: center;
-  line-height: var(--header-height);
   width: 100%;
   height: var(--header-height);
   border-bottom: 1px solid var(--platinum);
+  text-align: center;
+  position: relative;
+  font-size: 3rem;
+
+}
+
+header a {
+  color: var(--carnelian) !important;
+  font-family: 'Canon Display', sans-serif;
+  line-height: var(--header-height);
+}
+
+header .header-notification {
+  position: absolute;
+  left: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+header .header-notification:hover {
+  cursor: pointer;
 }
 
 /* Tablet */

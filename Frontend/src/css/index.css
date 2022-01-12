@@ -1,5 +1,8 @@
 :root {
   --carnelian: #BF1920;
+  --success: #108548;
+  --error: #E03E23;
+  --warning:  #FFA500;
   --charcoal: #454851;
   --platinum: #DCDCDC;
   --white: #FCFCFF;
