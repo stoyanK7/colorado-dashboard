@@ -5,6 +5,7 @@ const HoverTooltip = ({ backgroundColor = 'var(--carnelian)' }) => {
     <ReactTooltip
       backgroundColor={backgroundColor}
       textColor='var(--white)'
+      multiline={true}
     />
   );
 };

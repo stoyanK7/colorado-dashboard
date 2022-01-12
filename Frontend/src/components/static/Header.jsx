@@ -23,10 +23,11 @@ const Header = () => {
     if (latestError == null)
       return setNotificationComponent(
         <>
-          <FontAwesomeIcon icon={faExclamationTriangle} 
-          style={{ color: 'var(--warning)' }} 
-          className='header-notification' 
-          data-tip='Could not connect to API. Not sure if the Airflow pipeline passed successfully.'/>
+          <FontAwesomeIcon icon={faExclamationTriangle}
+            style={{ color: 'var(--warning)' }}
+            className='header-notification'
+            data-tip='Could not connect to API.<br>Not sure if the Airflow pipeline passed successfully.'
+            data-place='left' />
           <HoverTooltip backgroundColor='var(--warning)' />
         </>
       );
@@ -36,8 +37,9 @@ const Header = () => {
         <>
           <FontAwesomeIcon icon={faCheckCircle}
             style={{ color: 'var(--success)' }}
-            className='header-notification' 
-            data-tip='Airflow pipeline passed successfully.'/>
+            className='header-notification'
+            data-tip={`Airflow pipeline passed successfully on ${latestError.dateTime}. `}
+            data-place='left' />
           <HoverTooltip backgroundColor='var(--success)' />
         </>
       )
@@ -46,7 +48,8 @@ const Header = () => {
           <FontAwesomeIcon icon={faTimesCircle}
             style={{ color: 'var(--error)' }}
             className='header-notification'
-            data-tip='Airflow pipeline has errors. Click to see more.' />
+            data-tip={`Airflow pipeline encountered errors on ${latestError.dateTime}.<br>Click to see more.`}
+            data-place='left' />
           <HoverTooltip backgroundColor='var(--error)' />
         </>
       );
