@@ -9,7 +9,7 @@ header {
 
 }
 
-header a {
+header .header {
   color: var(--carnelian) !important;
   font-family: 'Canon Display', sans-serif;
   line-height: var(--header-height);
@@ -21,6 +21,7 @@ header .header-notification {
   top: 50%;
   transform: translateY(-50%);
 }
+
 header .header-notification:hover {
   cursor: pointer;
 }

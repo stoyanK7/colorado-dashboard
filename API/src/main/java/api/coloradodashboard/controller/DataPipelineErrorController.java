@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Returns a DataPipelineErrorDto object or 404/NOT FOUND if no data is present.
  */
 @AllArgsConstructor
-@RequestMapping("DataPipelineError")
+@RequestMapping("DataPipelineErrors")
 @RestController
 public class DataPipelineErrorController
         implements BaseController {
