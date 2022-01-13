@@ -6,7 +6,7 @@ from DAL.postgres_database_manager import PostgresDatabaseManager
 from config import read_table_name_config, clean_table_name_config, \
     clean_image_col_name_constants, clean_media_prepare_col_name_constants, clean_print_cycle_col_name_constants, \
     clean_image_data_types, clean_media_prepare_data_types, clean_print_cycle_data_types
-from config.units import length_units, volume_units, time_zones
+from config.units import length_units, volume_units, time_zones, area_units
 import pandas as pd
 
 
@@ -189,7 +189,7 @@ class CleanTasks:
     @staticmethod
     def remove_invalid_units_print_cycle(df):
         logging.info("Removing invalid units")
-        df = df.loc[df[clean_print_cycle_col_name_constants.SQUARE_DECIMETER_UNIT].isin(volume_units.array_volume_units)]
+        df = df.loc[df[clean_print_cycle_col_name_constants.SQUARE_DECIMETER_UNIT].isin(area_units.array_area_units)]
         df = df.loc[df[clean_print_cycle_col_name_constants.LOCAL_TIME_UNIT].isin(time_zones.array_time_units)]
 
         return df
