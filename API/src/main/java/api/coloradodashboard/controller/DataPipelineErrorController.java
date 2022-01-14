@@ -6,8 +6,11 @@ import api.coloradodashboard.repository.DataPipelineErrorRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * REST API controller for Apache Airflow data pipeline errors.
@@ -23,5 +26,15 @@ public class DataPipelineErrorController
     @GetMapping("/Latest")
     public ResponseEntity<DataPipelineErrorDto> getLatest() {
         return createResponse(repository.getLatest());
+    }
+
+    @GetMapping
+    public ResponseEntity<List<DataPipelineErrorDto>> getAll() {
+        return createResponse(repository.getAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DataPipelineErrorDto> getById(@PathVariable("id") Long id) {
+        return createResponse(repository.getOneById(id));
     }
 }

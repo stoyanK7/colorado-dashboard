@@ -1,12 +1,17 @@
 import '../../css/site/DataPipelineErrors.css';
 
+import { faClipboard, faFileAlt, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import { useEffect, useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Header from '../static/Header';
+import HoverTooltip from '../shared/HoverTooltip';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
+
+const getFileNameFromPath = (str) => {
+  return str.split('\\').pop().split('/').pop();
+}
 
 const DataPipelineErrors = () => {
   const [latestError, setLatestError] = useState();
@@ -16,6 +21,12 @@ const DataPipelineErrors = () => {
       .then(data => setLatestError(data))
       .catch(err => setLatestError())
   }, []);
+
+  const onClickHandler = e => {
+    const text = latestError.log;
+    navigator.clipboard.writeText(text);
+  };
+
 
   return (
     <div className='data-pipeline-errors'>
@@ -62,8 +73,6 @@ const DataPipelineErrors = () => {
               data-place='left'
               className='status' />
           </Link>
-
-
         </div>
         <div className='error-info'>
           <p >
@@ -82,8 +91,17 @@ const DataPipelineErrors = () => {
             <b>Log: </b> <pre></pre>
           </p>
           <div className='info-log'>
+            <div className="titlebar">
+              <FontAwesomeIcon icon={faFileAlt} className='titlebar-fa' />
+              <b>{latestError && getFileNameFromPath(latestError.location)}</b>
+              <div className="actions" data-tip='Copy to clipboard' onClick={onClickHandler}>
+                <FontAwesomeIcon icon={faClipboard}
+                  className='titlebar-fa' />
+              </div>
+            </div>
+            <HoverTooltip />
             <pre>
-                {latestError && latestError.log}
+              {latestError && latestError.log}
             </pre>
           </div>
         </div>

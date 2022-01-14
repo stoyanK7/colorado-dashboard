@@ -15,6 +15,7 @@
   grid-template-columns: 1fr;
   grid-template-rows: repeat(auto-fill, minmax(100px, auto));
   row-gap: 10px;
+  height: 100%;
 }
 
 .data-pipeline-errors main .list-of-errors .error-card {
@@ -58,7 +59,7 @@
   display: grid;
   grid-template-rows: repeat(5, auto) 1fr;
   row-gap: 5px;
-  height: 100%;
+  max-height: 100%;
   width: 100%;
 }
 
@@ -69,18 +70,59 @@
 .data-pipeline-errors main .error-info .info-log {
   box-shadow: var(--box-shadow);
   border-radius: var(--border-radius);
-  padding: 10px 5px;
   height: 100%;
   width: 100%;
-  overflow: scroll;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+}
+
+.data-pipeline-errors main .error-info .info-log .titlebar {
+  padding: 15px;
+  background-color: var(--lighter-grey);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.data-pipeline-errors main .error-info .info-log .titlebar .titlebar-fa {
+  font-size: 1.5rem;
+}
+
+
+.data-pipeline-errors main .error-info .info-log .titlebar>* {
+  margin: 0 5px;
+}
+
+.data-pipeline-errors main .error-info .info-log .titlebar .actions {
+  margin-left: auto;
+  border: 1px solid var(--light-grey);
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  transition: var(--hover-transition);
+  height: 100%;
+  padding: 3px;
+}
+
+.data-pipeline-errors main .error-info .info-log .titlebar .actions:hover {
+  border: 1px solid var(--carnelian);
+  /* background-color: #DDDEEE; */
+  cursor: pointer;
+}
+
+.data-pipeline-errors main .error-info .info-log .titlebar .actions>* {
+  padding: 3px;
 }
 
 .data-pipeline-errors main .error-info .info-log pre {
+  padding: 10px 5px;
   margin: 0;
-  padding: 0;
   font-family: 'Courier New', Courier, monospace;
-  height: 100px;
+  height: 100%;
+  display: block;
   width: 100%;
+  overflow: scroll;
 }
 
 
