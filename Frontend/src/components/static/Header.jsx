@@ -8,6 +8,7 @@ import HoverTooltip from '../shared/HoverTooltip';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import formatDateTime from '../../util/formatDateTime';
 
 const Header = () => {
   const [notificationComponent, setNotificationComponent] = useState();
@@ -38,7 +39,7 @@ const Header = () => {
         <>
           <FontAwesomeIcon icon={faCheckCircle}
             style={{ color: 'var(--success)' }}
-            data-tip={`Airflow pipeline passed successfully on ${latestDataPipeline.dateTime}. `}
+            data-tip={`Airflow pipeline passed successfully on ${formatDateTime(latestDataPipeline.dateTime)}. `}
             data-place='left' />
           <HoverTooltip backgroundColor='var(--success)' />
         </>
@@ -48,7 +49,7 @@ const Header = () => {
         <>
           <FontAwesomeIcon icon={faTimesCircle}
             style={{ color: 'var(--error)' }}
-            data-tip={`Airflow pipeline encountered errors on ${latestDataPipeline.dateTime}.<br>Click to see more.`}
+            data-tip={`Airflow pipeline encountered errors on ${formatDateTime(latestDataPipeline.dateTime)}.<br>Click to see more.`}
             data-place='left' />
           <HoverTooltip backgroundColor='var(--error)' />
         </>

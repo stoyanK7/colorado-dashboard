@@ -8,6 +8,7 @@ import Header from '../static/Header';
 import HoverTooltip from '../shared/HoverTooltip';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import formatDateTime from '../../util/formatDateTime';
 import getFilenameFromPath from '../../util/getFilenameFromPath';
 import { useParams } from 'react-router-dom';
 
@@ -41,7 +42,7 @@ const DataPipelineErrors = () => {
             return (
               <Link to={`/DataPipelineErrors/${dataPipeline.id}`} className='error-card'>
                 <p className='step'>{dataPipeline.step}</p>
-                <p className='datetime'>{dataPipeline.dateTime}</p>
+                <p className='datetime'>{formatDateTime(dataPipeline.dateTime)}</p>
                 {dataPipeline.passed ?
                   <FontAwesomeIcon icon={faCheckCircle}
                     style={{ color: 'var(--success)' }}
