@@ -81,8 +81,8 @@ const DataPipelineErrors = () => {
                 <FontAwesomeIcon icon={faClipboard}
                   className='titlebar-fa' />
               </div>
+              <HoverTooltip />
             </div>
-            <HoverTooltip />
             <pre>
               {latestDataPipeline && latestDataPipeline.log}
             </pre>

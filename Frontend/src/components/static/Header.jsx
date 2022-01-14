@@ -28,8 +28,9 @@ const Header = () => {
           <FontAwesomeIcon icon={faExclamationTriangle}
             style={{ color: 'var(--warning)' }}
             data-tip='Could not connect to API.<br>Not sure if the Airflow pipeline passed successfully.'
+            data-for='header'
             data-place='left' />
-          <HoverTooltip backgroundColor='var(--warning)' />
+          <HoverTooltip backgroundColor='var(--warning)' id='header' />
         </>
       );
 
@@ -40,8 +41,9 @@ const Header = () => {
           <FontAwesomeIcon icon={faCheckCircle}
             style={{ color: 'var(--success)' }}
             data-tip={`Airflow pipeline passed successfully on ${formatDateTime(latestDataPipeline.dateTime)}. `}
+            data-for='header'
             data-place='left' />
-          <HoverTooltip backgroundColor='var(--success)' />
+          <HoverTooltip backgroundColor='var(--success)' id='header' />
         </>
       )
       // else it failed
@@ -50,8 +52,9 @@ const Header = () => {
           <FontAwesomeIcon icon={faTimesCircle}
             style={{ color: 'var(--error)' }}
             data-tip={`Airflow pipeline encountered errors on ${formatDateTime(latestDataPipeline.dateTime)}.<br>Click to see more.`}
+            data-for='header'
             data-place='left' />
-          <HoverTooltip backgroundColor='var(--error)' />
+          <HoverTooltip backgroundColor='var(--error)' id='header' />
         </>
       );
   }, [latestDataPipeline]);
