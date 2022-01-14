@@ -13,9 +13,26 @@
 .data-pipeline-errors main .list-of-errors {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: repeat(auto-fill, minmax(100px, auto));
+  grid-template-rows: repeat(auto-fill, minmax(100px, 1fr));
+  grid-auto-rows: 1fr;
   row-gap: 10px;
   height: 100%;
+}
+
+.data-pipeline-errors main .list-of-errors .show-more {
+  align-self: center;
+  justify-self: center;
+  transition: var(--hover-transition);
+}
+
+.data-pipeline-errors main .list-of-errors .show-more:hover {
+  --zoom: 1.2;
+  transform: scale(var(--zoom), var(--zoom));
+  -moz-transform: scale(var(--zoom), var(--zoom));
+  transform-origin: 50% 50%;
+  -moz-transform-origin: 50% 50%;
+  cursor: pointer;
+  color: var(--carnelian);
 }
 
 .data-pipeline-errors main .list-of-errors .error-card {
@@ -52,6 +69,10 @@
   grid-area: status;
   align-self: center;
   justify-self: center;
+}
+
+.data-pipeline-errors main .list-of-errors .error-card .status,
+.data-pipeline-errors main .list-of-errors .show-more {
   font-size: 2.5rem;
 }
 
@@ -129,7 +150,9 @@
 /* Tablet */
 
 @media only screen and (max-width: 1170px) {
-  .data-pipeline-errors main .list-of-errors .error-card .status {
+
+  .data-pipeline-errors main .list-of-errors .error-card .status,
+  .data-pipeline-errors main .list-of-errors .show-more {
     font-size: 2rem;
   }
 }
@@ -137,7 +160,14 @@
 /* Mobile */
 
 @media only screen and (max-width: 630px) {
-  .data-pipeline-errors main .list-of-errors .error-card .status {
+
+  .data-pipeline-errors main .list-of-errors .error-card .status,
+  .data-pipeline-errors main .list-of-errors .show-more {
     font-size: 1.5rem;
   }
+
+.data-pipeline-errors main {
+  grid-template-columns: 1fr;
+}
+
 }

@@ -1,6 +1,6 @@
 import '../../css/site/DataPipelineErrors.css';
 
-import { faCheckCircle, faClipboard, faFileAlt, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
+import { faArrowAltCircleDown, faCheckCircle, faClipboard, faFileAlt, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import { useEffect, useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,24 +14,26 @@ import { useParams } from 'react-router-dom';
 
 const DataPipelineErrors = () => {
   const { errorId } = useParams();
+  const [page, setPage] = useState(0);
   const [latestDataPipeline, setLatestDataPipeline] = useState();
-  const [allDataPipelines, setAllDataPipelines] = useState();
+  const [allDataPipelines, setAllDataPipelines] = useState([]);
   useEffect(() => {
-    axios.get(`/DataPipelineErrors`)
+    axios.get(`/DataPipelineErrors?page=${page}`)
       .then(res => res.data)
-      .then(data => setAllDataPipelines(data))
-      .catch(err => setAllDataPipelines())
-  }, []);
+      .then(data => setAllDataPipelines([...allDataPipelines, ...data]))
+  }, [page]);
   useEffect(() => {
     axios.get(`/DataPipelineErrors/${errorId}`)
       .then(res => res.data)
       .then(data => setLatestDataPipeline(data))
       .catch(err => setLatestDataPipeline())
   }, [errorId]);
-  const onClickHandler = e => {
+  const copyToClipboard = e => {
     const text = latestDataPipeline.log;
     navigator.clipboard.writeText(text);
   };
+
+  const show5More = e => setPage(page + 1);
 
   return (
     <div className='data-pipeline-errors'>
@@ -46,16 +48,18 @@ const DataPipelineErrors = () => {
                 {dataPipeline.passed ?
                   <FontAwesomeIcon icon={faCheckCircle}
                     style={{ color: 'var(--success)' }}
-                    data-place='left'
                     className='status' />
                   :
                   <FontAwesomeIcon icon={faTimesCircle}
                     style={{ color: 'var(--error)' }}
-                    data-place='left'
                     className='status' />}
               </Link>
             );
           })}
+          <FontAwesomeIcon icon={faArrowAltCircleDown}
+            data-tip='Show 5 more'
+            className='show-more'
+            onClick={show5More} />
         </div>
         <div className='error-info'>
           <p >
@@ -77,7 +81,7 @@ const DataPipelineErrors = () => {
             <div className="titlebar">
               <FontAwesomeIcon icon={faFileAlt} className='titlebar-fa' />
               <b>{latestDataPipeline && getFilenameFromPath(latestDataPipeline.location)}</b>
-              <div className="actions" data-tip='Copy to clipboard' onClick={onClickHandler}>
+              <div className="actions" data-tip='Copy to clipboard' onClick={copyToClipboard}>
                 <FontAwesomeIcon icon={faClipboard}
                   className='titlebar-fa' />
               </div>

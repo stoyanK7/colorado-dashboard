@@ -2,6 +2,8 @@ package api.coloradodashboard.repository;
 
 import api.coloradodashboard.dto.DataPipelineErrorDto;
 import api.coloradodashboard.entity.DataPipelineErrorEntity;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -21,8 +23,8 @@ public interface DataPipelineErrorRepository
 
     @Query("SELECT new api.coloradodashboard.dto.DataPipelineErrorDto(d.id, d.passed, d.step, d.dateTime) " +
             "FROM DataPipelineErrorEntity d " +
-            "ORDER BY d.dateTime DESC")
-    List<DataPipelineErrorDto> getAll();
+            "ORDER BY d.dateTime DESC ")
+    List<DataPipelineErrorDto> getAllByDateTimeDesc(Pageable pageable);
 
     @Query("SELECT new api.coloradodashboard.dto.DataPipelineErrorDto(d.id, d.passed, d.step, d.affectedGraphs, d.location, d.dateTime, d.log) " +
             "FROM DataPipelineErrorEntity d " +

@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import HoverTooltip from '../shared/HoverTooltip';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import formatDateTime from '../../util/formatDateTime';
 
 const Header = () => {
@@ -19,20 +18,10 @@ const Header = () => {
       .then(data => setLatestDataPipeline(data))
       .catch(err => setLatestDataPipeline())
   }, []);
-
   useEffect(() => {
-    // If no error is retrieved
+    // If no pipeline is retrieved
     if (latestDataPipeline == null)
-      return setNotificationComponent(
-        <>
-          <FontAwesomeIcon icon={faExclamationTriangle}
-            style={{ color: 'var(--warning)' }}
-            data-tip='Could not connect to API.<br>Not sure if the Airflow pipeline passed successfully.'
-            data-for='header'
-            data-place='left' />
-          <HoverTooltip backgroundColor='var(--warning)' id='header' />
-        </>
-      );
+      return;
 
     // Else if the pipline passed
     return latestDataPipeline.passed ?

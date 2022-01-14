@@ -9,6 +9,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -23,6 +24,7 @@ class DataPipelineErrorControllerIntegrationTest {
     @Captor
     private ArgumentCaptor<Long> idArgumentCaptor;
     private Long id = 1L;
+    private Integer page = 0;
 
     @Test
     @DisplayName("INTEGRATION: getLatest() invokes repository method.")
@@ -35,13 +37,13 @@ class DataPipelineErrorControllerIntegrationTest {
     }
 
     @Test
-    @DisplayName("INTEGRATION: getAll() invokes repository method.")
-    void getAll() {
+    @DisplayName("INTEGRATION: getBy5() invokes repository method.")
+    void getBy5() {
         componentUnderTest
-                .getAll();
+                .getBy5(page);
 
         verify(repository)
-                .getAll();
+                .getAllByDateTimeDesc(PageRequest.of(page, 5));
     }
 
     @Test
