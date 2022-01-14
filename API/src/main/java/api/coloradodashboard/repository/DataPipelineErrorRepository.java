@@ -19,7 +19,7 @@ public interface DataPipelineErrorRepository
             "from DataPipelineErrorEntity d)")
     DataPipelineErrorDto getLatest();
 
-    @Query("SELECT new api.coloradodashboard.dto.DataPipelineErrorDto(d.passed, d.step, d.dateTime) " +
+    @Query("SELECT new api.coloradodashboard.dto.DataPipelineErrorDto(d.id, d.passed, d.step, d.dateTime) " +
             "FROM DataPipelineErrorEntity d " +
             "ORDER BY d.dateTime DESC")
     List<DataPipelineErrorDto> getAll();

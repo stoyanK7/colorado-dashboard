@@ -11,17 +11,17 @@ import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 const Header = () => {
   const [notificationComponent, setNotificationComponent] = useState();
-  const [latestError, setLatestError] = useState();
+  const [latestDataPipeline, setLatestDataPipeline] = useState();
   useEffect(() => {
     axios.get('/DataPipelineErrors/Latest')
       .then(res => res.data)
-      .then(data => setLatestError(data))
-      .catch(err => setLatestError())
+      .then(data => setLatestDataPipeline(data))
+      .catch(err => setLatestDataPipeline())
   }, []);
 
   useEffect(() => {
     // If no error is retrieved
-    if (latestError == null)
+    if (latestDataPipeline == null)
       return setNotificationComponent(
         <>
           <FontAwesomeIcon icon={faExclamationTriangle}
@@ -32,32 +32,35 @@ const Header = () => {
         </>
       );
 
-    return latestError.passed ?
+    // Else if the pipline passed
+    return latestDataPipeline.passed ?
       setNotificationComponent(
         <>
           <FontAwesomeIcon icon={faCheckCircle}
             style={{ color: 'var(--success)' }}
-            data-tip={`Airflow pipeline passed successfully on ${latestError.dateTime}. `}
+            data-tip={`Airflow pipeline passed successfully on ${latestDataPipeline.dateTime}. `}
             data-place='left' />
           <HoverTooltip backgroundColor='var(--success)' />
         </>
       )
+      // else it failed
       : setNotificationComponent(
         <>
           <FontAwesomeIcon icon={faTimesCircle}
             style={{ color: 'var(--error)' }}
-            data-tip={`Airflow pipeline encountered errors on ${latestError.dateTime}.<br>Click to see more.`}
+            data-tip={`Airflow pipeline encountered errors on ${latestDataPipeline.dateTime}.<br>Click to see more.`}
             data-place='left' />
           <HoverTooltip backgroundColor='var(--error)' />
         </>
       );
-  }, [latestError]);
+  }, [latestDataPipeline]);
 
   return (
     <header>
-      <Link to='/DataPipelineErrors' className='header-notification'>
-        {notificationComponent && notificationComponent}
-      </Link>
+      {latestDataPipeline &&
+        <Link to={`/DataPipelineErrors/${latestDataPipeline.id}`} className='header-notification'>
+          {notificationComponent && notificationComponent}
+        </Link>}
       <Link to='/' className='header'>Colorado</Link>
     </header>
   );

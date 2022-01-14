@@ -1,6 +1,6 @@
 import '../../css/site/DataPipelineErrors.css';
 
-import { faClipboard, faFileAlt, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
+import { faCheckCircle, faClipboard, faFileAlt, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import { useEffect, useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,84 +8,66 @@ import Header from '../static/Header';
 import HoverTooltip from '../shared/HoverTooltip';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-
-const getFileNameFromPath = (str) => {
-  return str.split('\\').pop().split('/').pop();
-}
+import getFilenameFromPath from '../../util/getFilenameFromPath';
+import { useParams } from 'react-router-dom';
 
 const DataPipelineErrors = () => {
-  const [latestError, setLatestError] = useState();
+  const { errorId } = useParams();
+  const [latestDataPipeline, setLatestDataPipeline] = useState();
+  const [allDataPipelines, setAllDataPipelines] = useState();
   useEffect(() => {
-    axios.get('/DataPipelineErrors/Latest')
+    axios.get(`/DataPipelineErrors`)
       .then(res => res.data)
-      .then(data => setLatestError(data))
-      .catch(err => setLatestError())
+      .then(data => setAllDataPipelines(data))
+      .catch(err => setAllDataPipelines())
   }, []);
-
+  useEffect(() => {
+    axios.get(`/DataPipelineErrors/${errorId}`)
+      .then(res => res.data)
+      .then(data => setLatestDataPipeline(data))
+      .catch(err => setLatestDataPipeline())
+  }, [errorId]);
   const onClickHandler = e => {
-    const text = latestError.log;
+    const text = latestDataPipeline.log;
     navigator.clipboard.writeText(text);
   };
-
 
   return (
     <div className='data-pipeline-errors'>
       <Header />
       <main>
         <div className='list-of-errors'>
-          <Link to='/DataPipelineErrors/1' className='error-card'>
-            <p className='step'>Preprocessing</p>
-            <p className='datetime'>2021-12-01 12:33:22</p>
-            <FontAwesomeIcon icon={faTimesCircle}
-              style={{ color: 'var(--error)' }}
-              data-place='left'
-              className='status' />
-          </Link>
-          <Link to='/DataPipelineErrors/1' className='error-card'>
-            <p className='step'>Preprocessing</p>
-            <p className='datetime'>2021-12-01 12:33:22</p>
-            <FontAwesomeIcon icon={faTimesCircle}
-              style={{ color: 'var(--error)' }}
-              data-place='left'
-              className='status' />
-          </Link>
-          <Link to='/DataPipelineErrors/1' className='error-card'>
-            <p className='step'>Preprocessing</p>
-            <p className='datetime'>2021-12-01 12:33:22</p>
-            <FontAwesomeIcon icon={faTimesCircle}
-              style={{ color: 'var(--error)' }}
-              data-place='left'
-              className='status' />
-          </Link>
-          <Link to='/DataPipelineErrors/1' className='error-card'>
-            <p className='step'>Preprocessing</p>
-            <p className='datetime'>2021-12-01 12:33:22</p>
-            <FontAwesomeIcon icon={faTimesCircle}
-              style={{ color: 'var(--error)' }}
-              data-place='left'
-              className='status' />
-          </Link>
-          <Link to='/DataPipelineErrors/1' className='error-card'>
-            <p className='step'>Preprocessing</p>
-            <p className='datetime'>2021-12-01 12:33:22</p>
-            <FontAwesomeIcon icon={faTimesCircle}
-              style={{ color: 'var(--error)' }}
-              data-place='left'
-              className='status' />
-          </Link>
+          {allDataPipelines && allDataPipelines.map(dataPipeline => {
+            return (
+              <Link to={`/DataPipelineErrors/${dataPipeline.id}`} className='error-card'>
+                <p className='step'>{dataPipeline.step}</p>
+                <p className='datetime'>{dataPipeline.dateTime}</p>
+                {dataPipeline.passed ?
+                  <FontAwesomeIcon icon={faCheckCircle}
+                    style={{ color: 'var(--success)' }}
+                    data-place='left'
+                    className='status' />
+                  :
+                  <FontAwesomeIcon icon={faTimesCircle}
+                    style={{ color: 'var(--error)' }}
+                    data-place='left'
+                    className='status' />}
+              </Link>
+            );
+          })}
         </div>
         <div className='error-info'>
           <p >
-            <b>Date: </b> {latestError && latestError.dateTime}
+            <b>Date: </b> {latestDataPipeline && latestDataPipeline.dateTime}
           </p>
           <p >
-            <b>Location: </b> {latestError && latestError.location}
+            <b>Location: </b> {latestDataPipeline && latestDataPipeline.location}
           </p>
           <p >
-            <b>Step: </b> {latestError && latestError.step}
+            <b>Step: </b> {latestDataPipeline && latestDataPipeline.step}
           </p>
           <p >
-            <b>Affected graphs: </b> {latestError && latestError.affectedGraphs}
+            <b>Affected graphs: </b> {latestDataPipeline && latestDataPipeline.affectedGraphs}
           </p>
           <p >
             <b>Log: </b> <pre></pre>
@@ -93,7 +75,7 @@ const DataPipelineErrors = () => {
           <div className='info-log'>
             <div className="titlebar">
               <FontAwesomeIcon icon={faFileAlt} className='titlebar-fa' />
-              <b>{latestError && getFileNameFromPath(latestError.location)}</b>
+              <b>{latestDataPipeline && getFilenameFromPath(latestDataPipeline.location)}</b>
               <div className="actions" data-tip='Copy to clipboard' onClick={onClickHandler}>
                 <FontAwesomeIcon icon={faClipboard}
                   className='titlebar-fa' />
@@ -101,7 +83,7 @@ const DataPipelineErrors = () => {
             </div>
             <HoverTooltip />
             <pre>
-              {latestError && latestError.log}
+              {latestDataPipeline && latestDataPipeline.log}
             </pre>
           </div>
         </div>

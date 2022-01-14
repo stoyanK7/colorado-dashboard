@@ -18,8 +18,9 @@ public class DataPipelineErrorDto {
     private Date dateTime;
     private String log;
 
-    public DataPipelineErrorDto(Boolean passed, String step,
-                                Date dateTime) {
+    public DataPipelineErrorDto(Long id, Boolean passed,
+                                String step, Date dateTime) {
+        this.id = id;
         this.passed = passed;
         this.step = step;
         this.dateTime = dateTime;

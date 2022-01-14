@@ -10,7 +10,7 @@ const App = () => {
       <Route exact path='/'>
         <Home />
       </Route>
-      <Route exact path='/DataPipelineErrors'>
+      <Route exact path='/DataPipelineErrors/:errorId'>
         <DataPipelineErrors />
       </Route>
       <Route exact path='/:chartPath'>

@@ -48,7 +48,7 @@ class DataPipelineErrorControllerUnitTest {
     void getAll() throws Exception {
         mockMvc.perform(get("/DataPipelineErrors"))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{\"passed\":false,\"step\":\"Preprocessing\",\"dateTime\":\"2022-01-12T09:44:05.000+00:00\"},{\"passed\":false,\"step\":\"Cleaning\",\"dateTime\":\"2022-01-11T09:44:05.000+00:00\"}]\n"))
+                .andExpect(content().json("[{\"id\":1,\"passed\":false,\"step\":\"Preprocessing\",\"dateTime\":\"2022-01-12T09:44:05.000+00:00\"},{\"id\":2,\"passed\":false,\"step\":\"Cleaning\",\"dateTime\":\"2022-01-11T09:44:05.000+00:00\"}]"))
                 .andReturn();
     }
 
