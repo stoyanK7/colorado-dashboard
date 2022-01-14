@@ -1,13 +1,20 @@
 :root {
   --carnelian: #BF1920;
+  --success: #108548;
+  --error: #E03E23;
+  --warning: #FFA500;
   --charcoal: #454851;
   --platinum: #DCDCDC;
   --white: #FCFCFF;
+  --lighter-grey: #EEEEEE;
   --light-grey: #CCCCCC;
+  --darker-grey: #AAAAAA;
   --header-height: 90px;
   --hover-transition: .3s;
   --border-radius: 3px;
   --box-shadow: 0 0 7px 3px var(--light-grey);
+  --hover-box-shadow: 0 0 7px 3px var(--darker-grey);
+  --selected-box-shadow: 0 0 7px 3px var(--carnelian);
 }
 
 *, *:before, *:after {

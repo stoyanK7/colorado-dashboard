@@ -1,7 +1,7 @@
 import { Route, Switch } from 'react-router-dom';
 
+import DataPipelineErrors from './DataPipelineErrors';
 import Home from './Home';
-import React from 'react';
 import View from './View';
 
 const App = () => {
@@ -9,6 +9,9 @@ const App = () => {
     <Switch>
       <Route exact path='/'>
         <Home />
+      </Route>
+      <Route exact path='/DataPipelineErrors/:errorId'>
+        <DataPipelineErrors />
       </Route>
       <Route exact path='/:chartPath'>
         <View />

@@ -1,6 +1,6 @@
 package api.coloradodashboard.controller;
 
-import api.coloradodashboard.controller.base.BaseController;
+import api.coloradodashboard.controller.base.BaseChartController;
 import api.coloradodashboard.entity.InkUsageEntity;
 import api.coloradodashboard.dto.InkUsageDto;
 import api.coloradodashboard.factory.BaseServiceFactory;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("InkUsage")
 @RestController
 public class InkUsageController
-        extends BaseController<InkUsageEntity, InkUsageDto> {
+        extends BaseChartController<InkUsageEntity, InkUsageDto> {
     public InkUsageController(BaseServiceFactory<InkUsageEntity, InkUsageDto> baseServiceFactory,
                               BaseRepository<InkUsageEntity, InkUsageDto> repository) {
         super(baseServiceFactory.getBaseService(repository));

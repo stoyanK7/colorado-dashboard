@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class TopMachinesWithMostPrintVolumeControllerTest {
+class TopMachinesWithMostPrintVolumeControllerUnitTest {
     @Autowired
     private MockMvc mockMvc;
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);

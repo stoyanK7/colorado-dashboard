@@ -7,7 +7,6 @@ import InkUsageBarChart from '../charts/InkUsageBarChart';
 import { Link } from 'react-router-dom';
 import MediaCategoryUsageBarChart from '../charts/MediaCategoryUsageBarChart';
 import MediaTypesMerMachineBarChart from '../charts/MediaTypesPerMachineBarChart';
-import React from 'react';
 import SquareMeterPerPrintModeBarChart from '../charts/SquareMeterPerPrintModeBarChart';
 import TopMachinesWithMostPrintVolumeBarChart from '../charts/TopMachinesWithMostPrintVolumeBarChart';
 

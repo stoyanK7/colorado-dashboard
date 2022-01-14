@@ -1,6 +1,6 @@
 package api.coloradodashboard.controller;
 
-import api.coloradodashboard.controller.base.BaseController;
+import api.coloradodashboard.controller.base.BaseChartController;
 import api.coloradodashboard.entity.MediaCategoryUsageEntity;
 import api.coloradodashboard.factory.BaseServiceFactory;
 import api.coloradodashboard.dto.MediaCategoryUsageDto;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("MediaCategoryUsage")
 @RestController
 public class MediaCategoryUsageController
-        extends BaseController<MediaCategoryUsageEntity, MediaCategoryUsageDto> {
+        extends BaseChartController<MediaCategoryUsageEntity, MediaCategoryUsageDto> {
     public MediaCategoryUsageController(BaseServiceFactory<MediaCategoryUsageEntity, MediaCategoryUsageDto> baseServiceFactory,
                                         BaseRepository<MediaCategoryUsageEntity, MediaCategoryUsageDto> repository) {
         super(baseServiceFactory.getBaseService(repository));
