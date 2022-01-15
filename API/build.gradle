@@ -31,7 +31,7 @@ test {
 
 sonarqube {
     properties {
-        property "sonar.projectKey", "colorado-dashboard"
+        property "sonar.projectKey", "colorado-dashboard-spring-api"
         property "sonar.qualitygate.wait", true
     }
 
