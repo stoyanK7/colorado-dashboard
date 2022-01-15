@@ -7,4 +7,4 @@ ENGINE_CYCLE_ID = "enginecycleid"
 LOCAL_TIME = "LocalTime"
 
 # units
-LOCAL_TIME_UNIT = "localtime|unit|"
+LOCAL_TIME_UNIT = "LocalTime|unit|"

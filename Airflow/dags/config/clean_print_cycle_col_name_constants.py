@@ -8,5 +8,5 @@ ENGINE_CYCLE_ID = "enginecycleid"
 LOCAL_TIME = "LocalTime"
 
 # units
-SQUARE_DECIMETER_UNIT = "squaredecimeter|unit|"
-LOCAL_TIME_UNIT = "localtime|unit|"
+SQUARE_DECIMETER_UNIT = "SquareDecimeter|unit|"
+LOCAL_TIME_UNIT = "LocalTime|unit|"

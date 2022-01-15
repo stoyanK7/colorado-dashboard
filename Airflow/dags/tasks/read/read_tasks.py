@@ -80,6 +80,8 @@ class ReadTasks():
         # fix dataframes columns and concatenation them
         data = ReadTasks._concat_dataframes(dataframes)
 
+        logging.info(f"\n {data.to_string()}")
+
         # Change col names
         ReadTasks._change_col_names(data, read_media_prepare_schema_col_name_constants)
 
@@ -113,6 +115,8 @@ class ReadTasks():
         # fix dataframes columns and concatenation them
         data = ReadTasks._concat_dataframes(dataframes)
 
+        logging.info(f"\n {data.to_string()}")
+
         # Change col names
         ReadTasks._change_col_names(data, read_print_cycle_schema_col_name_constants)
 
@@ -131,8 +135,7 @@ class ReadTasks():
                 name_without_unit = re.search("(.+)\[.+\](.+)?", col_name).group(1)
 
                 # Create a column name from the unit column based on the ink column
-                new_col_name = re.search("(\D+)\[", col_name).group(1) + "|Unit|"
-                new_column_to_lower = new_col_name.lower()
+                new_col_name = re.search("(\D+)\[", col_name).group(1) + "|unit|"
 
                 # Get the index of the future unit column
                 index_no = data.columns.get_loc(col_name)
@@ -140,18 +143,17 @@ class ReadTasks():
 
                 # Removes units from the column's name
                 data = data.rename(columns={col_name: name_without_unit})
-                logging.info("Checking next column is unit: " + data.columns[new_col_index] + "units: " + new_column_to_lower)
                 # Check if column exists
-                if data.columns[new_col_index] != new_column_to_lower:
+                if new_col_name not in data.columns:
                     # Insert the new column at the appropriate index and sets the value
-                    data.insert(new_col_index, new_column_to_lower, unit)
+                    data.insert(new_col_index, new_col_name, unit)
 
         return data
 
     @staticmethod
     def _concat_dataframes(dataframe_list):
         dataframes = []
-
+        logging.info(dataframe_list)
         for dataframe in dataframe_list:
 
             # Adding unit columns to the dataframe
