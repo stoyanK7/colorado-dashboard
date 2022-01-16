@@ -200,7 +200,8 @@ class CleanTasks:
     def _insert_into_db(df: pd.DataFrame, table_name):
         # put in db
         logging.info("Inserting read data to database.")
-        # df = df.reset_index(drop=True)
+        df = df.reset_index(drop=True)
+        df = df.drop(clean_image_col_name_constants.ULLID, 1)
         pdm = PostgresDatabaseManager()
         pdm.insert_into_table(df, table_name)
 

@@ -46,8 +46,6 @@ class ReadTasks():
         # fix dataframes columns and concatenation them
         data = ReadTasks._concat_dataframes(dataframes)
 
-        logging.info(f"\n {data.to_string()}")
-
         # Change col names
         ReadTasks._change_col_names(data, read_image_col_name_constants)
 
@@ -79,8 +77,6 @@ class ReadTasks():
 
         # fix dataframes columns and concatenation them
         data = ReadTasks._concat_dataframes(dataframes)
-
-        logging.info(f"\n {data.to_string()}")
 
         # Change col names
         ReadTasks._change_col_names(data, read_media_prepare_schema_col_name_constants)
@@ -114,8 +110,6 @@ class ReadTasks():
 
         # fix dataframes columns and concatenation them
         data = ReadTasks._concat_dataframes(dataframes)
-
-        logging.info(f"\n {data.to_string()}")
 
         # Change col names
         ReadTasks._change_col_names(data, read_print_cycle_schema_col_name_constants)
@@ -153,16 +147,15 @@ class ReadTasks():
     @staticmethod
     def _concat_dataframes(dataframe_list):
         dataframes = []
-        logging.info(dataframe_list)
+        logging.info("Starting dataframe concatenation")
         for dataframe in dataframe_list:
 
             # Adding unit columns to the dataframe
             modified_df = ReadTasks._add_unit_columns(dataframe)
-            logging.info("Passed unit column addition")
 
             # Appends the modified df to the list
             dataframes.append(modified_df)
-
+        logging.info("Passed dataframe concatenation")
         return pd.concat(dataframes, ignore_index=True)
 
     @staticmethod

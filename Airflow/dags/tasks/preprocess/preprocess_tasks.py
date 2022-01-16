@@ -1,8 +1,9 @@
 import logging
 
 import pandas as pd
+import numpy as np
 import re
-
+from tabulate import tabulate
 from config import aggregate_column_name_config, clean_table_name_config, \
     clean_image_col_name_constants, preprocess_table_name_config, clean_print_cycle_col_name_constants, \
     clean_media_prepare_col_name_constants, preprocess_col_name_constants
@@ -41,8 +42,12 @@ class PreprocessTasks():
         logging.info("Start preprocess for ink usage.")
         # Take the dataframe from the previous step
         df = PreprocessTasks._read_from_db(clean_table_name_config.READ_IMAGE)
+
+        # Columns to be removed from the table
+        columns_to_drop = [clean_image_col_name_constants.IMAGE_LENGTH, clean_image_col_name_constants.IMAGE_WIDTH,
+                           clean_image_col_name_constants.MEDIA_TYPE, clean_image_col_name_constants.LOCAL_TIME]
         # Convert the columns to their appropriate unit type
-        df = PreprocessTasks._converting_units_to_default_values(df)
+        df = PreprocessTasks._converting_units_to_default_values(df, columns_to_drop)
 
         df = df.rename(columns={clean_image_col_name_constants.MACHINEID: preprocess_col_name_constants.MACHINEID})
         df = df.rename(columns={clean_image_col_name_constants.DATE: preprocess_col_name_constants.DATE})
@@ -67,6 +72,8 @@ class PreprocessTasks():
         df = PreprocessTasks._merge_two_dataframes(df1, df2, clean_print_cycle_col_name_constants.ENGINE_CYCLE_ID)
         # Make sure to not have unnecessary data
         df = df[[clean_print_cycle_col_name_constants.DATE + "_x",
+                 clean_print_cycle_col_name_constants.LOCAL_TIME + "_x",
+                 clean_print_cycle_col_name_constants.LOCAL_TIME_UNIT + "_x",
                  clean_media_prepare_col_name_constants.MEDIA_TYPE_DISPLAY_NAME,
                  clean_print_cycle_col_name_constants.SQUARE_DECIMETER,
                  clean_print_cycle_col_name_constants.SQUARE_DECIMETER_UNIT,
@@ -78,9 +85,18 @@ class PreprocessTasks():
         df = df.rename(
             columns={
                 clean_print_cycle_col_name_constants.MACHINEID + "_x": clean_print_cycle_col_name_constants.MACHINEID})
+        df = df.rename(
+            columns={
+                clean_print_cycle_col_name_constants.LOCAL_TIME + "_x": clean_print_cycle_col_name_constants.LOCAL_TIME})
+        df = df.rename(
+            columns={
+                clean_print_cycle_col_name_constants.LOCAL_TIME_UNIT + "_x": clean_print_cycle_col_name_constants.LOCAL_TIME_UNIT})
+
+        # Columns to be removed from the table
+        columns_to_drop = [clean_print_cycle_col_name_constants.LOCAL_TIME]
 
         # Convert the columns to their appropriate unit type
-        df = PreprocessTasks._converting_units_to_default_values(df)
+        df = PreprocessTasks._converting_units_to_default_values(df, columns_to_drop)
 
         df = df.rename(
             columns={clean_print_cycle_col_name_constants.MACHINEID: preprocess_col_name_constants.MACHINEID})
@@ -98,8 +114,12 @@ class PreprocessTasks():
         # Take the dataframe from the previous step
         df = PreprocessTasks._read_from_db(clean_table_name_config.READ_PRINT_CYCLE)
 
+        # Columns to be removed from the table
+        columns_to_drop = [clean_print_cycle_col_name_constants.LOCAL_TIME, clean_print_cycle_col_name_constants.ENGINE_CYCLE_ID,
+                           clean_print_cycle_col_name_constants.PRINT_MODE]
+
         # Convert the columns to their appropriate unit type
-        df = PreprocessTasks._converting_units_to_default_values(df)
+        df = PreprocessTasks._converting_units_to_default_values(df, columns_to_drop)
 
         df = df.rename(
             columns={clean_print_cycle_col_name_constants.MACHINEID: preprocess_col_name_constants.MACHINEID})
@@ -121,9 +141,9 @@ class PreprocessTasks():
         return df
 
     @staticmethod
-    def _converting_units_to_default_values(df):
+    def _converting_units_to_default_values(df, columns_to_drop):
+        logging.info("Starting process of unit conversion and needless column removal")
         unit_columns = []
-        logging.info(f"\n {df.to_string()}")
         # Gets all column names with units
         for col_name in df.columns:
             if "|unit|" in col_name:
@@ -137,67 +157,69 @@ class PreprocessTasks():
                 # Gets the name of the column for the unit
                 data_col_name = re.search("(.+)\|.+\|(.+)?", unit_col_name).group(1)
 
-                # Set the type of value columns to float
-                df[data_col_name] = df[data_col_name].astype(float)
+                if data_col_name != clean_image_col_name_constants.LOCAL_TIME:
+                    # Set the type of value columns to float
+                    df[data_col_name] = df[data_col_name].astype(float)
 
                 # Gets the values of the columns
                 row_data_value = row[data_col_name]
                 row_unit_value = row[unit_col_name]
                 if row_unit_value == "cl":    # Converts to from one of the units below to milliliters
-                    df.at[index, data_col_name] = float(row_data_value) / 10.0
+                    df.at[index, data_col_name] = row_data_value / 10
                 elif row_unit_value == "dl":
-                    df.at[index, data_col_name] = float(row_data_value) / 100.0
+                    df.at[index, data_col_name] = row_data_value / 100
                 elif row_unit_value == "l":
-                    df.at[index, data_col_name] = float(row_data_value) / 1000.0
+                    df.at[index, data_col_name] = row_data_value / 1000
                 elif row_unit_value == "dal":
-                    df.at[index, data_col_name] = float(row_data_value) / 10000.0
+                    df.at[index, data_col_name] = row_data_value / 10000
                 elif row_unit_value == "hl":
-                    df.at[index, data_col_name] = float(row_data_value) / 100000.0
+                    df.at[index, data_col_name] = row_data_value / 100000
                 elif row_unit_value == "kl":
-                    df.at[index, data_col_name] = float(row_data_value) / 1000000.0
+                    df.at[index, data_col_name] = row_data_value / 1000000
                 elif row_unit_value == "mm":  # Converts to from one of the units below to meters
-                    df.at[index, data_col_name] = float(row_data_value) / 1000.0
+                    df.at[index, data_col_name] = row_data_value / 1000
                 elif row_unit_value == "cm":
-                    df.at[index, data_col_name] = float(row_data_value) / 100.0
+                    df.at[index, data_col_name] = row_data_value / 100
                 elif row_unit_value == "dm":
-                    df.at[index, data_col_name] = float(row_data_value) / 10.0
+                    df.at[index, data_col_name] = row_data_value / 10
                 elif row_unit_value == "dam":
-                    df.at[index, data_col_name] = float(row_data_value) * 10.0
+                    df.at[index, data_col_name] = row_data_value * 10
                 elif row_unit_value == "hm":
-                    df.at[index, data_col_name] = float(row_data_value) * 100.0
+                    df.at[index, data_col_name] = row_data_value * 100
                 elif row_unit_value == "km":
-                    df.at[index, data_col_name] = float(row_data_value) * 1000
+                    df.at[index, data_col_name] = row_data_value * 1000
                 elif row_unit_value == "mm2":  # Converts to from one of the units below to square meters
-                    df.at[index, data_col_name] = float(row_data_value) / 1000000
+                    df.at[index, data_col_name] = row_data_value / 10000
                 elif row_unit_value == "cm2":
-                    df.at[index, data_col_name] = float(row_data_value) / 10000
-                elif row_unit_value == "dm2":
-                    df.at[index, data_col_name] = float(row_data_value) / 100
+                    df.at[index, data_col_name] = row_data_value / 100
+                elif row_unit_value == "m2":
+                    df.at[index, data_col_name] = row_data_value * 100
                 elif row_unit_value == "dam2":
-                    df.at[index, data_col_name] = float(row_data_value) * 100
+                    df.at[index, data_col_name] = row_data_value * 10000
                 elif row_unit_value == "hm2":
-                    df.at[index, data_col_name] = float(row_data_value) * 10000
+                    df.at[index, data_col_name] = row_data_value * 1000000
                 elif row_unit_value == "km2":
-                    df.at[index, data_col_name] = float(row_data_value) * 1000000
+                    df.at[index, data_col_name] = row_data_value * 100000000
                 elif row_unit_value == "mm3":  # Converts to from one of the units below to cubic meters
-                    df.at[index, data_col_name] = float(row_data_value) / 1000000000
+                    df.at[index, data_col_name] = row_data_value / 1000000000
                 elif row_unit_value == "cm3":
-                    df.at[index, data_col_name] = float(row_data_value) / 1000000
+                    df.at[index, data_col_name] = row_data_value / 1000000
                 elif row_unit_value == "dm3":
-                    df.at[index, data_col_name] = float(row_data_value) / 1000
+                    df.at[index, data_col_name] = row_data_value / 1000
                 elif row_unit_value == "dam3":
-                    df.at[index, data_col_name] = float(row_data_value) * 1000
+                    df.at[index, data_col_name] = row_data_value * 1000
                 elif row_unit_value == "hm3":
-                    df.at[index, data_col_name] = float(row_data_value) * 1000000
+                    df.at[index, data_col_name] = row_data_value * 1000000
                 elif row_unit_value == "km3":
-                    df.at[index, data_col_name] = float(row_data_value) * 1000000000
+                    df.at[index, data_col_name] = row_data_value * 1000000000
 
-        # Drop all unit columns after the conversion
-        df = df.drop(columns=unit_columns)
+        # Combines the unit columns with the unnecessary ones
+        unnecessary_columns = np.concatenate((unit_columns, columns_to_drop), axis=0)
 
-        # df = df.rename(columns={col_name: })
+        # Drop all unit and needless columns after the conversion
+        df = df.drop(columns=unnecessary_columns)
 
-        logging.info(f"\n {df.to_string()}")
+        logging.info("Successful process of unit conversion and needless column removal")
         return df
 
     @staticmethod
@@ -206,7 +228,7 @@ class PreprocessTasks():
         logging.info(f"Preprocess - reading table {table_name} from database.")
         pdm = PostgresDatabaseManager()
         df = pdm.read_table(table_name)
-
+        print(tabulate(df, headers='keys', tablefmt='psql'))
         # df = df.set_index(aggregate_column_name_config.ULLID)
         return df
 
@@ -215,5 +237,6 @@ class PreprocessTasks():
         # put in db
         logging.info("Preprocess - inserting preprocessed data to database.")
         pdm = PostgresDatabaseManager()
+        print(tabulate(df, headers='keys', tablefmt='psql'))
         pdm.insert_into_table(df, table_name)
         logging.info("Preprocess finished!")
