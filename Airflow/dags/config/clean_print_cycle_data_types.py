@@ -6,6 +6,10 @@ data_types = {
     clean_print_cycle_col_name_constants.SQUARE_DECIMETER: 'integer',
     clean_print_cycle_col_name_constants.DATE: 'datetime',
     clean_print_cycle_col_name_constants.PRINT_MODE: 'string',
-    clean_print_cycle_col_name_constants.ENGINE_CYCLE_ID: 'integer'
+    clean_print_cycle_col_name_constants.ENGINE_CYCLE_ID: 'integer',
+    clean_print_cycle_col_name_constants.LOCAL_TIME: 'integer',
+
+    clean_print_cycle_col_name_constants.SQUARE_DECIMETER_UNIT: 'string',
+    clean_print_cycle_col_name_constants.LOCAL_TIME_UNIT: 'string'
 }
 

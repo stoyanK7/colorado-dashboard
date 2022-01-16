@@ -1,6 +1,7 @@
 import logging
 
 import pandas as pd
+import re
 
 from config import aggregate_column_name_config, clean_table_name_config, \
     clean_image_col_name_constants, preprocess_table_name_config, clean_print_cycle_col_name_constants, \
@@ -40,20 +41,20 @@ class PreprocessTasks():
         logging.info("Start preprocess for ink usage.")
         # Take the dataframe from the previous step
         df = PreprocessTasks._read_from_db(clean_table_name_config.READ_IMAGE)
-        # Divide four columns by 1000 to convert from ml to L
-        df = PreprocessTasks._divide_four_columns_by(df, clean_image_col_name_constants.ACCOUNTED_INK_BLACK,
-                                                     clean_image_col_name_constants.ACCOUNTED_INK_CYAN,
-                                                     clean_image_col_name_constants.ACCOUNTED_INK_MAGENTA,
-                                                     clean_image_col_name_constants.ACCOUNTED_INK_YELLOW,
-                                                     1000)
+        # Convert the columns to their appropriate unit type
+        df = PreprocessTasks._converting_units_to_default_values(df)
+
         df = df.rename(columns={clean_image_col_name_constants.MACHINEID: preprocess_col_name_constants.MACHINEID})
         df = df.rename(columns={clean_image_col_name_constants.DATE: preprocess_col_name_constants.DATE})
-        df = df.rename(columns={clean_image_col_name_constants.ACCOUNTED_INK_CYAN: preprocess_col_name_constants.ACCOUNTED_INK_CYAN})
-        df = df.rename(columns={clean_image_col_name_constants.ACCOUNTED_INK_MAGENTA: preprocess_col_name_constants.ACCOUNTED_INK_MAGENTA})
-        df = df.rename(columns={clean_image_col_name_constants.ACCOUNTED_INK_YELLOW: preprocess_col_name_constants.ACCOUNTED_INK_YELLOW})
-        df = df.rename(columns={clean_image_col_name_constants.ACCOUNTED_INK_BLACK: preprocess_col_name_constants.ACCOUNTED_INK_BLACK})
+        df = df.rename(columns={
+            clean_image_col_name_constants.ACCOUNTED_INK_CYAN: preprocess_col_name_constants.ACCOUNTED_INK_CYAN})
+        df = df.rename(columns={
+            clean_image_col_name_constants.ACCOUNTED_INK_MAGENTA: preprocess_col_name_constants.ACCOUNTED_INK_MAGENTA})
+        df = df.rename(columns={
+            clean_image_col_name_constants.ACCOUNTED_INK_YELLOW: preprocess_col_name_constants.ACCOUNTED_INK_YELLOW})
+        df = df.rename(columns={
+            clean_image_col_name_constants.ACCOUNTED_INK_BLACK: preprocess_col_name_constants.ACCOUNTED_INK_BLACK})
         PreprocessTasks._insert_into_db(df, preprocess_table_name_config.PREPROCESS_INK_USAGE)
-
 
     @staticmethod
     def preprocess_media_types_per_machine():
@@ -68,25 +69,24 @@ class PreprocessTasks():
         df = df[[clean_print_cycle_col_name_constants.DATE + "_x",
                  clean_media_prepare_col_name_constants.MEDIA_TYPE_DISPLAY_NAME,
                  clean_print_cycle_col_name_constants.SQUARE_DECIMETER,
+                 clean_print_cycle_col_name_constants.SQUARE_DECIMETER_UNIT,
                  clean_print_cycle_col_name_constants.MACHINEID + "_x"]]
-
 
         # Fix date column from date_x to date
         df = df.rename(
             columns={clean_print_cycle_col_name_constants.DATE + "_x": clean_print_cycle_col_name_constants.DATE})
         df = df.rename(
-            columns={clean_print_cycle_col_name_constants.MACHINEID + "_x": clean_print_cycle_col_name_constants.MACHINEID})
+            columns={
+                clean_print_cycle_col_name_constants.MACHINEID + "_x": clean_print_cycle_col_name_constants.MACHINEID})
 
-        # Divide two column by 100
-        df = PreprocessTasks._divide_column_by(df,
-                                               clean_print_cycle_col_name_constants.SQUARE_DECIMETER,
-                                               preprocess_col_name_constants.PREPROCESSED_SQUARE_DECIMETER,
-                                               100)
-        print(f"After dividing: {df.columns}")
-        df = df.rename(columns={clean_print_cycle_col_name_constants.MACHINEID: preprocess_col_name_constants.MACHINEID})
+        # Convert the columns to their appropriate unit type
+        df = PreprocessTasks._converting_units_to_default_values(df)
+
+        df = df.rename(
+            columns={clean_print_cycle_col_name_constants.MACHINEID: preprocess_col_name_constants.MACHINEID})
         df = df.rename(columns={clean_print_cycle_col_name_constants.DATE: preprocess_col_name_constants.DATE})
-        df = df.rename(columns={clean_media_prepare_col_name_constants.MEDIA_TYPE_DISPLAY_NAME: preprocess_col_name_constants.MEDIA_TYPE_DISPLAY_NAME})
-        print(f"After renaming: {df.columns}")
+        df = df.rename(columns={
+            clean_media_prepare_col_name_constants.MEDIA_TYPE_DISPLAY_NAME: preprocess_col_name_constants.MEDIA_TYPE_DISPLAY_NAME})
 
         # Save dataframe into database
         PreprocessTasks._insert_into_db(df, preprocess_table_name_config.PREPROCESS_MEDIA_TYPES_PER_MACHINE)
@@ -98,11 +98,8 @@ class PreprocessTasks():
         # Take the dataframe from the previous step
         df = PreprocessTasks._read_from_db(clean_table_name_config.READ_PRINT_CYCLE)
 
-        # Divide two column by 100
-        df = PreprocessTasks._divide_column_by(df,
-                                               clean_print_cycle_col_name_constants.SQUARE_DECIMETER,
-                                               preprocess_col_name_constants.PREPROCESSED_SQUARE_DECIMETER,
-                                               100)
+        # Convert the columns to their appropriate unit type
+        df = PreprocessTasks._converting_units_to_default_values(df)
 
         df = df.rename(
             columns={clean_print_cycle_col_name_constants.MACHINEID: preprocess_col_name_constants.MACHINEID})
@@ -124,12 +121,84 @@ class PreprocessTasks():
         return df
 
     @staticmethod
-    def _divide_four_columns_by(df, c1, c2, c3, c4, number):
-        logging.info(f"Preprocess -dividing: {c1}, {c2}, {c3},{c4} by {number}")
-        df[c1] = df[c1] / number
-        df[c2] = df[c2] / number
-        df[c3] = df[c3] / number
-        df[c4] = df[c4] / number
+    def _converting_units_to_default_values(df):
+        unit_columns = []
+        logging.info(f"\n {df.to_string()}")
+        # Gets all column names with units
+        for col_name in df.columns:
+            if "|unit|" in col_name:
+                # Saves each one to a list
+                unit_columns.append(col_name)
+
+        # Iterates through all rows and updates them
+        for index, row in df.iterrows():
+            for unit_col_name in unit_columns:
+
+                # Gets the name of the column for the unit
+                data_col_name = re.search("(.+)\|.+\|(.+)?", unit_col_name).group(1)
+
+                # Set the type of value columns to float
+                df[data_col_name] = df[data_col_name].astype(float)
+
+                # Gets the values of the columns
+                row_data_value = row[data_col_name]
+                row_unit_value = row[unit_col_name]
+
+                if row_unit_value == "cl":    # Converts to from one of the units below to milliliters
+                    df.at[index, data_col_name] = float(row_data_value) / 10.0
+                elif row_unit_value == "dl":
+                    df.at[index, data_col_name] = float(row_data_value) / 100.0
+                elif row_unit_value == "l":
+                    df.at[index, data_col_name] = float(row_data_value) / 1000.0
+                elif row_unit_value == "dal":
+                    df.at[index, data_col_name] = float(row_data_value) / 10000.0
+                elif row_unit_value == "hl":
+                    df.at[index, data_col_name] = float(row_data_value) / 100000.0
+                elif row_unit_value == "kl":
+                    df.at[index, data_col_name] = float(row_data_value) / 1000000.0
+                elif row_unit_value == "mm":  # Converts to from one of the units below to meters
+                    df.at[index, data_col_name] = float(row_data_value) / 1000.0
+                elif row_unit_value == "cm":
+                    df.at[index, data_col_name] = float(row_data_value) / 100.0
+                elif row_unit_value == "dm":
+                    df.at[index, data_col_name] = float(row_data_value) / 10.0
+                elif row_unit_value == "dam":
+                    df.at[index, data_col_name] = float(row_data_value) * 10.0
+                elif row_unit_value == "hm":
+                    df.at[index, data_col_name] = float(row_data_value) * 100.0
+                elif row_unit_value == "km":
+                    df.at[index, data_col_name] = float(row_data_value) * 1000
+                elif row_unit_value == "mm2":  # Converts to from one of the units below to square meters
+                    df.at[index, data_col_name] = float(row_data_value) / 1000000
+                elif row_unit_value == "cm2":
+                    df.at[index, data_col_name] = float(row_data_value) / 10000
+                elif row_unit_value == "dm2":
+                    df.at[index, data_col_name] = float(row_data_value) / 100
+                elif row_unit_value == "dam2":
+                    df.at[index, data_col_name] = float(row_data_value) * 100
+                elif row_unit_value == "hm2":
+                    df.at[index, data_col_name] = float(row_data_value) * 10000
+                elif row_unit_value == "km2":
+                    df.at[index, data_col_name] = float(row_data_value) * 1000000
+                elif row_unit_value == "mm3":  # Converts to from one of the units below to cubic meters
+                    df.at[index, data_col_name] = float(row_data_value) / 1000000000
+                elif row_unit_value == "cm3":
+                    df.at[index, data_col_name] = float(row_data_value) / 1000000
+                elif row_unit_value == "dm3":
+                    df.at[index, data_col_name] = float(row_data_value) / 1000
+                elif row_unit_value == "dam3":
+                    df.at[index, data_col_name] = float(row_data_value) * 1000
+                elif row_unit_value == "hm3":
+                    df.at[index, data_col_name] = float(row_data_value) * 1000000
+                elif row_unit_value == "km3":
+                    df.at[index, data_col_name] = float(row_data_value) * 1000000000
+
+        # Drop all unit columns after the conversion
+        df = df.drop(columns=unit_columns)
+
+        # df = df.rename(columns={col_name: })
+
+        logging.info(f"\n {df.to_string()}")
         return df
 
     @staticmethod

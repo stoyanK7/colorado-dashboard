@@ -21,6 +21,6 @@ class PostgresDatabaseManager:
 
     def read_table(self, table_name: str) -> pd.DataFrame:
         try:
-            return pd.read_sql_table(table_name, con=self.hook.get_sqlalchemy_engine())
+            return pd.read_sql_table(table_name, con=self.hook.get_sqlalchemy_engine(), index_col='index').reset_index(drop=True)
         except:
             return pd.DataFrame({})

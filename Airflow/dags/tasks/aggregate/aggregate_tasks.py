@@ -77,7 +77,7 @@ class AggregateTasks:
         df = AggregateTasks._group_by_two_columns_and_sum_third(df,
                                                             preprocess_col_name_constants.DATE,
                                                             preprocess_col_name_constants.MACHINEID,
-                                                            preprocess_col_name_constants.PREPROCESSED_SQUARE_DECIMETER)
+                                                            preprocess_col_name_constants.SQUARE_DECIMETER)
         # Save into a database
         AggregateTasks._insert_into_db(df, aggregate_table_name_config.AGGREGATE_TOP_TEN_PRINT_VOLUME)
 
@@ -89,11 +89,12 @@ class AggregateTasks:
             logging.info("No new data was found, skipping step.")
             return
 
+        logging.info(f"\n {df.to_string()}")
         # Group
         df = AggregateTasks._group_by_two_columns_and_sum_third(df,
                                                                 preprocess_col_name_constants.DATE,
                                                                 preprocess_col_name_constants.MACHINEID,
-                                                                preprocess_col_name_constants.PREPROCESSED_SQUARE_DECIMETER)
+                                                                preprocess_col_name_constants.SQUARE_DECIMETER)
         # Save into a database
         AggregateTasks._insert_into_db(df, aggregate_table_name_config.AGGREGATE_MEDIA_TYPES_PER_MACHINE)
 
