@@ -43,6 +43,7 @@ class PreprocessTasks():
         df = PreprocessTasks._read_from_db(clean_table_name_config.READ_IMAGE)
         # Convert the columns to their appropriate unit type
         df = PreprocessTasks._converting_units_to_default_values(df)
+
         df = df.rename(columns={clean_image_col_name_constants.MACHINEID: preprocess_col_name_constants.MACHINEID})
         df = df.rename(columns={clean_image_col_name_constants.DATE: preprocess_col_name_constants.DATE})
         df = df.rename(columns={
@@ -68,6 +69,7 @@ class PreprocessTasks():
         df = df[[clean_print_cycle_col_name_constants.DATE + "_x",
                  clean_media_prepare_col_name_constants.MEDIA_TYPE_DISPLAY_NAME,
                  clean_print_cycle_col_name_constants.SQUARE_DECIMETER,
+                 clean_print_cycle_col_name_constants.SQUARE_DECIMETER_UNIT,
                  clean_print_cycle_col_name_constants.MACHINEID + "_x"]]
 
         # Fix date column from date_x to date
@@ -78,7 +80,7 @@ class PreprocessTasks():
                 clean_print_cycle_col_name_constants.MACHINEID + "_x": clean_print_cycle_col_name_constants.MACHINEID})
 
         # Convert the columns to their appropriate unit type
-        # df = PreprocessTasks._converting_units_to_default_values(df)
+        df = PreprocessTasks._converting_units_to_default_values(df)
 
         df = df.rename(
             columns={clean_print_cycle_col_name_constants.MACHINEID: preprocess_col_name_constants.MACHINEID})
@@ -135,6 +137,9 @@ class PreprocessTasks():
                 # Gets the name of the column for the unit
                 data_col_name = re.search("(.+)\|.+\|(.+)?", unit_col_name).group(1)
 
+                # Set the type of value columns to float
+                df[data_col_name] = df[data_col_name].astype(float)
+
                 # Gets the values of the columns
                 row_data_value = row[data_col_name]
                 row_unit_value = row[unit_col_name]
@@ -190,6 +195,8 @@ class PreprocessTasks():
 
         # Drop all unit columns after the conversion
         df = df.drop(columns=unit_columns)
+
+        # df = df.rename(columns={col_name: })
 
         logging.info(f"\n {df.to_string()}")
         return df
