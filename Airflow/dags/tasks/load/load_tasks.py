@@ -45,7 +45,6 @@ class LoadTasks:
 
     @staticmethod
     def load_top_ten_print_volume():
-        pass
         df = LoadTasks._read_from_db_postgresql(aggregate_table_name_config.AGGREGATE_TOP_TEN_PRINT_VOLUME)
 
         api_table_name = Variable.get("api_top_ten_print_volume_table_name")
@@ -63,7 +62,6 @@ class LoadTasks:
 
     @staticmethod
     def load_media_types_per_machine():
-        pass
         df = LoadTasks._read_from_db_postgresql(aggregate_table_name_config.AGGREGATE_MEDIA_TYPES_PER_MACHINE)
 
         api_table_name = Variable.get("api_media_types_per_machine_table_name")

@@ -7,9 +7,9 @@ ACCOUNTED_INK_MAGENTA = "magenta_litres_used"
 ACCOUNTED_INK_YELLOW = "yellow_litres_used"
 MEDIA_TYPE = "mediaName"
 # MediaPrepare
-MEDIA_TYPE_DISPLAY_NAME = "mediaType"
+MEDIA_TYPE_DISPLAY_NAME = "media_type"
 ENGINE_CYCLE_ID = "enginecycleid"
 # PrintCycle
-SQUARE_DECIMETER = "SquareDecimeter"  # will not be displayed but summed
+SQUARE_DECIMETER = "printed_square_meters"  # will not be displayed but summed
 PRINT_MODE = "printmode"  # to be separated
 # PREPROCESSED_SQUARE_DECIMETER = "printedSquareMeters"

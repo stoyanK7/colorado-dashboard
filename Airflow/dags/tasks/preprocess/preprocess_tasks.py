@@ -103,6 +103,8 @@ class PreprocessTasks():
         df = df.rename(columns={clean_print_cycle_col_name_constants.DATE: preprocess_col_name_constants.DATE})
         df = df.rename(columns={
             clean_media_prepare_col_name_constants.MEDIA_TYPE_DISPLAY_NAME: preprocess_col_name_constants.MEDIA_TYPE_DISPLAY_NAME})
+        df = df.rename(columns={
+            clean_print_cycle_col_name_constants.SQUARE_DECIMETER: preprocess_col_name_constants.SQUARE_DECIMETER})
 
         # Save dataframe into database
         PreprocessTasks._insert_into_db(df, preprocess_table_name_config.PREPROCESS_MEDIA_TYPES_PER_MACHINE)
@@ -124,6 +126,8 @@ class PreprocessTasks():
         df = df.rename(
             columns={clean_print_cycle_col_name_constants.MACHINEID: preprocess_col_name_constants.MACHINEID})
         df = df.rename(columns={clean_print_cycle_col_name_constants.DATE: preprocess_col_name_constants.DATE})
+        df = df.rename(columns={
+            clean_print_cycle_col_name_constants.SQUARE_DECIMETER: preprocess_col_name_constants.SQUARE_DECIMETER})
         # Save dataframe into database
         PreprocessTasks._insert_into_db(df, preprocess_table_name_config.PREPROCESS_TOP_TEN_PRINT_VOLUME)
 
