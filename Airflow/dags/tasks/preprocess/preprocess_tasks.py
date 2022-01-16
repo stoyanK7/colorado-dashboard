@@ -157,60 +157,61 @@ class PreprocessTasks():
                 # Gets the name of the column for the unit
                 data_col_name = re.search("(.+)\|.+\|(.+)?", unit_col_name).group(1)
 
-                # Set the type of value columns to float
-                df[data_col_name] = df[data_col_name].astype(float)
+                if data_col_name != clean_image_col_name_constants.LOCAL_TIME:
+                    # Set the type of value columns to float
+                    df[data_col_name] = df[data_col_name].astype(float)
 
                 # Gets the values of the columns
                 row_data_value = row[data_col_name]
                 row_unit_value = row[unit_col_name]
                 if row_unit_value == "cl":    # Converts to from one of the units below to milliliters
-                    df.at[index, data_col_name] = float(row_data_value) / 10.0
+                    df.at[index, data_col_name] = row_data_value / 10
                 elif row_unit_value == "dl":
-                    df.at[index, data_col_name] = float(row_data_value) / 100.0
+                    df.at[index, data_col_name] = row_data_value / 100
                 elif row_unit_value == "l":
-                    df.at[index, data_col_name] = float(row_data_value) / 1000.0
+                    df.at[index, data_col_name] = row_data_value / 1000
                 elif row_unit_value == "dal":
-                    df.at[index, data_col_name] = float(row_data_value) / 10000.0
+                    df.at[index, data_col_name] = row_data_value / 10000
                 elif row_unit_value == "hl":
-                    df.at[index, data_col_name] = float(row_data_value) / 100000.0
+                    df.at[index, data_col_name] = row_data_value / 100000
                 elif row_unit_value == "kl":
-                    df.at[index, data_col_name] = float(row_data_value) / 1000000.0
+                    df.at[index, data_col_name] = row_data_value / 1000000
                 elif row_unit_value == "mm":  # Converts to from one of the units below to meters
-                    df.at[index, data_col_name] = float(row_data_value) / 1000.0
+                    df.at[index, data_col_name] = row_data_value / 1000
                 elif row_unit_value == "cm":
-                    df.at[index, data_col_name] = float(row_data_value) / 100.0
+                    df.at[index, data_col_name] = row_data_value / 100
                 elif row_unit_value == "dm":
-                    df.at[index, data_col_name] = float(row_data_value) / 10.0
+                    df.at[index, data_col_name] = row_data_value / 10
                 elif row_unit_value == "dam":
-                    df.at[index, data_col_name] = float(row_data_value) * 10.0
+                    df.at[index, data_col_name] = row_data_value * 10
                 elif row_unit_value == "hm":
-                    df.at[index, data_col_name] = float(row_data_value) * 100.0
+                    df.at[index, data_col_name] = row_data_value * 100
                 elif row_unit_value == "km":
-                    df.at[index, data_col_name] = float(row_data_value) * 1000
+                    df.at[index, data_col_name] = row_data_value * 1000
                 elif row_unit_value == "mm2":  # Converts to from one of the units below to square meters
-                    df.at[index, data_col_name] = float(row_data_value) / 1000000
+                    df.at[index, data_col_name] = row_data_value / 10000
                 elif row_unit_value == "cm2":
-                    df.at[index, data_col_name] = float(row_data_value) / 10000
-                elif row_unit_value == "dm2":
-                    df.at[index, data_col_name] = float(row_data_value) / 100
+                    df.at[index, data_col_name] = row_data_value / 100
+                elif row_unit_value == "m2":
+                    df.at[index, data_col_name] = row_data_value * 100
                 elif row_unit_value == "dam2":
-                    df.at[index, data_col_name] = float(row_data_value) * 100
+                    df.at[index, data_col_name] = row_data_value * 10000
                 elif row_unit_value == "hm2":
-                    df.at[index, data_col_name] = float(row_data_value) * 10000
+                    df.at[index, data_col_name] = row_data_value * 1000000
                 elif row_unit_value == "km2":
-                    df.at[index, data_col_name] = float(row_data_value) * 1000000
+                    df.at[index, data_col_name] = row_data_value * 100000000
                 elif row_unit_value == "mm3":  # Converts to from one of the units below to cubic meters
-                    df.at[index, data_col_name] = float(row_data_value) / 1000000000
+                    df.at[index, data_col_name] = row_data_value / 1000000000
                 elif row_unit_value == "cm3":
-                    df.at[index, data_col_name] = float(row_data_value) / 1000000
+                    df.at[index, data_col_name] = row_data_value / 1000000
                 elif row_unit_value == "dm3":
-                    df.at[index, data_col_name] = float(row_data_value) / 1000
+                    df.at[index, data_col_name] = row_data_value / 1000
                 elif row_unit_value == "dam3":
-                    df.at[index, data_col_name] = float(row_data_value) * 1000
+                    df.at[index, data_col_name] = row_data_value * 1000
                 elif row_unit_value == "hm3":
-                    df.at[index, data_col_name] = float(row_data_value) * 1000000
+                    df.at[index, data_col_name] = row_data_value * 1000000
                 elif row_unit_value == "km3":
-                    df.at[index, data_col_name] = float(row_data_value) * 1000000000
+                    df.at[index, data_col_name] = row_data_value * 1000000000
 
         # Combines the unit columns with the unnecessary ones
         unnecessary_columns = np.concatenate((unit_columns, columns_to_drop), axis=0)
