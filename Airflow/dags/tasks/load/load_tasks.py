@@ -2,6 +2,7 @@ import logging
 
 import pymysql
 import pandas as pd
+from airflow.models import Variable
 from sqlalchemy import create_engine, text
 
 from config import aggregate_table_name_config, aggregate_column_name_config, preprocess_col_name_constants
@@ -28,26 +29,16 @@ class LoadTasks:
     def load_ink_usage():
         df = LoadTasks._read_from_db_postgresql(aggregate_table_name_config.AGGREGATE_INK_USAGE)
 
-        #temporary renaming and hacking of data
-        df = df[[
-            preprocess_col_name_constants.DATE,
-            preprocess_col_name_constants.MACHINEID,
-            preprocess_col_name_constants.ACCOUNTED_INK_BLACK,
-            preprocess_col_name_constants.ACCOUNTED_INK_CYAN,
-            preprocess_col_name_constants.ACCOUNTED_INK_MAGENTA,
-            preprocess_col_name_constants.ACCOUNTED_INK_YELLOW
-        ]]
-
-        api_table_name = "ink_usage"
-        date_col = "date"
+        api_table_name = Variable.get("api_ink_usage_table_name")
+        date_col = Variable.get("api_date_col_name")
         start_date = df[DATE].min()
         end_date = df[DATE].max()
-        machineid = MACHINEID
+        machine_id = preprocess_col_name_constants.MACHINEID
         api_df = LoadTasks._read_existing_data_from_api(api_table_name, date_col, start_date, end_date)
 
         LoadTasks._delete_existing_data_from_api(api_table_name, date_col, start_date, end_date)
 
-        final_df = LoadTasks._merge_existing_with_new_data(df, api_df, date_col, machineid)
+        final_df = LoadTasks._merge_existing_with_new_data(df, api_df, date_col, machine_id)
 
         LoadTasks._send_data_to_api(api_table_name, final_df)
 
@@ -55,10 +46,38 @@ class LoadTasks:
     @staticmethod
     def load_top_ten_print_volume():
         pass
+        df = LoadTasks._read_from_db_postgresql(aggregate_table_name_config.AGGREGATE_TOP_TEN_PRINT_VOLUME)
+
+        api_table_name = Variable.get("api_top_ten_print_volume_table_name")
+        date_col = Variable.get("api_date_col_name")
+        start_date = df[DATE].min()
+        end_date = df[DATE].max()
+        machine_id = preprocess_col_name_constants.MACHINEID
+        api_df = LoadTasks._read_existing_data_from_api(api_table_name, date_col, start_date, end_date)
+
+        LoadTasks._delete_existing_data_from_api(api_table_name, date_col, start_date, end_date)
+
+        final_df = LoadTasks._merge_existing_with_new_data(df, api_df, date_col, machine_id)
+
+        LoadTasks._send_data_to_api(api_table_name, final_df)
 
     @staticmethod
     def load_media_types_per_machine():
         pass
+        df = LoadTasks._read_from_db_postgresql(aggregate_table_name_config.AGGREGATE_MEDIA_TYPES_PER_MACHINE)
+
+        api_table_name = Variable.get("api_media_types_per_machine_table_name")
+        date_col = Variable.get("api_date_col_name")
+        start_date = df[DATE].min()
+        end_date = df[DATE].max()
+        machine_id = preprocess_col_name_constants.MACHINEID
+        api_df = LoadTasks._read_existing_data_from_api(api_table_name, date_col, start_date, end_date)
+
+        LoadTasks._delete_existing_data_from_api(api_table_name, date_col, start_date, end_date)
+
+        final_df = LoadTasks._merge_existing_with_new_data(df, api_df, date_col, machine_id)
+
+        LoadTasks._send_data_to_api(api_table_name, final_df)
 
     @staticmethod
     def _read_from_db_postgresql(table_name) -> pd.DataFrame:
