@@ -1,6 +1,7 @@
 import logging
 
 import pandas as pd
+import numpy as np
 import re
 
 from config import aggregate_column_name_config, clean_table_name_config, \
@@ -41,8 +42,12 @@ class PreprocessTasks():
         logging.info("Start preprocess for ink usage.")
         # Take the dataframe from the previous step
         df = PreprocessTasks._read_from_db(clean_table_name_config.READ_IMAGE)
+
+        # Columns to be removed from the table
+        columns_to_drop = [clean_image_col_name_constants.IMAGE_LENGTH, clean_image_col_name_constants.IMAGE_WIDTH,
+                           clean_image_col_name_constants.MEDIA_TYPE, clean_image_col_name_constants.LOCAL_TIME]
         # Convert the columns to their appropriate unit type
-        df = PreprocessTasks._converting_units_to_default_values(df)
+        df = PreprocessTasks._converting_units_to_default_values(df, columns_to_drop)
 
         df = df.rename(columns={clean_image_col_name_constants.MACHINEID: preprocess_col_name_constants.MACHINEID})
         df = df.rename(columns={clean_image_col_name_constants.DATE: preprocess_col_name_constants.DATE})
@@ -67,6 +72,8 @@ class PreprocessTasks():
         df = PreprocessTasks._merge_two_dataframes(df1, df2, clean_print_cycle_col_name_constants.ENGINE_CYCLE_ID)
         # Make sure to not have unnecessary data
         df = df[[clean_print_cycle_col_name_constants.DATE + "_x",
+                 clean_print_cycle_col_name_constants.LOCAL_TIME + "_x",
+                 clean_print_cycle_col_name_constants.LOCAL_TIME_UNIT + "_x",
                  clean_media_prepare_col_name_constants.MEDIA_TYPE_DISPLAY_NAME,
                  clean_print_cycle_col_name_constants.SQUARE_DECIMETER,
                  clean_print_cycle_col_name_constants.SQUARE_DECIMETER_UNIT,
@@ -78,9 +85,18 @@ class PreprocessTasks():
         df = df.rename(
             columns={
                 clean_print_cycle_col_name_constants.MACHINEID + "_x": clean_print_cycle_col_name_constants.MACHINEID})
+        df = df.rename(
+            columns={
+                clean_print_cycle_col_name_constants.LOCAL_TIME + "_x": clean_print_cycle_col_name_constants.LOCAL_TIME})
+        df = df.rename(
+            columns={
+                clean_print_cycle_col_name_constants.LOCAL_TIME_UNIT + "_x": clean_print_cycle_col_name_constants.LOCAL_TIME_UNIT})
+
+        # Columns to be removed from the table
+        columns_to_drop = [clean_print_cycle_col_name_constants.LOCAL_TIME]
 
         # Convert the columns to their appropriate unit type
-        df = PreprocessTasks._converting_units_to_default_values(df)
+        df = PreprocessTasks._converting_units_to_default_values(df, columns_to_drop)
 
         df = df.rename(
             columns={clean_print_cycle_col_name_constants.MACHINEID: preprocess_col_name_constants.MACHINEID})
@@ -98,8 +114,12 @@ class PreprocessTasks():
         # Take the dataframe from the previous step
         df = PreprocessTasks._read_from_db(clean_table_name_config.READ_PRINT_CYCLE)
 
+        # Columns to be removed from the table
+        columns_to_drop = [clean_print_cycle_col_name_constants.LOCAL_TIME, clean_print_cycle_col_name_constants.ENGINE_CYCLE_ID,
+                           clean_print_cycle_col_name_constants.PRINT_MODE]
+
         # Convert the columns to their appropriate unit type
-        df = PreprocessTasks._converting_units_to_default_values(df)
+        df = PreprocessTasks._converting_units_to_default_values(df, columns_to_drop)
 
         df = df.rename(
             columns={clean_print_cycle_col_name_constants.MACHINEID: preprocess_col_name_constants.MACHINEID})
@@ -121,9 +141,9 @@ class PreprocessTasks():
         return df
 
     @staticmethod
-    def _converting_units_to_default_values(df):
+    def _converting_units_to_default_values(df, columns_to_drop):
+        logging.info("Starting process of unit conversion and needless column removal")
         unit_columns = []
-        logging.info(f"\n {df.to_string()}")
         # Gets all column names with units
         for col_name in df.columns:
             if "|unit|" in col_name:
@@ -192,12 +212,13 @@ class PreprocessTasks():
                 elif row_unit_value == "km3":
                     df.at[index, data_col_name] = float(row_data_value) * 1000000000
 
-        # Drop all unit columns after the conversion
-        df = df.drop(columns=unit_columns)
+        # Combines the unit columns with the unnecessary ones
+        unnecessary_columns = np.concatenate((unit_columns, columns_to_drop), axis=0)
 
-        # df = df.rename(columns={col_name: })
+        # Drop all unit and needless columns after the conversion
+        df = df.drop(columns=unnecessary_columns)
 
-        logging.info(f"\n {df.to_string()}")
+        logging.info("Successful process of unit conversion and needless column removal")
         return df
 
     @staticmethod
