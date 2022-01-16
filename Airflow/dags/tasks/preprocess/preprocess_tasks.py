@@ -143,7 +143,6 @@ class PreprocessTasks():
                 # Gets the values of the columns
                 row_data_value = row[data_col_name]
                 row_unit_value = row[unit_col_name]
-
                 if row_unit_value == "cl":    # Converts to from one of the units below to milliliters
                     df.at[index, data_col_name] = float(row_data_value) / 10.0
                 elif row_unit_value == "dl":
@@ -207,9 +206,8 @@ class PreprocessTasks():
         logging.info(f"Preprocess - reading table {table_name} from database.")
         pdm = PostgresDatabaseManager()
         df = pdm.read_table(table_name)
-        if df.empty:
-            return df
-        df = df.set_index(aggregate_column_name_config.ULLID)
+
+        # df = df.set_index(aggregate_column_name_config.ULLID)
         return df
 
     @staticmethod
