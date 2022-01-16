@@ -3,7 +3,6 @@ import logging
 import pandas as pd
 import numpy as np
 import re
-
 from config import aggregate_column_name_config, clean_table_name_config, \
     clean_image_col_name_constants, preprocess_table_name_config, clean_print_cycle_col_name_constants, \
     clean_media_prepare_col_name_constants, preprocess_col_name_constants
@@ -227,7 +226,6 @@ class PreprocessTasks():
         logging.info(f"Preprocess - reading table {table_name} from database.")
         pdm = PostgresDatabaseManager()
         df = pdm.read_table(table_name)
-
         # df = df.set_index(aggregate_column_name_config.ULLID)
         return df
 
