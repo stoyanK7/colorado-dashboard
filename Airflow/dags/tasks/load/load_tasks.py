@@ -34,7 +34,8 @@ class LoadTasks:
 
         LoadTasks._delete_existing_data_from_api(api_table_name, date_col, start_date, end_date)
 
-        final_df = LoadTasks._merge_existing_with_new_data(df, api_df, date_col, machine_id)
+        #TODO This should merge over more columns
+        final_df = LoadTasks._merge_existing_with_new_data(df, api_df, [date_col, machine_id])
 
         LoadTasks._send_data_to_api(api_table_name, final_df)
 
@@ -55,7 +56,8 @@ class LoadTasks:
 
         LoadTasks._delete_existing_data_from_api(api_table_name, date_col, start_date, end_date)
 
-        final_df = LoadTasks._merge_existing_with_new_data(df, api_df, date_col, machine_id)
+        # TODO This should merge over more columns
+        final_df = LoadTasks._merge_existing_with_new_data(df, api_df, [date_col, machine_id])
 
         LoadTasks._send_data_to_api(api_table_name, final_df)
 
@@ -75,7 +77,7 @@ class LoadTasks:
 
         LoadTasks._delete_existing_data_from_api(api_table_name, date_col, start_date, end_date)
 
-        final_df = LoadTasks._merge_existing_with_new_data(df, api_df, date_col, machine_id)
+        final_df = LoadTasks._merge_existing_with_new_data(df, api_df, [date_col, machine_id])
 
         LoadTasks._send_data_to_api(api_table_name, final_df)
 
@@ -96,7 +98,7 @@ class LoadTasks:
 
         LoadTasks._delete_existing_data_from_api(api_table_name, date_col, start_date, end_date)
 
-        final_df = LoadTasks._merge_existing_with_new_data(df, api_df, date_col, machine_id)
+        final_df = LoadTasks._merge_existing_with_new_data(df, api_df, [date_col, machine_id])
 
         LoadTasks._send_data_to_api(api_table_name, final_df)
 
@@ -112,11 +114,12 @@ class LoadTasks:
         start_date = df[DATE].min()
         end_date = df[DATE].max()
         machine_id = preprocess_col_name_constants.MACHINEID
+        media_type = preprocess_col_name_constants.MEDIA_TYPE_DISPLAY_NAME
         api_df = LoadTasks._read_existing_data_from_api(api_table_name, date_col, start_date, end_date)
 
         LoadTasks._delete_existing_data_from_api(api_table_name, date_col, start_date, end_date)
 
-        final_df = LoadTasks._merge_existing_with_new_data(df, api_df, date_col, machine_id)
+        final_df = LoadTasks._merge_existing_with_new_data(df, api_df, [date_col, machine_id, media_type])
 
         LoadTasks._send_data_to_api(api_table_name, final_df)
 
@@ -151,10 +154,10 @@ class LoadTasks:
             connection.close()
 
     @staticmethod
-    def _merge_existing_with_new_data(existing_data, new_data, date_col, printer_id_col):
+    def _merge_existing_with_new_data(existing_data, new_data, cols):
         logging.info("Merging existing data with new data")
         concat_df = pd.concat([existing_data, new_data])
-        return concat_df.groupby([date_col, printer_id_col]).sum().reset_index()
+        return concat_df.groupby(cols).sum().reset_index()
 
     @staticmethod
     def _send_data_to_api(table_name, df):

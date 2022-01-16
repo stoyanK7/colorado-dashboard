@@ -91,9 +91,10 @@ class AggregateTasks:
 
         logging.info(f"\n {df.to_string()}")
         # Group
-        df = AggregateTasks._group_by_two_columns_and_sum_third(df,
+        df = AggregateTasks._group_by_three_columns_and_sum_third(df,
                                                                 preprocess_col_name_constants.DATE,
                                                                 preprocess_col_name_constants.MACHINEID,
+                                                                preprocess_col_name_constants.MEDIA_TYPE_DISPLAY_NAME,
                                                                 preprocess_col_name_constants.SQUARE_DECIMETER)
         # Save into a database
         AggregateTasks._insert_into_db(df, aggregate_table_name_config.AGGREGATE_MEDIA_TYPES_PER_MACHINE)
