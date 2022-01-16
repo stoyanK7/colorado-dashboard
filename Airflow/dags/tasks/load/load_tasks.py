@@ -28,6 +28,9 @@ class LoadTasks:
     @staticmethod
     def load_ink_usage():
         df = LoadTasks._read_from_db_postgresql(aggregate_table_name_config.AGGREGATE_INK_USAGE)
+        if df.empty:
+            logging.info("No new data was found, skipping step.")
+            return
 
         api_table_name = Variable.get("api_ink_usage_table_name")
         date_col = Variable.get("api_date_col_name")
@@ -46,6 +49,9 @@ class LoadTasks:
     @staticmethod
     def load_top_ten_print_volume():
         df = LoadTasks._read_from_db_postgresql(aggregate_table_name_config.AGGREGATE_TOP_TEN_PRINT_VOLUME)
+        if df.empty:
+            logging.info("No new data was found, skipping step.")
+            return
 
         api_table_name = Variable.get("api_top_ten_print_volume_table_name")
         date_col = Variable.get("api_date_col_name")
@@ -63,6 +69,9 @@ class LoadTasks:
     @staticmethod
     def load_media_types_per_machine():
         df = LoadTasks._read_from_db_postgresql(aggregate_table_name_config.AGGREGATE_MEDIA_TYPES_PER_MACHINE)
+        if df.empty:
+            logging.info("No new data was found, skipping step.")
+            return
 
         api_table_name = Variable.get("api_media_types_per_machine_table_name")
         date_col = Variable.get("api_date_col_name")
