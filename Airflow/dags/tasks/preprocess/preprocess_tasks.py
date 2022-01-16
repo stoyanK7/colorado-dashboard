@@ -3,6 +3,7 @@ import logging
 import pandas as pd
 import numpy as np
 import re
+from tabulate import tabulate
 from config import aggregate_column_name_config, clean_table_name_config, \
     clean_image_col_name_constants, preprocess_table_name_config, clean_print_cycle_col_name_constants, \
     clean_media_prepare_col_name_constants, preprocess_col_name_constants
@@ -226,6 +227,7 @@ class PreprocessTasks():
         logging.info(f"Preprocess - reading table {table_name} from database.")
         pdm = PostgresDatabaseManager()
         df = pdm.read_table(table_name)
+        print(tabulate(df, headers='keys', tablefmt='psql'))
         # df = df.set_index(aggregate_column_name_config.ULLID)
         return df
 
@@ -234,5 +236,6 @@ class PreprocessTasks():
         # put in db
         logging.info("Preprocess - inserting preprocessed data to database.")
         pdm = PostgresDatabaseManager()
+        print(tabulate(df, headers='keys', tablefmt='psql'))
         pdm.insert_into_table(df, table_name)
         logging.info("Preprocess finished!")
