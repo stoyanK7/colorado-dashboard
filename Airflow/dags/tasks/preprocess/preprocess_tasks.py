@@ -174,6 +174,9 @@ class PreprocessTasks():
             if "|unit|" in col_name:
                 # Saves each one to a list
                 unit_columns.append(col_name)
+            elif "machineid" in col_name:
+                df[col_name] = df[col_name].astype(str)
+
 
         # Iterates through all rows and updates them
         for index, row in df.iterrows():
@@ -266,6 +269,7 @@ class PreprocessTasks():
             # Inserts the utc date back in the dataframe
             df.at[index, date_col] = dt_utc_str
         logging.info("End of date generalization to UTC")
+
         return df
 
     @staticmethod
