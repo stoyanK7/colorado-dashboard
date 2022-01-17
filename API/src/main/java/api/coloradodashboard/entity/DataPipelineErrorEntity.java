@@ -15,7 +15,7 @@ import java.util.Date;
 @Entity
 public class DataPipelineErrorEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Boolean passed;
     private String step;
