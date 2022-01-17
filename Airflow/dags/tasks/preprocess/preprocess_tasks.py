@@ -47,6 +47,11 @@ class PreprocessTasks():
         # Take the dataframe from the previous step
         df = PreprocessTasks._read_from_db(clean_table_name_config.READ_IMAGE)
 
+        # Skip if no new data
+        if df.empty:
+            logging.info("No new data was found, skipping step.")
+            return
+
         # Columns to be removed from the table
         columns_to_drop = [clean_image_col_name_constants.IMAGE_LENGTH, clean_image_col_name_constants.IMAGE_WIDTH,
                            clean_image_col_name_constants.MEDIA_TYPE, clean_image_col_name_constants.LOCAL_TIME]
@@ -75,6 +80,11 @@ class PreprocessTasks():
         # Take the dataframes from mediaPrepare and PrintCycle table
         df1 = PreprocessTasks._read_from_db(clean_table_name_config.READ_MEDIA_PREPARE)
         df2 = PreprocessTasks._read_from_db(clean_table_name_config.READ_PRINT_CYCLE)
+
+        # Skip if no new data
+        if df1.empty and df2.empty:
+            logging.info("No new data was found, skipping step.")
+            return
 
         # Merge the dataframes
         df = PreprocessTasks._merge_two_dataframes(df1, df2, clean_print_cycle_col_name_constants.ENGINE_CYCLE_ID)
@@ -106,6 +116,8 @@ class PreprocessTasks():
         df = df.rename(columns={clean_print_cycle_col_name_constants.DATE: preprocess_col_name_constants.DATE})
         df = df.rename(columns={
             clean_media_prepare_col_name_constants.MEDIA_TYPE_DISPLAY_NAME: preprocess_col_name_constants.MEDIA_TYPE_DISPLAY_NAME})
+        df = df.rename(columns={
+            clean_print_cycle_col_name_constants.SQUARE_DECIMETER: preprocess_col_name_constants.SQUARE_DECIMETER})
 
         # Save dataframe into database
         PreprocessTasks._insert_into_db(df, preprocess_table_name_config.PREPROCESS_MEDIA_TYPES_PER_MACHINE)
@@ -116,6 +128,11 @@ class PreprocessTasks():
         logging.info("Start preprocess for media category usage.")
         # Take the dataframe from the previous step
         df = PreprocessTasks._read_from_db(clean_table_name_config.READ_PRINT_CYCLE)
+
+        # Skip if no new data
+        if df.empty:
+            logging.info("No new data was found, skipping step.")
+            return
 
         # Columns to be removed from the table
         columns_to_drop = [clean_print_cycle_col_name_constants.LOCAL_TIME, clean_print_cycle_col_name_constants.ENGINE_CYCLE_ID,
@@ -130,6 +147,8 @@ class PreprocessTasks():
         df = df.rename(
             columns={clean_print_cycle_col_name_constants.MACHINEID: preprocess_col_name_constants.MACHINEID})
         df = df.rename(columns={clean_print_cycle_col_name_constants.DATE: preprocess_col_name_constants.DATE})
+        df = df.rename(columns={
+            clean_print_cycle_col_name_constants.SQUARE_DECIMETER: preprocess_col_name_constants.SQUARE_DECIMETER})
         # Save dataframe into database
         PreprocessTasks._insert_into_db(df, preprocess_table_name_config.PREPROCESS_TOP_TEN_PRINT_VOLUME)
 
