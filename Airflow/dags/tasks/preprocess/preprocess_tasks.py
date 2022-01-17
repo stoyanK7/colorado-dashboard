@@ -170,18 +170,18 @@ class PreprocessTasks():
                 # Gets the values of the columns
                 row_data_value = row[data_col_name]
                 row_unit_value = row[unit_col_name]
-                if row_unit_value == "cl":    # Converts to from one of the units below to milliliters
-                    df.at[index, data_col_name] = row_data_value / 10
-                elif row_unit_value == "dl":
-                    df.at[index, data_col_name] = row_data_value / 100
-                elif row_unit_value == "l":
+                if row_unit_value == "ml":    # Converts to from one of the units below to milliliters
                     df.at[index, data_col_name] = row_data_value / 1000
+                elif row_unit_value == "cl":
+                    df.at[index, data_col_name] = row_data_value / 100
+                elif row_unit_value == "dl":
+                    df.at[index, data_col_name] = row_data_value / 10
                 elif row_unit_value == "dal":
-                    df.at[index, data_col_name] = row_data_value / 10000
+                    df.at[index, data_col_name] = row_data_value * 10
                 elif row_unit_value == "hl":
-                    df.at[index, data_col_name] = row_data_value / 100000
+                    df.at[index, data_col_name] = row_data_value / 100
                 elif row_unit_value == "kl":
-                    df.at[index, data_col_name] = row_data_value / 1000000
+                    df.at[index, data_col_name] = row_data_value / 1000
                 elif row_unit_value == "mm":  # Converts to from one of the units below to meters
                     df.at[index, data_col_name] = row_data_value / 1000
                 elif row_unit_value == "cm":
