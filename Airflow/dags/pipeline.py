@@ -3,6 +3,7 @@ from datetime import timedelta, datetime
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 
+from tasks.cleanup.error_collect import ErrorCollect
 from tasks.load.load_tasks import LoadTasks
 from tasks.preprocess.preprocess_tasks import PreprocessTasks
 from tasks.read.read_tasks import ReadTasks
@@ -129,6 +130,11 @@ with DAG(
         trigger_rule="all_done",
         python_callable=CleanupTasks.cleanup
     )
+    error_collect = PythonOperator(
+        task_id='errorCollect',
+        trigger_rule="all_done",
+        python_callable=ErrorCollect.collect_errors
+    )
 
     # cleaning
     readImage >> cleanImage
@@ -168,5 +174,7 @@ with DAG(
     loadInkUsage >> cleanUp
     loadTopTenPrintVolume >> cleanUp
     loadMediaTypesPerMachine >> cleanUp
+
+    cleanUp >> error_collect
 
     # readImage
