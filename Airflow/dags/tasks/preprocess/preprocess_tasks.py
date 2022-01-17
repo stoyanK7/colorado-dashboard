@@ -4,6 +4,10 @@ import pandas as pd
 import numpy as np
 import re
 from tabulate import tabulate
+from datetime import datetime
+import pytz
+
+
 from config import aggregate_column_name_config, clean_table_name_config, \
     clean_image_col_name_constants, preprocess_table_name_config, clean_print_cycle_col_name_constants, \
     clean_media_prepare_col_name_constants, preprocess_col_name_constants
@@ -46,8 +50,12 @@ class PreprocessTasks():
         # Columns to be removed from the table
         columns_to_drop = [clean_image_col_name_constants.IMAGE_LENGTH, clean_image_col_name_constants.IMAGE_WIDTH,
                            clean_image_col_name_constants.MEDIA_TYPE, clean_image_col_name_constants.LOCAL_TIME]
+
         # Convert the columns to their appropriate unit type
         df = PreprocessTasks._converting_units_to_default_values(df, columns_to_drop)
+
+        # Converts dates to utc
+        df = PreprocessTasks._convert_date_to_utc(df)
 
         df = df.rename(columns={clean_image_col_name_constants.MACHINEID: preprocess_col_name_constants.MACHINEID})
         df = df.rename(columns={clean_image_col_name_constants.DATE: preprocess_col_name_constants.DATE})
@@ -72,8 +80,6 @@ class PreprocessTasks():
         df = PreprocessTasks._merge_two_dataframes(df1, df2, clean_print_cycle_col_name_constants.ENGINE_CYCLE_ID)
         # Make sure to not have unnecessary data
         df = df[[clean_print_cycle_col_name_constants.DATE + "_x",
-                 clean_print_cycle_col_name_constants.LOCAL_TIME + "_x",
-                 clean_print_cycle_col_name_constants.LOCAL_TIME_UNIT + "_x",
                  clean_media_prepare_col_name_constants.MEDIA_TYPE_DISPLAY_NAME,
                  clean_print_cycle_col_name_constants.SQUARE_DECIMETER,
                  clean_print_cycle_col_name_constants.SQUARE_DECIMETER_UNIT,
@@ -85,18 +91,15 @@ class PreprocessTasks():
         df = df.rename(
             columns={
                 clean_print_cycle_col_name_constants.MACHINEID + "_x": clean_print_cycle_col_name_constants.MACHINEID})
-        df = df.rename(
-            columns={
-                clean_print_cycle_col_name_constants.LOCAL_TIME + "_x": clean_print_cycle_col_name_constants.LOCAL_TIME})
-        df = df.rename(
-            columns={
-                clean_print_cycle_col_name_constants.LOCAL_TIME_UNIT + "_x": clean_print_cycle_col_name_constants.LOCAL_TIME_UNIT})
 
         # Columns to be removed from the table
-        columns_to_drop = [clean_print_cycle_col_name_constants.LOCAL_TIME]
+        columns_to_drop = []
 
         # Convert the columns to their appropriate unit type
         df = PreprocessTasks._converting_units_to_default_values(df, columns_to_drop)
+
+        # Converts dates to utc
+        df = PreprocessTasks._convert_date_to_utc(df)
 
         df = df.rename(
             columns={clean_print_cycle_col_name_constants.MACHINEID: preprocess_col_name_constants.MACHINEID})
@@ -120,6 +123,9 @@ class PreprocessTasks():
 
         # Convert the columns to their appropriate unit type
         df = PreprocessTasks._converting_units_to_default_values(df, columns_to_drop)
+
+        # Converts dates to utc
+        df = PreprocessTasks._convert_date_to_utc(df)
 
         df = df.rename(
             columns={clean_print_cycle_col_name_constants.MACHINEID: preprocess_col_name_constants.MACHINEID})
@@ -164,18 +170,18 @@ class PreprocessTasks():
                 # Gets the values of the columns
                 row_data_value = row[data_col_name]
                 row_unit_value = row[unit_col_name]
-                if row_unit_value == "cl":    # Converts to from one of the units below to milliliters
-                    df.at[index, data_col_name] = row_data_value / 10
-                elif row_unit_value == "dl":
-                    df.at[index, data_col_name] = row_data_value / 100
-                elif row_unit_value == "l":
+                if row_unit_value == "ml":    # Converts to from one of the units below to milliliters
                     df.at[index, data_col_name] = row_data_value / 1000
+                elif row_unit_value == "cl":
+                    df.at[index, data_col_name] = row_data_value / 100
+                elif row_unit_value == "dl":
+                    df.at[index, data_col_name] = row_data_value / 10
                 elif row_unit_value == "dal":
-                    df.at[index, data_col_name] = row_data_value / 10000
+                    df.at[index, data_col_name] = row_data_value * 10
                 elif row_unit_value == "hl":
-                    df.at[index, data_col_name] = row_data_value / 100000
+                    df.at[index, data_col_name] = row_data_value / 100
                 elif row_unit_value == "kl":
-                    df.at[index, data_col_name] = row_data_value / 1000000
+                    df.at[index, data_col_name] = row_data_value / 1000
                 elif row_unit_value == "mm":  # Converts to from one of the units below to meters
                     df.at[index, data_col_name] = row_data_value / 1000
                 elif row_unit_value == "cm":
@@ -220,6 +226,27 @@ class PreprocessTasks():
         df = df.drop(columns=unnecessary_columns)
 
         logging.info("Successful process of unit conversion and needless column removal")
+        return df
+
+    @staticmethod
+    def _convert_date_to_utc(df):
+        logging.info("Start of date generalization to UTC")
+        date_format = "%Y-%m-%d"
+        for index, row in df.iterrows():
+            date_col = clean_image_col_name_constants.DATE
+            date_value = row[clean_image_col_name_constants.DATE]
+            # Create an object in local timezone
+            local_dt = datetime.strptime(date_value, date_format)
+
+            # Convert local datetime to UTC time-zone datetime
+            dt_utc = local_dt.astimezone(pytz.UTC)
+
+            # Converts the UTC date to a string
+            dt_utc_str = dt_utc.strftime(date_format)
+
+            # Inserts the utc date back in the dataframe
+            df.at[index, date_col] = dt_utc_str
+        logging.info("End of date generalization to UTC")
         return df
 
     @staticmethod
