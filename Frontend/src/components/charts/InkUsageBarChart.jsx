@@ -45,7 +45,7 @@ const InkUsageBarChart = ({ data, aggregated = true, index, legend = true }) => 
         <Bar dataKey='Black' isAnimationActive={false} stackId='a' fill='#333333' />
         <Bar dataKey='Cyan' isAnimationActive={false} stackId='a' fill='#00FFFF' />
         <Bar dataKey='Magenta' isAnimationActive={false} stackId='a' fill='#FF00FF' />
-        <Bar dataKey='Yellow' isAnimationActive={false} stackId='a' fill='#DDDD00' />
+        <Bar dataKey='Yellow' isAnimationActive={false} stackId='a' fill='#EEEE00' />
       </BarChart>
     </ResponsiveContainer>
   );

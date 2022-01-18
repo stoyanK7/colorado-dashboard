@@ -27,16 +27,6 @@ class DataPipelineErrorControllerIntegrationTest {
     private Integer page = 0;
 
     @Test
-    @DisplayName("INTEGRATION: getLatest() invokes repository method.")
-    void getLatest() {
-        componentUnderTest
-                .getLatest();
-
-        verify(repository)
-                .getLatest();
-    }
-
-    @Test
     @DisplayName("INTEGRATION: getBy5() invokes repository method.")
     void getBy5() {
         componentUnderTest

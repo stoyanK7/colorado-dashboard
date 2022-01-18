@@ -63,7 +63,7 @@ const MediaCategoryUsageBarChart = ({ data, aggregated = true, index, legend = t
             dataKey={key}
             stackId='a'
             isAnimationActive={false}
-            fill={getRandomColor('palette3', chartDataKeys.indexOf(key))}
+            fill={getRandomColor('palette11', chartDataKeys.indexOf(key))}
             key={key} />
         })}
       </BarChart>
