@@ -60,23 +60,23 @@ with DAG(
 
     # PREPROCESS
     preprocessMediaCategoryUsage = PythonOperator(
-        task_id='preprocessMediaCategoryUsage_TODO',
+        task_id='preprocessMediaCategoryUsage',
         python_callable=PreprocessTasks.preprocess_media_category_usage
     )
     preprocessSqmPerPrintMode = PythonOperator(
-        task_id='preprocessSqmPerPrintMode_TODO',
+        task_id='preprocessSqmPerPrintMode',
         python_callable=PreprocessTasks.preprocess_sqm_per_print_mode
     )
     preprocessInkUsage = PythonOperator(
-        task_id='preprocessInkUsage_WIP',
+        task_id='preprocessInkUsage',
         python_callable=PreprocessTasks.preprocess_ink_usage
     )
     preprocessTopTenPrintVolume = PythonOperator(
-        task_id='preprocessTopTenPrintVolume_WIP',
+        task_id='preprocessTopTenPrintVolume',
         python_callable=PreprocessTasks.preprocess_top_ten_print_volume
     )
     preprocessMediaTypesPerMachine = PythonOperator(
-        task_id='preprocessMediaTypesPerMachine_WIP',
+        task_id='preprocessMediaTypesPerMachine',
         python_callable=PreprocessTasks.preprocess_media_types_per_machine
     )
 
@@ -86,19 +86,19 @@ with DAG(
         python_callable=AggregateTasks.aggregate_media_category_usage
     )
     aggregateSqmPerPrintMode = PythonOperator(
-        task_id='aggregateSqmPerPrintMode_TODO',
+        task_id='aggregateSqmPerPrintMode',
         python_callable=AggregateTasks.aggregate_sqm_per_print_mode
     )
     aggregateInkUsage = PythonOperator(
-        task_id='aggregateInkUsage_WIP',
+        task_id='aggregateInkUsage',
         python_callable=AggregateTasks.aggregate_ink_usage
     )
     aggregateTopTenPrintVolume = PythonOperator(
-        task_id='aggregateTopTenPrintVolume_WIP',
+        task_id='aggregateTopTenPrintVolume',
         python_callable=AggregateTasks.aggregate_top_ten_print_volume
     )
     aggregateMediaTypesPerMachine = PythonOperator(
-        task_id='aggregateMediaTypesPerMachine_WIP',
+        task_id='aggregateMediaTypesPerMachine',
         python_callable=AggregateTasks.aggregate_media_types_per_machine
     )
 
