@@ -32,6 +32,8 @@ class LoadTasks:
         media_category = preprocess_col_name_constants.MEDIA_TYPE
         api_df = LoadTasks._read_existing_data_from_api(api_table_name, date_col, start_date, end_date)
 
+        LoadTasks._set_date_type(api_df, df, date_col)
+
         LoadTasks._delete_existing_data_from_api(api_table_name, date_col, start_date, end_date)
 
         final_df = LoadTasks._merge_existing_with_new_data(df, api_df, [date_col, machine_id, media_category])
@@ -53,6 +55,8 @@ class LoadTasks:
         print_mode = preprocess_col_name_constants.PRINT_MODE
         api_df = LoadTasks._read_existing_data_from_api(api_table_name, date_col, start_date, end_date)
 
+        LoadTasks._set_date_type(api_df, df, date_col)
+
         LoadTasks._delete_existing_data_from_api(api_table_name, date_col, start_date, end_date)
 
         final_df = LoadTasks._merge_existing_with_new_data(df, api_df, [date_col, machine_id, print_mode])
@@ -72,6 +76,8 @@ class LoadTasks:
         end_date = df[DATE].max()
         machine_id = preprocess_col_name_constants.MACHINEID
         api_df = LoadTasks._read_existing_data_from_api(api_table_name, date_col, start_date, end_date)
+
+        LoadTasks._set_date_type(api_df, df, date_col)
 
         LoadTasks._delete_existing_data_from_api(api_table_name, date_col, start_date, end_date)
 
@@ -94,6 +100,8 @@ class LoadTasks:
         machine_id = preprocess_col_name_constants.MACHINEID
         api_df = LoadTasks._read_existing_data_from_api(api_table_name, date_col, start_date, end_date)
 
+        LoadTasks._set_date_type(api_df, df, date_col)
+
         LoadTasks._delete_existing_data_from_api(api_table_name, date_col, start_date, end_date)
 
         final_df = LoadTasks._merge_existing_with_new_data(df, api_df, [date_col, machine_id])
@@ -114,6 +122,8 @@ class LoadTasks:
         machine_id = preprocess_col_name_constants.MACHINEID
         media_type = preprocess_col_name_constants.MEDIA_TYPE_DISPLAY_NAME
         api_df = LoadTasks._read_existing_data_from_api(api_table_name, date_col, start_date, end_date)
+
+        LoadTasks._set_date_type(api_df, df, date_col)
 
         LoadTasks._delete_existing_data_from_api(api_table_name, date_col, start_date, end_date)
 
@@ -136,6 +146,7 @@ class LoadTasks:
         try:
             sql = f"SELECT * FROM {table_name} WHERE {date_col_name} BETWEEN '{start_date}' AND '{end_date}'"
             result = pd.read_sql(sql, connection)
+            result = result.drop(["id"], axis=1)
         finally:
             connection.close()
         return result
@@ -152,10 +163,11 @@ class LoadTasks:
             connection.close()
 
     @staticmethod
-    def _merge_existing_with_new_data(existing_data, new_data, cols):
+    def _merge_existing_with_new_data(pipeline_data: pd.DataFrame, api_data: pd.DataFrame, cols):
         logging.info("Merging existing data with new data")
-        concat_df = pd.concat([existing_data, new_data])
-        return concat_df.groupby(cols).sum().reset_index()
+        concat_df = pd.concat([pipeline_data, api_data]).reset_index(drop=True)
+        grouped = concat_df.groupby(cols, as_index=False).sum().reset_index(drop=True)
+        return grouped
 
     @staticmethod
     def _send_data_to_api(table_name, df):
@@ -172,3 +184,8 @@ class LoadTasks:
         logging.info("Opening connection to api database")
         engine = create_engine("mysql+pymysql://canon:canon@host.docker.internal:3306/canon", pool_recycle=3600)
         return engine.connect()
+
+    @staticmethod
+    def _set_date_type(api_df, df, date_col):
+        api_df[date_col] = pd.to_datetime(api_df[date_col])
+        df[date_col] = pd.to_datetime(df[date_col])
