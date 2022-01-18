@@ -3,6 +3,9 @@ import os
 import shutil
 
 import pandas as pd
+from contextlib import closing
+from airflow import models, settings
+from airflow.utils.state import State
 from airflow.models import Variable
 
 from config import aggregate_table_name_config, \
@@ -17,7 +20,7 @@ from DAL.postgres_database_manager import PostgresDatabaseManager
 class CleanupTasks:
 
     @staticmethod
-    def cleanup(ti):
+    def cleanup(ti, **context):
         # return
         # Clean the data from the databases
         CleanupTasks._cleanup_tables(aggregate_table_name_config)
@@ -26,12 +29,18 @@ class CleanupTasks:
         CleanupTasks._cleanup_tables(read_table_name_config)
         CleanupTasks._cleanup_tables(preprocess_table_name_config)
 
-        CleanupTasks._cleanup_snapshot()
-        # # save from X com into the database
-        # CleanupTasks._xcom_to_db(ti,
-        #                          last_seen_column_name_config.LAST_SEEN_IMAGE_FILE_PATH,
-        #                          last_seen_column_name_config.LAST_SEEN_IMAGE_ROW_ID,
-        #                          last_seen_table_config.LAST_SEEN_IMAGE_TABLE)
+        with closing(settings.Session) as session:
+            number_of_errors = session.query(
+                models.TaskInstance
+            ).filter(
+                models.TaskInstance.dag_id == context["dag"].dag_id,
+                models.TaskInstance.execution_date == context["execution_date"],
+                models.TaskInstance.state == State.FAILED).count()
+
+        if number_of_errors == 0:
+            CleanupTasks._update_last_read()
+        else:
+            CleanupTasks._delete_snapshot()
 
     @staticmethod
     def _cleanup_tables(table_name_config):
@@ -69,10 +78,15 @@ class CleanupTasks:
         pdm.insert_into_table(df, table_name)
 
     @staticmethod
-    def _cleanup_snapshot():
+    def _update_last_read():
         logging.info("Removing last read files")
-        if (os.path.exists(Variable.get("last_read_files_directory"))):
+        if os.path.exists(Variable.get("last_read_files_directory")):
             shutil.rmtree(Variable.get("last_read_files_directory"))
         logging.info("Moving snapshot to last read files")
         os.rename(Variable.get("snapshot_directory"), Variable.get("last_read_files_directory"))
         pass
+
+    @staticmethod
+    def _delete_snapshot():
+        logging.info("Pipeline failed, removing snapshot")
+        shutil.rmtree(Variable.get("snapshot_directory"))
