@@ -19,6 +19,11 @@ class PreprocessTasks():
         # Take the dataframe from the previous step
         df = PreprocessTasks._read_from_db(clean_table_name_config.READ_IMAGE)
 
+        # Skip if no new data
+        if df.empty:
+            logging.info("No new data was found, skipping step.")
+            return
+
         # Columns to be removed from the table
         columns_to_drop = [clean_image_col_name_constants.LOCAL_TIME,
                            clean_image_col_name_constants.ACCOUNTED_INK_BLACK,
@@ -44,6 +49,11 @@ class PreprocessTasks():
         logging.info("Start preprocess for sqm per print mode.")
         # Take the dataframe from the previous step
         df = PreprocessTasks._read_from_db(clean_table_name_config.READ_PRINT_CYCLE)
+
+        # Skip if no new data
+        if df.empty:
+            logging.info("No new data was found, skipping step.")
+            return
 
         # Columns to be removed from the table
         columns_to_drop = [clean_print_cycle_col_name_constants.ENGINE_CYCLE_ID,
