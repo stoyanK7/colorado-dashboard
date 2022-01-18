@@ -18,7 +18,6 @@ class CleanupTasks:
 
     @staticmethod
     def cleanup(ti):
-        # return
         # Clean the data from the databases
         CleanupTasks._cleanup_tables(aggregate_table_name_config)
         CleanupTasks._cleanup_tables(clean_table_name_config)
