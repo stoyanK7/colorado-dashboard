@@ -16,7 +16,7 @@ class ErrorCollect:
         pdm = PostgresDatabaseManager()
         logging.info("Reading errors from the database")
         df = pdm.read_sql(f"""SELECT dag_id, task_id, execution_date, try_number FROM task_instance WHERE dag_id='{context["dag"].dag_id}' AND execution_date='{context["execution_date"]}' AND state='{State.FAILED}'""")
-        logging.info(f"{len(df.columns)} errors were found")
+        logging.info(f"{len(df)} errors were found")
 
         # If no errors, set df to empty row with date and passed to true
         if df.empty:
