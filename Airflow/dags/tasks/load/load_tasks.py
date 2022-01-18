@@ -19,7 +19,6 @@ class LoadTasks:
 
     @staticmethod
     def load_media_category_usage():
-        return
         df = LoadTasks._read_from_db_postgresql(aggregate_table_name_config.AGGREGATE_MEDIA_CATEGORY_USAGE)
         if df.empty:
             logging.info("No new data was found, skipping step.")
@@ -30,18 +29,17 @@ class LoadTasks:
         start_date = df[DATE].min()
         end_date = df[DATE].max()
         machine_id = preprocess_col_name_constants.MACHINEID
+        media_category = preprocess_col_name_constants.MEDIA_TYPE
         api_df = LoadTasks._read_existing_data_from_api(api_table_name, date_col, start_date, end_date)
 
         LoadTasks._delete_existing_data_from_api(api_table_name, date_col, start_date, end_date)
 
-        #TODO This should merge over more columns
-        final_df = LoadTasks._merge_existing_with_new_data(df, api_df, [date_col, machine_id])
+        final_df = LoadTasks._merge_existing_with_new_data(df, api_df, [date_col, machine_id, media_category])
 
         LoadTasks._send_data_to_api(api_table_name, final_df)
 
     @staticmethod
     def load_sqm_per_print_mode():
-        return
         df = LoadTasks._read_from_db_postgresql(aggregate_table_name_config.AGGREGATE_SQM_PER_PRINT_MODE)
         if df.empty:
             logging.info("No new data was found, skipping step.")
@@ -52,12 +50,12 @@ class LoadTasks:
         start_date = df[DATE].min()
         end_date = df[DATE].max()
         machine_id = preprocess_col_name_constants.MACHINEID
+        print_mode = preprocess_col_name_constants.PRINT_MODE
         api_df = LoadTasks._read_existing_data_from_api(api_table_name, date_col, start_date, end_date)
 
         LoadTasks._delete_existing_data_from_api(api_table_name, date_col, start_date, end_date)
 
-        # TODO This should merge over more columns
-        final_df = LoadTasks._merge_existing_with_new_data(df, api_df, [date_col, machine_id])
+        final_df = LoadTasks._merge_existing_with_new_data(df, api_df, [date_col, machine_id, print_mode])
 
         LoadTasks._send_data_to_api(api_table_name, final_df)
 
