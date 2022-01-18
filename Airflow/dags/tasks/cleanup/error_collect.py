@@ -7,6 +7,7 @@ from airflow.models import Variable
 from airflow.utils.state import State
 from sqlalchemy import create_engine
 
+from DAL.api_database_manager import ApiDatabaseManager
 from DAL.postgres_database_manager import PostgresDatabaseManager
 
 
@@ -45,12 +46,8 @@ class ErrorCollect:
 
         # push to db
         logging.info("Sending to api database")
-        connection = ErrorCollect._connect_to_api_database()
-        try:
-            df.to_sql(Variable.get("api_error_table_name"), connection, if_exists="append", index=False)
-            logging.info("successfully sent")
-        finally:
-            connection.close()
+        dm = ApiDatabaseManager()
+        dm.send_df(Variable.get("api_error_table_name"), df)
 
     @staticmethod
     def get_affected_graphs(row):

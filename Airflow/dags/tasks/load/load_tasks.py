@@ -5,6 +5,7 @@ import pandas as pd
 from airflow.models import Variable
 from sqlalchemy import create_engine, text
 
+from DAL.api_database_manager import ApiDatabaseManager
 from config import aggregate_table_name_config, aggregate_column_name_config, preprocess_col_name_constants
 from DAL.postgres_database_manager import PostgresDatabaseManager
 from tabulate import tabulate
@@ -142,25 +143,18 @@ class LoadTasks:
     def _read_existing_data_from_api(table_name, date_col_name, start_date, end_date):
         logging.info(f"Reading existing data in api database from table {table_name} between {start_date} and {end_date}")
         result = None
-        connection = LoadTasks._connect_to_api_database()
-        try:
-            sql = f"SELECT * FROM {table_name} WHERE {date_col_name} BETWEEN '{start_date}' AND '{end_date}'"
-            result = pd.read_sql(sql, connection)
-            result = result.drop(["id"], axis=1)
-        finally:
-            connection.close()
+        dm = ApiDatabaseManager()
+        sql = f"SELECT * FROM {table_name} WHERE {date_col_name} BETWEEN '{start_date}' AND '{end_date}'"
+        result = dm.read_pd(sql)
+        result = result.drop(["id"], axis=1)
         return result
 
 
     @staticmethod
     def _delete_existing_data_from_api(table_name, date_col_name, start_date, end_date):
         logging.info(f"Deleting existing data in api database from table {table_name} between {start_date} and {end_date}")
-        connection = LoadTasks._connect_to_api_database()
-        try:
-            connection.execute(
-                text(f"DELETE FROM {table_name} WHERE {date_col_name} BETWEEN '{start_date}' AND '{end_date}'"))
-        finally:
-            connection.close()
+        dm = ApiDatabaseManager()
+        dm.sql_query(text(f"DELETE FROM {table_name} WHERE {date_col_name} BETWEEN '{start_date}' AND '{end_date}'"))
 
     @staticmethod
     def _merge_existing_with_new_data(pipeline_data: pd.DataFrame, api_data: pd.DataFrame, cols):
@@ -172,18 +166,8 @@ class LoadTasks:
     @staticmethod
     def _send_data_to_api(table_name, df):
         logging.info(f"Pushing new data to api table {table_name}")
-        connection = LoadTasks._connect_to_api_database()
-        try:
-            df.to_sql(table_name, connection, if_exists="append", index=False)
-        finally:
-            connection.close()
-
-
-    @staticmethod
-    def _connect_to_api_database():
-        logging.info("Opening connection to api database")
-        engine = create_engine("mysql+pymysql://canon:canon@host.docker.internal:3306/canon", pool_recycle=3600)
-        return engine.connect()
+        dm = ApiDatabaseManager()
+        dm.send_df(table_name, df)
 
     @staticmethod
     def _set_date_type(api_df, df, date_col):
