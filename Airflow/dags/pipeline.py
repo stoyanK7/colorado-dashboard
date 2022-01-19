@@ -1,6 +1,7 @@
 from datetime import timedelta, datetime
 
 from airflow import DAG
+from airflow.operators.dummy import DummyOperator
 from airflow.operators.python_operator import PythonOperator
 
 from tasks.cleanup.error_collect import ErrorCollect
@@ -103,6 +104,10 @@ with DAG(
     )
 
     #LOAD
+    preloadBarrier = DummyOperator(
+        task_id='preloadBarrier'
+    )
+
     loadMediaCategoryUsage = PythonOperator(
         task_id='loadMediaCategoryUsage',
         python_callable=LoadTasks.load_media_category_usage
@@ -154,19 +159,17 @@ with DAG(
     preprocessTopTenPrintVolume >> aggregateTopTenPrintVolume
     preprocessMediaTypesPerMachine >> aggregateMediaTypesPerMachine
     # load
-    aggregateMediaCategoryUsage >> loadMediaCategoryUsage
-    aggregateInkUsage >> loadInkUsage
-    aggregateMediaCategoryUsage >> loadInkUsage
-    aggregateInkUsage >> loadMediaCategoryUsage
-    aggregateSqmPerPrintMode >> loadSqmPerPrintMode
-    aggregateTopTenPrintVolume >> loadTopTenPrintVolume
-    aggregateMediaTypesPerMachine >> loadMediaTypesPerMachine
-    aggregateSqmPerPrintMode >> loadTopTenPrintVolume
-    aggregateTopTenPrintVolume >> loadMediaTypesPerMachine
-    aggregateMediaTypesPerMachine >> loadSqmPerPrintMode
-    aggregateSqmPerPrintMode >> loadMediaTypesPerMachine
-    aggregateTopTenPrintVolume >> loadSqmPerPrintMode
-    aggregateMediaTypesPerMachine >> loadTopTenPrintVolume
+    aggregateMediaCategoryUsage >> preloadBarrier
+    aggregateInkUsage >> preloadBarrier
+    aggregateSqmPerPrintMode >> preloadBarrier
+    aggregateTopTenPrintVolume >> preloadBarrier
+    aggregateMediaTypesPerMachine >> preloadBarrier
+
+    preloadBarrier >> loadTopTenPrintVolume
+    preloadBarrier >> loadSqmPerPrintMode
+    preloadBarrier >> loadMediaTypesPerMachine
+    preloadBarrier >> loadMediaCategoryUsage
+    preloadBarrier >> loadInkUsage
 
     # cleanup
     loadMediaCategoryUsage >> cleanUp
