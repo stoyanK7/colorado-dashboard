@@ -70,7 +70,7 @@ public class BaseService<E extends BaseEntity, D> {
      */
     private String dateFormatSwitch(String bin) {
         // day is the default bin
-        String dateFormat = "%Y/%b/%d"; // 2021/Dec/22 - day
+        String dateFormat = "%Y/%c/%d"; // 2021/Dec/22 - day
         switch (bin) {
             case "week":
                 dateFormat = "%Y/%u"; // 2021/42 - week
