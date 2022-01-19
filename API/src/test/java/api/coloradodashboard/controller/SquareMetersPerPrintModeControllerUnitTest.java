@@ -48,7 +48,7 @@ class SquareMetersPerPrintModeControllerUnitTest {
     void getAllAggregated() throws Exception {
         mockMvc.perform(post("/SquareMetersPerPrintMode?aggregated=true"))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/01','Print mode':'Backlit','Printed square meters':1.5},{'Date':'2021/Dec/01','Print mode':'High speed','Printed square meters':5.0},{'Date':'2021/Dec/01','Print mode':'Production','Printed square meters':7.5},{'Date':'2021/Dec/01','Print mode':'Specialty','Printed square meters':2.0},{'Date':'2021/Dec/02','Print mode':'Backlit','Printed square meters':3.5},{'Date':'2021/Dec/02','Print mode':'Reliance','Printed square meters':8.0},{'Date':'2021/Dec/02','Print mode':'Specialty','Printed square meters':2.0}]"))
+                .andExpect(content().json("[{'Date':'2021/12/01','Print mode':'Backlit','Printed square meters':1.5},{'Date':'2021/12/01','Print mode':'High speed','Printed square meters':5.0},{'Date':'2021/12/01','Print mode':'Production','Printed square meters':7.5},{'Date':'2021/12/01','Print mode':'Specialty','Printed square meters':2.0},{'Date':'2021/12/02','Print mode':'Backlit','Printed square meters':3.5},{'Date':'2021/12/02','Print mode':'Reliance','Printed square meters':8.0},{'Date':'2021/12/02','Print mode':'Specialty','Printed square meters':2.0}]"))
                 .andReturn();
     }
 
@@ -66,7 +66,7 @@ class SquareMetersPerPrintModeControllerUnitTest {
     void getAllNonAggregated() throws Exception {
         mockMvc.perform(post("/SquareMetersPerPrintMode?aggregated=false"))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/01','Printer id':'700','Print mode':'Backlit','Printed square meters':1.5},{'Date':'2021/Dec/01','Printer id':'700','Print mode':'Production','Printed square meters':2.5},{'Date':'2021/Dec/01','Printer id':'701','Print mode':'High speed','Printed square meters':2.0},{'Date':'2021/Dec/01','Printer id':'701','Print mode':'Production','Printed square meters':5.0},{'Date':'2021/Dec/01','Printer id':'702','Print mode':'High speed','Printed square meters':3.0},{'Date':'2021/Dec/01','Printer id':'702','Print mode':'Specialty','Printed square meters':2.0},{'Date':'2021/Dec/02','Printer id':'700','Print mode':'Reliance','Printed square meters':3.0},{'Date':'2021/Dec/02','Printer id':'700','Print mode':'Specialty','Printed square meters':2.0},{'Date':'2021/Dec/02','Printer id':'701','Print mode':'Backlit','Printed square meters':2.0},{'Date':'2021/Dec/02','Printer id':'701','Print mode':'Reliance','Printed square meters':3.0},{'Date':'2021/Dec/02','Printer id':'702','Print mode':'Backlit','Printed square meters':1.5},{'Date':'2021/Dec/02','Printer id':'702','Print mode':'Reliance','Printed square meters':2.0}]"))
+                .andExpect(content().json("[{'Date':'2021/12/01','Printer id':'700','Print mode':'Backlit','Printed square meters':1.5},{'Date':'2021/12/01','Printer id':'700','Print mode':'Production','Printed square meters':2.5},{'Date':'2021/12/01','Printer id':'701','Print mode':'High speed','Printed square meters':2.0},{'Date':'2021/12/01','Printer id':'701','Print mode':'Production','Printed square meters':5.0},{'Date':'2021/12/01','Printer id':'702','Print mode':'High speed','Printed square meters':3.0},{'Date':'2021/12/01','Printer id':'702','Print mode':'Specialty','Printed square meters':2.0},{'Date':'2021/12/02','Printer id':'700','Print mode':'Reliance','Printed square meters':3.0},{'Date':'2021/12/02','Printer id':'700','Print mode':'Specialty','Printed square meters':2.0},{'Date':'2021/12/02','Printer id':'701','Print mode':'Backlit','Printed square meters':2.0},{'Date':'2021/12/02','Printer id':'701','Print mode':'Reliance','Printed square meters':3.0},{'Date':'2021/12/02','Printer id':'702','Print mode':'Backlit','Printed square meters':1.5},{'Date':'2021/12/02','Printer id':'702','Print mode':'Reliance','Printed square meters':2.0}]"))
                 .andReturn();
     }
 
@@ -83,7 +83,7 @@ class SquareMetersPerPrintModeControllerUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/01','Print mode':'Backlit','Printed square meters':1.5},{'Date':'2021/Dec/01','Print mode':'High speed','Printed square meters':5.0},{'Date':'2021/Dec/01','Print mode':'Production','Printed square meters':7.5},{'Date':'2021/Dec/01','Print mode':'Specialty','Printed square meters':2.0}]"))
+                .andExpect(content().json("[{'Date':'2021/12/01','Print mode':'Backlit','Printed square meters':1.5},{'Date':'2021/12/01','Print mode':'High speed','Printed square meters':5.0},{'Date':'2021/12/01','Print mode':'Production','Printed square meters':7.5},{'Date':'2021/12/01','Print mode':'Specialty','Printed square meters':2.0}]"))
                 .andReturn();
     }
 
@@ -100,7 +100,7 @@ class SquareMetersPerPrintModeControllerUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/01','Printer id':'700','Print mode':'Backlit','Printed square meters':1.5},{'Date':'2021/Dec/01','Printer id':'700','Print mode':'Production','Printed square meters':2.5},{'Date':'2021/Dec/01','Printer id':'701','Print mode':'High speed','Printed square meters':2.0},{'Date':'2021/Dec/01','Printer id':'701','Print mode':'Production','Printed square meters':5.0},{'Date':'2021/Dec/01','Printer id':'702','Print mode':'High speed','Printed square meters':3.0},{'Date':'2021/Dec/01','Printer id':'702','Print mode':'Specialty','Printed square meters':2.0}]"))
+                .andExpect(content().json("[{'Date':'2021/12/01','Printer id':'700','Print mode':'Backlit','Printed square meters':1.5},{'Date':'2021/12/01','Printer id':'700','Print mode':'Production','Printed square meters':2.5},{'Date':'2021/12/01','Printer id':'701','Print mode':'High speed','Printed square meters':2.0},{'Date':'2021/12/01','Printer id':'701','Print mode':'Production','Printed square meters':5.0},{'Date':'2021/12/01','Printer id':'702','Print mode':'High speed','Printed square meters':3.0},{'Date':'2021/12/01','Printer id':'702','Print mode':'Specialty','Printed square meters':2.0}]"))
                 .andReturn();
     }
 
@@ -118,7 +118,7 @@ class SquareMetersPerPrintModeControllerUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/01','Print mode':'Backlit','Printed square meters':1.5},{'Date':'2021/Dec/01','Print mode':'High speed','Printed square meters':3.0},{'Date':'2021/Dec/01','Print mode':'Production','Printed square meters':2.5},{'Date':'2021/Dec/01','Print mode':'Specialty','Printed square meters':2.0}]"))
+                .andExpect(content().json("[{'Date':'2021/12/01','Print mode':'Backlit','Printed square meters':1.5},{'Date':'2021/12/01','Print mode':'High speed','Printed square meters':3.0},{'Date':'2021/12/01','Print mode':'Production','Printed square meters':2.5},{'Date':'2021/12/01','Print mode':'Specialty','Printed square meters':2.0}]"))
                 .andReturn();
     }
 
@@ -136,7 +136,7 @@ class SquareMetersPerPrintModeControllerUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/01','Printer id':'700','Print mode':'Backlit','Printed square meters':1.5},{'Date':'2021/Dec/01','Printer id':'700','Print mode':'Production','Printed square meters':2.5},{'Date':'2021/Dec/01','Printer id':'702','Print mode':'High speed','Printed square meters':3.0},{'Date':'2021/Dec/01','Printer id':'702','Print mode':'Specialty','Printed square meters':2.0}]"))
+                .andExpect(content().json("[{'Date':'2021/12/01','Printer id':'700','Print mode':'Backlit','Printed square meters':1.5},{'Date':'2021/12/01','Printer id':'700','Print mode':'Production','Printed square meters':2.5},{'Date':'2021/12/01','Printer id':'702','Print mode':'High speed','Printed square meters':3.0},{'Date':'2021/12/01','Printer id':'702','Print mode':'Specialty','Printed square meters':2.0}]"))
                 .andReturn();
     }
 

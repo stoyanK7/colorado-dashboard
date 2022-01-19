@@ -49,7 +49,7 @@ class InkUsageControllerUnitTest {
     void getAllAggregated() throws Exception {
         mockMvc.perform(post("/InkUsage?aggregated=true"))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/01','Cyan':5.5,'Magenta':9.5,'Yellow':9.0,'Black':12.0},{'Date':'2021/Dec/02','Cyan':11.5,'Magenta':4.0,'Yellow':14.5,'Black':7.0},{'Date':'2021/Dec/03','Cyan':11.0,'Magenta':8.0,'Yellow':2.0,'Black':2.5}]"))
+                .andExpect(content().json("[{'Date':'2021/12/01','Cyan':5.5,'Magenta':9.5,'Yellow':9.0,'Black':12.0},{'Date':'2021/12/02','Cyan':11.5,'Magenta':4.0,'Yellow':14.5,'Black':7.0},{'Date':'2021/12/03','Cyan':11.0,'Magenta':8.0,'Yellow':2.0,'Black':2.5}]"))
                 .andReturn();
     }
 
@@ -67,7 +67,7 @@ class InkUsageControllerUnitTest {
     void getAllNonAggregated() throws Exception {
         mockMvc.perform(post("/InkUsage?aggregated=false"))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/01','Printer id':'700','Cyan':1.5,'Magenta':2.5,'Yellow':3.5,'Black':4.5},{'Date':'2021/Dec/01','Printer id':'701','Cyan':1.0,'Magenta':2.5,'Yellow':1.5,'Black':5.5},{'Date':'2021/Dec/01','Printer id':'702','Cyan':3.0,'Magenta':4.5,'Yellow':4.0,'Black':2.0},{'Date':'2021/Dec/02','Printer id':'700','Cyan':2.5,'Magenta':0.5,'Yellow':5.5,'Black':3.0},{'Date':'2021/Dec/02','Printer id':'701','Cyan':5.5,'Magenta':2.5,'Yellow':3.5,'Black':1.0},{'Date':'2021/Dec/02','Printer id':'702','Cyan':3.5,'Magenta':1.0,'Yellow':5.5,'Black':3.0},{'Date':'2021/Dec/03','Printer id':'700','Cyan':4.5,'Magenta':5.5,'Yellow':0.5,'Black':1.5},{'Date':'2021/Dec/03','Printer id':'701','Cyan':4.0,'Magenta':1.0,'Yellow':0.5,'Black':0.5},{'Date':'2021/Dec/03','Printer id':'702','Cyan':2.5,'Magenta':1.5,'Yellow':1.0,'Black':0.5}]"))
+                .andExpect(content().json("[{'Date':'2021/12/01','Printer id':'700','Cyan':1.5,'Magenta':2.5,'Yellow':3.5,'Black':4.5},{'Date':'2021/12/01','Printer id':'701','Cyan':1.0,'Magenta':2.5,'Yellow':1.5,'Black':5.5},{'Date':'2021/12/01','Printer id':'702','Cyan':3.0,'Magenta':4.5,'Yellow':4.0,'Black':2.0},{'Date':'2021/12/02','Printer id':'700','Cyan':2.5,'Magenta':0.5,'Yellow':5.5,'Black':3.0},{'Date':'2021/12/02','Printer id':'701','Cyan':5.5,'Magenta':2.5,'Yellow':3.5,'Black':1.0},{'Date':'2021/12/02','Printer id':'702','Cyan':3.5,'Magenta':1.0,'Yellow':5.5,'Black':3.0},{'Date':'2021/12/03','Printer id':'700','Cyan':4.5,'Magenta':5.5,'Yellow':0.5,'Black':1.5},{'Date':'2021/12/03','Printer id':'701','Cyan':4.0,'Magenta':1.0,'Yellow':0.5,'Black':0.5},{'Date':'2021/12/03','Printer id':'702','Cyan':2.5,'Magenta':1.5,'Yellow':1.0,'Black':0.5}]"))
                 .andReturn();
     }
 
@@ -84,7 +84,7 @@ class InkUsageControllerUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/02','Cyan':11.5,'Magenta':4.0,'Yellow':14.5,'Black':7.0},{'Date':'2021/Dec/03','Cyan':11.0,'Magenta':8.0,'Yellow':2.0,'Black':2.5}]"))
+                .andExpect(content().json("[{'Date':'2021/12/02','Cyan':11.5,'Magenta':4.0,'Yellow':14.5,'Black':7.0},{'Date':'2021/12/03','Cyan':11.0,'Magenta':8.0,'Yellow':2.0,'Black':2.5}]"))
                 .andReturn();
     }
 
@@ -101,7 +101,7 @@ class InkUsageControllerUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/02','Printer id':'700','Cyan':2.5,'Magenta':0.5,'Yellow':5.5,'Black':3.0},{'Date':'2021/Dec/02','Printer id':'701','Cyan':5.5,'Magenta':2.5,'Yellow':3.5,'Black':1.0},{'Date':'2021/Dec/02','Printer id':'702','Cyan':3.5,'Magenta':1.0,'Yellow':5.5,'Black':3.0},{'Date':'2021/Dec/03','Printer id':'700','Cyan':4.5,'Magenta':5.5,'Yellow':0.5,'Black':1.5},{'Date':'2021/Dec/03','Printer id':'701','Cyan':4.0,'Magenta':1.0,'Yellow':0.5,'Black':0.5},{'Date':'2021/Dec/03','Printer id':'702','Cyan':2.5,'Magenta':1.5,'Yellow':1.0,'Black':0.5}]"))
+                .andExpect(content().json("[{'Date':'2021/12/02','Printer id':'700','Cyan':2.5,'Magenta':0.5,'Yellow':5.5,'Black':3.0},{'Date':'2021/12/02','Printer id':'701','Cyan':5.5,'Magenta':2.5,'Yellow':3.5,'Black':1.0},{'Date':'2021/12/02','Printer id':'702','Cyan':3.5,'Magenta':1.0,'Yellow':5.5,'Black':3.0},{'Date':'2021/12/03','Printer id':'700','Cyan':4.5,'Magenta':5.5,'Yellow':0.5,'Black':1.5},{'Date':'2021/12/03','Printer id':'701','Cyan':4.0,'Magenta':1.0,'Yellow':0.5,'Black':0.5},{'Date':'2021/12/03','Printer id':'702','Cyan':2.5,'Magenta':1.5,'Yellow':1.0,'Black':0.5}]"))
                 .andReturn();
     }
 
@@ -119,7 +119,7 @@ class InkUsageControllerUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/02','Cyan':6.0,'Magenta':1.5,'Yellow':11.0,'Black':6.0},{'Date':'2021/Dec/03','Cyan':7.0,'Magenta':7.0,'Yellow':1.5,'Black':2.0}]"))
+                .andExpect(content().json("[{'Date':'2021/12/02','Cyan':6.0,'Magenta':1.5,'Yellow':11.0,'Black':6.0},{'Date':'2021/12/03','Cyan':7.0,'Magenta':7.0,'Yellow':1.5,'Black':2.0}]"))
                 .andReturn();
     }
 
@@ -137,7 +137,7 @@ class InkUsageControllerUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/02','Printer id':'700','Cyan':2.5,'Magenta':0.5,'Yellow':5.5,'Black':3.0},{'Date':'2021/Dec/02','Printer id':'702','Cyan':3.5,'Magenta':1.0,'Yellow':5.5,'Black':3.0},{'Date':'2021/Dec/03','Printer id':'700','Cyan':4.5,'Magenta':5.5,'Yellow':0.5,'Black':1.5},{'Date':'2021/Dec/03','Printer id':'702','Cyan':2.5,'Magenta':1.5,'Yellow':1.0,'Black':0.5}]"))
+                .andExpect(content().json("[{'Date':'2021/12/02','Printer id':'700','Cyan':2.5,'Magenta':0.5,'Yellow':5.5,'Black':3.0},{'Date':'2021/12/02','Printer id':'702','Cyan':3.5,'Magenta':1.0,'Yellow':5.5,'Black':3.0},{'Date':'2021/12/03','Printer id':'700','Cyan':4.5,'Magenta':5.5,'Yellow':0.5,'Black':1.5},{'Date':'2021/12/03','Printer id':'702','Cyan':2.5,'Magenta':1.5,'Yellow':1.0,'Black':0.5}]"))
                 .andReturn();
     }
 

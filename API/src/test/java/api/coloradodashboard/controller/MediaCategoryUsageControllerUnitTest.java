@@ -48,7 +48,7 @@ class MediaCategoryUsageControllerUnitTest {
     void getAllAggregated() throws Exception {
         mockMvc.perform(post("/MediaCategoryUsage?aggregated=true"))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/01','Media category':'Canvas','Printed square meters':3.5},{'Date':'2021/Dec/01','Media category':'Film','Printed square meters':5.0},{'Date':'2021/Dec/01','Media category':'Paper','Printed square meters':2.5},{'Date':'2021/Dec/01','Media category':'Polymeric & cast vinyl','Printed square meters':2.0},{'Date':'2021/Dec/01','Media category':'Textile','Printed square meters':3.0},{'Date':'2021/Dec/02','Media category':'Canvas','Printed square meters':3.0},{'Date':'2021/Dec/02','Media category':'Film','Printed square meters':4.0},{'Date':'2021/Dec/02','Media category':'Paper','Printed square meters':3.0},{'Date':'2021/Dec/02','Media category':'Polymeric & cast vinyl','Printed square meters':1.5},{'Date':'2021/Dec/02','Media category':'Textile','Printed square meters':2.0}]"))
+                .andExpect(content().json("[{'Date':'2021/12/01','Media category':'Canvas','Printed square meters':3.5},{'Date':'2021/12/01','Media category':'Film','Printed square meters':5.0},{'Date':'2021/12/01','Media category':'Paper','Printed square meters':2.5},{'Date':'2021/12/01','Media category':'Polymeric & cast vinyl','Printed square meters':2.0},{'Date':'2021/12/01','Media category':'Textile','Printed square meters':3.0},{'Date':'2021/12/02','Media category':'Canvas','Printed square meters':3.0},{'Date':'2021/12/02','Media category':'Film','Printed square meters':4.0},{'Date':'2021/12/02','Media category':'Paper','Printed square meters':3.0},{'Date':'2021/12/02','Media category':'Polymeric & cast vinyl','Printed square meters':1.5},{'Date':'2021/12/02','Media category':'Textile','Printed square meters':2.0}]"))
                 .andReturn();
     }
 
@@ -66,7 +66,7 @@ class MediaCategoryUsageControllerUnitTest {
     void getAllNonAggregated() throws Exception {
         mockMvc.perform(post("/MediaCategoryUsage?aggregated=false"))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/01','Printer id':'700','Media category':'Canvas','Printed square meters':1.5},{'Date':'2021/Dec/01','Printer id':'700','Media category':'Paper','Printed square meters':2.5},{'Date':'2021/Dec/01','Printer id':'701','Media category':'Film','Printed square meters':5.0},{'Date':'2021/Dec/01','Printer id':'701','Media category':'Polymeric & cast vinyl','Printed square meters':2.0},{'Date':'2021/Dec/01','Printer id':'702','Media category':'Canvas','Printed square meters':2.0},{'Date':'2021/Dec/01','Printer id':'702','Media category':'Textile','Printed square meters':3.0},{'Date':'2021/Dec/02','Printer id':'700','Media category':'Canvas','Printed square meters':3.0},{'Date':'2021/Dec/02','Printer id':'700','Media category':'Textile','Printed square meters':2.0},{'Date':'2021/Dec/02','Printer id':'701','Media category':'Film','Printed square meters':2.0},{'Date':'2021/Dec/02','Printer id':'701','Media category':'Paper','Printed square meters':3.0},{'Date':'2021/Dec/02','Printer id':'702','Media category':'Film','Printed square meters':2.0},{'Date':'2021/Dec/02','Printer id':'702','Media category':'Polymeric & cast vinyl','Printed square meters':1.5}]"))
+                .andExpect(content().json("[{'Date':'2021/12/01','Printer id':'700','Media category':'Canvas','Printed square meters':1.5},{'Date':'2021/12/01','Printer id':'700','Media category':'Paper','Printed square meters':2.5},{'Date':'2021/12/01','Printer id':'701','Media category':'Film','Printed square meters':5.0},{'Date':'2021/12/01','Printer id':'701','Media category':'Polymeric & cast vinyl','Printed square meters':2.0},{'Date':'2021/12/01','Printer id':'702','Media category':'Canvas','Printed square meters':2.0},{'Date':'2021/12/01','Printer id':'702','Media category':'Textile','Printed square meters':3.0},{'Date':'2021/12/02','Printer id':'700','Media category':'Canvas','Printed square meters':3.0},{'Date':'2021/12/02','Printer id':'700','Media category':'Textile','Printed square meters':2.0},{'Date':'2021/12/02','Printer id':'701','Media category':'Film','Printed square meters':2.0},{'Date':'2021/12/02','Printer id':'701','Media category':'Paper','Printed square meters':3.0},{'Date':'2021/12/02','Printer id':'702','Media category':'Film','Printed square meters':2.0},{'Date':'2021/12/02','Printer id':'702','Media category':'Polymeric & cast vinyl','Printed square meters':1.5}]"))
                 .andReturn();
     }
 
@@ -83,7 +83,7 @@ class MediaCategoryUsageControllerUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/01','Media category':'Canvas','Printed square meters':3.5},{'Date':'2021/Dec/01','Media category':'Film','Printed square meters':5.0},{'Date':'2021/Dec/01','Media category':'Paper','Printed square meters':2.5},{'Date':'2021/Dec/01','Media category':'Polymeric & cast vinyl','Printed square meters':2.0},{'Date':'2021/Dec/01','Media category':'Textile','Printed square meters':3.0}]"))
+                .andExpect(content().json("[{'Date':'2021/12/01','Media category':'Canvas','Printed square meters':3.5},{'Date':'2021/12/01','Media category':'Film','Printed square meters':5.0},{'Date':'2021/12/01','Media category':'Paper','Printed square meters':2.5},{'Date':'2021/12/01','Media category':'Polymeric & cast vinyl','Printed square meters':2.0},{'Date':'2021/12/01','Media category':'Textile','Printed square meters':3.0}]"))
                 .andReturn();
     }
 
@@ -100,7 +100,7 @@ class MediaCategoryUsageControllerUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/01','Printer id':'700','Media category':'Canvas','Printed square meters':1.5},{'Date':'2021/Dec/01','Printer id':'700','Media category':'Paper','Printed square meters':2.5},{'Date':'2021/Dec/01','Printer id':'701','Media category':'Film','Printed square meters':5.0},{'Date':'2021/Dec/01','Printer id':'701','Media category':'Polymeric & cast vinyl','Printed square meters':2.0},{'Date':'2021/Dec/01','Printer id':'702','Media category':'Canvas','Printed square meters':2.0},{'Date':'2021/Dec/01','Printer id':'702','Media category':'Textile','Printed square meters':3.0}]"))
+                .andExpect(content().json("[{'Date':'2021/12/01','Printer id':'700','Media category':'Canvas','Printed square meters':1.5},{'Date':'2021/12/01','Printer id':'700','Media category':'Paper','Printed square meters':2.5},{'Date':'2021/12/01','Printer id':'701','Media category':'Film','Printed square meters':5.0},{'Date':'2021/12/01','Printer id':'701','Media category':'Polymeric & cast vinyl','Printed square meters':2.0},{'Date':'2021/12/01','Printer id':'702','Media category':'Canvas','Printed square meters':2.0},{'Date':'2021/12/01','Printer id':'702','Media category':'Textile','Printed square meters':3.0}]"))
                 .andReturn();
     }
 
@@ -118,7 +118,7 @@ class MediaCategoryUsageControllerUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/01','Media category':'Canvas','Printed square meters':3.5},{'Date':'2021/Dec/01','Media category':'Paper','Printed square meters':2.5},{'Date':'2021/Dec/01','Media category':'Textile','Printed square meters':3.0}]"))
+                .andExpect(content().json("[{'Date':'2021/12/01','Media category':'Canvas','Printed square meters':3.5},{'Date':'2021/12/01','Media category':'Paper','Printed square meters':2.5},{'Date':'2021/12/01','Media category':'Textile','Printed square meters':3.0}]"))
                 .andReturn();
     }
 
@@ -136,7 +136,7 @@ class MediaCategoryUsageControllerUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/01','Printer id':'700','Media category':'Canvas','Printed square meters':1.5},{'Date':'2021/Dec/01','Printer id':'700','Media category':'Paper','Printed square meters':2.5},{'Date':'2021/Dec/01','Printer id':'702','Media category':'Canvas','Printed square meters':2.0},{'Date':'2021/Dec/01','Printer id':'702','Media category':'Textile','Printed square meters':3.0}]"))
+                .andExpect(content().json("[{'Date':'2021/12/01','Printer id':'700','Media category':'Canvas','Printed square meters':1.5},{'Date':'2021/12/01','Printer id':'700','Media category':'Paper','Printed square meters':2.5},{'Date':'2021/12/01','Printer id':'702','Media category':'Canvas','Printed square meters':2.0},{'Date':'2021/12/01','Printer id':'702','Media category':'Textile','Printed square meters':3.0}]"))
                 .andReturn();
     }
 
