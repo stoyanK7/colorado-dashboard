@@ -104,23 +104,23 @@ with DAG(
 
     #LOAD
     loadMediaCategoryUsage = PythonOperator(
-        task_id='loadMediaCategoryUsage_TODO',
+        task_id='loadMediaCategoryUsage',
         python_callable=LoadTasks.load_media_category_usage
     )
     loadSqmPerPrintMode = PythonOperator(
-        task_id='loadSqmPerPrintMode_TODO',
+        task_id='loadSqmPerPrintMode',
         python_callable=LoadTasks.load_sqm_per_print_mode
     )
     loadInkUsage = PythonOperator(
-        task_id='loadInkUsage_WIP',
+        task_id='loadInkUsage',
         python_callable=LoadTasks.load_ink_usage
     )
     loadTopTenPrintVolume = PythonOperator(
-        task_id='loadTopTenPrintVolume_TODO',
+        task_id='loadTopTenPrintVolume',
         python_callable=LoadTasks.load_top_ten_print_volume
     )
     loadMediaTypesPerMachine = PythonOperator(
-        task_id='loadMediaTypesPerMachine_TODO',
+        task_id='loadMediaTypesPerMachine',
         python_callable=LoadTasks.load_media_types_per_machine
     )
 
