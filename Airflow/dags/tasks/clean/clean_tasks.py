@@ -20,10 +20,8 @@ class CleanTasks:
             return
 
         # Make dataframe using pandas
-        cols = [getattr(clean_image_col_name_constants, name)
-                for name in dir(clean_image_col_name_constants) if not name.startswith('_')]
-        cols = cols[-1:] + cols[:-1]
-        df = CleanTasks.make_data_frame(df, cols)
+        file = clean_image_col_name_constants
+        df = CleanTasks.make_data_frame(df, file)
 
         # check if ullid is same then drop
         df = CleanTasks.remove_duplicates(df)
@@ -36,9 +34,6 @@ class CleanTasks:
 
         # Check negative value.
         df = CleanTasks.check_negative_values(df, clean_image_data_types.data_types)
-
-        # Check if mediaType is valid
-        #df = self.remove_invalid_media_type(df)
 
         # Remove all invalid units
         df = CleanTasks.remove_invalid_units_image(df)
@@ -55,10 +50,8 @@ class CleanTasks:
             return
 
         # Make dataframe using pandas
-        cols = [getattr(clean_media_prepare_col_name_constants, name)
-                for name in dir(clean_media_prepare_col_name_constants) if not name.startswith('_')]
-        cols = cols[-1:] + cols[:-1]
-        df = CleanTasks.make_data_frame(df, cols)
+        file = clean_media_prepare_col_name_constants
+        df = CleanTasks.make_data_frame(df, file)
 
         # check if ullid is same then drop
         df = CleanTasks.remove_duplicates(df)
@@ -87,10 +80,8 @@ class CleanTasks:
             return
 
         # Make dataframe using pandas
-        cols = [getattr(clean_print_cycle_col_name_constants, name)
-                for name in dir(clean_print_cycle_col_name_constants) if not name.startswith('_')]
-        cols = cols[-1:] + cols[:-1]
-        df = CleanTasks.make_data_frame(df, cols)
+        file = clean_print_cycle_col_name_constants
+        df = CleanTasks.make_data_frame(df, file)
 
         # check if ullid is same then drop
         df = CleanTasks.remove_duplicates(df)
@@ -119,7 +110,10 @@ class CleanTasks:
         return df
 
     @staticmethod
-    def make_data_frame(df, cols):
+    def make_data_frame(df, file):
+        cols = [getattr(file, name)
+                for name in dir(file) if not name.startswith('_')]
+        cols = cols[-1:] + cols[:-1]
         logging.info("Making the dataframe with the right columns.")
         df = df[df.columns.intersection(cols)]
         return df
@@ -194,8 +188,6 @@ class CleanTasks:
 
         return df
 
-
-
     @staticmethod
     def _insert_into_db(df: pd.DataFrame, table_name):
         # put in db
@@ -204,16 +196,3 @@ class CleanTasks:
         df = df.drop(clean_image_col_name_constants.ULLID, 1)
         pdm = PostgresDatabaseManager()
         pdm.insert_into_table(df, table_name)
-
-    @staticmethod
-    def remove_invalid_media_type(df):
-        logging.info("Removing all rows with invalid mediatype.")
-        array = ['Canvas', 'Film', 'Monomeric vinyl',
-                 'Textile', 'Unknown papertype', 'Polymeric & cast vinyl',
-                 'Light paper < 120gsm', 'Heavy paper > 200gsm',
-                 'Heavy banner > 400gsm', 'Thick film > 200 um']
-        df = df.loc[df[clean_image_col_name_constants.MEDIA_TYPE].isin(array)]
-        return df
-
-
-pdm = PostgresDatabaseManager
