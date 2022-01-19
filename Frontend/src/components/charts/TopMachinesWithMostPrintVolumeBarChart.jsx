@@ -15,17 +15,27 @@ import axios from 'axios';
 import convertData from '../../util/convertData';
 import getRandomColor from '../../util/getRandomColor';
 
+const defaultChartDataKeys = [
+  "708",
+  "709",
+  "710",
+  "707",
+  "701",
+  "705",
+  "703",
+  "702",
+  "706",
+  "700",
+  "704"
+];
+
 const TopMachinesWithMostPrintVolumeBarChart = ({ data, aggregated = true, index, legend = true }) => {
   const [chartDataKeys, setChartDataKeys] = useState();
   useEffect(() => {
     axios.get(`TopMachinesWithMostPrintVolume/ChartDataKeys`)
       .then(res => res.data.dataKeys)
-      .then(data => {
-        setChartDataKeys(data);
-      })
-      .catch(err => {
-        // TODO: introduce error handling logic
-      })
+      .then(data => setChartDataKeys(data))
+      .catch(err => setChartDataKeys(defaultChartDataKeys))
   }, []);
 
   return (

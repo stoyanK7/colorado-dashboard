@@ -15,17 +15,24 @@ import axios from 'axios';
 import convertData from '../../util/convertData';
 import getRandomColor from '../../util/getRandomColor';
 
+const defaultChartDataKeys = [
+  "High speed",
+  "Other",
+  "Max speed",
+  "Reliance",
+  "Backlit",
+  "Specialty",
+  "High quality",
+  "Production"
+];
+
 const SquareMeterPerPrintModeBarChart = ({ data, aggregated = true, index, legend = true }) => {
   const [chartDataKeys, setChartDataKeys] = useState();
   useEffect(() => {
     axios.get(`SquareMetersPerPrintMode/ChartDataKeys`)
       .then(res => res.data.dataKeys)
-      .then(data => {
-        setChartDataKeys(data);
-      })
-      .catch(err => {
-        // TODO: introduce error handling logic
-      })
+      .then(data => setChartDataKeys(data))
+      .catch(err => setChartDataKeys(defaultChartDataKeys))
   }, []);
 
   return (
