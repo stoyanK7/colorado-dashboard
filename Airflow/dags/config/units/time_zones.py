@@ -1,1 +1,1 @@
-array_time_units = ['us']
+array_time_units = ['us', 'utc']

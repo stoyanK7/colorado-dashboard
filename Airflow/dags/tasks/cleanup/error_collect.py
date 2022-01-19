@@ -7,6 +7,7 @@ from airflow.models import Variable
 from airflow.utils.state import State
 from sqlalchemy import create_engine
 
+from DAL.api_database_manager import ApiDatabaseManager
 from DAL.postgres_database_manager import PostgresDatabaseManager
 
 
@@ -16,7 +17,7 @@ class ErrorCollect:
         pdm = PostgresDatabaseManager()
         logging.info("Reading errors from the database")
         df = pdm.read_sql(f"""SELECT dag_id, task_id, execution_date, try_number FROM task_instance WHERE dag_id='{context["dag"].dag_id}' AND execution_date='{context["execution_date"]}' AND state='{State.FAILED}'""")
-        logging.info(f"{len(df.columns)} errors were found")
+        logging.info(f"{len(df)} errors were found")
 
         # If no errors, set df to empty row with date and passed to true
         if df.empty:
@@ -45,12 +46,8 @@ class ErrorCollect:
 
         # push to db
         logging.info("Sending to api database")
-        connection = ErrorCollect._connect_to_api_database()
-        try:
-            df.to_sql(Variable.get("api_error_table_name"), connection, if_exists="append", index=False)
-            logging.info("successfully sent")
-        finally:
-            connection.close()
+        dm = ApiDatabaseManager()
+        dm.send_df(Variable.get("api_error_table_name"), df)
 
     @staticmethod
     def get_affected_graphs(row):

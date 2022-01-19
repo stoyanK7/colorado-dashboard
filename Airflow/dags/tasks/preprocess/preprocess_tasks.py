@@ -19,6 +19,11 @@ class PreprocessTasks():
         # Take the dataframe from the previous step
         df = PreprocessTasks._read_from_db(clean_table_name_config.READ_IMAGE)
 
+        # Skip if no new data
+        if df.empty:
+            logging.info("No new data was found, skipping step.")
+            return
+
         # Columns to be removed from the table
         columns_to_drop = [clean_image_col_name_constants.LOCAL_TIME,
                            clean_image_col_name_constants.ACCOUNTED_INK_BLACK,
@@ -44,6 +49,11 @@ class PreprocessTasks():
         logging.info("Start preprocess for sqm per print mode.")
         # Take the dataframe from the previous step
         df = PreprocessTasks._read_from_db(clean_table_name_config.READ_PRINT_CYCLE)
+
+        # Skip if no new data
+        if df.empty:
+            logging.info("No new data was found, skipping step.")
+            return
 
         # Columns to be removed from the table
         columns_to_drop = [clean_print_cycle_col_name_constants.ENGINE_CYCLE_ID,
@@ -115,6 +125,7 @@ class PreprocessTasks():
 
         # Merge the dataframes
         df = PreprocessTasks._merge_two_dataframes(df1, df2, clean_print_cycle_col_name_constants.ENGINE_CYCLE_ID)
+
         # Make sure to not have unnecessary data
         df = df[[clean_print_cycle_col_name_constants.DATE + "_x",
                  clean_media_prepare_col_name_constants.MEDIA_TYPE_DISPLAY_NAME,
@@ -183,13 +194,6 @@ class PreprocessTasks():
         PreprocessTasks._insert_into_db(df, preprocess_table_name_config.PREPROCESS_TOP_TEN_PRINT_VOLUME)
 
     @staticmethod
-    def _divide_column_by(df, column, column_new_name, number):
-        logging.info(f"Preprocess - divide column {column} by {number}.")
-        df[column] = df[column] / number
-        df = df.rename(columns={column: column_new_name})
-        return df
-
-    @staticmethod
     def _merge_two_dataframes(df1, df2, column_for_merging):
         logging.info("Preprocess - merge two dataframes.")
         df = pd.merge(left=df1, right=df2, left_on=column_for_merging, right_on=column_for_merging)
@@ -208,7 +212,7 @@ class PreprocessTasks():
             df.loc[df[print_mode] == "1_pass", print_mode] = "Max speed"
             df.loc[df[print_mode] == "1_pass_highDensity", print_mode] = "High speed"
             df.loc[df[print_mode] == "2_pass", print_mode] = "Production"
-            df.loc[df[print_mode] == "4_pass", print_mode] = "Hiqh Quality"
+            df.loc[df[print_mode] == "4_pass", print_mode] = "High Quality"
             df.loc[df[print_mode] == "8_pass", print_mode] = "Specialty"
             df.loc[df[print_mode] == "8_pass_highDensity", print_mode] = "Backlit"
             df.loc[df[print_mode] == "16_pass", print_mode] = "Reliance"

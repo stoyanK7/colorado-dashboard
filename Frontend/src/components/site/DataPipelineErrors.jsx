@@ -42,7 +42,7 @@ const DataPipelineErrors = () => {
         <div className='list-of-errors'>
           {allDataPipelines && allDataPipelines.map(dataPipeline => {
             return (
-              <Link to={`/DataPipelineErrors/${dataPipeline.id}`} className='error-card'>
+              <Link to={`/DataPipelineErrors/${dataPipeline.id}`} key={dataPipeline.id} className='error-card'>
                 <p className='step'>{dataPipeline.step}</p>
                 <p className='datetime'>{formatDateTime(dataPipeline.dateTime)}</p>
                 {dataPipeline.passed ?
