@@ -32,7 +32,7 @@ const PrintersFilter = ({ chartPath, chosenPrinters, setChosenPrinters, aggregat
       <input
         type='text'
         placeholder='Specific printers..'
-        value={chosenPrinters}
+        defaultValue={chosenPrinters}
         onClick={openMenuHandler}
         data-tip='Select specific printers' />
       {availablePrinters &&

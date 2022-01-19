@@ -6,19 +6,19 @@ import { useEffect, useRef, useState } from 'react';
 import Chart from '../shared/Chart';
 import Filters from '../shared/Filters';
 import Header from '../static/Header';
+import HoverTooltip from '../shared/HoverTooltip';
 import React from 'react';
 import chartTitleSwitch from '../../util/chartTitleSwitch';
 import formatDate from '../../util/formatDate';
 import { useParams } from 'react-router-dom';
 import useToggle from '../../hooks/useToggle';
-import HoverTooltip from '../shared/HoverTooltip';
 
 const View = () => {
   // Gets path from URL: i.e. https://xxxxx.com/InkUsage -> InkUsage
   const { chartPath } = useParams();
   const chart = useRef(null);
   const [chartTitle, setChartTitle] = useState('');
-  const [requestUrl, setRequestUrl] = useState(`/${chartPath}`);
+  const [requestUrl, setRequestUrl] = useState(`${chartPath}`);
   const [requestBody, setRequestBody] = useState();
   const [fullScreen, toggleFullScreen] = useToggle();
   // Filters
