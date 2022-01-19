@@ -66,7 +66,7 @@ class TopMachinesWithMostPrintVolumeControllerUnitTest {
     void getAllNonAggregated() throws Exception {
         mockMvc.perform(post("/TopMachinesWithMostPrintVolume?aggregated=false"))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/02','Printer id':'701','Printed square meters':5.0},{'Date':'2021/Dec/02','Printer id':'700','Printed square meters':3.0},{'Date':'2021/Dec/03','Printer id':'701','Printed square meters':3.0},{'Date':'2021/Dec/01','Printer id':'701','Printed square meters':2.5},{'Date':'2021/Dec/01','Printer id':'702','Printed square meters':2.0},{'Date':'2021/Dec/02','Printer id':'702','Printed square meters':2.0},{'Date':'2021/Dec/03','Printer id':'700','Printed square meters':2.0},{'Date':'2021/Dec/03','Printer id':'702','Printed square meters':2.0},{'Date':'2021/Dec/01','Printer id':'700','Printed square meters':1.5}]"))
+                .andExpect(content().json("[{'Date':'2021/12/02','Printer id':'701','Printed square meters':5.0},{'Date':'2021/12/02','Printer id':'700','Printed square meters':3.0},{'Date':'2021/12/03','Printer id':'701','Printed square meters':3.0},{'Date':'2021/12/01','Printer id':'701','Printed square meters':2.5},{'Date':'2021/12/01','Printer id':'702','Printed square meters':2.0},{'Date':'2021/12/02','Printer id':'702','Printed square meters':2.0},{'Date':'2021/12/03','Printer id':'700','Printed square meters':2.0},{'Date':'2021/12/03','Printer id':'702','Printed square meters':2.0},{'Date':'2021/12/01','Printer id':'700','Printed square meters':1.5}]"))
                 .andReturn();
     }
 
@@ -100,7 +100,7 @@ class TopMachinesWithMostPrintVolumeControllerUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/02','Printer id':'701','Printed square meters':5.0},{'Date':'2021/Dec/02','Printer id':'700','Printed square meters':3.0},{'Date':'2021/Dec/02','Printer id':'702','Printed square meters':2.0},{'Date':'2021/Dec/03','Printer id':'701','Printed square meters':3.0},{'Date':'2021/Dec/03','Printer id':'700','Printed square meters':2.0},{'Date':'2021/Dec/03','Printer id':'702','Printed square meters':2.0}]"))
+                .andExpect(content().json("[{'Date':'2021/12/02','Printer id':'701','Printed square meters':5.0},{'Date':'2021/12/02','Printer id':'700','Printed square meters':3.0},{'Date':'2021/12/02','Printer id':'702','Printed square meters':2.0},{'Date':'2021/12/03','Printer id':'701','Printed square meters':3.0},{'Date':'2021/12/03','Printer id':'700','Printed square meters':2.0},{'Date':'2021/12/03','Printer id':'702','Printed square meters':2.0}]"))
                 .andReturn();
     }
 
@@ -136,7 +136,7 @@ class TopMachinesWithMostPrintVolumeControllerUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{'Date':'2021/Dec/02','Printer id':'700','Printed square meters':3.0},{'Date':'2021/Dec/02','Printer id':'702','Printed square meters':2.0},{'Date':'2021/Dec/03','Printer id':'700','Printed square meters':2.0},{'Date':'2021/Dec/03','Printer id':'702','Printed square meters':2.0}]"))
+                .andExpect(content().json("[{'Date':'2021/12/02','Printer id':'700','Printed square meters':3.0},{'Date':'2021/12/02','Printer id':'702','Printed square meters':2.0},{'Date':'2021/12/03','Printer id':'700','Printed square meters':2.0},{'Date':'2021/12/03','Printer id':'702','Printed square meters':2.0}]"))
                 .andReturn();
     }
 

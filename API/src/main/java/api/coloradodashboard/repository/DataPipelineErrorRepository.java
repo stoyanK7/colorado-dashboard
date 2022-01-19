@@ -18,7 +18,7 @@ public interface DataPipelineErrorRepository
             "WHERE d.dateTime = ( " +
             "SELECT max(d.dateTime) " +
             "from DataPipelineErrorEntity d)")
-    DataPipelineErrorDto getLatest();
+    List<DataPipelineErrorDto> getLatest(Pageable pageable);
 
     @Query("SELECT new api.coloradodashboard.dto.DataPipelineErrorDto(d.id, d.passed, d.step, d.dateTime) " +
             "FROM DataPipelineErrorEntity d " +

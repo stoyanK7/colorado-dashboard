@@ -3,12 +3,10 @@ import logging
 import pandas as pd
 import numpy as np
 import re
-from tabulate import tabulate
 from datetime import datetime
 import pytz
 
-
-from config import aggregate_column_name_config, clean_table_name_config, \
+from config import clean_table_name_config, \
     clean_image_col_name_constants, preprocess_table_name_config, clean_print_cycle_col_name_constants, \
     clean_media_prepare_col_name_constants, preprocess_col_name_constants
 from DAL.postgres_database_manager import PostgresDatabaseManager
@@ -17,27 +15,65 @@ from DAL.postgres_database_manager import PostgresDatabaseManager
 class PreprocessTasks():
     @staticmethod
     def preprocess_media_category_usage():
-        return
-        # The columns to mach the database names
         logging.info("Start preprocess for media category usage.")
         # Take the dataframe from the previous step
         df = PreprocessTasks._read_from_db(clean_table_name_config.READ_IMAGE)
 
+        # Skip if no new data
+        if df.empty:
+            logging.info("No new data was found, skipping step.")
+            return
+
+        # Columns to be removed from the table
+        columns_to_drop = [clean_image_col_name_constants.LOCAL_TIME,
+                           clean_image_col_name_constants.ACCOUNTED_INK_BLACK,
+                           clean_image_col_name_constants.ACCOUNTED_INK_YELLOW,
+                           clean_image_col_name_constants.ACCOUNTED_INK_CYAN,
+                           clean_image_col_name_constants.ACCOUNTED_INK_MAGENTA]
+
+        # Convert the columns to their appropriate unit type
+        df = PreprocessTasks._converting_units_to_default_values(df, columns_to_drop)
+
+        # Converts dates to utc
+        df = PreprocessTasks._convert_date_to_utc(df)
+
+        # Rename the columns to mach the database names
         df = df.rename(columns={clean_image_col_name_constants.MACHINEID: preprocess_col_name_constants.MACHINEID})
         df = df.rename(columns={clean_image_col_name_constants.DATE: preprocess_col_name_constants.DATE})
+        df = df.rename(columns={clean_image_col_name_constants.MEDIA_TYPE: preprocess_col_name_constants.MEDIA_TYPE})
         # Save dataframe into database
         PreprocessTasks._insert_into_db(df, preprocess_table_name_config.PREPROCESS_MEDIA_CATEGORY_USAGE)
 
     @staticmethod
     def preprocess_sqm_per_print_mode():
-        return
-        # The columns to mach the database names
-        logging.info("Start preprocess for media category usage.")
+        logging.info("Start preprocess for sqm per print mode.")
         # Take the dataframe from the previous step
         df = PreprocessTasks._read_from_db(clean_table_name_config.READ_PRINT_CYCLE)
 
+        # Skip if no new data
+        if df.empty:
+            logging.info("No new data was found, skipping step.")
+            return
+
+        # Columns to be removed from the table
+        columns_to_drop = [clean_print_cycle_col_name_constants.ENGINE_CYCLE_ID,
+                           clean_image_col_name_constants.LOCAL_TIME]
+
+        # Convert the columns to their appropriate unit type
+        df = PreprocessTasks._converting_units_to_default_values(df, columns_to_drop)
+
+        # Converts dates to utc
+        df = PreprocessTasks._convert_date_to_utc(df)
+
+        # Rename the print modes
+        df = PreprocessTasks._rename_print_modes(df)
+
+        # Rename the columns to mach the database names
         df = df.rename(columns={clean_image_col_name_constants.MACHINEID: preprocess_col_name_constants.MACHINEID})
         df = df.rename(columns={clean_image_col_name_constants.DATE: preprocess_col_name_constants.DATE})
+        df = df.rename(columns={clean_print_cycle_col_name_constants.PRINT_MODE: preprocess_col_name_constants.PRINT_MODE})
+        df = df.rename(columns={clean_print_cycle_col_name_constants.SQUARE_DECIMETER: preprocess_col_name_constants.SQUARE_DECIMETER})
+
         # Save dataframe into database
         PreprocessTasks._insert_into_db(df, preprocess_table_name_config.PREPROCESS_SQM_PER_PRINT_MODE)
 
@@ -62,6 +98,7 @@ class PreprocessTasks():
         # Converts dates to utc
         df = PreprocessTasks._convert_date_to_utc(df)
 
+        # Rename the columns to mach the database names
         df = df.rename(columns={clean_image_col_name_constants.MACHINEID: preprocess_col_name_constants.MACHINEID})
         df = df.rename(columns={clean_image_col_name_constants.DATE: preprocess_col_name_constants.DATE})
         df = df.rename(columns={
@@ -88,6 +125,7 @@ class PreprocessTasks():
 
         # Merge the dataframes
         df = PreprocessTasks._merge_two_dataframes(df1, df2, clean_print_cycle_col_name_constants.ENGINE_CYCLE_ID)
+
         # Make sure to not have unnecessary data
         df = df[[clean_print_cycle_col_name_constants.DATE + "_x",
                  clean_media_prepare_col_name_constants.MEDIA_TYPE_DISPLAY_NAME,
@@ -111,6 +149,7 @@ class PreprocessTasks():
         # Converts dates to utc
         df = PreprocessTasks._convert_date_to_utc(df)
 
+        # Rename the columns to mach the database names
         df = df.rename(
             columns={clean_print_cycle_col_name_constants.MACHINEID: preprocess_col_name_constants.MACHINEID})
         df = df.rename(columns={clean_print_cycle_col_name_constants.DATE: preprocess_col_name_constants.DATE})
@@ -124,7 +163,6 @@ class PreprocessTasks():
 
     @staticmethod
     def preprocess_top_ten_print_volume():
-        # The columns to mach the database names
         logging.info("Start preprocess for media category usage.")
         # Take the dataframe from the previous step
         df = PreprocessTasks._read_from_db(clean_table_name_config.READ_PRINT_CYCLE)
@@ -135,7 +173,8 @@ class PreprocessTasks():
             return
 
         # Columns to be removed from the table
-        columns_to_drop = [clean_print_cycle_col_name_constants.LOCAL_TIME, clean_print_cycle_col_name_constants.ENGINE_CYCLE_ID,
+        columns_to_drop = [clean_print_cycle_col_name_constants.LOCAL_TIME,
+                           clean_print_cycle_col_name_constants.ENGINE_CYCLE_ID,
                            clean_print_cycle_col_name_constants.PRINT_MODE]
 
         # Convert the columns to their appropriate unit type
@@ -144,25 +183,39 @@ class PreprocessTasks():
         # Converts dates to utc
         df = PreprocessTasks._convert_date_to_utc(df)
 
+        # Rename the columns to mach the database names
         df = df.rename(
             columns={clean_print_cycle_col_name_constants.MACHINEID: preprocess_col_name_constants.MACHINEID})
         df = df.rename(columns={clean_print_cycle_col_name_constants.DATE: preprocess_col_name_constants.DATE})
         df = df.rename(columns={
             clean_print_cycle_col_name_constants.SQUARE_DECIMETER: preprocess_col_name_constants.SQUARE_DECIMETER})
+
         # Save dataframe into database
         PreprocessTasks._insert_into_db(df, preprocess_table_name_config.PREPROCESS_TOP_TEN_PRINT_VOLUME)
-
-    @staticmethod
-    def _divide_column_by(df, column, column_new_name, number):
-        logging.info(f"Preprocess - divide column {column} by {number}.")
-        df[column] = df[column] / number
-        df = df.rename(columns={column: column_new_name})
-        return df
 
     @staticmethod
     def _merge_two_dataframes(df1, df2, column_for_merging):
         logging.info("Preprocess - merge two dataframes.")
         df = pd.merge(left=df1, right=df2, left_on=column_for_merging, right_on=column_for_merging)
+        return df
+
+    @staticmethod
+    def _rename_print_modes(df):
+        logging.info("Preprocess - renaming print modes.")
+        print_mode = clean_print_cycle_col_name_constants.PRINT_MODE
+        if print_mode in df.columns:
+            names = "1_pass" + " 1_pass_highDensity" + " 2_pass" + " 4_pass" + " 8_pass" + " 8_pass_highDensity" + " 16_pass"
+            for index, row in df.iterrows():
+                if str(row[print_mode]) not in names:
+                    df.at[index, print_mode] = "Other"
+
+            df.loc[df[print_mode] == "1_pass", print_mode] = "Max speed"
+            df.loc[df[print_mode] == "1_pass_highDensity", print_mode] = "High speed"
+            df.loc[df[print_mode] == "2_pass", print_mode] = "Production"
+            df.loc[df[print_mode] == "4_pass", print_mode] = "High Quality"
+            df.loc[df[print_mode] == "8_pass", print_mode] = "Specialty"
+            df.loc[df[print_mode] == "8_pass_highDensity", print_mode] = "Backlit"
+            df.loc[df[print_mode] == "16_pass", print_mode] = "Reliance"
         return df
 
     @staticmethod
@@ -176,7 +229,6 @@ class PreprocessTasks():
                 unit_columns.append(col_name)
             elif "machineid" in col_name:
                 df[col_name] = df[col_name].astype(str)
-
 
         # Iterates through all rows and updates them
         for index, row in df.iterrows():
@@ -192,7 +244,7 @@ class PreprocessTasks():
                 # Gets the values of the columns
                 row_data_value = row[data_col_name]
                 row_unit_value = row[unit_col_name]
-                if row_unit_value == "ml":    # Converts to from one of the units below to milliliters
+                if row_unit_value == "ml":  # Converts to from one of the units below to milliliters
                     df.at[index, data_col_name] = row_data_value / 1000
                 elif row_unit_value == "cl":
                     df.at[index, data_col_name] = row_data_value / 100
@@ -278,8 +330,6 @@ class PreprocessTasks():
         logging.info(f"Preprocess - reading table {table_name} from database.")
         pdm = PostgresDatabaseManager()
         df = pdm.read_table(table_name)
-        print(tabulate(df, headers='keys', tablefmt='psql'))
-        # df = df.set_index(aggregate_column_name_config.ULLID)
         return df
 
     @staticmethod
@@ -287,6 +337,5 @@ class PreprocessTasks():
         # put in db
         logging.info("Preprocess - inserting preprocessed data to database.")
         pdm = PostgresDatabaseManager()
-        print(tabulate(df, headers='keys', tablefmt='psql'))
         pdm.insert_into_table(df, table_name)
         logging.info("Preprocess finished!")

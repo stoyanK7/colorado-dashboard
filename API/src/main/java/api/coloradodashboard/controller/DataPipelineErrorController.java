@@ -27,7 +27,7 @@ public class DataPipelineErrorController
 
     @GetMapping("/Latest")
     public ResponseEntity<DataPipelineErrorDto> getLatest() {
-        return createResponse(repository.getLatest());
+        return createResponse(repository.getLatest(PageRequest.of(0, 1)).get(0));
     }
 
     @GetMapping

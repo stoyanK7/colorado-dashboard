@@ -15,17 +15,27 @@ import axios from 'axios';
 import convertData from '../../util/convertData';
 import getRandomColor from '../../util/getRandomColor';
 
+const defaultChartDataKeys = [
+  "Canvas",
+  "Paper",
+  "Textile",
+  "Film",
+  "Polymeric & cast vinyl",
+  "Light Banner < 400gsm",
+  "Heavy paper > 200gsm",
+  "Heavy Banner > 400gsm",
+  "Light paper < 120gsm",
+  "Monomeric vinyl",
+  "Thick film > 200 um"
+];
+
 const MediaCategoryUsageBarChart = ({ data, aggregated = true, index, legend = true }) => {
   const [chartDataKeys, setChartDataKeys] = useState();
   useEffect(() => {
     axios.get(`MediaCategoryUsage/ChartDataKeys`)
       .then(res => res.data.dataKeys)
-      .then(data => {
-        setChartDataKeys(data);
-      })
-      .catch(err => {
-        // TODO: introduce error handling logic
-      })
+      .then(data => setChartDataKeys(data))
+      .catch(err => setChartDataKeys(defaultChartDataKeys))
   }, []);
 
   return (
@@ -63,7 +73,7 @@ const MediaCategoryUsageBarChart = ({ data, aggregated = true, index, legend = t
             dataKey={key}
             stackId='a'
             isAnimationActive={false}
-            fill={getRandomColor('palette3', chartDataKeys.indexOf(key))}
+            fill={getRandomColor('palette11', chartDataKeys.indexOf(key))}
             key={key} />
         })}
       </BarChart>

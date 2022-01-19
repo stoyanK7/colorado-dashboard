@@ -42,7 +42,7 @@ const DataPipelineErrors = () => {
         <div className='list-of-errors'>
           {allDataPipelines && allDataPipelines.map(dataPipeline => {
             return (
-              <Link to={`/DataPipelineErrors/${dataPipeline.id}`} className='error-card'>
+              <Link to={`/DataPipelineErrors/${dataPipeline.id}`} key={dataPipeline.id} className='error-card'>
                 <p className='step'>{dataPipeline.step}</p>
                 <p className='datetime'>{formatDateTime(dataPipeline.dateTime)}</p>
                 {dataPipeline.passed ?
@@ -66,13 +66,13 @@ const DataPipelineErrors = () => {
             <b>Date: </b> {latestDataPipeline && latestDataPipeline.dateTime}
           </p>
           <p >
-            <b>Location: </b> {latestDataPipeline && latestDataPipeline.location}
+            <b>Location: </b> {(latestDataPipeline && 'location' in latestDataPipeline) && latestDataPipeline.location}
           </p>
           <p >
-            <b>Step: </b> {latestDataPipeline && latestDataPipeline.step}
+            <b>Step: </b> {(latestDataPipeline && 'step' in latestDataPipeline) && latestDataPipeline.step}
           </p>
           <p >
-            <b>Affected graphs: </b> {latestDataPipeline && latestDataPipeline.affectedGraphs}
+            <b>Affected graphs: </b> {(latestDataPipeline && 'affectedGraphs' in latestDataPipeline) && latestDataPipeline.affectedGraphs}
           </p>
           <p >
             <b>Log: </b> <pre></pre>
@@ -80,7 +80,7 @@ const DataPipelineErrors = () => {
           <div className='info-log'>
             <div className="titlebar">
               <FontAwesomeIcon icon={faFileAlt} className='titlebar-fa' />
-              <b>{latestDataPipeline && getFilenameFromPath(latestDataPipeline.location)}</b>
+              <b>{(latestDataPipeline && 'location' in latestDataPipeline) && getFilenameFromPath(latestDataPipeline.location)}</b>
               <div className="actions" data-tip='Copy to clipboard' onClick={copyToClipboard}>
                 <FontAwesomeIcon icon={faClipboard}
                   className='titlebar-fa' />
