@@ -242,8 +242,6 @@ class ReadTasks():
         logging.info(data.columns)
         return data
 
-
-
     @staticmethod
     def _insert_into_db(data, table_name):
         # put in db
@@ -252,10 +250,3 @@ class ReadTasks():
         logging.info("Inserting read data to database.")
         pdm = PostgresDatabaseManager()
         pdm.insert_into_table(data, table_name)
-
-    @staticmethod
-    def _make_xcom(ti, last_seen_file, last_seen_row):
-        # send xcom about last read file and row
-        logging.info("Sending xcom about last read information.")
-        ti.xcom_push("last_seen_file", str(last_seen_file))
-        ti.xcom_push("last_seen_row", str(last_seen_row))

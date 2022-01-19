@@ -201,9 +201,9 @@ class PreprocessTasks():
                 elif row_unit_value == "dal":
                     df.at[index, data_col_name] = row_data_value * 10
                 elif row_unit_value == "hl":
-                    df.at[index, data_col_name] = row_data_value / 100
+                    df.at[index, data_col_name] = row_data_value * 100
                 elif row_unit_value == "kl":
-                    df.at[index, data_col_name] = row_data_value / 1000
+                    df.at[index, data_col_name] = row_data_value * 1000
                 elif row_unit_value == "mm":  # Converts to from one of the units below to meters
                     df.at[index, data_col_name] = row_data_value / 1000
                 elif row_unit_value == "cm":
@@ -217,17 +217,17 @@ class PreprocessTasks():
                 elif row_unit_value == "km":
                     df.at[index, data_col_name] = row_data_value * 1000
                 elif row_unit_value == "mm2":  # Converts to from one of the units below to square meters
-                    df.at[index, data_col_name] = row_data_value / 10000
+                    df.at[index, data_col_name] = row_data_value / 1000000
                 elif row_unit_value == "cm2":
+                    df.at[index, data_col_name] = row_data_value / 10000
+                elif row_unit_value == "dm2":
                     df.at[index, data_col_name] = row_data_value / 100
-                elif row_unit_value == "m2":
-                    df.at[index, data_col_name] = row_data_value * 100
                 elif row_unit_value == "dam2":
-                    df.at[index, data_col_name] = row_data_value * 10000
+                    df.at[index, data_col_name] = row_data_value * 100
                 elif row_unit_value == "hm2":
-                    df.at[index, data_col_name] = row_data_value * 1000000
+                    df.at[index, data_col_name] = row_data_value * 10000
                 elif row_unit_value == "km2":
-                    df.at[index, data_col_name] = row_data_value * 100000000
+                    df.at[index, data_col_name] = row_data_value * 1000000
                 elif row_unit_value == "mm3":  # Converts to from one of the units below to cubic meters
                     df.at[index, data_col_name] = row_data_value / 1000000000
                 elif row_unit_value == "cm3":

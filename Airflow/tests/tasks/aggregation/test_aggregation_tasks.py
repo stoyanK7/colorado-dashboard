@@ -3,7 +3,6 @@ from unittest.mock import patch
 from unittest.mock import MagicMock, Mock
 
 import numpy
-from tabulate import tabulate
 
 from tasks.aggregate.aggregate_tasks import AggregateTasks
 import pandas as pd
