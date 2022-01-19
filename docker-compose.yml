@@ -1,0 +1,52 @@
+version: "3.3"
+services:
+  api:
+    container_name: api
+    build:
+      context: API
+      dockerfile: Dockerfile
+      args:
+        JAR_FILE: build/libs/CanonDashboardAPI-1.0.0-SNAPSHOT.jar
+    ports:
+      - "8000:8000"
+    restart: always
+    depends_on:
+      - db
+    networks:
+      - frontend
+      - backend
+
+  frontend:
+    container_name: frontend
+    build:
+      context: Frontend
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    restart: always
+    depends_on:
+      - api
+    networks:
+      - frontend
+
+  db:
+    container_name: db
+    image: mysql/mysql-server
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_DATABASE: canon
+      MYSQL_PASSWORD: canon
+      MYSQL_ROOT_PASSWORD: canon
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - backend
+
+volumes:
+  dbdata: null
+
+networks:
+  backend: null
+  frontend: null

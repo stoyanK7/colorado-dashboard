@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import axios from 'axios';
 
-const baseURL = 'http://localhost:8080/';
+const baseURL = 'http://localhost:8000/';
 
 const useFetch = (url, requestBody) => {
   const [data, setData] = useState(null);
