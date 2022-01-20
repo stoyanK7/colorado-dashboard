@@ -348,7 +348,7 @@ class TestPreprocessTasks(unittest.TestCase):
                                 "date": ["2022-01-17"]})
 
         expected = pd.DataFrame(data={"ullid": [0],
-                                      "date": ["2022-01-16"]})
+                                      "date": ["2022-01-17"]})
 
         actual = PreprocessTasks._convert_date_to_utc(df)
 
