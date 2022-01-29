@@ -4,7 +4,6 @@ airflow.db
 airflow.cfg
 unittests.cfg
 webserver_config.py
-docker-compose.yaml
 
 # VSCode
 .vscode
