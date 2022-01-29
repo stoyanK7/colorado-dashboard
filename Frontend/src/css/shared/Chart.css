@@ -10,7 +10,7 @@
   -moz-transition: var(--chart-transition);
   -ms-transition: var(--chart-transition);
   transition: var(--chart-transition);
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .chart-wrapper-1 h1 {
@@ -18,16 +18,24 @@
   font-weight: 300;
 }
 
-.chart-wrapper-1 .fa-circle {
+.fa-circle {
   position: absolute;
-  top: 1%;
-  right: 1%;
+  top: 10px;
+  right: 10px;
   font-size: 3rem;
   color: var(--carnelian);
   z-index: 1;
 }
 
-.chart-wrapper-1 .fa-circle:hover {
+.fa-redo {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+  font-size: 3rem;
+}
+
+.fa-circle:hover, .fa-redo:hover {
   cursor: pointer;
   opacity: 0.8;
 }
@@ -36,8 +44,16 @@
   position: absolute;
   width: 100%;
   height: 100%;
+  font-size: 1rem;
 }
 
 .chart {
   height: 100%;
+}
+
+.colorado-custom-tooltip {
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  padding: 10px;
+  box-shadow: var(--box-shadow);
 }

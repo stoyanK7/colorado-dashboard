@@ -1,22 +1,20 @@
 {
   "name": "colorado-dashboard",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-regular-svg-icons": "^5.15.4",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.16",
-    "@nivo/bar": "^0.74.0",
-    "@nivo/core": "^0.74.0",
-    "@nivo/pie": "^0.74.0",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
     "axios": "^0.24.0",
+    "framer-motion": "4.1.17",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
-    "web-vitals": "^1.0.1"
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^5.0.0",
+    "react-tooltip": "^4.2.21",
+    "recharts": "^2.1.8"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -41,5 +39,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "babel-eslint": "^9.0.0"
   }
 }

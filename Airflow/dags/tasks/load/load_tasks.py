@@ -2,168 +2,174 @@ import logging
 
 import pymysql
 import pandas as pd
+from airflow.models import Variable
+from sqlalchemy import create_engine, text
 
-from config import aggregate_table_name_config, aggregate_column_name_config
+from DAL.api_database_manager import ApiDatabaseManager
+from config import aggregate_table_name_config, aggregate_column_name_config, preprocess_col_name_constants
 from DAL.postgres_database_manager import PostgresDatabaseManager
 from tabulate import tabulate
+
+from config.aggregate_column_name_config import DATE
+from config.aggregate_table_name_config import AGGREGATE_MEDIA_CATEGORY_USAGE, AGGREGATE_INK_USAGE
+from config.preprocess_col_name_constants import MACHINEID
+
 
 class LoadTasks:
 
 
     @staticmethod
     def load_media_category_usage():
-        df = LoadTasks._read_from_db_postgresql(aggregate_table_name_config.AGGREGATE_IMAGE)
+        df = LoadTasks._read_from_db_postgresql(aggregate_table_name_config.AGGREGATE_MEDIA_CATEGORY_USAGE)
         if df.empty:
             logging.info("No new data was found, skipping step.")
             return
 
+        api_table_name = Variable.get("api_media_category_usage_table_name")
+        date_col = Variable.get("api_date_col_name")
+        start_date = df[DATE].min()
+        end_date = df[DATE].max()
+        machine_id = preprocess_col_name_constants.MACHINEID
+        media_category = preprocess_col_name_constants.MEDIA_TYPE
+        api_df = LoadTasks._read_existing_data_from_api(api_table_name, date_col, start_date, end_date)
 
-        first_date_df = LoadTasks._get_first_value_from_df(df, aggregate_column_name_config.DATE)
-        first_area_df = LoadTasks._get_first_value_from_df(df, aggregate_column_name_config.IMAGE_AREA)
+        LoadTasks._set_date_type(api_df, df, date_col)
 
-        last_date_api = LoadTasks._get_last_value_from_api("media_category_usage", aggregate_column_name_config.DATE)
-        last_area_api = LoadTasks._get_last_value_from_api("media_category_usage", "printed_square_meters")
+        LoadTasks._delete_existing_data_from_api(api_table_name, date_col, start_date, end_date)
 
+        final_df = LoadTasks._merge_existing_with_new_data(df, api_df, [date_col, machine_id, media_category])
 
+        LoadTasks._send_data_to_api(api_table_name, final_df)
 
+    @staticmethod
+    def load_sqm_per_print_mode():
+        df = LoadTasks._read_from_db_postgresql(aggregate_table_name_config.AGGREGATE_SQM_PER_PRINT_MODE)
+        if df.empty:
+            logging.info("No new data was found, skipping step.")
+            return
 
-        if last_area_api != "" and last_date_api != "":
-            if LoadTasks._check_adding_area(last_date_api, first_date_df):
-                new_area = LoadTasks._adding_area(last_area_api, first_area_df)
-                LoadTasks._update_area('media_category_usage', new_area, last_date_api)
-                df = df[df[aggregate_column_name_config.DATE] != pd.to_datetime(last_date_api.strftime('%Y-%m-%d'), format='%Y-%m-%d')]
-                logging.info(tabulate(df, headers='keys', tablefmt='psql'))
-                logging.info(new_area)
-        logging.info(df)
-        LoadTasks._add_data_to_api(df)
-        logging.info(last_date_api)
-        logging.info(first_date_df)
-        logging.info(last_area_api)
-        logging.info(first_area_df)
+        api_table_name = Variable.get("api_square_meters_per_print_mode_table_name")
+        date_col = Variable.get("api_date_col_name")
+        start_date = df[DATE].min()
+        end_date = df[DATE].max()
+        machine_id = preprocess_col_name_constants.MACHINEID
+        print_mode = preprocess_col_name_constants.PRINT_MODE
+        api_df = LoadTasks._read_existing_data_from_api(api_table_name, date_col, start_date, end_date)
 
+        LoadTasks._set_date_type(api_df, df, date_col)
 
+        LoadTasks._delete_existing_data_from_api(api_table_name, date_col, start_date, end_date)
 
+        final_df = LoadTasks._merge_existing_with_new_data(df, api_df, [date_col, machine_id, print_mode])
 
+        LoadTasks._send_data_to_api(api_table_name, final_df)
+
+    @staticmethod
+    def load_ink_usage():
+        df = LoadTasks._read_from_db_postgresql(aggregate_table_name_config.AGGREGATE_INK_USAGE)
+        if df.empty:
+            logging.info("No new data was found, skipping step.")
+            return
+
+        api_table_name = Variable.get("api_ink_usage_table_name")
+        date_col = Variable.get("api_date_col_name")
+        start_date = df[DATE].min()
+        end_date = df[DATE].max()
+        machine_id = preprocess_col_name_constants.MACHINEID
+        api_df = LoadTasks._read_existing_data_from_api(api_table_name, date_col, start_date, end_date)
+
+        LoadTasks._set_date_type(api_df, df, date_col)
+
+        LoadTasks._delete_existing_data_from_api(api_table_name, date_col, start_date, end_date)
+
+        final_df = LoadTasks._merge_existing_with_new_data(df, api_df, [date_col, machine_id])
+
+        LoadTasks._send_data_to_api(api_table_name, final_df)
 
 
     @staticmethod
+    def load_top_ten_print_volume():
+        df = LoadTasks._read_from_db_postgresql(aggregate_table_name_config.AGGREGATE_TOP_TEN_PRINT_VOLUME)
+        if df.empty:
+            logging.info("No new data was found, skipping step.")
+            return
+
+        api_table_name = Variable.get("api_top_ten_print_volume_table_name")
+        date_col = Variable.get("api_date_col_name")
+        start_date = df[DATE].min()
+        end_date = df[DATE].max()
+        machine_id = preprocess_col_name_constants.MACHINEID
+        api_df = LoadTasks._read_existing_data_from_api(api_table_name, date_col, start_date, end_date)
+
+        LoadTasks._set_date_type(api_df, df, date_col)
+
+        LoadTasks._delete_existing_data_from_api(api_table_name, date_col, start_date, end_date)
+
+        final_df = LoadTasks._merge_existing_with_new_data(df, api_df, [date_col, machine_id])
+
+        LoadTasks._send_data_to_api(api_table_name, final_df)
+
+    @staticmethod
+    def load_media_types_per_machine():
+        df = LoadTasks._read_from_db_postgresql(aggregate_table_name_config.AGGREGATE_MEDIA_TYPES_PER_MACHINE)
+        if df.empty:
+            logging.info("No new data was found, skipping step.")
+            return
+
+        api_table_name = Variable.get("api_media_types_per_machine_table_name")
+        date_col = Variable.get("api_date_col_name")
+        start_date = df[DATE].min()
+        end_date = df[DATE].max()
+        machine_id = preprocess_col_name_constants.MACHINEID
+        media_type = preprocess_col_name_constants.MEDIA_TYPE_DISPLAY_NAME
+        api_df = LoadTasks._read_existing_data_from_api(api_table_name, date_col, start_date, end_date)
+
+        LoadTasks._set_date_type(api_df, df, date_col)
+
+        LoadTasks._delete_existing_data_from_api(api_table_name, date_col, start_date, end_date)
+
+        final_df = LoadTasks._merge_existing_with_new_data(df, api_df, [date_col, machine_id, media_type])
+
+        LoadTasks._send_data_to_api(api_table_name, final_df)
+
+    @staticmethod
     def _read_from_db_postgresql(table_name) -> pd.DataFrame:
-        logging.info("Reading the data from database.")
+        logging.info("Reading the data from internal database.")
         pdm = PostgresDatabaseManager()
         df = pdm.read_table(table_name)
         return df
 
-
     @staticmethod
-    def _get_last_value_from_api(table_name, column_name):
-        try:
-            logging.info("Reading data to the  MySql database")
-            connection = pymysql.connect(host='host.docker.internal', user='canon', password='canon', db='canon')
-            cursor = connection.cursor()
-            sql = """SELECT {column} FROM {table} ORDER BY date DESC LIMIT 1;"""\
-                .format(table=table_name, column=column_name)
-
-            cursor.execute(sql)
-            return cursor.fetchone()[0]
-        except pymysql.Error as error:
-            logging.info(error)
-            return ""
-        except TypeError as error:
-            logging.info(error)
-            return ""
-        finally:
-            logging.info("close the database connection using close() method.")
-            connection.close()
+    def _read_existing_data_from_api(table_name, date_col_name, start_date, end_date):
+        logging.info(f"Reading existing data in api database from table {table_name} between {start_date} and {end_date}")
+        result = None
+        dm = ApiDatabaseManager()
+        sql = f"SELECT * FROM {table_name} WHERE {date_col_name} BETWEEN '{start_date}' AND '{end_date}'"
+        result = dm.read_pd(sql)
+        result = result.drop(["id"], axis=1)
+        return result
 
 
     @staticmethod
-    def _get_first_value_from_df(df, column_name):
-        return df[column_name].loc[0]
-
-
-    @staticmethod
-    def _check_adding_area(last_date_api, last_date_df):
-        last_date_api = last_date_api.strftime('%Y-%m-%d')
-        logging.info(last_date_api)
-        logging.info(last_date_df)
-        logging.info("Checking is equal")
-        if last_date_api == last_date_df:
-            return True
-        else:
-            return False
-
+    def _delete_existing_data_from_api(table_name, date_col_name, start_date, end_date):
+        logging.info(f"Deleting existing data in api database from table {table_name} between {start_date} and {end_date}")
+        dm = ApiDatabaseManager()
+        dm.sql_query(text(f"DELETE FROM {table_name} WHERE {date_col_name} BETWEEN '{start_date}' AND '{end_date}'"))
 
     @staticmethod
-    def _adding_area(area_api, area_df):
-        return area_api + area_df
-
-
-
-
-    @staticmethod
-    def _update_area(table_name, new_area, date):
-        try:
-            logging.info("Making connection with MySql database")
-            logging.info("Adding data to the  MySql database")
-            logging.info(date.strftime('%Y-%m-%d'))
-            date = date.strftime('%Y-%m-%d')
-            connection = pymysql.connect(host='host.docker.internal', user='canon', password='canon', db='canon')
-            cursor = connection.cursor()
-
-            sql_read_query = """UPDATE {table} SET printed_square_meters={area} WHERE date ='{date}';"""\
-                                .format(table=table_name, area=new_area,date=date)
-            logging.info(sql_read_query)
-            cursor.execute(sql_read_query)
-            connection.commit()
-        except pymysql.Error as e:
-            logging.info(e)
-            return
-        finally:
-            logging.info("close the database connection using close() method.")
-            connection.close()
-
-
-
-
+    def _merge_existing_with_new_data(pipeline_data: pd.DataFrame, api_data: pd.DataFrame, cols):
+        logging.info("Merging existing data with new data")
+        concat_df = pd.concat([pipeline_data, api_data]).reset_index(drop=True)
+        grouped = concat_df.groupby(cols, as_index=False).sum().reset_index(drop=True)
+        return grouped
 
     @staticmethod
-    def _add_data_to_api(df):
-        try:
-            logging.info("Adding data to the  MySql database")
-            connection = pymysql.connect(host='host.docker.internal', user='canon', password='canon', db='canon')
-            cursor = connection.cursor()
-            cols = "`,`".join([str(i) for i in df.columns.tolist()])
-
-            for i, row in df.iterrows():
-                # sql = "INSERT INTO `media_category_usage` " \
-                #       "(machine_id, `" +cols + "`)" \
-                #       " VALUES (0, " + "%s," * (len(row) - 1) + "%s)"
-                sql = "INSERT INTO `media_category_usage` " \
-                        "(machine_id, date, media_category, printed_square_meters)" \
-                        " VALUES (0," + "%s,"*(len(row)-1) + "%s)"
-                cursor.execute(sql, tuple(row))
-                connection.commit()
-        except pymysql.Error as e:
-            print(e)
-
-        finally:
-            logging.info("close the database connection using close() method.")
-            connection.close()
-
-
+    def _send_data_to_api(table_name, df):
+        logging.info(f"Pushing new data to api table {table_name}")
+        dm = ApiDatabaseManager()
+        dm.send_df(table_name, df)
 
     @staticmethod
-    def load_sqm_per_print_mode():
-        pass
-
-    @staticmethod
-    def load_ink_usage():
-        pass
-
-    @staticmethod
-    def load_top_ten_print_volume():
-        pass
-
-    @staticmethod
-    def load_media_types_per_machine():
-        pass
+    def _set_date_type(api_df, df, date_col):
+        api_df[date_col] = pd.to_datetime(api_df[date_col])
+        df[date_col] = pd.to_datetime(df[date_col])

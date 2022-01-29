@@ -1,84 +1,80 @@
-import { ResponsiveBarCanvas } from '@nivo/bar';
-import chartTheme from '../../util/chartTheme';
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis
+} from 'recharts';
+import { useEffect, useState } from 'react';
 
-const SquareMeterPerPrintModeBarChart = ({ data, index }) => {
-  if (typeof data === 'undefined' || data.length === 0) return null;
-  // TODO: Seperate into own function
-  let keys = Object.keys(data[0]);
-  keys.splice(keys.indexOf('date'), 1);
-  keys.sort();
+import CustomTooltip from '../shared/CustomTooltip';
+import axios from 'axios';
+import convertData from '../../util/convertData';
+import getRandomColor from '../../util/getRandomColor';
+
+const defaultChartDataKeys = [
+  "High speed",
+  "Other",
+  "Max speed",
+  "Reliance",
+  "Backlit",
+  "Specialty",
+  "High quality",
+  "Production"
+];
+
+const SquareMeterPerPrintModeBarChart = ({ data, aggregated = true, index, legend = true }) => {
+  const [chartDataKeys, setChartDataKeys] = useState();
+  useEffect(() => {
+    axios.get(`SquareMetersPerPrintMode/ChartDataKeys`)
+      .then(res => res.data.dataKeys)
+      .then(data => setChartDataKeys(data))
+      .catch(err => setChartDataKeys(defaultChartDataKeys))
+  }, []);
+
   return (
-    <>
-      <ResponsiveBarCanvas
-        animate={true}
-        borderWidth={1}
-        data={data}
-        keys={keys}
-        indexBy={index}
-        margin={{ top: 50, right: 130, bottom: 70, left: 60 }}
-        padding={0.05}
-        valueScale={{ type: 'linear' }}
-        indexScale={{ type: 'band', round: true }}
-        // colors={({ data, id, indexValue }) => chartTheme(data, id, indexValue, 'square-meter-per-print-mode')}
-        colors={{ scheme: 'nivo' }}
-        borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-        axisBottom={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 40,
-          legend: 'Date',
-          legendPosition: 'middle',
-          legendOffset: 55
-        }}
-        axisLeft={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: 'Printed square meters',
-          legendPosition: 'middle',
-          legendOffset: -40
-        }}
-        enableLabel={false}
-        legends={[
-          {
-            dataFrom: 'keys',
-            anchor: 'bottom-right',
-            direction: 'column',
-            justify: false,
-            translateX: 120,
-            translateY: -10,
-            itemsSpacing: 2,
-            itemWidth: 100,
-            itemHeight: 20,
-            itemDirection: 'left-to-right',
-            itemOpacity: 0.85,
-            symbolSize: 20,
-            effects: [
-              {
-                on: 'hover',
-                style: {
-                  itemOpacity: 1
-                }
-              }
-            ],
-            toggleSerie: true
-          }
-        ]}
-        pixelRatio={2}
-        role='application'
-        tooltip={({ id, value, indexValue, color }) => {
-          return <div style={{ backgroundColor: 'rgba(68,68,68, 0.9)', padding: '5px', color: '#ffffff', fontSize: '1rem', borderRadius: '4px' }}>
-            <div style={{ display: 'flex' }}>
-              <svg width='20px' height='20px' style={{ marginRight: '5px' }}><rect width='20px' height='20px' fill={color}></rect></svg>
-              <span style={{ fontSize: '1.1rem' }}>{id}</span>
-            </div>
-            Printed square meters: <b>{value}</b>
-            <br />
-            Date: <b>{indexValue}</b>
-          </div>
-        }}
-      />
-    </>
+    <ResponsiveContainer width='100%' height='100%'>
+      <BarChart
+        data={convertData(data, 'Print mode')}
+        margin={legend ? {
+          top: 35,
+          right: 70,
+          left: 70,
+          bottom: 70
+        } : {
+          top: 10,
+          right: 0,
+          left: 0,
+          bottom: 0
+        }}>
+        <CartesianGrid strokeDasharray='3 3' />
+        <XAxis
+          dataKey={index}
+          textAnchor='start'
+          angle={40}
+          allowDuplicatedCategory={aggregated ? true : false}
+          xAxisId={!aggregated ? 1 : 0} />
+        {!aggregated && <XAxis dataKey='Printer id' xAxisId={0} />}
+        <YAxis unit='SqM' type='number' />
+        <Tooltip
+          content={
+            <CustomTooltip
+              index={index}
+              printer={(obj) => `${obj.dataKey}: ${obj.value}`} />} />
+        {legend && <Legend verticalAlign='top' iconType='circle' />}
+        {chartDataKeys && chartDataKeys.map(key => {
+          return <Bar
+            dataKey={key}
+            stackId='a'
+            isAnimationActive={false}
+            fill={getRandomColor('palette1', chartDataKeys.indexOf(key))}
+            key={key} />
+        })}
+      </BarChart>
+    </ResponsiveContainer>
   );
 };
 

@@ -1,76 +1,74 @@
 import '../../css/site/View.css';
 
-import { faCalendarAlt, faExpand } from '@fortawesome/free-solid-svg-icons';
-import { useRef, useState } from 'react';
+import { disableFullScreen, enableFullScreen, rotateFullScreen } from '../../util/fullScreen';
+import { useEffect, useRef, useState } from 'react';
 
 import Chart from '../shared/Chart';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Filters from '../shared/Filters';
 import Header from '../static/Header';
+import HoverTooltip from '../shared/HoverTooltip';
+import React from 'react';
+import chartTitleSwitch from '../../util/chartTitleSwitch';
+import formatDate from '../../util/formatDate';
+import { useParams } from 'react-router-dom';
 import useToggle from '../../hooks/useToggle';
 
 const View = () => {
-  const [chartTitle, setChartTitle] = useState('');
-
+  // Gets path from URL: i.e. https://xxxxx.com/InkUsage -> InkUsage
+  const { chartPath } = useParams();
   const chart = useRef(null);
-
+  const [chartTitle, setChartTitle] = useState('');
+  const [requestUrl, setRequestUrl] = useState(`${chartPath}`);
+  const [requestBody, setRequestBody] = useState();
   const [fullScreen, toggleFullScreen] = useToggle();
-  // TODO: needs reworking. complete spaghetti but works 
-  const disableFullScreen = () => {
-    toggleFullScreen();
+  // Filters
+  const [from, setFrom] = useState();
+  const [to, setTo] = useState();
+  const [chosenPrinters, setChosenPrinters] = useState([]);
+  const [bin, setBin] = useState('day');
+  const [aggregated, setAggregated] = useState(true);
 
-    // after transition
-    setTimeout(() => {
-      chart.current.style.removeProperty('width');
-      chart.current.style.removeProperty('height');
-      chart.current.style.removeProperty('left');
-      chart.current.style.removeProperty('top');
-      chart.current.style.removeProperty('position');
-    }, 500)
-  };
+  useEffect(() => {
+    // TODO: this can be removed
+    setChartTitle(`${chartTitleSwitch(chartPath)} from ${formatDate(from)} until ${formatDate(to)}`)
+    if (from && to) {
+      setRequestUrl(`${chartPath}/Period?aggregated=${aggregated}&bin=${bin}`);
+      setRequestBody({ from, to });
+    }
 
-  const enableFullScreen = () => {
-    // before transition
-    const scrollWidth = chart.current.scrollWidth;
-    const scrollHeight = chart.current.scrollHeight;
-
-    chart.current.style.setProperty('left', chart.current.offsetLeft + 'px');
-    chart.current.style.setProperty('top', chart.current.offsetTop + 'px');
-    chart.current.style.setProperty('position', 'fixed');
-    chart.current.style.setProperty('width', scrollWidth + 'px');
-    chart.current.style.setProperty('height', scrollHeight + 'px');
-
-    // wait for code to run
-    setTimeout(() => toggleFullScreen(), 100);
-  };
+    if (from && to && chosenPrinters.length > 0) {
+      setRequestUrl(`${chartPath}/PeriodAndPrinters?aggregated=${aggregated}&bin=${bin}`);
+      setRequestBody({ from, to, printerIds: chosenPrinters });
+    }
+  }, [from, to, chosenPrinters, aggregated, bin]);
 
   return (
     <div className='view'>
       <Header />
+      <HoverTooltip />
       <main>
-        <h1>{chartTitle && chartTitle}</h1>
-        <div className='bins'>
-          <span className='one-day'>1D</span>
-          <span className='one-week'>1W</span>
-        </div>
-        <div className='timespan'>
-          <div className='from'>
-            <input type='date' />
-            <FontAwesomeIcon icon={faCalendarAlt} className='fa-calendar-alt' />
-          </div>
-          <span>to</span>
-          <div className='to'>
-            <input type='date' />
-            <FontAwesomeIcon icon={faCalendarAlt} className='fa-calendar-alt' />
-          </div>
-        </div>
-        <div className='specific-printers'>
-          <input type='text' placeholder='Specific printers..' />
-        </div>
-        <div className='full-screen' onClick={enableFullScreen}>
-          <FontAwesomeIcon icon={faExpand} className='fa-expand' />
-          <span>Full screen</span>
-        </div>
-        <Chart ref={chart} setChartTitle={setChartTitle} fullScreen={fullScreen} disableFullScreen={disableFullScreen} />
+        <h1>{chartTitle}</h1>
+        <Filters
+          from={from}
+          setFrom={setFrom}
+          to={to}
+          setTo={setTo}
+          chartPath={chartPath}
+          chosenPrinters={chosenPrinters}
+          setChosenPrinters={setChosenPrinters}
+          aggregated={aggregated}
+          setAggregated={setAggregated}
+          setBin={setBin}
+          enableFullScreen={() => { enableFullScreen(chart, toggleFullScreen) }} />
+        <Chart
+          ref={chart}
+          chartPath={chartPath}
+          fullScreen={fullScreen}
+          requestUrl={requestUrl}
+          requestBody={requestBody}
+          aggregated={aggregated}
+          disableFullScreen={() => { disableFullScreen(chart, toggleFullScreen) }}
+          rotateFullScreen={() => { rotateFullScreen(chart) }} />
       </main>
     </div>
   );

@@ -1,5 +1,6 @@
 import { Route, Switch } from 'react-router-dom';
 
+import DataPipelineErrors from './DataPipelineErrors';
 import Home from './Home';
 import View from './View';
 
@@ -9,7 +10,13 @@ const App = () => {
       <Route exact path='/'>
         <Home />
       </Route>
-      <Route exact path='/:chart'>
+      <Route exact path='/DataPipelineErrors/:errorId'>
+        <DataPipelineErrors />
+      </Route>
+      <Route exact path='/:chartPath'>
+        <View />
+      </Route>
+      <Route exact path='/:chartPath/*'>
         <View />
       </Route>
     </Switch>

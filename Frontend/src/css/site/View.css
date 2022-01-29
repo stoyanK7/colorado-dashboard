@@ -22,7 +22,7 @@
   font-size: 2rem;
 }
 
-.view, .specific-printers input {
+.view, .specific-printers>input {
   width: 100%;
 }
 
@@ -70,8 +70,15 @@
 }
 
 .specific-printers {
+  display: flex;
   grid-area: specific-printers;
 }
+
+.specific-printers .fa {
+  margin: 0 0 0 20px;
+  height: 100%;
+}
+
 
 .full-screen {
   grid-area: full-screen;
@@ -90,7 +97,7 @@
 
 /* Align input fields */
 
-.timespan>div, .specific-printers input {
+.timespan>div, .specific-printers>input {
   position: relative;
   height: 100%;
   display: flex;
@@ -120,13 +127,13 @@
   margin: 0 10px;
 }
 
-.bins>span, .full-screen {
+.bins>span, .full-screen, .fa {
   /* Needed in order for zoom animation to work */
   display: inline-block;
   transition: transform var(--hover-transition);
 }
 
-.bins>span:hover, .full-screen:hover {
+.bins>span:hover, .full-screen:hover, .fa:hover {
   --zoom: 1.2;
   transform: scale(var(--zoom), var(--zoom));
   -moz-transform: scale(var(--zoom), var(--zoom));
@@ -142,7 +149,7 @@
   margin-right: 10px;
 }
 
-.chart-full-screen[style] {
+.chart-full-screen {
   width: 100vw !important;
   height: 100vh !important;
   position: fixed;
@@ -154,6 +161,15 @@
   transition: var(--chart-transition);
 }
 
+.chart-full-screen-rotated {
+  transform-origin: left top;
+  transform: rotate(90deg);
+  right: -100vh !important;
+  left: auto !important;
+  width: 100vh !important;
+  height: 100vw !important;
+}
+
 /* Tablet */
 
 @media only screen and (max-width: 1170px) {
@@ -163,6 +179,10 @@
     grid-template-areas: "title title""bins timespan""specific-printers specific-printers""chart chart""full-screen full-screen";
     row-gap: 30px;
     font-size: 1.8rem;
+  }
+
+  .view main>h1 {
+    font-size: 1.6rem;
   }
 
   .timespan, .specific-printers {
@@ -202,15 +222,6 @@
   .timespan>div .fa-calendar-alt {
     top: 5px;
   }
-
-  .chart-full-screen[style] {
-    transform-origin: left top;
-    transform: rotate(90deg);
-    right: -100vh !important;
-    left: auto !important;
-    width: 100vh !important;
-    height: 100vw !important;
-  }
 }
 
 /* Mobile */
@@ -218,6 +229,10 @@
 @media only screen and (max-width: 630px) {
   .view main {
     font-size: 1.3rem;
+  }
+
+  .view main>h1 {
+    font-size: 1.2rem;
   }
 
   .view input {

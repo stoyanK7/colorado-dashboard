@@ -1,26 +1,41 @@
-# You can register your runner following the tutorial below
-# https://docs.gitlab.com/runner/register/
-
 before_script:
-  - cd API/
-  - export GRADLE_USER_HOME=`pwd`/.gradle
-  - chmod +x ./gradlew
+  - export GRADLE_USER_HOME=`pwd`/API/.gradle
+  - chmod +x ./API/gradlew
 
 cache:
   paths:
-     - ./API/.gradle/wrapper
-     - ./API/.gradle/caches
+    - ./API/.gradle/wrapper
+    - ./API/.gradle/caches
 
 stages:
   - build
   - test
+  - code-check
 
-build:
+api-build:
   stage: build
   script:
-    - ./gradlew assemble
+    - ./API/gradlew assemble -p API/
 
-test:
+api-test:
   stage: test
   script:
-    - ./gradlew test
+    - ./API/gradlew test -p API/
+
+sonarqube-spring:
+  stage: code-check
+  image: gradle:jre11-slim
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    GIT_DEPTH: "0"
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script: ./API/gradlew sonarqube -p API/
+  allow_failure: true
+
+sonarqube-airflow:
+  stage: code-check
+  script:
+    - sonar-scanner -Dsonar.projectBaseDir=./Airflow

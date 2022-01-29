@@ -1,0 +1,6 @@
+from config import read_media_prepare_db_col_name_constants
+
+pULLID_PAIR = ["media_prepare_col_name_ullid", read_media_prepare_db_col_name_constants.ULLID]
+pDATE_PAIR = ["media_prepare_col_name_date", read_media_prepare_db_col_name_constants.DATE]
+pMEDIA_TYPE_DISPLAY_NAME_PAIR = ["media_prepare_col_name_media_type_display_name", read_media_prepare_db_col_name_constants.MEDIA_TYPE_DISPLAY_NAME]
+pENGINE_CYCLE_ID_PAIR = ["media_prepare_col_name_engine_cycle_id", read_media_prepare_db_col_name_constants.ENGINE_CYCLE_ID]

@@ -1,8 +1,10 @@
 from datetime import timedelta, datetime
 
 from airflow import DAG
+from airflow.operators.dummy import DummyOperator
 from airflow.operators.python_operator import PythonOperator
 
+from tasks.cleanup.error_collect import ErrorCollect
 from tasks.load.load_tasks import LoadTasks
 from tasks.preprocess.preprocess_tasks import PreprocessTasks
 from tasks.read.read_tasks import ReadTasks
@@ -16,7 +18,7 @@ default_args = {
     'email': ['airflow@example.com'],
     'email_on_failure': False,
     'email_on_retry': False,
-    'retries': 1,
+    'retries': 0,
     'retry_delay': timedelta(minutes=5),
 }
 
@@ -35,11 +37,11 @@ with DAG(
         python_callable=ReadTasks.read_image
     )
     readMediaPrepare = PythonOperator(
-        task_id='readMediaPrepare_TODO',
+        task_id='readMediaPrepare',
         python_callable=ReadTasks.read_media_prepare
     )
     readPrintCycle = PythonOperator(
-        task_id='readPrintCycle_TODO',
+        task_id='readPrintCycle',
         python_callable=ReadTasks.read_print_cycle
     )
 
@@ -49,33 +51,33 @@ with DAG(
         python_callable=CleanTasks.clean_image
     )
     cleanMediaPrepare = PythonOperator(
-        task_id='cleanMediaPrepare_TODO',
+        task_id='cleanMediaPrepare',
         python_callable=CleanTasks.clean_media_prepare
     )
     cleanPrintCycle = PythonOperator(
-        task_id='cleanPrintCycle_TODO',
+        task_id='cleanPrintCycle',
         python_callable=CleanTasks.clean_print_cycle
     )
 
     # PREPROCESS
     preprocessMediaCategoryUsage = PythonOperator(
-        task_id='preprocessMediaCategoryUsage_TODO',
+        task_id='preprocessMediaCategoryUsage',
         python_callable=PreprocessTasks.preprocess_media_category_usage
     )
     preprocessSqmPerPrintMode = PythonOperator(
-        task_id='preprocessSqmPerPrintMode_TODO',
+        task_id='preprocessSqmPerPrintMode',
         python_callable=PreprocessTasks.preprocess_sqm_per_print_mode
     )
     preprocessInkUsage = PythonOperator(
-        task_id='preprocessInkUsage_TODO',
+        task_id='preprocessInkUsage',
         python_callable=PreprocessTasks.preprocess_ink_usage
     )
     preprocessTopTenPrintVolume = PythonOperator(
-        task_id='preprocessTopTenPrintVolume_TODO',
+        task_id='preprocessTopTenPrintVolume',
         python_callable=PreprocessTasks.preprocess_top_ten_print_volume
     )
     preprocessMediaTypesPerMachine = PythonOperator(
-        task_id='preprocessMediaTypesPerMachine_TODO',
+        task_id='preprocessMediaTypesPerMachine',
         python_callable=PreprocessTasks.preprocess_media_types_per_machine
     )
 
@@ -85,48 +87,58 @@ with DAG(
         python_callable=AggregateTasks.aggregate_media_category_usage
     )
     aggregateSqmPerPrintMode = PythonOperator(
-        task_id='aggregateSqmPerPrintMode_TODO',
+        task_id='aggregateSqmPerPrintMode',
         python_callable=AggregateTasks.aggregate_sqm_per_print_mode
     )
     aggregateInkUsage = PythonOperator(
-        task_id='aggregateInkUsage_TODO',
+        task_id='aggregateInkUsage',
         python_callable=AggregateTasks.aggregate_ink_usage
     )
     aggregateTopTenPrintVolume = PythonOperator(
-        task_id='aggregateTopTenPrintVolume_TODO',
+        task_id='aggregateTopTenPrintVolume',
         python_callable=AggregateTasks.aggregate_top_ten_print_volume
     )
     aggregateMediaTypesPerMachine = PythonOperator(
-        task_id='aggregateMediaTypesPerMachine_TODO',
+        task_id='aggregateMediaTypesPerMachine',
         python_callable=AggregateTasks.aggregate_media_types_per_machine
     )
 
     #LOAD
+    preloadBarrier = DummyOperator(
+        task_id='preloadBarrier'
+    )
+
     loadMediaCategoryUsage = PythonOperator(
-        task_id='loadMediaCategoryUsage_TODO',
+        task_id='loadMediaCategoryUsage',
         python_callable=LoadTasks.load_media_category_usage
     )
     loadSqmPerPrintMode = PythonOperator(
-        task_id='loadSqmPerPrintMode_TODO',
+        task_id='loadSqmPerPrintMode',
         python_callable=LoadTasks.load_sqm_per_print_mode
     )
     loadInkUsage = PythonOperator(
-        task_id='loadInkUsage_TODO',
+        task_id='loadInkUsage',
         python_callable=LoadTasks.load_ink_usage
     )
     loadTopTenPrintVolume = PythonOperator(
-        task_id='loadTopTenPrintVolume_TODO',
+        task_id='loadTopTenPrintVolume',
         python_callable=LoadTasks.load_top_ten_print_volume
     )
     loadMediaTypesPerMachine = PythonOperator(
-        task_id='loadMediaTypesPerMachine_TODO',
+        task_id='loadMediaTypesPerMachine',
         python_callable=LoadTasks.load_media_types_per_machine
     )
 
     #CLEANUP
     cleanUp = PythonOperator(
         task_id='cleanUp',
+        trigger_rule="all_done",
         python_callable=CleanupTasks.cleanup
+    )
+    error_collect = PythonOperator(
+        task_id='errorCollect',
+        trigger_rule="all_done",
+        python_callable=ErrorCollect.collect_errors
     )
 
     # cleaning
@@ -147,11 +159,17 @@ with DAG(
     preprocessTopTenPrintVolume >> aggregateTopTenPrintVolume
     preprocessMediaTypesPerMachine >> aggregateMediaTypesPerMachine
     # load
-    aggregateMediaCategoryUsage >> loadMediaCategoryUsage
-    aggregateSqmPerPrintMode >> loadSqmPerPrintMode
-    aggregateInkUsage >> loadInkUsage
-    aggregateTopTenPrintVolume >> loadTopTenPrintVolume
-    aggregateMediaTypesPerMachine >> loadMediaTypesPerMachine
+    aggregateMediaCategoryUsage >> preloadBarrier
+    aggregateInkUsage >> preloadBarrier
+    aggregateSqmPerPrintMode >> preloadBarrier
+    aggregateTopTenPrintVolume >> preloadBarrier
+    aggregateMediaTypesPerMachine >> preloadBarrier
+
+    preloadBarrier >> loadTopTenPrintVolume
+    preloadBarrier >> loadSqmPerPrintMode
+    preloadBarrier >> loadMediaTypesPerMachine
+    preloadBarrier >> loadMediaCategoryUsage
+    preloadBarrier >> loadInkUsage
 
     # cleanup
     loadMediaCategoryUsage >> cleanUp
@@ -159,5 +177,7 @@ with DAG(
     loadInkUsage >> cleanUp
     loadTopTenPrintVolume >> cleanUp
     loadMediaTypesPerMachine >> cleanUp
+
+    cleanUp >> error_collect
 
     # readImage
