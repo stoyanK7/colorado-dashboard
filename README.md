@@ -4,6 +4,12 @@
 Canon get a lot of raw data from their printers and they want to visualize this data. So they get a better understanding of their printers and can make better business decisions. Why people use certain printers, so that they know what to invest in.
 The new preferred situation would be that they have graphs that give them a better understanding of the data they get from the printers.
 
+## Images
+![homepage](https://user-images.githubusercontent.com/23459549/162023815-ee4cb90b-9090-4b82-bcbc-9ecc81072e73.png)
+![inkusage](https://user-images.githubusercontent.com/23459549/162023819-37d09983-219f-4821-9238-10d8d579e219.png)
+![pipelines](https://user-images.githubusercontent.com/23459549/162023843-749dbd38-4ac2-4d67-915c-2d78ca620f6c.png)
+![mcusage](https://user-images.githubusercontent.com/23459549/162023851-e415ac65-f235-4ca5-bdd1-ca0c14634a43.png)
+
 ## Strategy
 For this project, we will be using an Agile approach, using the Scrum framework. For this approach, we will be doing sprints of 3 weeks, after which we will present our progress to the client. The aim of using this strategy is so that we can stay flexible and often check in with the client. This way we can make changes to our work during the project if the client requests this and end with a product that the client is satisfied with.
 
